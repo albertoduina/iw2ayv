@@ -1,0 +1,198 @@
+<!-- Ant makefile for iw2ayv -->
+<!-- Questa è la libreria di routines comuni a più progetti. -->
+<!-- Ad ogni build viene aggiornato il buildnumber, e viene  -->
+<!-- esportata nei 3 imagej possibili: 1) dentro eclipse     -->
+<!-- 2) in winXP 3) in win7. Questo per propagare subito     -->
+<!-- le modifiche apportate, nei siti di utilizzo. Resta     -->
+<!-- comunque compito dei build delle varie applicazioni     -->
+<!-- che la impiegano, di effettuare la medesima             -->
+<!-- distribuzione, in modo che sia sempre assicurata la     -->
+<!-- presenza dell'indispensabile libreria. Idem per         -->
+<!-- qualsiasi altra forma di distribuzione.                 -->
+
+<project name="iw2ayv" default="main">
+
+	<property environment="env" />
+	<property name="package" value="utils" />
+	<property name="disk" value="${env.SystemDrive}" />
+
+	<property name="eclipse-home" value="${basedir}\..\.." />
+	<property name="work" value="${basedir}\..\.." />
+	<echo message="basedir= ${basedir}" />
+	<echo message="basedir= $" />
+	<echo message="eclipse-home= ${eclipse-home}" />
+	<echo message="eclipse-home= $" />
+
+	<property name="output" location="build" />
+	<property name="output2" location="build/src" />
+	<property name="output3" location="build/test" />
+	<property name="output4" location="build/data" />
+	<property name="dist" location="dist" />
+
+	<property name="source" location="src/utils" />
+	<property name="pathImageJ" location="${work}\imagej\ij.jar" />
+	<echo message="pathImageJ= ${pathImageJ}" />
+	<property name="pathIW2AYV" location="${pluginsDir}/iw2ayv" />
+	<echo message="pathIW2AYV= ${pathIW2AYV}" />
+
+	<property name="binUtils" location="bin/utils" />
+
+	<!-- ######################## MAIN ####################### -->
+
+	<!-- target name="main" depends="init, cond_INS, cond_OLD, cond_WIN7 " / -->
+	<target name="main" depends="init, compile, moveSources, jarx, wipe,   cond_INS, cond_OLD, cond_WIN7" />
+	<!--target name="main" depends="init, compile, move1, jarx, libraries, wipe, move2,  installXp, installOthers" /-->
+
+
+	<!-- INIT inizializza le necessarie directory -->
+	<target name="init" description="initialize">
+		<echo message="Eseguo INIT" />
+		<buildnumber />
+		<tstamp />
+		<delete dir="${output}" />
+		<mkdir dir="${output}" />
+		<echo message="mkdir dir=${output}" />
+		<delete dir="${dist}" />
+		<mkdir dir="${dist}" />
+		<echo message="mkdir dir=${dist}" />
+		<delete dir="${pluginsDir}" />
+		<mkdir dir="${pluginsDir}" />
+		<echo message="mkdir dir=${pluginsDir}" />
+
+		<property name="productDirINSIDE" location="${work}\imagej\Plugins" />
+		<available file="${productDirINSIDE}" type="dir" property="ins" />
+		<echo message="ins=${ins}" />
+
+		<property name="productDirOLD" location="${disk}/Programmi\ImageJ\Plugins" />
+		<available file="${productDirOLD}" type="dir" property="old" />
+		<echo message="oldS=${old}" />
+
+		<property name="productDirWIN7" location="${disk}/Programmi2\ImageJ\plugins" />
+		<available file="${productDirWIN7}" type="dir" property="win7" />
+		<echo message="win7=${win7}" />
+	</target>
+
+	<target name="compile" description="Compile everything.">
+		<echo message="Eseguo COMPILE" />
+		<!-- Build everything; add debug="on" to debug -->
+		<javac srcdir="${source}" destdir="${output}" optimize="on" target="1.5" encoding="iso8859-1" debug="on" classpath="${pathImageJ};${pathJfreechart};${pathJcommon}" />
+	</target>
+
+	<target name="moveSources" description="Move the sources.">
+		<copy todir="${output}">
+			<fileset dir="." includes=" *.txt , *.pdf, *.rtf, *.number, jpg" />
+			<!--fileset dir="./src/utils/" includes=" *.java" /-->
+		</copy>
+		<copy todir="${output2}">
+			<fileset dir="./src/utils/" includes=" *.java" />
+		</copy>
+		<copy todir="${output3}">
+			<fileset dir="./test/utils/" includes=" *.java" />
+		</copy>
+		<copy todir="${output4}">
+			<fileset dir="./data/" includes=" *.*" />
+		</copy>
+	</target>
+
+	<target name="jarx" description="JARs the Task">
+		<echo message="Eseguo CREA JAR" />
+		<delete file="MANIFEST.MF" />
+		<property name="version.num" value="1.00" />
+		<manifest file="MANIFEST.MF">
+			<attribute name="Built-By" value="${user.name}" />
+			<attribute name="Main-Class" value="${package}.utils" />
+			<attribute name="Implementation-Version" value="${version.num}-b${build.number}" />
+		</manifest>
+		<copy file="./MANIFEST.MF" todir="${data}" />
+		<copy file="./MANIFEST.MF" todir="${binUtils}" />
+
+		<jar destfile="${dist}/iw2ayv.jar" manifest="MANIFEST.MF">
+			<fileset dir="${output}" />
+			<!--fileset dir="${src}"/-->
+			<!--fileset dir="${test}"/-->
+		</jar>
+
+
+		<!--jar destfile="${dist}/iw2ayv.jar" basedir="${output}" manifest="MANIFEST.MF" /-->
+
+		<!--copy todir="${lib}">
+			<fileset dir="${dist}" includes="*.jar" />
+		</copy-->
+
+		<!--delete dir="${output}" /-->
+	</target>
+
+	<target name="wipe" description="Delete the build intermedie files.">
+		<delete failonerror="false" verbose="true">
+			<fileset dir="${output}" includes="*.*" />
+		</delete>
+	</target>
+
+	<target name="libraries" description="copy the external libraries">
+	</target>
+
+	<target name="clean" description="Delete the build files.">
+		<echo message="Eseguo CLEAN" />
+		<delete failonerror="false" verbose="true">
+			<fileset dir="." includes="*.class" />
+		</delete>
+	</target>
+
+
+
+	<target name="cond_INS" depends="init" if="ins">
+		<echo message="Eseguo cond_INS" />
+		<delete dir="${productDirINSIDE}/iw2ayv" />
+		<mkdir dir="${productDirINSIDE}/iw2ayv" />
+		<copy file="${dist}/iw2ayv.jar" todir="${productDirINSIDE}/iw2ayv" />
+	</target>
+	<target name="cond_OLD" depends="init" if="old">
+		<echo message="Eseguo cond_OLD" />
+		<delete dir="${productDirOLD}/iw2ayv" />
+		<mkdir dir="${productDirOLD}/iw2ayv" />
+		<copy file="${dist}/iw2ayv.jar" todir="${productDirOLD}/iw2ayv" />
+	</target>
+	<target name="cond_WIN7" depends="init" if="win7">
+		<echo message="Eseguo cond_WIN7" />
+		<delete dir="${productDirWIN7}/iw2ayv" />
+		<mkdir dir="${productDirWIN7}/iw2ayv" />
+		<copy file="${dist}/iw2ayv.jar" todir="${productDirWIN7}/iw2ayv" />
+	</target>
+
+
+	<!-- condition property="os.XP">
+		<os name="Windows XP" />
+	</condition>
+
+	<condition property="os.Others">
+		<not>
+			<os name="Windows XP" />
+		</not>
+	</condition>
+	<target name="installXp" if="os.XP">
+		<echo message="OS=Xp" />
+		<delete dir="${productDir1}" />
+		<mkdir dir="${productDir1}" />
+		<copy todir="${productDir1}">
+			<fileset dir="${output}" includes="*.jar" />
+			<fileset dir="${dist}" includes="*.jar" />
+		</copy>
+	</target>
+
+	<target name="installOthers" if="os.Others">
+		<echo message="OS=Others" />
+		<copy todir="${productDir2}">
+			<fileset dir="${output}" includes="*.jar" />
+			<fileset dir="${dist}" includes="*.jar" />
+		</copy>
+		<copy file="${pathImageJ}" todir="${productDir8}" />
+</target-->
+
+
+
+
+
+
+
+</project>
+
