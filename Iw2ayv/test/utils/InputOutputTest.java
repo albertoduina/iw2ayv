@@ -77,7 +77,7 @@ public class InputOutputTest {
 
 	@Test
 	public final void testReadFile3() {
-		String CODE_FILE = "/codici3.txt";
+		String CODE_FILE = "codici3.txt";
 		String[][] expected = InputOutput
 				.readStringMatrixFromFile("./data/codici3Read.txt");
 		ArrayList<ArrayList<String>> tabella1 = new InputOutput()
@@ -85,6 +85,7 @@ public class InputOutputTest {
 
 		String[][] tableCode = new InputOutput()
 				.fromArrayListToStringTable(tabella1);
+		// TableUtils.dumpTable(tableCode, "tableCode");
 		assertTrue(TableUtils.compareTable(expected, tableCode));
 	}
 
