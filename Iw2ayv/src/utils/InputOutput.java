@@ -256,16 +256,16 @@ public class InputOutput {
 
 	public ArrayList<ArrayList<String>> readFile3(String fileName) {
 		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
-		// IJ.log("readFile3 in esecuzione");
+//		 IJ.log("readFile3 in esecuzione");
 		try {
-			// IJ.log("TENTATIVO LETTURA " + fileName);
-			// BufferedReader br = new BufferedReader(new FileReader(fileName));
-			// IJ.log("readFile3.br =" + br);
+//			 IJ.log("TENTATIVO LETTURA " + fileName);
+//			 BufferedReader br = new BufferedReader(new FileReader(fileName));
+//			 IJ.log("readFile3.br =" + br);
 			InputStream is = getClass().getResourceAsStream("/" + fileName);
-			// IJ.log("readFile3.is =" + is);
+//			 IJ.log("readFile3.is =" + is);
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
-			// IJ.log("readFile3.is =" + is);
+//			 IJ.log("readFile3.is =" + is);
 
 			while (br.ready()) {
 				String line = br.readLine();

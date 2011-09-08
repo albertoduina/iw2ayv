@@ -1228,10 +1228,11 @@ public class UtilAyv {
 
 		double[] vet1 = new double[mat1.length];
 		for (int i1 = 0; i1 < mat1.length; i1++) {
-			vet1[i1] = mat1[i1][index];
+			vet1[i1] = mat1[index][i1];
 		}
 		return vet1;
 	}
+	
 
 	/**
 	 * 
