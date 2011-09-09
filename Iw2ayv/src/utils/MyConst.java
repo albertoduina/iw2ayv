@@ -129,6 +129,26 @@ public class MyConst {
 	// double num11 = 5238.0;
 	// double num12 = 48005.0;
 
+	
+	// ------------ p10rmn -----------------------
+	public static final int P10_GRID_NUMBER = 20;
+	public static final int P10_X_ROI_TESTSIEMENS = 126;
+	public static final int P10_Y_ROI_TESTSIEMENS = 222;
+	public static final int P10_X_ROI_TESTGE = 176;
+	public static final int P10_Y_ROI_TESTGE = 129;
+	public static final int P10_NEA_11X11_PIXEL = 11; // Noise Evaluation Area
+	public static final int P10_MROI_7X7_PIXEL = 7;
+	public static final int P10_CHECK_PIXEL_MULTIPLICATOR = 5;
+	public static final int P10_DIAM_ROI_BACKGROUND = 10;
+	public static final int P10_X_ROI_BACKGROUND = 230;
+	public static final int P10_Y_ROI_BACKGROUND = 10;
+	public static String[] P10_vetName = { "zero", "SIGNAL", "BACKNOISE",
+			"SNRATIO", "FWHM", "NUM_CLASS1", "NUM_CLASS2", "NUM_CLASS3",
+			"NUM_CLASS4", "NUM_CLASS5", "NUM_CLASS6", "NUM_CLASS7",
+			"NUM_CLASS8", "NUM_CLASS9", "NUM_CLASS10", "NUM_CLASS11",
+			"NUM_CLASS12" };
+
+	
 	// ------------ p6rmn -----------------------
 
 	public static final double[] P6_REFERENCE_LINE_SIEMENS = { 51, 36, 52, 192 };
