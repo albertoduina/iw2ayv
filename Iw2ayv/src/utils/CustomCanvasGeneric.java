@@ -2,9 +2,13 @@ package utils;
 
 import ij.ImagePlus;
 import ij.gui.ImageCanvas;
+import ij.gui.Roi;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
 
 /*
  * Copyright (C) 2007 Alberto Duina, SPEDALI CIVILI DI BRESCIA, Brescia ITALY
@@ -44,6 +48,7 @@ public class CustomCanvasGeneric extends ImageCanvas {
 	double by1 = 0;
 	double bw1 = 0;
 	int gridElements = 0;
+	int circleElements = 0;
 
 	Color c1 = Color.gray;
 	Color c2 = Color.gray;
@@ -63,6 +68,9 @@ public class CustomCanvasGeneric extends ImageCanvas {
 			drawNumbers2(g);
 		if (gridElements > 0) {
 			drawGrid(g);
+		}
+		if (circleElements > 0) {
+			drawCircles(g);
 		}
 	}
 
@@ -102,8 +110,6 @@ public class CustomCanvasGeneric extends ImageCanvas {
 		}
 	}
 
-	
-
 	public void drawNumbers2(Graphics g) {
 
 		g.setColor(c1);
@@ -138,10 +144,45 @@ public class CustomCanvasGeneric extends ImageCanvas {
 					screenY((int) y));
 			y += delta;
 		}
-	} // drawOverlay
+	}
+
+	public void drawCircles(Graphics g) {
+
+		g.setColor(Color.red);
+		Roi roi1 = imp.getRoi();
+		Rectangle b = roi1.getBounds();
+		// GeneralPath path = new GeneralPath();
+
+		// float size = (float) Math.sqrt(b.width * b.width + b.height *
+		// b.height);
+		float size = (float) b.width;
+		float xCorner = b.x + b.width / 2f;
+		float yCorner = b.y + b.height / 2f;
+
+		double delta = b.width / (double) circleElements;
+
+		double x1 = xCorner;
+		double y1 = yCorner;
+		double r1 = 1;
+
+		while (r1 < size) {
+
+			g.drawOval(screenX((int) x1), screenY((int) y1), screenX((int) r1),
+					screenY((int) r1));
+			r1 += delta;
+			x1 -= delta / 2;
+			y1 -= delta / 2;
+
+		}
+
+	}
 
 	public void setGridElements(int number) {
 		gridElements = number;
+	}
+
+	public void setCircleElements(int number) {
+		circleElements = number;
 	}
 
 }
