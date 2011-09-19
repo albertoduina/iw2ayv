@@ -131,7 +131,10 @@ public class MyConst {
 
 	
 	// ------------ p10rmn -----------------------
-	public static final int P10_GRID_NUMBER = 20;
+	public static final int P10_CIRCLE_NUMBER = 5;
+	public static final int P10_DIAM_PHANTOM = 220;
+	public static final int P10_AREA = 30;
+
 	public static final int P10_X_ROI_TESTSIEMENS = 126;
 	public static final int P10_Y_ROI_TESTSIEMENS = 222;
 	public static final int P10_X_ROI_TESTGE = 176;
@@ -142,6 +145,8 @@ public class MyConst {
 	public static final int P10_DIAM_ROI_BACKGROUND = 10;
 	public static final int P10_X_ROI_BACKGROUND = 230;
 	public static final int P10_Y_ROI_BACKGROUND = 10;
+	public static final int P10_ROI_LIMIT = 10;
+
 	public static String[] P10_vetName = { "zero", "SIGNAL", "BACKNOISE",
 			"SNRATIO", "FWHM", "NUM_CLASS1", "NUM_CLASS2", "NUM_CLASS3",
 			"NUM_CLASS4", "NUM_CLASS5", "NUM_CLASS6", "NUM_CLASS7",

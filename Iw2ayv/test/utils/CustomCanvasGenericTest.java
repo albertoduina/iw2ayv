@@ -37,8 +37,10 @@ public class CustomCanvasGenericTest {
 		ccg1.setColor1(Color.red);
 		ImageWindow iw1 = new ImageWindow(imp1, ccg1);
 		iw1.maximize();
-		// new WaitForUserDialog("Do something, then click OK.").show();
-		IJ.wait(500);
+		// new WaitForUserDialog(
+		// "Verificare se appaiono i numeri 1,2,3,4 rossi al centro, poi premere OK.")
+		// .show();
+		IJ.wait(1000);
 	}
 
 	@Test
@@ -68,8 +70,8 @@ public class CustomCanvasGenericTest {
 		ccg1.setColor2(Color.green);
 		ImageWindow iw1 = new ImageWindow(imp1, ccg1);
 		iw1.maximize();
-		new WaitForUserDialog("Do something, then click OK.").show();
-		// IJ.wait(500);
+		// new WaitForUserDialog("Do something, then click OK.").show();
+		IJ.wait(1000);
 	}
 
 	@Test
@@ -82,8 +84,8 @@ public class CustomCanvasGenericTest {
 		ccg1.setGridElements(gridNumber);
 		ImageWindow iw1 = new ImageWindow(imp1, ccg1);
 		iw1.maximize();
-		new WaitForUserDialog("Do something, then click OK.").show();
-		// IJ.wait(500);
+		// new WaitForUserDialog("Do something, then click OK.").show();
+		IJ.wait(1000);
 	}
 
 	@Test
@@ -107,8 +109,8 @@ public class CustomCanvasGenericTest {
 		ccg1.setGridElements(0);
 		ImageWindow iw1 = new ImageWindow(imp1, ccg1);
 		iw1.maximize();
-		new WaitForUserDialog("Do something, then click OK.").show();
-		// IJ.wait(500);
+		// new WaitForUserDialog("Do something, then click OK.").show();
+		IJ.wait(1000);
 	}
 
 }

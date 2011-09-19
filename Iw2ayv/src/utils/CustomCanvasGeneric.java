@@ -148,7 +148,7 @@ public class CustomCanvasGeneric extends ImageCanvas {
 
 	public void drawCircles(Graphics g) {
 
-		g.setColor(Color.red);
+		g.setColor(Color.gray);
 		Roi roi1 = imp.getRoi();
 		Rectangle b = roi1.getBounds();
 		// GeneralPath path = new GeneralPath();
