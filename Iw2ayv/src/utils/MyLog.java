@@ -46,7 +46,7 @@ public class MyLog {
 		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
 			ArrayList<Double> arrayList = matrixTable.get(i1);
 			String logRiga = "";
-			for (int j1 = 0; j1 < matrixTable.get(0).size(); j1++) {
+			for (int j1 = 0; j1 < matrixTable.get(i1).size(); j1++) {
 				logRiga += arrayList.get(j1) + ",  ";
 			}
 			IJ.log(logRiga);

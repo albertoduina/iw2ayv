@@ -256,16 +256,16 @@ public class InputOutput {
 
 	public ArrayList<ArrayList<String>> readFile3(String fileName) {
 		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
-//		 IJ.log("readFile3 in esecuzione");
+		// IJ.log("readFile3 in esecuzione");
 		try {
-//			 IJ.log("TENTATIVO LETTURA " + fileName);
-//			 BufferedReader br = new BufferedReader(new FileReader(fileName));
-//			 IJ.log("readFile3.br =" + br);
+			// IJ.log("TENTATIVO LETTURA " + fileName);
+			// BufferedReader br = new BufferedReader(new FileReader(fileName));
+			// IJ.log("readFile3.br =" + br);
 			InputStream is = getClass().getResourceAsStream("/" + fileName);
-//			 IJ.log("readFile3.is =" + is);
+			// IJ.log("readFile3.is =" + is);
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
-//			 IJ.log("readFile3.is =" + is);
+			// IJ.log("readFile3.is =" + is);
 
 			while (br.ready()) {
 				String line = br.readLine();
@@ -573,9 +573,12 @@ public class InputOutput {
 		}
 		return (table);
 	}
-	
+
 	public double[][] fromArrayListToDoubleTable(
 			ArrayList<ArrayList<Double>> matrixTable) {
+		int rows = 0;
+		int columns = 0;
+
 		ArrayList<Double> row1 = new ArrayList<Double>();
 		if (matrixTable == null) {
 			MyLog.here("fromArrayListToDoubleTable.matrixTable == null");
@@ -585,14 +588,27 @@ public class InputOutput {
 			MyLog.here("fromArrayListToDoubleTable.matrixTable == 0");
 			return null;
 		}
+		rows = matrixTable.size();
+		columns = 0;
+
+		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
+			if (matrixTable.get(i1).size() > columns)
+				columns = matrixTable.get(i1).size();
+		}
+		// IJ.log("rows=" + rows + " columns= " + columns);
 
 		// ora trasferiamo tutto nella table
-		double[][] table = new double[matrixTable.size()][matrixTable.get(0)
-				.size()];
+		double[][] table = new double[rows][columns];
+		for (int i1 = 0; i1 < rows; i1++) {
+			for (int j1 = 0; j1 < columns; j1++) {
+				table[i1][j1] = Double.NaN;
+			}
+		}
+
 		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
 			ArrayList<Double> arrayList = matrixTable.get(i1);
 			row1 = arrayList;
-			for (int j1 = 0; j1 < matrixTable.get(0).size(); j1++) {
+			for (int j1 = 0; j1 < matrixTable.get(i1).size(); j1++) {
 				table[i1][j1] = (Double) row1.get(j1).doubleValue();
 			}
 		}
