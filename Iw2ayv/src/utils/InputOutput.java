@@ -573,6 +573,31 @@ public class InputOutput {
 		}
 		return (table);
 	}
+	
+	public double[][] fromArrayListToDoubleTable(
+			ArrayList<ArrayList<Double>> matrixTable) {
+		ArrayList<Double> row1 = new ArrayList<Double>();
+		if (matrixTable == null) {
+			MyLog.here("fromArrayListToDoubleTable.matrixTable == null");
+			return null;
+		}
+		if (matrixTable.size() == 0) {
+			MyLog.here("fromArrayListToDoubleTable.matrixTable == 0");
+			return null;
+		}
+
+		// ora trasferiamo tutto nella table
+		double[][] table = new double[matrixTable.size()][matrixTable.get(0)
+				.size()];
+		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
+			ArrayList<Double> arrayList = matrixTable.get(i1);
+			row1 = arrayList;
+			for (int j1 = 0; j1 < matrixTable.get(0).size(); j1++) {
+				table[i1][j1] = (Double) row1.get(j1).doubleValue();
+			}
+		}
+		return (table);
+	}
 
 	public static void dumpArrayListTable(
 			ArrayList<ArrayList<String>> matrixTable, String title) {
