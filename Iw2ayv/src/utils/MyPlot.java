@@ -18,4 +18,11 @@ public class MyPlot {
 		return plot;
 	}
 
+	public static Plot basePlot(double[] profilex, double[] profiley,
+			String title, Color color) {
+		Plot plot = new Plot(title, "pixel", "valore", profilex, profiley);
+		plot.setColor(color);
+		return plot;
+	}
+
 }
