@@ -14,8 +14,12 @@ public class TableCode {
 	public static int IMA_TOTAL = 2;
 
 	public static int COIL = 3;
+	
+	public static int DIREZ = 4;
+	
+	public static int PROFOND = 5;
 
-	public static int PLUGIN = 4;
+	public static int PLUGIN = 6;
 	
 	public static String[][] loadTable(String path) {
 
@@ -51,6 +55,19 @@ public class TableCode {
 			return null;
 		return (tableCode[riga][COIL]);
 	}
+	
+	public static String getDirez(String[][] tableCode, int riga) {
+		if (tableCode == null)
+			return null;
+		return (tableCode[riga][DIREZ]);
+	}
+	
+	public static String getProfond(String[][] tableCode, int riga) {
+		if (tableCode == null)
+			return null;
+		return (tableCode[riga][PROFOND]);
+	}
+
 
 	public static String getPluginName(String[][] tableCode, int riga) {
 		if (tableCode == null)

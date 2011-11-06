@@ -1,6 +1,7 @@
 package utils;
 
 import ij.IJ;
+import ij.gui.WaitForUserDialog;
 
 import java.util.ArrayList;
 
@@ -315,6 +316,36 @@ public class MyLog {
 				+ " " + str);
 	}
 
+	public static void waitMessage(String str) {
+		new WaitForUserDialog(str).show();
+	}
+	
+	public static void waitHere(String str) {
+		new WaitForUserDialog("file="
+				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
+				+ " line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "\n \n" + str).show();
+	}
+
+	public static void waitHere() {
+		new WaitForUserDialog("file="
+				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
+				+ " line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber())
+				.show();
+	}
+
+
+	public static void waitThere(String str) {
+		new WaitForUserDialog("file="
+				+ Thread.currentThread().getStackTrace()[3].getFileName() + " "
+				+ " line="
+				+ Thread.currentThread().getStackTrace()[3].getLineNumber()
+				+ "\n \n" + str).show();
+	}
+
+	
 	public static void caller() {
 		// dovrebbe ricavare dallo stackTrace l'albero delle chiamate SLOW but
 		// USEFUL!

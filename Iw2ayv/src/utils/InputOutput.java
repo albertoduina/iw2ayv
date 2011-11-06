@@ -261,11 +261,21 @@ public class InputOutput {
 			// IJ.log("TENTATIVO LETTURA " + fileName);
 			// BufferedReader br = new BufferedReader(new FileReader(fileName));
 			// IJ.log("readFile3.br =" + br);
+
+			URL url1 = this.getClass().getResource("/" + fileName);
+			if (url1 == null) {
+				IJ.log("readFile3: file " + fileName + " not visible or null");
+				return null;
+			}
+			// IJ.log("readFile3.url1 =" + url1);
+
+			String home = url1.getPath();
+
 			InputStream is = getClass().getResourceAsStream("/" + fileName);
 			// IJ.log("readFile3.is =" + is);
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
-			// IJ.log("readFile3.is =" + is);
+			// IJ.log("readFile3.br =" + br);
 
 			while (br.ready()) {
 				String line = br.readLine();
@@ -786,6 +796,76 @@ public class InputOutput {
 			in.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Estrae al volo un file da un archivio .jar by Réal Gagnon
+	 * (www.rgagnon.com/javadetails/java-0429.html) for correct work in junit
+	 * the source file (ie: test2.jar) must be in the iw2ayv "data" sourceFolder
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param source
+	 *            il nome del file jar es: "test2.jar"
+	 * @param object
+	 *            il nome del file da estrarre es: "BT2A_testP6"
+	 * @param dest
+	 *            la directory di destinazione es: "./Test2/" in caso di
+	 *            eccezioni stampa lo stack trace
+	 */
+
+	public long extractFromJAR2(String source, String object, String dest) {
+
+		long count = 0;
+
+		try {
+			URL url1 = this.getClass().getResource("/" + source);
+			if (url1 == null) {
+				IJ.log("extractFromJAR: file " + source
+						+ " not visible or null");
+				return -1L;
+			}
+			String home = url1.getPath();
+			// allo scopo di separare il nome della directory da quello del
+			// file utilizzo le due righe seguenti
+			File file = new File(home);
+			String home2 = file.getParent();
+
+			JarFile jar = new JarFile(home);
+
+			ZipEntry entry = jar.getEntry(object);
+
+			if (!checkDir(home2 + dest)) {
+				boolean ok = createDir(new File(home2 + dest));
+				if (!ok) {
+					MyLog.caller("failed directory creation=" + home2 + dest);
+					return -2L;
+				}
+			}
+
+			File efile = new File(home2 + dest, entry.getName());
+
+			InputStream in = new BufferedInputStream(jar.getInputStream(entry));
+			OutputStream out = new BufferedOutputStream(new FileOutputStream(
+					efile));
+			byte[] buffer = new byte[2048];
+			for (;;) {
+				int nBytes = in.read(buffer);
+				if (nBytes <= 0)
+					break;
+				out.write(buffer, 0, nBytes);
+				count = count + nBytes;
+			}
+			out.flush();
+			out.close();
+			in.close();
+			return count;
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return -3L;
 		}
 	}
 

@@ -10,8 +10,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
-
 /*
  * Copyright (C) 2007 Alberto Duina, SPEDALI CIVILI DI BRESCIA, Brescia ITALY
  *
@@ -63,9 +61,13 @@ public class TableSequence {
 
 	public static int ECHO = 9;
 
-	public static int DONE = 10;
+	public static int DIREZ = 10;
 
-	public static int COLUMNS = 11;
+	public static int PROFOND = 11;
+
+	public static int DONE = 12;
+
+	public static int COLUMNS = 13;
 
 	/***
 	 * Carica la tabella in memoria leggendo il file su disco
@@ -123,8 +125,8 @@ public class TableSequence {
 
 	public static String getPath(String[][] strTabella, int riga) {
 		if (strTabella == null)
-			return null;	
-		
+			return null;
+
 		return (strTabella[riga][PATH]);
 	}
 
@@ -176,6 +178,18 @@ public class TableSequence {
 		return strTabella[riga][ECHO];
 	}
 
+	public static String getDirez(String[][] strTabella, int riga) {
+		if (strTabella == null)
+			return null;
+		return strTabella[riga][DIREZ];
+	}
+
+	public static String getProfond(String[][] strTabella, int riga) {
+		if (strTabella == null)
+			return null;
+		return strTabella[riga][PROFOND];
+	}
+
 	public static String getDone(String[][] strTabella, int riga) {
 		if (strTabella == null)
 			return null;
@@ -188,7 +202,6 @@ public class TableSequence {
 		return strTabella.length;
 	}
 
-	
 	public void putDone(String[][] strTabella, int riga) {
 		int fatto = Integer.parseInt(strTabella[riga][DONE]);
 		fatto++;
@@ -247,11 +260,11 @@ public class TableSequence {
 		int j1 = 0;
 		String rigaCompleta = "";
 		if (strTabella == null) {
-			IJ.showMessage("scriviTabella strTabella null");
+			MyLog.waitHere("scriviTabella strTabella null");
 			return false;
 		}
-		if (strTabella[ROW].length != 11) {
-			IJ.showMessage("scriviTabella Error on strTabella length");
+		if (strTabella[ROW].length != 13) {
+			MyLog.waitHere("scriviTabella Error on strTabella length");
 			return false;
 		}
 		try {
@@ -267,7 +280,9 @@ public class TableSequence {
 							+ strTabella[j1][ACQ] + "#IMA#"
 							+ strTabella[j1][IMA] + "#TIME#"
 							+ strTabella[j1][TIME] + "#ECHO#"
-							+ strTabella[j1][ECHO] + "#DONE#"
+							+ strTabella[j1][ECHO] + "#DIREZ#"
+							+ strTabella[j1][DIREZ] + "#PROFOND#"
+							+ strTabella[j1][PROFOND] + "#DONE#"
 							+ strTabella[j1][DONE] + "#\n";
 					j1++;
 					bw.write(rigaCompleta, 0, rigaCompleta.length());

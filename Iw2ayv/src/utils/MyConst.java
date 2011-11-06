@@ -7,7 +7,7 @@ public class MyConst {
 	public static final String SEQUENZE_FILE = "iw2ayv.txt";
 	public static final String XLS_FILE = "Result1.xls";
 	public static final String TXT_FILE = "Result1.txt";
-	public static final String CODE_FILE = "codici2.txt";
+	public static final String CODE_FILE = "codiciNew.txt";
 	public static final String EXPAND_FILE = "expand.txt";
 	public static final String DEFAULT_PATH = "C:/Dati/";
 
@@ -148,6 +148,24 @@ public class MyConst {
 	public static final int P10_ROI_LIMIT = 10;
 
 	public static String[] P10_vetName = { "zero", "SIGNAL", "BACKNOISE",
+			"SNRATIO", "FWHM", "NUM_CLASS1", "NUM_CLASS2", "NUM_CLASS3",
+			"NUM_CLASS4", "NUM_CLASS5", "NUM_CLASS6", "NUM_CLASS7",
+			"NUM_CLASS8", "NUM_CLASS9", "NUM_CLASS10", "NUM_CLASS11",
+			"NUM_CLASS12" };
+
+	// ------------ p11rmn -----------------------
+	public static final int P11_GRID_NUMBER = 20;
+	public static final int P11_X_ROI_TESTSIEMENS = 126;
+	public static final int P11_Y_ROI_TESTSIEMENS = 222;
+	public static final int P11_X_ROI_TESTGE = 176;
+	public static final int P11_Y_ROI_TESTGE = 129;
+	public static final int P11_NEA_11X11_PIXEL = 11; // Noise Evaluation Area
+	public static final int P11_MROI_7X7_PIXEL = 7;
+	public static final int P11_CHECK_PIXEL_MULTIPLICATOR = 5;
+	public static final int P11_DIAM_ROI_BACKGROUND = 10;
+	public static final int P11_X_ROI_BACKGROUND = 230;
+	public static final int P11_Y_ROI_BACKGROUND = 10;
+	public static String[] P11_vetName = { "zero", "SIGNAL", "BACKNOISE",
 			"SNRATIO", "FWHM", "NUM_CLASS1", "NUM_CLASS2", "NUM_CLASS3",
 			"NUM_CLASS4", "NUM_CLASS5", "NUM_CLASS6", "NUM_CLASS7",
 			"NUM_CLASS8", "NUM_CLASS9", "NUM_CLASS10", "NUM_CLASS11",

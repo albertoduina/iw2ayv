@@ -24,9 +24,8 @@ public class TableUtils {
 			str = "";
 		}
 		IJ.log("---------------------------");
-	} 
+	}
 
-	
 	public static void dumpTable(int[][] strTabella) {
 
 		if (strTabella == null) {
@@ -47,9 +46,8 @@ public class TableUtils {
 			str = "";
 		}
 		IJ.log("---------------------------");
-	} 
+	}
 
-	
 	public static void dumpTable(String[][] strTabella, String title) {
 
 		if (strTabella == null) {
@@ -70,7 +68,26 @@ public class TableUtils {
 			str = "";
 		}
 		IJ.log("---------------------------");
-	} 
+	}
+
+	public static void dumpTableRow(String[][] strTabella, int row) {
+
+		if (strTabella == null) {
+			IJ.log("dumpTable.strTabella  == Null");
+			return;
+		}
+		if (strTabella.length == 0) {
+			IJ.log("dumpTable.strTabella.length() == 0");
+			return;
+		}
+		IJ.log("-------------");
+		String str = "";
+		for (int j1 = 0; j1 < strTabella[0].length; j1++) {
+			str = str + strTabella[row][j1] + "#";
+		}
+		IJ.log(str);
+		IJ.log("---------------------------");
+	}
 
 	/**
 	 * 
@@ -134,6 +151,4 @@ public class TableUtils {
 		return outTable;
 	}
 
-	
-	
 }

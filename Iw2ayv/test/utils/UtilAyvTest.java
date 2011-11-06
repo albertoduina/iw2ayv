@@ -365,5 +365,15 @@ public class UtilAyvTest {
 		// IJ.log("codice letto =" + coil);
 		assertTrue(coil.equals("C:BA1,2"));
 	}
+	
+	@Test
+	public final void testFindMaximumPosition()  {
+		ImagePlus imp1 = UtilAyv.openImageMaximized(".\\Test4\\B003_testP2");
+		// IJ.log("codice ingresso =" + codeInput);
+		double[] out = UtilAyv.findMaximumPosition(imp1);
+		MyLog.logVector(out, "out");
+		MyLog.waitHere("FINE");
+		
+	}
 
 }

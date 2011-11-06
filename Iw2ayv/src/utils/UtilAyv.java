@@ -832,11 +832,19 @@ public class UtilAyv {
 	 * @param imp
 	 *            puntatore ImagePlus all'immagine
 	 */
-	public static void showImageMaximized(ImagePlus imp) {
+	public static void showImageMaximized2(ImagePlus imp) {
 		imp.show();
 		ImageWindow win = imp.getWindow();
 		// win.maximize(); // troppo a destra
 		win.setExtendedState(ImageWindow.MAXIMIZED_BOTH);
+	}
+
+	public static void showImageMaximized(ImagePlus imp) {
+		imp.show();
+		ImageWindow win = IJ.getImage().getWindow();
+		win.setBounds(win.getMaximumBounds());
+		IJ.wait(1);
+		win.maximize();
 	}
 
 	/**
@@ -888,6 +896,57 @@ public class UtilAyv {
 		} while (redo);
 		return stat;
 	} // backCalc
+
+	/**
+	 * esegue posizionamento e calcolo roi circolare sul fondo
+	 * 
+	 * @param xRoi
+	 *            coordinata x roi
+	 * @param yRoi
+	 *            coordinata y roi
+	 * @param imp
+	 *            puntatore ImagePlus alla immagine
+	 * @param bstep
+	 *            funzionamento passo passo
+	 * @return dati statistici
+	 */
+	public static ImageStatistics backCalc2(int xRoi, int yRoi, int diaRoi,
+			ImagePlus imp, boolean bstep, boolean circular, boolean selftest) {
+
+		ImageStatistics stat = null;
+		boolean redo = false;
+		do {
+			if (imp.isVisible())
+				imp.getWindow().toFront();
+			if (circular) {
+				imp.setRoi(new OvalRoi(xRoi - diaRoi / 2, yRoi - diaRoi / 2,
+						diaRoi, diaRoi));
+				// imp.updateAndDraw();
+			} else {
+				imp.setRoi(xRoi - diaRoi / 2, yRoi - diaRoi / 2, diaRoi, diaRoi);
+				// imp.updateAndDraw();
+			}
+
+			if (!selftest) {
+				if (redo) {
+					ButtonMessages
+							.ModelessMsg(
+									"ATTENZIONE segnale medio fondo =0 SPOSTARE LA ROI E PREMERE CONTINUA",
+									"CONTINUA");
+
+				}
+			}
+			stat = imp.getStatistics();
+			if (stat.mean == 0)
+				redo = true;
+			else
+				redo = false;
+			if (bstep)
+				ButtonMessages.ModelessMsg("Segnale medio =" + stat.mean,
+						"CONTINUA");
+		} while (redo);
+		return stat;
+	}
 
 	/**
 	 * evidenzia il fondo, richiede una roi sul fondo
@@ -1232,7 +1291,6 @@ public class UtilAyv {
 		}
 		return vet1;
 	}
-	
 
 	/**
 	 * 
@@ -1411,6 +1469,29 @@ public class UtilAyv {
 	}
 
 	/**
+	 * 
+	 * @param vetRiga
+	 * @param fileDir
+	 * @param iw2ayvTable
+	 */
+	public static void saveResults3(int[] vetRiga, String fileDir,
+			String[][] iw2ayvTable) {
+
+		try {
+			mySaveAs(fileDir + MyConst.TXT_FILE);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		TableSequence lr = new TableSequence();
+		for (int i1 = 0; i1 < vetRiga.length; i1++) {
+			lr.putDone(iw2ayvTable, vetRiga[i1]);
+		}
+		lr.writeTable(fileDir + MyConst.SEQUENZE_FILE, iw2ayvTable);
+	}
+
+	/**
 	 * Saves this ResultsTable as a tab or comma delimited text file. The table
 	 * is saved as a CSV (comma-separated values) file if 'path' ends with
 	 * ".csv". Displays a file save dialog if 'path' is empty or null. Does
@@ -1564,16 +1645,14 @@ public class UtilAyv {
 			bis = null; // BufferedInputStream.close() erst ab Java 1.2
 						// definiert
 		}
-		if (out.length()==0) out="_";
+		if (out.length() == 0)
+			out = "_";
 		return out;
 	}
-	
-	
-	public static void myWait(){
-		 new WaitForUserDialog("Press a key ....").show();
+
+	public static void myWait() {
+		new WaitForUserDialog("Press a key ....").show();
 	}
-
-
 
 	public static String getString(BufferedInputStream bo, int len)
 			throws IOException {
@@ -1598,5 +1677,60 @@ public class UtilAyv {
 		}
 		return out;
 	}
+
+	public static boolean isInfinite(Number number) {
+		if (number instanceof Double && ((Double) number).isInfinite())
+			return true;
+		if (number instanceof Float && ((Float) number).isInfinite())
+			return true;
+		return false;
+	}
+
+	public static boolean isNaN(Number number) {
+		if (number instanceof Double && ((Double) number).isNaN())
+			return true;
+		if (number instanceof Float && ((Float) number).isNaN())
+			return true;
+		return false;
+	}
+
+	public static double[] findMaximumPosition(ImagePlus imp1) {
+
+		// ImageStatistics stat1 = imp1.getStatistics();
+		// double max1 = stat1.max;
+		ImageProcessor ip1 = imp1.getProcessor();
+		short[] pixels = (short[]) ip1.getPixels();
+		double max2 = Double.NEGATIVE_INFINITY;
+		int maxPos = -9999;
+		for (int i1 = 0; i1 < pixels.length; i1++) {
+			if (pixels[i1] > max2) {
+				max2 = pixels[i1];
+				maxPos = i1;
+			}
+		}
+		int colonna = maxPos / imp1.getWidth();
+		int riga = maxPos - (colonna * imp1.getWidth());
+		double[] out = new double[3];
+		out[0] = riga;
+		out[1] = colonna;
+		out[2] = max2;
+
+		return out;
+	}
+
+	public static boolean myTestEquals(double uno, double due, double delta) {
+		if (Math.abs(uno - due) <= delta)
+			return true;
+		else
+			return false;
+	}
+
+	public static boolean myTestEquals(float uno, float due, float delta) {
+		if (Math.abs(uno - due) <= delta)
+			return true;
+		else
+			return false;
+	}
+
 } // UtilAyv
 
