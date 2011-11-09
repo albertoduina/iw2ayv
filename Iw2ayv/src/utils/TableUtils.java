@@ -58,7 +58,7 @@ public class TableUtils {
 			IJ.log("dumpTable.strTabella." + title + ".length() == 0");
 			return;
 		}
-		IJ.log("----- \t" + title + "\t --------");
+		IJ.log("----- \t" + title +" " + strTabella.length+"x"+strTabella[0].length+"\t --------");
 		String str = "";
 		for (int j1 = 0; j1 < strTabella.length; j1++) {
 			for (int j2 = 0; j2 < strTabella[0].length; j2++) {

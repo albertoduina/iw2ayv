@@ -216,4 +216,29 @@ public class InputOutputTest {
 
 	}
 
+	@Test
+	public final void testReadFile4() {
+		String CODE_FILE =  "./data/limiti.csv";
+		String[][] expected = InputOutput
+				.readStringMatrixFromFile("./data/iw2ayvRead.txt");
+		String[][] tabella1 = new InputOutput()
+				.readFile4(CODE_FILE);
+		// Log.logMatrix(tableCode, "tableCode");
+		TableUtils.dumpTable(tabella1, "tabella1e");
+//		assertTrue(TableUtils.compareTable(expected, tableCode));
+	}
+
+	@Test
+		public final void testReadFile6() {
+		
+			String CODE_FILE =  "./data/limiti.csv";  // nota bene che è locale in /data di iw2ayv, non in ControlliMensili !!!
+//			String[][] expected = InputOutput
+//					.readStringMatrixFromFile("./data/iw2ayvRead.txt");
+			String[][] tabella1 = new InputOutput()
+					.readFile6(CODE_FILE);
+			// Log.logMatrix(tableCode, "tableCode");
+			TableUtils.dumpTable(tabella1, "tabella1");
+	//		assertTrue(TableUtils.compareTable(expected, tableCode));
+		}
+
 }

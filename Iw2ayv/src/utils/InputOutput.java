@@ -269,7 +269,7 @@ public class InputOutput {
 			}
 			// IJ.log("readFile3.url1 =" + url1);
 
-			String home = url1.getPath();
+			// String home = url1.getPath();
 
 			InputStream is = getClass().getResourceAsStream("/" + fileName);
 			// IJ.log("readFile3.is =" + is);
@@ -332,6 +332,47 @@ public class InputOutput {
 		} catch (Exception e) {
 			IJ.error(e.getMessage());
 			// return null;
+		}
+		// ora trasferiamo tutto nella table
+		String[][] table = new String[matrixTable.size()][matrixTable.get(0)
+				.size()];
+		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
+			ArrayList<Object> arrayList = matrixTable.get(i1);
+			row1 = arrayList;
+			for (int j1 = 0; j1 < matrixTable.get(0).size(); j1++) {
+				table[i1][j1] = (String) row1.get(j1);
+			}
+		}
+		return (table);
+	}
+
+	/***
+	 * Serve al leggere i file csv (valori delimitati da ;) legge anche
+	 * eventuali token vuoti
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	public String[][] readFile6(String fileName) {
+
+		ArrayList<ArrayList<Object>> matrixTable = new ArrayList<ArrayList<Object>>();
+		ArrayList<Object> row1 = new ArrayList<Object>();
+		String delimiter = ";";
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(new File(
+					fileName)));
+			while (br.ready()) {
+				String line = br.readLine();
+				ArrayList<Object> row = new ArrayList<Object>();
+				String[] splitted = line.split(delimiter, -1);
+				for (int i1 = 0; i1 < splitted.length; i1++) {
+					row.add(splitted[i1]);
+				}
+				matrixTable.add(row);
+			}
+			br.close();
+		} catch (Exception e) {
+			IJ.error(e.getMessage());
 		}
 		// ora trasferiamo tutto nella table
 		String[][] table = new String[matrixTable.size()][matrixTable.get(0)
@@ -863,7 +904,7 @@ public class InputOutput {
 			in.close();
 			return count;
 		} catch (Exception e) {
-			
+
 			e.printStackTrace();
 			return -3L;
 		}
