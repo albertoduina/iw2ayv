@@ -837,13 +837,19 @@ public class UtilAyv {
 		ImageWindow win = imp.getWindow();
 		// win.maximize(); // troppo a destra
 		win.setExtendedState(ImageWindow.MAXIMIZED_BOTH);
+		IJ.wait(20);	
+		win.setExtendedState(ImageWindow.MAXIMIZED_BOTH);
 	}
 
 	public static void showImageMaximized(ImagePlus imp) {
 		imp.show();
 		ImageWindow win = IJ.getImage().getWindow();
 		win.setBounds(win.getMaximumBounds());
-		IJ.wait(1);
+		IJ.wait(20);
+		win.maximize();
+		IJ.wait(20);
+		win.maximize();
+		IJ.wait(20);
 		win.maximize();
 	}
 

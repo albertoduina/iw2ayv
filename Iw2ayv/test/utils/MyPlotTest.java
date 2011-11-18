@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import utils.MyLog;
 
-public class PlotTest {
+public class MyPlotTest {
 
 	@Test
 	public final void testMyPlotTest() {

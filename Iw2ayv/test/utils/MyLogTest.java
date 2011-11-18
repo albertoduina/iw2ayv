@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import utils.MyLog;
 
-public class LogTest {
+public class MyLogTest {
 
 	@Test
 	public final void testLogVectorDouble() {
