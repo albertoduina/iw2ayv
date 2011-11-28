@@ -67,6 +67,8 @@
 		<property name="productDirWIN7" location="${disk}/Programmi2\ImageJ\plugins" />
 		<available file="${productDirWIN7}" type="dir" property="win7" />
 		<echo message="win7=${win7}" />
+		
+		
 	</target>
 
 	<target name="compile" description="Compile everything.">
@@ -148,47 +150,15 @@
 		<delete dir="${productDirOLD}/iw2ayv" />
 		<mkdir dir="${productDirOLD}/iw2ayv" />
 		<copy file="${dist}/iw2ayv.jar" todir="${productDirOLD}/iw2ayv" />
+		<copy file="${pathImageJ}" todir="${productDirOLD}\.." />
 	</target>
 	<target name="cond_WIN7" depends="init" if="win7">
 		<echo message="Eseguo cond_WIN7" />
 		<delete dir="${productDirWIN7}/iw2ayv" />
 		<mkdir dir="${productDirWIN7}/iw2ayv" />
 		<copy file="${dist}/iw2ayv.jar" todir="${productDirWIN7}/iw2ayv" />
+		<copy file="${pathImageJ}" todir="${productDirWIN7}\.." />
 	</target>
-
-
-	<!-- condition property="os.XP">
-		<os name="Windows XP" />
-	</condition>
-
-	<condition property="os.Others">
-		<not>
-			<os name="Windows XP" />
-		</not>
-	</condition>
-	<target name="installXp" if="os.XP">
-		<echo message="OS=Xp" />
-		<delete dir="${productDir1}" />
-		<mkdir dir="${productDir1}" />
-		<copy todir="${productDir1}">
-			<fileset dir="${output}" includes="*.jar" />
-			<fileset dir="${dist}" includes="*.jar" />
-		</copy>
-	</target>
-
-	<target name="installOthers" if="os.Others">
-		<echo message="OS=Others" />
-		<copy todir="${productDir2}">
-			<fileset dir="${output}" includes="*.jar" />
-			<fileset dir="${dist}" includes="*.jar" />
-		</copy>
-		<copy file="${pathImageJ}" todir="${productDir8}" />
-</target-->
-
-
-
-
-
 
 
 </project>

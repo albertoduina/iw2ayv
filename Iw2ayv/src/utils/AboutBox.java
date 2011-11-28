@@ -30,17 +30,17 @@ public class AboutBox {
 		int w = 150, h = 150;
 		ImageProcessor ip = new ColorProcessor(w, h);
 		int[] pixels = (int[]) ip.getPixels();
-		int red = 1;
-		int green = 1;
-		int blue = 1;
+		int red = 255;
+		int green = 50;
+		int blue = 50;
 
+		
 		for (int y = 0; y < (h / 2); y++) {
 			for (int x = 0; x < (w / 2); x++) {
 				int offset = (y * h) + x;
 				double paint = (double) (x * y) / (double) ((h / 2) * (w / 2))
 						* 150.;
-				green = 255;
-				red = (int) paint + 100;
+				green = (int) paint + 100;
 				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
 						| (blue & 0xff);
 			}
@@ -50,8 +50,7 @@ public class AboutBox {
 				int offset = (y * h) + x;
 				double paint = (double) ((h - x) * y)
 						/ (double) ((h / 2) * (w / 2)) * 150.;
-				green = 255;
-				red = (int) paint + 100;
+				green = (int) paint + 100;
 				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
 						| (blue & 0xff);
 			}
@@ -62,8 +61,7 @@ public class AboutBox {
 				int offset = (y * h) + x;
 				double paint = (double) ((h - x) * (h - y))
 						/ (double) ((h / 2) * (w / 2)) * 150.;
-				green = 255;
-				red = (int) paint + 100;
+				green = (int) paint + 100;
 				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
 						| (blue & 0xff);
 			}
@@ -74,8 +72,7 @@ public class AboutBox {
 				int offset = (y * h) + x;
 				double paint = (double) (x * (h - y))
 						/ (double) ((h / 2) * (w / 2)) * 150.;
-				green = 255;
-				red = (int) paint + 100;
+				green = (int) paint + 100;
 				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
 						| (blue & 0xff);
 			}
@@ -146,7 +143,7 @@ public class AboutBox {
 				double paint = (double) (x * y) / (double) ((h / 2) * (w / 2))
 						* 150.;
 				green = 255;
-				red = (int) paint + 100;
+				blue = (int) paint + 100;
 				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
 						| (blue & 0xff);
 			}
@@ -157,7 +154,7 @@ public class AboutBox {
 				double paint = (double) ((h - x) * y)
 						/ (double) ((h / 2) * (w / 2)) * 150.;
 				green = 255;
-				red = (int) paint + 100;
+				blue = (int) paint + 100;
 				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
 						| (blue & 0xff);
 			}
@@ -181,7 +178,7 @@ public class AboutBox {
 				double paint = (double) (x * (h - y))
 						/ (double) ((h / 2) * (w / 2)) * 150.;
 				green = 255;
-				red = (int) paint + 100;
+				blue = (int) paint + 100;
 				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
 						| (blue & 0xff);
 			}

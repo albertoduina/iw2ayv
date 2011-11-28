@@ -231,7 +231,8 @@ public class InputOutputTest {
 	@Test
 		public final void testReadFile6() {
 		
-			String CODE_FILE =  "./data/limiti.csv";  // nota bene che è locale in /data di iw2ayv, non in ControlliMensili !!!
+//		String CODE_FILE =  "./data/limiti.csv";  // nota bene che è locale in /data di iw2ayv, non in ControlliMensili !!!
+			String CODE_FILE =  "./data/codiciNewTEST.csv";  // nota bene che è locale in /data di iw2ayv, non in ControlliMensili !!!
 //			String[][] expected = InputOutput
 //					.readStringMatrixFromFile("./data/iw2ayvRead.txt");
 			String[][] tabella1 = new InputOutput()
