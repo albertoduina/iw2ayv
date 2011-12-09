@@ -1,3 +1,9 @@
+// Contiene le regole utilizzate da Sequenze per compilare il file;;;;;;;
+// ayv.txt che verrà poi usato per chiamare il plug-in adatto;;;;;;;
+// ad elaborare una determinata immagine;;;;;;;
+// N.B. si hanno 4 directions vup verticale a crescere, vdw vertivale a scendere ;;;;;;;
+// hsx orizz. verso sx, hdx orizz. verso dx                  ;;;;;;;
+// CODICE__________COMMENTO________________DA PASSARE_TOTALI__coil_direction_prof_PLUGIN;;;;;;;
 // MACCHINE SIEMENS SYMPHONY + AVANTO;;;;;;;
 // BODY;;;;;;;
 BUSA_;/* Uniformità Assiale Body________*/;2;2;xxx;x;x;p3rmn_
@@ -31,6 +37,9 @@ HR2A_;/* Risoluzione 256 Head___________*/;1;1;xxx;x;x;p4rmn_
 //;;;;;;;
 // HEAD ARRAY AERA SAVE UNCOMBINED;;;;;;;
 //;;;;;;;
+// RISERVIAMO IL CODICE HVSA_ HVSS_ HVSC_ perchè sostituito in vba a questi;;;;;;;
+// IN FUTURO CAMBIEREMO IL CODICE NELLA SEQUENZA AERA;;;;;;;
+// --------------------------------------;;;;;;;
 HUSAA;/* Uniformità Assiale Head________*/;2;2;H11;x;30;p10rmn_
 HUSAA;/* Uniformità Assiale Head________*/;2;2;H12;x;30;p10rmn_
 HUSAA;/* Uniformità Assiale Head________*/;2;2;H13;x;30;p10rmn_
@@ -760,7 +769,7 @@ BTMA3;/* Thickness 2mm Multi Body_______*/;15;15;xxx;x;x;p6rmn_
 BRKA3;/* Risoluzione 1024 Body__________*/;1;1;xxx;x;x;p4rmn_
 BR5A3;/* Risoluzione 512 Body___________*/;1;1;xxx;x;x;p4rmn_
 BR2A3;/* Risoluzione 256 Body___________*/;1;1;xxx;x;x;p4rmn_
-RHCA3;/* Rapid Head Coil________________*/    2;2;;xxx;x;x;p3rmn_
+RHCA3;/* Rapid Head Coil_______*/;2;2;xxx;x;x;p3rmn_
 RKCA3;/* Rapid Knee Coil________________*/;2;2;xxx;x;x;p3rmn_
 IBCL3;/* Breast Coil Left_______________*/;2;2;xxx;x;x;p3rmn_
 IBCR3;/* Breast Coil Right______________*/;2;2;xxx;x;x;p3rmn_

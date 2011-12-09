@@ -348,24 +348,39 @@ public class InputOutput {
 
 	/***
 	 * Serve al leggere i file csv (valori delimitati da ;) legge anche
-	 * eventuali token vuoti
+	 * eventuali token vuoti, la seconda colonna contiene il commento
 	 * 
 	 * @param fileName
 	 * @return
 	 */
-	public String[][] readFile6(String fileName) {
+	public String[][] readFile7(String fileName) {
+
+		IJ.log("readFile7= " + fileName);
 
 		ArrayList<ArrayList<Object>> matrixTable = new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> row1 = new ArrayList<Object>();
 		String delimiter = ";";
+
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(new File(
 					fileName)));
 			while (br.ready()) {
 				String line = br.readLine();
+				// a questo punto vedo se i primi due caratteri sono quelli di
+				// un commento, in questo caso non lo carico nella matrice
+				if (line.length() < 2)
+					continue;
+				String substr = line.substring(0, 2);
+				if (line.equals("") || substr.equals("//")
+						|| substr.equals("/*")) {
+					continue;
+				}
 				ArrayList<Object> row = new ArrayList<Object>();
-				String[] splitted = line.split(delimiter, -1);
+				String result = InputOutput.stripAllComments(line);
+				String[] splitted = result.split(delimiter, -1);
 				for (int i1 = 0; i1 < splitted.length; i1++) {
+					if (i1 == 1)
+						continue;
 					row.add(splitted[i1]);
 				}
 				matrixTable.add(row);
@@ -374,6 +389,13 @@ public class InputOutput {
 		} catch (Exception e) {
 			IJ.error(e.getMessage());
 		}
+
+		// ho caricato la matrice in memoria, ora si tratta di metterla nella
+		// tabella di output
+
+		IJ.log("matrixTable.size= [" + matrixTable.size() + "]x["
+				+ matrixTable.get(0).size() + "]");
+
 		// ora trasferiamo tutto nella table
 		String[][] table = new String[matrixTable.size()][matrixTable.get(0)
 				.size()];
@@ -950,6 +972,67 @@ public class InputOutput {
 			path[i1] = home1 + "/" + list[i1];
 		}
 		return (path);
+	}
+
+	/***
+	 * Serve al leggere i file csv (valori delimitati da ;) legge anche
+	 * eventuali token vuoti
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	public String[][] readFile6(String fileName) {
+
+		IJ.log("readFile6= " + fileName);
+
+		ArrayList<ArrayList<Object>> matrixTable = new ArrayList<ArrayList<Object>>();
+		ArrayList<Object> row1 = new ArrayList<Object>();
+		String delimiter = ";";
+
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(new File(
+					fileName)));
+			while (br.ready()) {
+				String line = br.readLine();
+				// a questo punto vedo se i primi due caratteri sono quelli di
+				// un commento, in questo caso non lo carico nella matrice
+				if (line.length() < 2)
+					continue;
+				String substr = line.substring(0, 2);
+				if (line.equals("") || substr.equals("//")
+						|| substr.equals("/*")) {
+					continue;
+				}
+				ArrayList<Object> row = new ArrayList<Object>();
+				String result = InputOutput.stripAllComments(line);
+				String[] splitted = result.split(delimiter, -1);
+				for (int i1 = 0; i1 < splitted.length; i1++) {
+					row.add(splitted[i1]);
+				}
+				matrixTable.add(row);
+			}
+			br.close();
+		} catch (Exception e) {
+			IJ.error(e.getMessage());
+		}
+
+		// ho caricato la matrice in memoria, ora si tratta di metterla nella
+		// tabella di output
+
+		IJ.log("matrixTable.size= [" + matrixTable.size() + "]x["
+				+ matrixTable.get(0).size() + "]");
+
+		// ora trasferiamo tutto nella table
+		String[][] table = new String[matrixTable.size()][matrixTable.get(0)
+				.size()];
+		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
+			ArrayList<Object> arrayList = matrixTable.get(i1);
+			row1 = arrayList;
+			for (int j1 = 0; j1 < matrixTable.get(0).size(); j1++) {
+				table[i1][j1] = (String) row1.get(j1);
+			}
+		}
+		return (table);
 	}
 
 	public static boolean isComment(String riga) {

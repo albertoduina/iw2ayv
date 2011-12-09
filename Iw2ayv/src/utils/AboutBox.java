@@ -30,11 +30,10 @@ public class AboutBox {
 		int w = 150, h = 150;
 		ImageProcessor ip = new ColorProcessor(w, h);
 		int[] pixels = (int[]) ip.getPixels();
-		int red = 255;
-		int green = 50;
-		int blue = 50;
+		int red = 0;
+		int green = 125;
+		int blue = 0;
 
-		
 		for (int y = 0; y < (h / 2); y++) {
 			for (int x = 0; x < (w / 2); x++) {
 				int offset = (y * h) + x;
@@ -128,7 +127,7 @@ public class AboutBox {
 		text[2] = "Servizio di Fisica Sanitaria";
 		text[3] = "©2007-2010  Alberto Duina";
 		text[4] = "albertoduina@virgilio.it";
-//		text[5] = "VERSIONE " + myImplementationVersion(myClass);
+		// text[5] = "VERSIONE " + myImplementationVersion(myClass);
 
 		int w = 150, h = 150;
 		ImageProcessor ip = new ColorProcessor(w, h);
@@ -211,7 +210,7 @@ public class AboutBox {
 		y += 18;
 		ip.drawString(text[4], x(text[4], ip, max), y);
 		y += 18;
-//		ip.drawString(text[5], x(text[5], ip, max), y);
+		// ip.drawString(text[5], x(text[5], ip, max), y);
 		ImageWindow.centerNextImage();
 
 		new ImagePlus("Controlli Mensili", ip).show();
@@ -220,8 +219,6 @@ public class AboutBox {
 
 	}
 
-
-	
 	public void close() {
 		if (WindowManager.getFrame("Controlli Mensili") != null) {
 			IJ.selectWindow("Controlli Mensili");
