@@ -23,6 +23,111 @@ public class AboutBox {
 		text[0] = arg;
 		text[1] = "Azienda Spedali Civili di Brescia";
 		text[2] = "Servizio di Fisica Sanitaria";
+		text[3] = "©2007-2011  Alberto Duina";
+		text[4] = "albertoduina@virgilio.it";
+		text[5] = "VERSIONE " + myImplementationVersion(myClass);
+
+		int w = 150, h = 150;
+		ImageProcessor ip = new ColorProcessor(w, h);
+		int[] pixels = (int[]) ip.getPixels();
+		int red = 0;
+		int green = 1;
+		int blue = 1;
+
+		for (int y = 0; y < (h / 2); y++) {
+			for (int x = 0; x < (w / 2); x++) {
+				int offset = (y * h) + x;
+				double paint = (double) (x * y) / (double) ((h / 2) * (w / 2))
+						* 150.;
+				green = 255;
+				red = (int) paint + 100;
+				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
+						| (blue & 0xff);
+			}
+		}
+		for (int y = 0; y < (h / 2); y++) {
+			for (int x = w - 1; x > (w / 2) - 1; x--) {
+				int offset = (y * h) + x;
+				double paint = (double) ((h - x) * y)
+						/ (double) ((h / 2) * (w / 2)) * 150.;
+				green = 255;
+				red = (int) paint + 100;
+				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
+						| (blue & 0xff);
+			}
+		}
+
+		for (int y = h - 1; y > (h / 2) - 1; y--) {
+			for (int x = w - 1; x > (w / 2) - 1; x--) {
+				int offset = (y * h) + x;
+				double paint = (double) ((h - x) * (h - y))
+						/ (double) ((h / 2) * (w / 2)) * 150.;
+				green = 255;
+				red = (int) paint + 100;
+				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
+						| (blue & 0xff);
+			}
+		}
+
+		for (int y = h - 1; y > (h / 2) - 1; y--) {
+			for (int x = 0; x < (w / 2); x++) {
+				int offset = (y * h) + x;
+				double paint = (double) (x * (h - y))
+						/ (double) ((h / 2) * (w / 2)) * 150.;
+				green = 255;
+				red = (int) paint + 100;
+				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
+						| (blue & 0xff);
+			}
+		}
+
+		ip = ip.resize(ip.getWidth() * 2, ip.getHeight() * 2);
+		ip.setFont(new Font("SansSerif", Font.BOLD, LARGE_FONT));
+		ip.setAntialiasedText(true);
+		int[] widths = new int[lines];
+		widths[0] = ip.getStringWidth(text[0]);
+		for (int i = 1; i < lines - 1; i++)
+			widths[i] = ip.getStringWidth(text[i]);
+		int max = 0;
+		for (int i = 0; i < lines - 1; i++)
+			if (widths[i] > max)
+				max = widths[i];
+		ip.setColor(new Color(0, 0, 0));
+		ip.setFont(new Font("SansSerif", Font.ROMAN_BASELINE, LARGE_FONT));
+		ip.setJustification(ImageProcessor.LEFT_JUSTIFY);
+		int y = 80;
+		ip.drawString(text[0], x(text[0], ip, max), y);
+		ip.setFont(new Font("SansSerif", Font.ROMAN_BASELINE, LARGE_FONT));
+		y += 30;
+		ip.drawString(text[1], x(text[1], ip, max), y);
+		y += 25;
+		ip.drawString(text[2], x(text[2], ip, max), y);
+		y += 25;
+		ip.setFont(new Font("SansSerif", Font.ITALIC, MEDIUM_FONT));
+		ip.drawString(text[3], x(text[3], ip, max), y);
+		y += 18;
+		ip.drawString(text[4], x(text[4], ip, max), y);
+		y += 18;
+		ip.drawString(text[5], x(text[5], ip, max), y);
+		ImageWindow.centerNextImage();
+
+		new ImagePlus("Controlli Mensili", ip).show();
+		IJ.wait(2000);
+		close();
+
+	}
+
+
+	
+	
+	public void about5(String arg, Class<?> myClass) {
+
+		int lines = 6;
+
+		String[] text = new String[lines];
+		text[0] = arg;
+		text[1] = "Azienda Spedali Civili di Brescia";
+		text[2] = "Servizio di Fisica Sanitaria";
 		text[3] = "©2007-2012  Alberto Duina";
 		text[4] = "albertoduina@virgilio.it";
 		text[5] = "VERSIONE " + myImplementationVersion(myClass);

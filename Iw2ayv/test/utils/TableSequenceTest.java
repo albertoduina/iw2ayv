@@ -7,6 +7,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import ij.IJ;
+
 import java.io.File;
 
 import org.junit.After;
@@ -18,7 +20,6 @@ import utils.TableSequence;
 import utils.TableUtils;
 
 // import contMensili.p6rmn_;
-
 
 /**
  * @author DuinaA
@@ -39,10 +40,10 @@ public class TableSequenceTest {
 		}
 		boolean success2 = InputOutput.createDir(new File(dirTest));
 		assertTrue("fallita creazione directory", success2);
-		assertTrue("verificata presenza directory", InputOutput.checkDir(dirTest));
+		assertTrue("verificata presenza directory",
+				InputOutput.checkDir(dirTest));
 	}
 
-	
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -56,18 +57,17 @@ public class TableSequenceTest {
 		// }
 	}
 
-
 	/**
 	 * Metodo di verifica per
 	 * {@link utils.OldListManager#caricaTabella(java.lang.String)}.
 	 */
 	@Test
 	public final void testLoadtable() {
-		String CODE_FILE = "./data/iw2ayv.txt";		
-		String[][] expected = InputOutput.readStringMatrixFromFile("./data/iw2ayvRead.txt");			
-		String[][] strTabella = new TableSequence()
-		.loadTable(CODE_FILE);
-		boolean res = TableUtils.compareTable(expected,strTabella);
+		String CODE_FILE = "./data/iw2ayv.txt";
+		String[][] expected = InputOutput
+				.readStringMatrixFromFile("./data/iw2ayvRead.txt");
+		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
+		boolean res = TableUtils.compareTable(expected, strTabella);
 		assertTrue(res);
 	}
 
@@ -77,68 +77,83 @@ public class TableSequenceTest {
 	 */
 	@Test
 	public final void testContaRighe() {
-		
+
 		String CODE_FILE = "./data/iw2ayv.txt";
 		int numeroRighe = TableSequence.countRows(CODE_FILE);
-		assertEquals(5, numeroRighe);
+		assertEquals(4, numeroRighe);
 
 	}
 
 	/**
 	 * Metodo di verifica per
-	 * {@link utils.TableSequence#getPath(java.lang.String[][], int)}
-	 * .
+	 * {@link utils.TableSequence#getPath(java.lang.String[][], int)} .
 	 */
 	@Test
 	public final void testGetPath() {
-		String CODE_FILE = "./data/iw2ayv.txt";		
-		String[][] strTabella = new TableSequence()
-		.loadTable(CODE_FILE);
+		String CODE_FILE = "./data/iw2ayv.txt";
+		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
 		String risultato = TableSequence.getPath(strTabella, 2);
-		assertEquals("il path non è corretto", "C:\\Dati\\14", risultato);
+		assertEquals("il path non è corretto", "C:\\Dati\\cdqaera020811\\Study_1_20110802\\Series_34_BUSS_se_15b130_sag\\34_1331_BC_BUSS_", risultato);
 	}
-	
+
 	/**
 	 * Metodo di verifica per
-	 * {@link utils.TableSequence#getCode(java.lang.String[][], int)}
-	 * .
+	 * {@link utils.TableSequence#getCode(java.lang.String[][], int)} .
 	 */
 	@Test
 	public final void testGetCode() {
-		String CODE_FILE = "./data/iw2ayv.txt";		
-		String[][] strTabella = new TableSequence()
-		.loadTable(CODE_FILE);
+		String CODE_FILE = "./data/iw2ayv.txt";
+		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
 		String risultato = TableSequence.getCode(strTabella, 2);
 		assertEquals("il codice non è corretto", "BUSS_", risultato);
 	}
 
 	/**
 	 * Metodo di verifica per
-	 * {@link utils.TableSequence#getCode(java.lang.String[][], int)}
-	 * .
+	 * {@link utils.TableSequence#getCode(java.lang.String[][], int)} .
 	 */
 	@Test
 	public final void testGetCoil() {
-		String CODE_FILE = "./data/iw2ayv.txt";		
-		String[][] strTabella = new TableSequence()
-		.loadTable(CODE_FILE);
+		String CODE_FILE = "./data/iw2ayv.txt";
+		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
 		String risultato = TableSequence.getCoil(strTabella, 2);
-		assertEquals("il codice non è corretto", "C:BC", risultato);
+		assertEquals("il codice non è corretto", "BC", risultato);
+	}
+
+	@Test
+	public final void testGetEcho() {
+		String CODE_FILE = "./data/iw2ayv.txt";
+		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
+		String risultato = TableSequence.getEcho(strTabella, 2);
+		assertEquals("L'echo non è corretto", "20", risultato);
+	}
+	
+	@Test
+	public final void testGetDirez() {
+		String CODE_FILE = "./data/iw2ayv.txt";
+		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
+		String risultato = TableSequence.getDirez(strTabella, 2);
+		assertEquals("La direz non è corretta", "x", risultato);
+	}
+	
+	@Test
+	public final void testGetProfond() {
+		String CODE_FILE = "./data/iw2ayv.txt";
+		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
+		String risultato = TableSequence.getProfond(strTabella, 2);
+		assertEquals("La profond non è corretta", "x", risultato);
 	}
 
 	/**
 	 * Metodo di verifica per
-	 * {@link utils.TableSequence#getDone(java.lang.String[][], int)}
-	 * .
+	 * {@link utils.TableSequence#getDone(java.lang.String[][], int)} .
 	 */
 	@Test
 	public final void testGetFatto() {
-		String CODE_FILE = "./data/iw2ayv.txt";		
-		String[][] strTabella = new TableSequence()
-		.loadTable(CODE_FILE);
+		String CODE_FILE = "./data/iw2ayv.txt";
+		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
 		String risultato = TableSequence.getDone(strTabella, 2);
-		// System.out.printf("\nrisultato= " + risultato);
-		assertEquals("il fatto non è corretto", "0", risultato);
+		assertEquals("il fatto non è corretto", "1", risultato);
 	}
 
 	@Test
