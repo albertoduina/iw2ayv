@@ -1287,12 +1287,12 @@ public class UtilAyv {
 			return null;
 		}
 		if (index > mat1[0].length) {
-			IJ.log("vetFromMatrix.index > mat1[0] null");
+			IJ.log("vetFromMatrix.index > mat1[0]");
 			return null;
 		}
 
-		double[] vet1 = new double[mat1.length];
-		for (int i1 = 0; i1 < mat1.length; i1++) {
+		double[] vet1 = new double[mat1[index].length];
+		for (int i1 = 0; i1 < mat1[index].length; i1++) {
 			vet1[i1] = mat1[index][i1];
 		}
 		return vet1;

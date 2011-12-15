@@ -89,6 +89,18 @@ public class TableSequenceTest {
 	 * {@link utils.TableSequence#getPath(java.lang.String[][], int)} .
 	 */
 	@Test
+	public final void testGetRow() {
+		String CODE_FILE = "./data/iw2ayv.txt";
+		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
+		String risultato = TableSequence.getRow(strTabella, 2);
+		assertEquals("la row non è corretta", "2", risultato);
+	}
+	
+	/**
+	 * Metodo di verifica per
+	 * {@link utils.TableSequence#getPath(java.lang.String[][], int)} .
+	 */
+	@Test
 	public final void testGetPath() {
 		String CODE_FILE = "./data/iw2ayv.txt";
 		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
@@ -117,7 +129,7 @@ public class TableSequenceTest {
 		String CODE_FILE = "./data/iw2ayv.txt";
 		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
 		String risultato = TableSequence.getCoil(strTabella, 2);
-		assertEquals("il codice non è corretto", "BC", risultato);
+		assertEquals("la Coil non è corretta ", "BC", risultato);
 	}
 
 	@Test

@@ -312,7 +312,7 @@ public class UtilAyvTest {
 		ImagePlus imp1 = new Opener().openImage(list1[0]);
 		new Analyzer(imp1).measure();
 		ResultsTable rt1 = Analyzer.getResultsTable();
-		assertTrue(rt1.getCounter()>0);
+		assertTrue(rt1.getCounter() > 0);
 		UtilAyv.resetResultsTable();
 		assertEquals("Results windows length not 0", 0, rt1.getCounter());
 	}
@@ -339,12 +339,14 @@ public class UtilAyvTest {
 		double[][] mat1 = InputOutput.readDoubleMatrixFromFile(matPath);
 		double[] vetExpected = InputOutput
 				.readDoubleArrayFromFile("./data/vet11.txt");
+		MyLog.logVector(vetExpected, "vetExpected");
 
 		int index = 2;
 		double[] vet1 = UtilAyv.vetFromMatrix(mat1, index);
-		// Log.logVector(vet1, "vet1");
+		MyLog.logVector(vet1, "vet1");
 		assertTrue("testVetFromMatrix.vectors are different",
-				UtilAyv.compareVectors(vetExpected, vet1, 1e-8, ""));
+
+		UtilAyv.compareVectors(vetExpected, vet1, 1e-8, ""));
 
 	}
 
@@ -365,15 +367,15 @@ public class UtilAyvTest {
 		// IJ.log("codice letto =" + coil);
 		assertTrue(coil.equals("C:BA1,2"));
 	}
-	
+
 	@Test
-	public final void testFindMaximumPosition()  {
+	public final void testFindMaximumPosition() {
 		ImagePlus imp1 = UtilAyv.openImageMaximized(".\\Test4\\B003_testP2");
 		// IJ.log("codice ingresso =" + codeInput);
 		double[] out = UtilAyv.findMaximumPosition(imp1);
 		MyLog.logVector(out, "out");
 		MyLog.waitHere("FINE");
-		
+
 	}
 
 }
