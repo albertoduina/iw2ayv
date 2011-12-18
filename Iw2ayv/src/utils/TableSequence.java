@@ -87,6 +87,19 @@ public class TableSequence {
 		return sequenceTable;
 	}
 
+	public static boolean checkWidth(String[][] table) {
+		IJ.log("table.length= " + table.length);
+		IJ.log("table.length[1]= " + table[1].length);
+
+		if (table[0].length == COLUMNS) {
+			return true;
+		} else {
+			MyLog.waitHere("errore larghezza iw2ayvTable = " + table[0].length
+					+ " anzichè " + COLUMNS);
+			return false;
+		}
+	}
+
 	/***
 	 * Conta le righe del file iw2ayv.txt
 	 * 

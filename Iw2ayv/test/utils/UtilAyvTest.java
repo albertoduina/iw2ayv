@@ -25,6 +25,24 @@ public class UtilAyvTest {
 	}
 
 	@Test
+	public final void testAfterWork() {
+		int imagesOpened;
+		int nonImagesOpened;
+
+		String path1 = ".\\Test4\\B003_testP2";
+		UtilAyv.openImageMaximized(path1);
+		ImagePlus imp1 = new Opener().openImage(path1);
+		IJ.run(imp1, "Measure", "");
+		IJ.error("MESSAGGIO");
+		IJ.wait(200);
+		UtilAyv.afterWork();
+		imagesOpened = WindowManager.getWindowCount();
+		nonImagesOpened = WindowManager.getNonImageWindows().length;
+		assert (imagesOpened == 0);
+		assert (nonImagesOpened == 0);
+	}
+
+	@Test
 	public final void testBackgroundEnhancement() {
 		String[] list1 = InputOutput
 				.readStringArrayFromFile("./data/list1.txt");
@@ -370,12 +388,11 @@ public class UtilAyvTest {
 
 	@Test
 	public final void testFindMaximumPosition() {
-		ImagePlus imp1 = UtilAyv.openImageMaximized(".\\Test4\\B003_testP2");
-		// IJ.log("codice ingresso =" + codeInput);
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(".\\Test4\\B003_testP2", true);
+		double[] expected = { 185.0, 33.0, 2597.0 };
 		double[] out = UtilAyv.findMaximumPosition(imp1);
-		MyLog.logVector(out, "out");
-		MyLog.waitHere("FINE");
-
+		// MyLog.logVector(out, "out");
+		UtilAyv.compareVectors(expected, out, 1e-8, "");
 	}
 
 }
