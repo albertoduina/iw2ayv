@@ -53,6 +53,28 @@ public class ImageUtils {
 		return classiSimulata;
 	}
 
+	public static int[][] generaSimulata12classi(int xCenterRoi,
+			int yCenterRoi, int latoRoi, ImagePlus imp1, boolean step,
+			boolean verbose, boolean test) {
+
+		if (imp1 == null) {
+			MyLog.waitHere("generaSimulata12classi imp1==null");
+			return (null);
+		}
+
+		ImagePlus impSimulata = simulata12Classi(xCenterRoi, yCenterRoi,
+				latoRoi, imp1);
+		if (verbose) {
+			UtilAyv.showImageMaximized(impSimulata);
+			IJ.run("Enhance Contrast", "saturated=0.5");
+		}
+		if (step)
+			ButtonMessages.ModelessMsg("Immagine Simulata", "CONTINUA");
+		int[][] classiSimulata = numeroPixelsClassi(impSimulata);
+
+		return classiSimulata;
+	}
+
 	/**
 	 * Genera l'immagine simulata a 11+1 livelli
 	 * 
@@ -148,7 +170,7 @@ public class ImageUtils {
 		}
 		processorSimulata.resetMinAndMax();
 		return impSimulata;
-	} // simula12
+	}
 
 	/**
 	 * Estrae la numerosità dell classi dalla simulata

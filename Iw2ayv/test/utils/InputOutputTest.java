@@ -30,8 +30,63 @@ public class InputOutputTest {
 	@Test
 	public final void testReadDoubleMatrixFromFile() {
 		String matPath = "./data/mat02.txt";
+		double[][] expected = {
+				{ 48.0, 28.444444444444443, 26.80952380952381,
+						25.35135135135135 },
+				{ 47.0, 30.22222222222222, 29.19047619047619,
+						27.486486486486488 },
+				{ 40.0, 30.22222222222222, 27.857142857142858,
+						28.37837837837838 },
+				{ 49.0, 29.666666666666668, 27.857142857142858,
+						27.945945945945947 } };
+
 		double[][] mat1 = InputOutput.readDoubleMatrixFromFile(matPath);
-		MyLog.logMatrix(mat1, matPath);
+		// MyLog.logMatrix(mat1, matPath);
+		assertTrue(UtilAyv.compareMatrix(mat1, expected, "errore comparazione"));
+
+	}
+
+	@Test
+	public final void testReadFloatMatrixFromFile() {
+		String matPath = "./data/mat02.txt";
+
+		float[][] expected = {
+				{ 48.0f, 28.444444444444443f, 26.80952380952381f,
+						25.35135135135135f },
+				{ 47.0f, 30.22222222222222f, 29.19047619047619f,
+						27.486486486486488f },
+				{ 40.0f, 30.22222222222222f, 27.857142857142858f,
+						28.37837837837838f },
+				{ 49.0f, 29.666666666666668f, 27.857142857142858f,
+						27.945945945945947f } };
+
+		float[][] mat1 = InputOutput.readFloatMatrixFromFile(matPath);
+		// MyLog.logMatrix(mat1, matPath);
+		assertTrue(UtilAyv.compareMatrix(mat1, expected, "errore comparazione"));
+
+	}
+
+	@Test
+	public final void testReadIntMatrixFromFile() {
+		String TEST_FILE = "./data/vet14.txt";
+		int[][] expected = { { 0, 2169, 90, 2042 }, { 1, 2193, 91, 2042 },
+				{ 18, 2163, 108, 2023 } };
+		int[][] result = InputOutput.readIntMatrixFromFile(TEST_FILE);
+		// MyLog.logMatrix(result, "result");
+		assertTrue(UtilAyv.compareMatrix(result, expected,
+				"errore comparazione"));
+	}
+
+	@Test
+	public final void testReadStringMatrixFromFile() {
+		String TEST_FILE = "./data/vet14.txt";
+		String[][] expected = { { "0", "2169", "90", "2042" },
+				{ "1", "2193", "91", "2042" }, { "18", "2163", "108", "2023" } };
+		String[][] result = InputOutput.readStringMatrixFromFile(TEST_FILE);
+		// MyLog.logMatrix(result, "result");
+		// MyLog.logMatrix(expected, "expected");
+		assertTrue(UtilAyv.compareMatrix(result, expected,
+				"errore comparazione"));
 	}
 
 	@Test
@@ -46,7 +101,6 @@ public class InputOutputTest {
 		}
 		boolean success1 = InputOutput.createDir(new File(path));
 
-		
 		assertTrue("fallita creazione directory", success1);
 		// assertTrue(InputOutput.checkDir("./test3/testAyv1/"));
 	}
@@ -207,7 +261,7 @@ public class InputOutputTest {
 				"errore comparazione"));
 
 	}
-	
+
 	@Test
 	public final void testAbsoluteToRelative() {
 		String inStr = "C:\\2_eclipse_2\\eclipse\\workspace_fmri2\\ControlliMensili\\bin\\test3\\BTMA_01testP6";
@@ -218,42 +272,45 @@ public class InputOutputTest {
 
 	@Test
 	public final void testReadFile4() {
-		String CODE_FILE =  "./data/limiti.csv";
+		String CODE_FILE = "./data/limiti.csv";
 		String[][] expected = InputOutput
 				.readStringMatrixFromFile("./data/iw2ayvRead.txt");
-		String[][] tabella1 = new InputOutput()
-				.readFile4(CODE_FILE);
+		String[][] tabella1 = new InputOutput().readFile4(CODE_FILE);
 		// Log.logMatrix(tableCode, "tableCode");
 		TableUtils.dumpTable(tabella1, "tabella1e");
-//		assertTrue(TableUtils.compareTable(expected, tableCode));
+		// assertTrue(TableUtils.compareTable(expected, tableCode));
 	}
 
 	@Test
-		public final void testReadFile6() {
-		
-//		String CODE_FILE =  "./data/limiti.csv";  // nota bene che è locale in /data di iw2ayv, non in ControlliMensili !!!
-			String CODE_FILE =  "./data/codiciNew.csv";  // nota bene che è locale in /data di iw2ayv, non in ControlliMensili !!!
-//			String[][] expected = InputOutput
-//					.readStringMatrixFromFile("./data/iw2ayvRead.txt");
-			String[][] tabella1 = new InputOutput()
-					.readFile6(CODE_FILE);
-			// Log.logMatrix(tableCode, "tableCode");
-			TableUtils.dumpTable(tabella1, "tabella1");
-	//		assertTrue(TableUtils.compareTable(expected, tableCode));
-		}
+	public final void testReadFile6() {
+
+		// String CODE_FILE = "./data/limiti.csv"; // nota bene che è locale in
+		// /data di iw2ayv, non in ControlliMensili !!!
+		String CODE_FILE = "./data/codiciNew.csv"; // nota bene che è locale in
+													// /data di iw2ayv, non in
+													// ControlliMensili !!!
+		// String[][] expected = InputOutput
+		// .readStringMatrixFromFile("./data/iw2ayvRead.txt");
+		String[][] tabella1 = new InputOutput().readFile6(CODE_FILE);
+		// Log.logMatrix(tableCode, "tableCode");
+		TableUtils.dumpTable(tabella1, "tabella1");
+		// assertTrue(TableUtils.compareTable(expected, tableCode));
+	}
 
 	@Test
-			public final void testReadFile7() {
-			
-	//		String CODE_FILE =  "./data/limiti.csv";  // nota bene che è locale in /data di iw2ayv, non in ControlliMensili !!!
-				String CODE_FILE =  "./data/codiciNew.csv";  // nota bene che è locale in /data di iw2ayv, non in ControlliMensili !!!
-	//			String[][] expected = InputOutput
-	//					.readStringMatrixFromFile("./data/iw2ayvRead.txt");
-				String[][] tabella1 = new InputOutput()
-						.readFile7(CODE_FILE);
-				// Log.logMatrix(tableCode, "tableCode");
-				TableUtils.dumpTable(tabella1, "tabella1");
-		//		assertTrue(TableUtils.compareTable(expected, tableCode));
-			}
+	public final void testReadFile7() {
+
+		// String CODE_FILE = "./data/limiti.csv"; // nota bene che è locale in
+		// /data di iw2ayv, non in ControlliMensili !!!
+		String CODE_FILE = "./data/codiciNew.csv"; // nota bene che è locale in
+													// /data di iw2ayv, non in
+													// ControlliMensili !!!
+		// String[][] expected = InputOutput
+		// .readStringMatrixFromFile("./data/iw2ayvRead.txt");
+		String[][] tabella1 = new InputOutput().readFile7(CODE_FILE);
+		// Log.logMatrix(tableCode, "tableCode");
+		TableUtils.dumpTable(tabella1, "tabella1");
+		// assertTrue(TableUtils.compareTable(expected, tableCode));
+	}
 
 }

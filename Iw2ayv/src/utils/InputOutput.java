@@ -495,20 +495,22 @@ public class InputOutput {
 		return vetResult;
 	}
 
-	public static ArrayList<Double> readDoubleArrayListFromString(String strIn) {
-		ArrayList<Double> arrList = new ArrayList<Double>();
-		StringTokenizer parser = new StringTokenizer(strIn, ", ");
-		int total = parser.countTokens();
-		for (int i1 = 0; i1 < total; i1++) {
-			String next = parser.nextToken();
-			arrList.add(ReadDicom.readDouble(next));
-		}
-		return arrList;
-	}
+	
+	// public static ArrayList<Double> readDoubleArrayListFromString(String
+	// strIn) {
+	// ArrayList<Double> arrList = new ArrayList<Double>();
+	// StringTokenizer parser = new StringTokenizer(strIn," \t\\,\\;");
+	// int total = parser.countTokens();
+	// for (int i1 = 0; i1 < total; i1++) {
+	// String next = parser.nextToken();
+	// arrList.add(ReadDicom.readDouble(next));
+	// }
+	// return arrList;
+	// }
 
 	public static ArrayList<String> readStringArrayListFromString(String strIn) {
 		ArrayList<String> arrList = new ArrayList<String>();
-		StringTokenizer parser = new StringTokenizer(strIn, ", ");
+		StringTokenizer parser = new StringTokenizer(strIn," \t\\,\\;");
 		int total = parser.countTokens();
 		for (int i1 = 0; i1 < total; i1++) {
 			String next = parser.nextToken();
@@ -518,7 +520,7 @@ public class InputOutput {
 	}
 
 	public static double[][] readDoubleMatrixFromFile(String fileName) {
-		ArrayList<ArrayList<Double>> vetList = new ArrayList<ArrayList<Double>>();
+		ArrayList<ArrayList<String>> vetList = new ArrayList<ArrayList<String>>();
 		int rows = 0;
 		int columns = 0;
 
@@ -528,7 +530,7 @@ public class InputOutput {
 			while ((str = in.readLine()) != null) {
 				rows++;
 				// qui ho la linea, ora devo separare i tokens
-				ArrayList<Double> arrList1 = readDoubleArrayListFromString(str);
+				ArrayList<String> arrList1 = readStringArrayListFromString(str);
 				columns = arrList1.size();
 				vetList.add(arrList1);
 			}
@@ -536,19 +538,96 @@ public class InputOutput {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		// ora trasferiamo tutto nel vettore
 		double[][] vetResult = new double[rows][columns];
 
 		for (int row = 0; row < rows; row++) {
-			ArrayList<Double> doubleRiga = vetList.get(row);
+			ArrayList<String> stringRiga = vetList.get(row);
 			for (int col = 0; col < columns; col++) {
-				vetResult[row][col] = doubleRiga.get(col);
-			}
+				vetResult[row][col] = ReadDicom.readDouble(stringRiga.get(col));
+			}			
 		}
-
 		return vetResult;
 	}
+	
+	public static float[][] readFloatMatrixFromFile(String fileName) {
+		ArrayList<ArrayList<String>> vetList = new ArrayList<ArrayList<String>>();
+		int rows = 0;
+		int columns = 0;
+
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(fileName));
+			String str = "";
+			while ((str = in.readLine()) != null) {
+				rows++;
+				// qui ho la linea, ora devo separare i tokens
+				ArrayList<String> arrList1 = readStringArrayListFromString(str);
+				columns = arrList1.size();
+				vetList.add(arrList1);
+			}
+			in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// ora trasferiamo tutto nel vettore
+		float[][] vetResult = new float[rows][columns];
+
+		for (int row = 0; row < rows; row++) {
+			ArrayList<String> stringRiga = vetList.get(row);
+			for (int col = 0; col < columns; col++) {
+				vetResult[row][col] = ReadDicom.readFloat(stringRiga.get(col));
+			}			
+		}
+		return vetResult;
+	}
+	
+	public static int[][] readIntMatrixFromFile(String fileName) {
+		ArrayList<ArrayList<String>> vetList = new ArrayList<ArrayList<String>>();
+		int rows = 0;
+		int columns = 0;
+
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(fileName));
+			String str = "";
+			while ((str = in.readLine()) != null) {
+				rows++;
+				// qui ho la linea, ora devo separare i tokens
+				ArrayList<String> arrList1 = readStringArrayListFromString(str);
+				columns = arrList1.size();
+				vetList.add(arrList1);
+			}
+			in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// ora trasferiamo tutto nel vettore
+		int[][] vetResult = new int[rows][columns];
+
+		for (int row = 0; row < rows; row++) {
+			ArrayList<String> stringRiga = vetList.get(row);
+			for (int col = 0; col < columns; col++) {
+				vetResult[row][col] = ReadDicom.readInt(stringRiga.get(col));
+			}			
+		}
+		return vetResult;
+	}
+
+	
+
+//	public static ArrayList<Integer> readIntegerArrayListFromString(String strIn) {
+//		ArrayList<Integer> arrList = new ArrayList<Integer>();
+//		StringTokenizer parser = new StringTokenizer(strIn, " \t\\,\\;");
+//		// nota bene: per il tab c'è un solo slash
+//		int total = parser.countTokens();
+//		for (int i1 = 0; i1 < total; i1++) {
+//			String next = parser.nextToken().trim();
+//			Integer aux1 = Integer.parseInt(next);
+//			int aux2 = aux1.intValue();
+//			arrList.add(aux2);
+//		}
+//		return arrList;
+//	}
+
 
 	public static String[][] readStringMatrixFromFile(String fileName) {
 		ArrayList<ArrayList<String>> vetList = new ArrayList<ArrayList<String>>();
