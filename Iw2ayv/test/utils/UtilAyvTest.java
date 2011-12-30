@@ -227,11 +227,13 @@ public class UtilAyvTest {
 	}
 
 	@Test
-	public final void testImagesToStack() {
+	public final void testImagesToStack16() {
 		String[] list1 = InputOutput
 				.readStringArrayFromFile("./data/list1.txt");
 		ImagePlus imp1 = UtilAyv.imagesToStack16(list1);
 		int len = imp1.getImageStackSize();
+		imp1.show();
+		MyLog.waitHere();
 		assertEquals(16, len);
 	}
 
@@ -242,6 +244,8 @@ public class UtilAyvTest {
 		ImagePlus imp1 = UtilAyv.imagesToStack32(list1);
 		int len = imp1.getImageStackSize();
 		assertEquals(16, len);
+		imp1.show();
+		MyLog.waitHere();
 		int depth = imp1.getBitDepth();
 		// IJ.log("stack bitDepth= " + depth);
 		assertEquals(32, depth);
@@ -388,7 +392,8 @@ public class UtilAyvTest {
 
 	@Test
 	public final void testFindMaximumPosition() {
-		ImagePlus imp1 = UtilAyv.openImageNoDisplay(".\\Test4\\B003_testP2", true);
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(".\\Test4\\B003_testP2",
+				true);
 		double[] expected = { 185.0, 33.0, 2597.0 };
 		double[] out = UtilAyv.findMaximumPosition(imp1);
 		// MyLog.logVector(out, "out");

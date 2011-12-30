@@ -130,7 +130,7 @@ public class MyFwhm {
 		double xlabelPosition = 0.05;
 		double ylabelPosition = 0.15;
 		plot1.addLabel(xlabelPosition, ylabelPosition,
-				"fwhm= " + IJ.d2s(value, 2));
+				"fwhm= " + IJ.d2s(value, 2) + " mm");
 	}
 
 	/**

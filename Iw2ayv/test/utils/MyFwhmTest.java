@@ -136,12 +136,10 @@ public class MyFwhmTest {
 				.readDoubleArrayFromFile("./data/vet12.txt");
 		double[] profi2 = MyFwhm.invertProfile(profi1);
 		int[] upDwPoints = MyFwhm.halfPointSearch(profi2);
-
+		double fwhm = MyFwhm.calcFwhm(upDwPoints, profi2) * 1.00;
 		MyFwhm.minimalPlot(profi2, upDwPoints, "P L O T", "base", "altezza",
-				5.6789, true);
+				fwhm, true);
 		MyLog.waitHere();
-		//
-		// MyFwhm.minimalPlot(profi1);
 	}
 
 }

@@ -36,8 +36,6 @@ public class ReadDicom {
 			return ("");
 		int currSlice = imp.getCurrentSlice();
 		ImageStack stack = imp.getStack();
-		
-		
 
 		String header = stack.getSize() > 1 ? stack.getSliceLabel(currSlice)
 				: (String) imp.getProperty("Info");
@@ -63,13 +61,44 @@ public class ReadDicom {
 			}
 		} else {
 			String aux1 = (String) imp.getProperty("Info");
-			IJ.log("aux1= "+aux1);
+			IJ.log("aux1= " + aux1);
 
-			IJ.log("" +imp.getTitle());
-			
+			IJ.log("" + imp.getTitle());
+
 			IJ.error("readDicomParameter WARNING!! Header is null.");
 			attribute = null;
 			return (attribute);
+		}
+	}
+
+	public static String readDicomParameter(String header,
+			String userInput) {
+		// N.B. userInput => 9 characs [group,element] in format: xxxx,xxxx (es:
+		// "0020,0013")
+		// boolean bAbort;
+		String attribute = "???";
+		String value = "???";
+		if (header != null) {
+			int idx1 = header.indexOf(userInput);
+			int idx2 = header.indexOf(":", idx1);
+			int idx3 = header.indexOf("\n", idx2);
+			if (idx1 >= 0 && idx2 >= 0 && idx3 >= 0) {
+				try {
+					attribute = header.substring(idx1 + 9, idx2);
+					attribute = attribute.trim();
+					value = header.substring(idx2 + 1, idx3);
+					value = value.trim();
+					return (value);
+				} catch (Throwable e) { // Anything else
+					MyLog.here("value PROBLEM");
+					return (value);
+				}
+			} else {
+				attribute = "MISSING";
+				return (attribute);
+			}
+		} else {
+			return (null);
 		}
 	}
 
