@@ -36,6 +36,14 @@ public class ReadDicom {
 			return ("");
 		int currSlice = imp.getCurrentSlice();
 		ImageStack stack = imp.getStack();
+		// int sSize = stack.getSize();
+		// String sLabel = stack.getSliceLabel(currSlice);
+		// String iLabel = (String) imp.getProperty("Info");
+		// IJ.log("-------------------------");
+		// IJ.log("sSize= "+sSize);
+		// IJ.log("sLabel= "+sLabel);
+		// IJ.log("iLabel= "+iLabel);
+		// MyLog.waitHere();
 
 		String header = stack.getSize() > 1 ? stack.getSliceLabel(currSlice)
 				: (String) imp.getProperty("Info");

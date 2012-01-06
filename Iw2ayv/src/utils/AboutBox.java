@@ -23,7 +23,7 @@ public class AboutBox {
 		text[0] = arg;
 		text[1] = "Azienda Spedali Civili di Brescia";
 		text[2] = "Servizio di Fisica Sanitaria";
-		text[3] = "©2007-2011  Alberto Duina";
+		text[3] = "©2007-2012  Alberto Duina";
 		text[4] = "albertoduina@virgilio.it";
 		text[5] = "VERSIONE " + myImplementationVersion(myClass);
 
@@ -230,7 +230,7 @@ public class AboutBox {
 		text[0] = arg;
 		text[1] = "Azienda Spedali Civili di Brescia";
 		text[2] = "Servizio di Fisica Sanitaria";
-		text[3] = "©2007-2010  Alberto Duina";
+		text[3] = "©2007-2012  Alberto Duina";
 		text[4] = "albertoduina@virgilio.it";
 		// text[5] = "VERSIONE " + myImplementationVersion(myClass);
 

@@ -27,6 +27,8 @@ public class MyConst {
 	public static final String DICOM_ROWS = "0028,0010";
 	public static final String DICOM_COLUMNS = "0028,0011";
 	public static final String DICOM_ACQTIME = "0008,0032";
+	public static final String DICOM_IMATIME = "0008,0033";
+	
 	public static final String DICOM_SERIES_NUMBER = "0020,0011";
 	public static final String DICOM_ACQUISITION_NUMBER = "0020,0012";
 	public static final String DICOM_IMAGE_NUMBER = "0020,0013";
