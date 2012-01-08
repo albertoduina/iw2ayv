@@ -1,32 +1,13 @@
 package utils;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.io.Opener;
-import ij.process.FloatProcessor;
-import ij.process.ImageProcessor;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import utils.InputOutput;
-import utils.MyLog;
-import utils.TableUtils;
-import utils.UtilAyv;
 
 public class MyStackUtilsTest {
 
@@ -84,4 +65,14 @@ public class MyStackUtilsTest {
 		assertEquals(32, depth);
 	}
 
+	@Test
+	public final void testImageFromMosaic() {
+		String path = "./data/mosaic.dcm";
+
+		ImagePlus imp1 = UtilAyv.openImageMaximized(path);
+		MyLog.waitHere();
+		ImagePlus imp2 = MyStackUtils.imageFromMosaic(imp1, 27);
+		MyLog.waitHere();
+
+	}
 }

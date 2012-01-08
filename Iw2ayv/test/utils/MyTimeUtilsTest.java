@@ -9,12 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-import utils.AboutBox;
 
 
 
 
-public class AboutBoxTest {
+public class MyTimeUtilsTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -27,9 +26,9 @@ public class AboutBoxTest {
 
 
 	@Test
-	public void testAboutBox() {
-		
-		new AboutBox().about("Messaggio", this.getClass());	
+	public void testMilliTime() {
+		long com = MyTimeUtils.milliTime("102923.489999");
+		assertEquals(37763489L, com);
 	}
 
 }

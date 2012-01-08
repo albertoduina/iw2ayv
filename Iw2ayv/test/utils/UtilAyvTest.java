@@ -400,4 +400,20 @@ public class UtilAyvTest {
 		UtilAyv.compareVectors(expected, out, 1e-8, "");
 	}
 
+	@Test
+	public final void testTruncateDecimals() {
+		double in1 = 23.123456789;
+
+		double out = UtilAyv.truncateDoubleDecimals(in1, 3);
+		MyLog.waitHere("" + out);
+	}
+
+	@Test
+	public final void testRoundDecimals() {
+		double in1 = 23.123556789;
+
+		double out = UtilAyv.roundDoubleDecimals(in1, 2);
+		MyLog.waitHere("" + out);
+	}
+
 }

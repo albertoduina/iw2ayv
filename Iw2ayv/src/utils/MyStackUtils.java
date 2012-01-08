@@ -3,13 +3,10 @@ package utils;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
-import ij.gui.NewImage;
-import ij.io.FileSaver;
+import ij.gui.Overlay;
 import ij.io.Opener;
 import ij.process.ImageConverter;
 import ij.process.ImageProcessor;
-import ij.process.ImageStatistics;
-import ij.process.ShortProcessor;
 
 public class MyStackUtils {
 
@@ -57,10 +54,10 @@ public class MyStackUtils {
 
 		ImageProcessor ipStack = imaStack.getProcessor(slice);
 
-		String titolo = "** "+slice+" **";
-//		String titolo = imaStack.getShortSliceLabel(slice);
+		String titolo = "** " + slice + " **";
+		// String titolo = imaStack.getShortSliceLabel(slice);
 		String sliceInfo1 = imaStack.getSliceLabel(slice);
-	
+
 		ImagePlus imp = new ImagePlus(titolo, ipStack);
 		imp.setProperty("Info", sliceInfo1);
 		return imp;
@@ -152,6 +149,45 @@ public class MyStackUtils {
 
 	public ImagePlus extractTimeStack(ImagePlus imp1, int slice) {
 		return null;
+	}
+
+	public static ImagePlus imageFromMosaic(ImagePlus imp1, int num) {
+		int step = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_PHASE_ENCODING_STEPS)); // 64
+		int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_COLUMNS)); // 384
+		int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_ROWS)); // 384
+		int cropWidth = step;
+		int cropHeight = step;
+		IJ.log("cropWidth= " + cropWidth + " cropHeight= " + cropHeight);
+		IJ.log("height / steps= " + (height / step));
+		int box = width / step;
+
+		int rigona = (num / box); // 252
+		int colonnona = num - rigona * box - 1; // 131 (27)
+
+		// MyLog.waitHere("num= " + num + " rigona= " + rigona + " colonnona= "
+		// + colonnona);
+		// ImagePlus imp2 = imp1.duplicate();
+		ImageProcessor ip2 = imp1.getProcessor();
+		Overlay over2 = new Overlay();
+		imp1.setOverlay(over2);
+
+		int startRiga = rigona * step;
+		int startColonna = colonnona * step;
+		MyLog.waitHere("startRiga= " + startRiga + " startColonna= "
+				+ startColonna);
+
+		imp1.setRoi(startColonna, startRiga, cropWidth, cropHeight);
+		over2.addElement(imp1.getRoi());
+		imp1.updateAndDraw();
+		MyLog.waitHere();
+
+		ImagePlus imp3 = new ImagePlus("TITOLO", ip2.crop());
+		imp3.show();
+
+		return imp3;
 	}
 
 }

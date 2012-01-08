@@ -31,6 +31,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
@@ -837,7 +839,7 @@ public class UtilAyv {
 		ImageWindow win = imp.getWindow();
 		// win.maximize(); // troppo a destra
 		win.setExtendedState(ImageWindow.MAXIMIZED_BOTH);
-		IJ.wait(20);	
+		IJ.wait(20);
 		win.setExtendedState(ImageWindow.MAXIMIZED_BOTH);
 	}
 
@@ -1240,7 +1242,7 @@ public class UtilAyv {
 		}
 		return true;
 	}
-	
+
 	public static boolean compareMatrix(float[][] mat1, float[][] mat2,
 			String msg) {
 		if ((mat1 == null) || (mat2 == null)) {
@@ -1266,9 +1268,8 @@ public class UtilAyv {
 		}
 		return true;
 	}
-	
-	public static boolean compareMatrix(int[][] mat1, int[][] mat2,
-			String msg) {
+
+	public static boolean compareMatrix(int[][] mat1, int[][] mat2, String msg) {
 		if ((mat1 == null) || (mat2 == null)) {
 			if (msg.length() > 0) {
 				IJ.log(msg + " Warning matrix = null");
@@ -1292,8 +1293,7 @@ public class UtilAyv {
 		}
 		return true;
 	}
-	
-	
+
 	public static boolean compareMatrix(String[][] mat1, String[][] mat2,
 			String msg) {
 		if ((mat1 == null) || (mat2 == null)) {
@@ -1319,10 +1319,6 @@ public class UtilAyv {
 		}
 		return true;
 	}
-
-	
-	
-	
 
 	public static String howmanyMemory() {
 		long used3 = IJ.currentMemory();
@@ -1819,6 +1815,27 @@ public class UtilAyv {
 			return true;
 		else
 			return false;
+	}
+
+	public static double truncateDoubleDecimals(double x1, int num) {
+		double mult1 = Math.pow(10, num);
+		int mult = (int) mult1;
+		double y1;
+		double y2;
+		if (x1 > 0) {
+			y1 = Math.floor(x1 * mult);
+			y2 = y1 / (mult);
+		} else {
+			y1 = Math.ceil(x1 * mult);
+			y2 = y1 / (mult);
+		}
+		return y2;
+	}
+
+	public static double roundDoubleDecimals(double x1, int decimalPlaces) {
+		BigDecimal bd = new BigDecimal(x1);
+		bd = bd.setScale(decimalPlaces, BigDecimal.ROUND_HALF_DOWN);
+		return bd.doubleValue();
 	}
 
 } // UtilAyv
