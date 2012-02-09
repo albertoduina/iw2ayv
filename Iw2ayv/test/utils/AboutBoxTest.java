@@ -31,6 +31,12 @@ public class AboutBoxTest {
 		
 		new AboutBox().about("Messaggio", this.getClass());	
 	}
+	
+	@Test
+	public void testAboutBox10() {
+		
+		new AboutBox().about10("Messaggio", this.getClass());	
+	}
 
 }
 

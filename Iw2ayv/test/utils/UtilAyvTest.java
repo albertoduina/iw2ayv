@@ -226,45 +226,7 @@ public class UtilAyvTest {
 		assertEquals(calcExcel, mean, 1e-6);
 	}
 
-	@Test
-	public final void testImagesToStack16() {
-		String[] list1 = InputOutput
-				.readStringArrayFromFile("./data/list1.txt");
-		ImagePlus imp1 = UtilAyv.imagesToStack16(list1);
-		int len = imp1.getImageStackSize();
-		imp1.show();
-		MyLog.waitHere();
-		assertEquals(16, len);
-	}
 
-	@Test
-	public final void testImagesToStack32() {
-		String[] list1 = InputOutput
-				.readStringArrayFromFile("./data/list1.txt");
-		ImagePlus imp1 = UtilAyv.imagesToStack32(list1);
-		int len = imp1.getImageStackSize();
-		assertEquals(16, len);
-		imp1.show();
-		MyLog.waitHere();
-		int depth = imp1.getBitDepth();
-		// IJ.log("stack bitDepth= " + depth);
-		assertEquals(32, depth);
-	}
-
-	@Test
-	public final void testImageFromStack() {
-		String[] list1 = InputOutput
-				.readStringArrayFromFile("./data/list1.txt");
-		ImagePlus imp1 = UtilAyv.imagesToStack16(list1);
-		int len = imp1.getImageStackSize();
-		assertEquals(16, len);
-		// --- stack ready
-		ImagePlus imp2 = UtilAyv.imageFromStack(imp1, 8);
-		ImagePlus imp3 = new Opener().openImage(list1[7]);
-		String sliceInfo2 = (String) imp2.getProperty("Info");
-		String sliceInfo3 = (String) imp3.getProperty("Info");
-		assertEquals(sliceInfo2, sliceInfo3);
-	}
 
 	@Test
 	public final void testGenImaDifference() {
@@ -343,15 +305,15 @@ public class UtilAyvTest {
 	public final void testCompareStacks() {
 		String[] list1 = InputOutput
 				.readStringArrayFromFile("./data/list1.txt");
-		ImagePlus imp1 = UtilAyv.imagesToStack16(list1);
-		ImagePlus imp2 = UtilAyv.imagesToStack16(list1);
+		ImagePlus imp1 = MyStackUtils.imagesToStack16(list1);
+		ImagePlus imp2 = MyStackUtils.imagesToStack16(list1);
 
-		boolean result = UtilAyv.compareStacks(imp1, imp2);
+		boolean result = MyStackUtils.compareStacks(imp1, imp2);
 		assertTrue("Stacks differ", result);
 
 		list1[0] = ".\\Test4\\01diff";
-		imp2 = UtilAyv.imagesToStack16(list1);
-		boolean result2 = UtilAyv.compareStacks(imp1, imp2);
+		imp2 = MyStackUtils.imagesToStack16(list1);
+		boolean result2 = MyStackUtils.compareStacks(imp1, imp2);
 		assertFalse("Stacks must differ!", result2);
 	}
 

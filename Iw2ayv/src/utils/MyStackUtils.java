@@ -64,7 +64,7 @@ public class MyStackUtils {
 	}
 
 	/**
-	 * -- Builds a stack
+	 * Costruisce uno stack a 16 bit
 	 * 
 	 * @param path
 	 *            path of image files
@@ -104,7 +104,7 @@ public class MyStackUtils {
 	}
 
 	/**
-	 * -- Builds a stack
+	 * Costruisce uno stack a 32 bit
 	 * 
 	 * @param path
 	 *            path of image files
@@ -136,21 +136,32 @@ public class MyStackUtils {
 		return newImpStack;
 	}
 
-	public ImagePlus extractZStack(ImagePlus imp1, int numberOfFrames,
-			int numberOfTemporalPositions) {
+//	public ImagePlus extractZStack(ImagePlus imp1, int numberOfFrames,
+//			int numberOfTemporalPositions) {
+//
+//		int numberOfSlices = numberOfFrames / numberOfTemporalPositions;
+//		ImageStack zStack = new ImageStack(imp1.getWidth(), imp1.getHeight());
+//		for (int i1 = 0; i1 < numberOfSlices; i1++) {
+//		}
+//
+//		return null;
+//	}
+//
+//	public ImagePlus extractTimeStack(ImagePlus imp1, int slice) {
+//		return null;
+//	}
 
-		int numberOfSlices = numberOfFrames / numberOfTemporalPositions;
-		ImageStack zStack = new ImageStack(imp1.getWidth(), imp1.getHeight());
-		for (int i1 = 0; i1 < numberOfSlices; i1++) {
-		}
-
-		return null;
-	}
-
-	public ImagePlus extractTimeStack(ImagePlus imp1, int slice) {
-		return null;
-	}
-
+	/***
+	 * Estrae l'immagine da un mosaico. Attenzione che la prima immagine dovrà
+	 * essere la 1
+	 * 
+	 * @param imp1
+	 *            Immagine mosaic
+	 * @param num
+	 *            Numero della immagine da estrarre, si parte da 1 in alto a sx
+	 *            e ci si muove prima verso destra
+	 * @return Immgine estratta
+	 */
 	public static ImagePlus imageFromMosaic(ImagePlus imp1, int num) {
 		int step = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
 				MyConst.DICOM_PHASE_ENCODING_STEPS)); // 64
@@ -189,5 +200,35 @@ public class MyStackUtils {
 
 		return imp3;
 	}
+
+	
+	/***
+	 * Esegue la comparazione di due stack, ritorna true se sono uguali
+	 * 
+	 * @param imp1
+	 * @param imp2
+	 * @return
+	 */
+	public static boolean compareStacks(ImagePlus imp1, ImagePlus imp2) {
+		boolean equality = true;
+		int len1 = imp1.getImageStackSize();
+		int len2 = imp2.getImageStackSize();
+
+		if (len1 != len2)
+			equality = false;
+		// volendo posso complicarmi la vita andando a controllare che le
+		// immagini siano una a una uguali
+		for (int i1 = 0; i1 < len1; i1++) {
+			ImagePlus imp3 = imageFromStack(imp1, i1 + 1);
+			ImagePlus imp4 = imageFromStack(imp2, i1 + 1);
+			boolean ok = UtilAyv.compareImagesByImageProcessors(imp3, imp4);
+			if (!ok) {
+				IJ.log("compareStacks.la immagine " + (i1 + 1) + " differisce");
+				equality = false;
+			}
+		}
+		return equality;
+	}
+
 
 }

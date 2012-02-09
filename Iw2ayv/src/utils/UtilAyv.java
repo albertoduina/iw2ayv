@@ -65,9 +65,6 @@ import java.util.StringTokenizer;
 public class UtilAyv {
 	public static String VERSION = "UtilAyv-v4.10_10dec08_";
 
-	private static String DICOM_ROWS = "0028,0010";
-
-	private static String DICOM_COLUMNS = "0028,0011";
 	public static int location;
 
 	public static void stopHere() {
@@ -221,120 +218,6 @@ public class UtilAyv {
 		String params = "Subtract create 32-bit";
 		ImagePlus imp3 = ic1.run(params, imp1, imp2);
 		return imp3;
-	}
-
-	/**
-	 * estrae una singola slice da uno stack. Estrae anche i dati header
-	 * 
-	 * @param stack
-	 *            stack contenente le slices
-	 * @param slice
-	 *            numero della slice da estrarre, deve partire da 1, non è
-	 *            ammesso lo 0
-	 * @return ImagePlus della slice estratta
-	 */
-	public static ImagePlus imageFromStack(ImagePlus stack, int slice) {
-
-		if (stack == null) {
-			IJ.log("imageFromStack.stack== null");
-			return null;
-		}
-		// IJ.log("stack bitDepth= "+stack.getBitDepth());
-		ImageStack imaStack = stack.getImageStack();
-		if (imaStack == null) {
-			IJ.log("imageFromStack.imaStack== null");
-			return null;
-		}
-		if (slice == 0) {
-			IJ.log("imageFromStack.requested slice 0!");
-			return null;
-
-		}
-		if (slice > stack.getStackSize()) {
-			IJ.log("imageFromStack.requested slice > slices!");
-			return null;
-		}
-
-		ImageProcessor ipStack = imaStack.getProcessor(slice);
-
-		String titolo = imaStack.getShortSliceLabel(slice);
-		String sliceInfo1 = imaStack.getSliceLabel(slice);
-		ImagePlus imp = new ImagePlus(titolo, ipStack);
-		imp.setProperty("Info", sliceInfo1);
-		return imp;
-	}
-
-	/**
-	 * -- Builds a stack
-	 * 
-	 * @param path
-	 *            path of image files
-	 * @return ImagePlus with the stack
-	 */
-	public static ImagePlus imagesToStack16(String[] path) {
-		Opener opener1 = new Opener();
-		ImagePlus imp1 = opener1.openImage(path[0]);
-		int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				DICOM_ROWS));
-		int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				DICOM_COLUMNS));
-		ImageStack newStack = new ImageStack(width, height);
-		for (int f1 = 0; f1 < path.length; f1++) {
-			imp1 = opener1.openImage(path[f1]);
-			if (imp1 == null) {
-				IJ.log("stackBuilder2: image file unavailable?");
-				return null;
-			}
-			ImageProcessor ip1 = imp1.getProcessor();
-			if (f1 == 0)
-				newStack.update(ip1);
-			String sliceInfo1 = imp1.getTitle();
-			String sliceInfo2 = (String) imp1.getProperty("Info");
-			// aggiungo i dati header alle singole immagini dello stack
-			if (sliceInfo2 != null)
-				sliceInfo1 += "\n" + sliceInfo2;
-			newStack.addSlice(sliceInfo2, ip1);
-		}
-		ImagePlus newImpStack = new ImagePlus("INPUT_STACK", newStack);
-		if (path.length == 1) {
-			String sliceInfo3 = imp1.getTitle();
-			sliceInfo3 += "\n" + (String) imp1.getProperty("Info");
-			newImpStack.setProperty("Info", sliceInfo3);
-		}
-		return newImpStack;
-	}
-
-	/**
-	 * -- Builds a stack
-	 * 
-	 * @param path
-	 *            path of image files
-	 * @return ImagePlus with the stack
-	 */
-	public static ImagePlus imagesToStack32(String[] path) {
-		Opener opener1 = new Opener();
-		ImagePlus imp1 = opener1.openImage(path[0]);
-		int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				DICOM_ROWS));
-		int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				DICOM_COLUMNS));
-		ImageStack newStack = new ImageStack(width, height);
-		for (int f1 = 0; f1 < path.length; f1++) {
-			imp1 = opener1.openImage(path[f1]);
-			if (imp1 == null) {
-				IJ.log("stackBuilder2: image file unavailable?");
-				return null;
-			}
-
-			ImageConverter ic1 = new ImageConverter(imp1);
-			ic1.convertToGray32();
-			ImageProcessor ip1 = imp1.getProcessor();
-			if (f1 == 0)
-				newStack.update(ip1);
-			newStack.addSlice("", ip1);
-		}
-		ImagePlus newImpStack = new ImagePlus("INPUT_STACK_float", newStack);
-		return newImpStack;
 	}
 
 	/**
@@ -666,27 +549,6 @@ public class UtilAyv {
 		return false;
 	}
 
-	public static boolean compareStacks(ImagePlus imp1, ImagePlus imp2) {
-		boolean equality = true;
-		int len1 = imp1.getImageStackSize();
-		int len2 = imp2.getImageStackSize();
-
-		if (len1 != len2)
-			equality = false;
-		// volendo posso complicarmi la vita andando a controllare che le
-		// immagini siano una a una uguali
-		for (int i1 = 0; i1 < len1; i1++) {
-			ImagePlus imp3 = UtilAyv.imageFromStack(imp1, i1 + 1);
-			ImagePlus imp4 = UtilAyv.imageFromStack(imp2, i1 + 1);
-			boolean ok = UtilAyv.compareImagesByImageProcessors(imp3, imp4);
-			if (!ok) {
-				IJ.log("compareStacks.la immagine " + (i1 + 1) + " differisce");
-				equality = false;
-			}
-		}
-		return equality;
-	}
-
 	/**
 	 * Calculates the standard deviation of an array of numbers. see Knuth's The
 	 * Art Of Computer Programming Volume II: Seminumerical Algorithms This
@@ -923,15 +785,19 @@ public class UtilAyv {
 
 		ImageStatistics stat = null;
 		boolean redo = false;
+
 		do {
 			if (imp.isVisible())
 				imp.getWindow().toFront();
 			if (circular) {
-				imp.setRoi(new OvalRoi(xRoi - diaRoi / 2, yRoi - diaRoi / 2,
-						diaRoi, diaRoi));
+				// imp.setRoi(new OvalRoi(xRoi - diaRoi / 2, yRoi - diaRoi / 2,
+				// diaRoi, diaRoi));
+				imp.setRoi(new OvalRoi(xRoi, yRoi, diaRoi, diaRoi));
 				// imp.updateAndDraw();
 			} else {
-				imp.setRoi(xRoi - diaRoi / 2, yRoi - diaRoi / 2, diaRoi, diaRoi);
+				// imp.setRoi(xRoi - diaRoi / 2, yRoi - diaRoi / 2, diaRoi,
+				// diaRoi);
+				imp.setRoi(xRoi, yRoi, diaRoi, diaRoi);
 				// imp.updateAndDraw();
 			}
 
@@ -952,6 +818,9 @@ public class UtilAyv {
 			if (bstep)
 				ButtonMessages.ModelessMsg("Segnale medio =" + stat.mean,
 						"CONTINUA");
+			// MyLog.waitHere("Roi x= " + xRoi + " yRoi= " + yRoi +
+			// " stat.Mean= "
+			// + stat.mean);
 		} while (redo);
 		return stat;
 	}
@@ -1412,6 +1281,9 @@ public class UtilAyv {
 		}
 
 		for (int i1 = 0; i1 < vetResults.length; i1++) {
+//			IJ.log("vetResults["+i1+"]="+vetResults[i1]);
+//			IJ.log("vetReference["+i1+"]="+vetReference[i1]);
+			
 			if (vetResults[i1] != vetReference[i1]) {
 				IJ.log(vetName[i1] + " ERRATO " + vetResults[i1] + " anzichè "
 						+ vetReference[i1]);

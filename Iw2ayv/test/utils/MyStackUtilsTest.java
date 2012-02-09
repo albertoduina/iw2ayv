@@ -1,6 +1,8 @@
 package utils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.io.Opener;
@@ -27,7 +29,7 @@ public class MyStackUtilsTest {
 	public final void testImageFromStack() {
 		String[] list1 = InputOutput
 				.readStringArrayFromFile("./data/list1.txt");
-		ImagePlus imp1 = UtilAyv.imagesToStack16(list1);
+		ImagePlus imp1 = MyStackUtils.imagesToStack16(list1);
 		int len = imp1.getImageStackSize();
 		assertEquals(16, len);
 		// --- stack ready
@@ -71,8 +73,24 @@ public class MyStackUtilsTest {
 
 		ImagePlus imp1 = UtilAyv.openImageMaximized(path);
 		MyLog.waitHere();
-		ImagePlus imp2 = MyStackUtils.imageFromMosaic(imp1, 27);
+		ImagePlus imp2 = MyStackUtils.imageFromMosaic(imp1, 1);
 		MyLog.waitHere();
 
 	}
+	@Test
+	public final void testCompareStacks() {
+		String[] list1 = InputOutput
+				.readStringArrayFromFile("./data/list1.txt");
+		ImagePlus imp1 = MyStackUtils.imagesToStack16(list1);
+		ImagePlus imp2 = MyStackUtils.imagesToStack16(list1);
+
+		boolean result = MyStackUtils.compareStacks(imp1, imp2);
+		assertTrue("Stacks differ", result);
+
+		list1[0] = ".\\Test4\\01diff";
+		imp2 = MyStackUtils.imagesToStack16(list1);
+		boolean result2 = MyStackUtils.compareStacks(imp1, imp2);
+		assertFalse("Stacks must differ!", result2);
+	}
+
 }
