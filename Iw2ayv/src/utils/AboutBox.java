@@ -30,9 +30,6 @@ public class AboutBox {
 		int w = 150, h = 150;
 		ImageProcessor ip = new ColorProcessor(w, h);
 		int[] pixels = (int[]) ip.getPixels();
-		int red = 0;
-		int green = 1;
-		int blue = 1;
 
 		for (int y = 0; y < (h / 2); y++) {
 			for (int x = 0; x < (w / 2); x++) {

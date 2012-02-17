@@ -114,6 +114,8 @@ public class InputOutput {
 		return fileName;
 	}
 
+	// //###############################################################################
+
 	/**
 	 * legge e carica in memoria il file codici.txt e expand.tx1
 	 * 
@@ -196,52 +198,51 @@ public class InputOutput {
 		return (table);
 	}
 
+	// //###############################################################################
+
 	/**
-	 * legge e carica in memoria il file da disco.
+	 * legge e carica in memoria un file numerico
 	 * 
 	 * @param fileName
 	 *            path del file
-	 * @param tokenXriga
-	 *            numero di token per ogni riga
-	 * @return tabella col contenuto del file
+	 * @return vettore col contenuto del file
 	 */
+	public double[] readFile2(String fileName) {
+		double vet1[];
+		int len = 1;
 
-	public ArrayList<ArrayList<String>> readFile5(String fileName) {
-		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
 		try {
 
-			BufferedReader br = new BufferedReader(new FileReader(new File(
-					fileName)));
-			while (br.ready()) {
-				String line = br.readLine();
-				if (line == null)
-					continue;
-				// only > java 6.0
-				// if (line.isEmpty())
-				// continue;
-				if (line.trim().length() == 0)
-					continue;
-				if (!isComment(line)) {
-					ArrayList<String> row1 = new ArrayList<String>();
-					String result = InputOutput.stripAllComments(line);
-					String[] splitted = result.split("#");
-					for (int i1 = 0; i1 < splitted.length; i1++) {
-						row1.add(splitted[i1]);
-					}
-					ArrayList<String> row2 = new ArrayList<String>();
-					for (int i1 = 1; i1 < splitted.length; i1 = i1 + 2) {
-						row2.add(row1.get(i1));
-					}
-					matrixTable.add(row2);
-				}
+			BufferedReader in = new BufferedReader(new FileReader(fileName));
+			int n1 = -1;
+			while (in.readLine() != null) {
+				n1++;
 			}
-			br.close();
-		} catch (Exception e) {
-			IJ.log("readFile5 error>" + e.getMessage());
-			return null;
+			in.close();
+			len = n1;
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		return matrixTable;
+		vet1 = new double[len + 1];
+
+		try {
+
+			BufferedReader in = new BufferedReader(new FileReader(fileName));
+			String str;
+			int n2 = -1;
+			while ((str = in.readLine()) != null) {
+				n2++;
+				vet1[n2] = ReadDicom.readDouble(str);
+			}
+			in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return vet1;
 	}
+
+	// //###############################################################################
 
 	/**
 	 * legge e carica in memoria il file. Legge anche i file contenuti in un
@@ -305,6 +306,16 @@ public class InputOutput {
 
 	}
 
+	// //###############################################################################
+
+	/***
+	 * 
+	 * legge e carica in memoria il file da disco.
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+
 	public String[][] readFile4(String fileName) {
 		ArrayList<ArrayList<Object>> matrixTable = new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> row1 = new ArrayList<Object>();
@@ -346,24 +357,150 @@ public class InputOutput {
 		return (table);
 	}
 
+	// //###############################################################################
+
+	/**
+	 * legge e carica in memoria il file da disco.
+	 * 
+	 * @param fileName
+	 *            path del file
+	 * @param tokenXriga
+	 *            numero di token per ogni riga
+	 * @return tabella col contenuto del file
+	 */
+
+	public ArrayList<ArrayList<String>> readFile5(String fileName) {
+		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
+		try {
+
+			BufferedReader br = new BufferedReader(new FileReader(new File(
+					fileName)));
+			while (br.ready()) {
+				String line = br.readLine();
+				if (line == null)
+					continue;
+				// only > java 6.0
+				// if (line.isEmpty())
+				// continue;
+				if (line.trim().length() == 0)
+					continue;
+				if (!isComment(line)) {
+					ArrayList<String> row1 = new ArrayList<String>();
+					String result = InputOutput.stripAllComments(line);
+					String[] splitted = result.split("#");
+					for (int i1 = 0; i1 < splitted.length; i1++) {
+						row1.add(splitted[i1]);
+					}
+					ArrayList<String> row2 = new ArrayList<String>();
+					for (int i1 = 1; i1 < splitted.length; i1 = i1 + 2) {
+						row2.add(row1.get(i1));
+					}
+					matrixTable.add(row2);
+				}
+			}
+			br.close();
+		} catch (Exception e) {
+			IJ.log("readFile5 error>" + e.getMessage());
+			return null;
+		}
+		return matrixTable;
+	}
+
+	// //###############################################################################
+
 	/***
 	 * Serve al leggere i file csv (valori delimitati da ;) legge anche
-	 * eventuali token vuoti, la seconda colonna contiene il commento
+	 * eventuali token vuoti
 	 * 
 	 * @param fileName
 	 * @return
 	 */
-	public String[][] readFile7(String fileName) {
+	public String[][] readFile6(String fileName) {
 
-		IJ.log("readFile7= " + fileName);
+		IJ.log("readFile6= " + fileName);
 
 		ArrayList<ArrayList<Object>> matrixTable = new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> row1 = new ArrayList<Object>();
 		String delimiter = ";";
 
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(new File(
-					fileName)));
+			URL url1 = this.getClass().getResource("/" + fileName);
+			if (url1 == null) {
+				IJ.log("readFile6: file " + fileName + " not visible or null");
+				return null;
+			}
+			InputStream is = getClass().getResourceAsStream("/" + fileName);
+			// IJ.log("readFile3.is =" + is);
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+			while (br.ready()) {
+				String line = br.readLine();
+				// a questo punto vedo se i primi due caratteri sono quelli di
+				// un commento, in questo caso non lo carico nella matrice
+				if (line.length() < 2)
+					continue;
+				String substr = line.substring(0, 2);
+				if (line.equals("") || substr.equals("//")
+						|| substr.equals("/*")) {
+					continue;
+				}
+				ArrayList<Object> row = new ArrayList<Object>();
+				String result = InputOutput.stripAllComments(line);
+				String[] splitted = result.split(delimiter, -1);
+				for (int i1 = 0; i1 < splitted.length; i1++) {
+					row.add(splitted[i1]);
+				}
+				matrixTable.add(row);
+			}
+			br.close();
+		} catch (Exception e) {
+			IJ.error(e.getMessage());
+		}
+
+		// ho caricato la matrice in memoria, ora si tratta di metterla nella
+		// tabella di output
+		//
+		// IJ.log("matrixTable.size= [" + matrixTable.size() + "]x["
+		// + matrixTable.get(0).size() + "]");
+
+		// ora trasferiamo tutto nella table
+		String[][] table = new String[matrixTable.size()][matrixTable.get(0)
+				.size()];
+		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
+			ArrayList<Object> arrayList = matrixTable.get(i1);
+			row1 = arrayList;
+			for (int j1 = 0; j1 < matrixTable.get(0).size(); j1++) {
+				table[i1][j1] = (String) row1.get(j1);
+			}
+		}
+		return (table);
+	}
+
+	// //###############################################################################
+
+	/***
+	 * Serve al leggere i file csv (valori delimitati da ;) legge anche
+	 * eventuali token vuoti.
+	 * 
+	 * La seconda colonna contiene il commento e viene saltata
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	public String[][] readFile7(String fileName) {
+
+		ArrayList<ArrayList<Object>> matrixTable = new ArrayList<ArrayList<Object>>();
+		ArrayList<Object> row1 = new ArrayList<Object>();
+		String delimiter = ";";
+		try {
+			URL url1 = this.getClass().getResource("/" + fileName);
+			if (url1 == null) {
+				IJ.log("readFile6: file " + fileName + " not visible or null");
+				return null;
+			}
+			InputStream is = getClass().getResourceAsStream("/" + fileName);
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 			while (br.ready()) {
 				String line = br.readLine();
 				// a questo punto vedo se i primi due caratteri sono quelli di
@@ -389,13 +526,10 @@ public class InputOutput {
 		} catch (Exception e) {
 			IJ.error(e.getMessage());
 		}
-
 		// ho caricato la matrice in memoria, ora si tratta di metterla nella
 		// tabella di output
-
-		IJ.log("matrixTable.size= [" + matrixTable.size() + "]x["
-				+ matrixTable.get(0).size() + "]");
-
+		// IJ.log("matrixTable.size= [" + matrixTable.size() + "]x["
+		// + matrixTable.get(0).size() + "]");
 		// ora trasferiamo tutto nella table
 		String[][] table = new String[matrixTable.size()][matrixTable.get(0)
 				.size()];
@@ -408,6 +542,15 @@ public class InputOutput {
 		}
 		return (table);
 	}
+
+	// //###############################################################################
+
+	/***
+	 * Legge i dati da un file e li resitituisce in un array double
+	 * 
+	 * @param fileName
+	 * @return
+	 */
 
 	public static double[] readDoubleArrayFromFile(String fileName) {
 		ArrayList<Double> vetList = new ArrayList<Double>();
@@ -429,6 +572,12 @@ public class InputOutput {
 		return vetResult;
 	}
 
+	/***
+	 * Legge i dati da un file e li restituisce in un array float
+	 * 
+	 * @param fileName
+	 * @return
+	 */
 	public static float[] readFloatArrayFromFile(String fileName) {
 		ArrayList<Float> vetList = new ArrayList<Float>();
 		try {
@@ -449,6 +598,12 @@ public class InputOutput {
 		return vetResult;
 	}
 
+	/***
+	 * Legge i dati da un file e li restituisce in un array int
+	 * 
+	 * @param fileName
+	 * @return
+	 */
 	public static int[] readIntArrayFromFile(String fileName) {
 		ArrayList<Integer> vetList = new ArrayList<Integer>();
 		try {
@@ -469,6 +624,12 @@ public class InputOutput {
 		return vetResult;
 	}
 
+	/***
+	 * Legge i dati da un file e li restituisce in un array string
+	 * 
+	 * @param fileName
+	 * @return
+	 */
 	public static String[] readStringArrayFromFile(String fileName) {
 
 		File file = new File(fileName);
@@ -495,7 +656,6 @@ public class InputOutput {
 		return vetResult;
 	}
 
-	
 	// public static ArrayList<Double> readDoubleArrayListFromString(String
 	// strIn) {
 	// ArrayList<Double> arrList = new ArrayList<Double>();
@@ -508,9 +668,15 @@ public class InputOutput {
 	// return arrList;
 	// }
 
+	/***
+	 * Legge i dati da una stringa e li restituisce in un ArrayList
+	 * 
+	 * @param strIn
+	 * @return
+	 */
 	public static ArrayList<String> readStringArrayListFromString(String strIn) {
 		ArrayList<String> arrList = new ArrayList<String>();
-		StringTokenizer parser = new StringTokenizer(strIn," \t\\,\\;");
+		StringTokenizer parser = new StringTokenizer(strIn, " \t\\,\\;");
 		int total = parser.countTokens();
 		for (int i1 = 0; i1 < total; i1++) {
 			String next = parser.nextToken();
@@ -519,6 +685,12 @@ public class InputOutput {
 		return arrList;
 	}
 
+	/***
+	 * Legge i dati da un file e li restituisce come double matrix
+	 * 
+	 * @param fileName
+	 * @return
+	 */
 	public static double[][] readDoubleMatrixFromFile(String fileName) {
 		ArrayList<ArrayList<String>> vetList = new ArrayList<ArrayList<String>>();
 		int rows = 0;
@@ -545,11 +717,17 @@ public class InputOutput {
 			ArrayList<String> stringRiga = vetList.get(row);
 			for (int col = 0; col < columns; col++) {
 				vetResult[row][col] = ReadDicom.readDouble(stringRiga.get(col));
-			}			
+			}
 		}
 		return vetResult;
 	}
-	
+
+	/***
+	 * Legge i dati da un file e li restituisce come float matrix
+	 * 
+	 * @param fileName
+	 * @return
+	 */
 	public static float[][] readFloatMatrixFromFile(String fileName) {
 		ArrayList<ArrayList<String>> vetList = new ArrayList<ArrayList<String>>();
 		int rows = 0;
@@ -576,11 +754,17 @@ public class InputOutput {
 			ArrayList<String> stringRiga = vetList.get(row);
 			for (int col = 0; col < columns; col++) {
 				vetResult[row][col] = ReadDicom.readFloat(stringRiga.get(col));
-			}			
+			}
 		}
 		return vetResult;
 	}
-	
+
+	/***
+	 * Legge i dati da un file e li restituisce come int matrix
+	 * 
+	 * @param fileName
+	 * @return
+	 */
 	public static int[][] readIntMatrixFromFile(String fileName) {
 		ArrayList<ArrayList<String>> vetList = new ArrayList<ArrayList<String>>();
 		int rows = 0;
@@ -607,28 +791,32 @@ public class InputOutput {
 			ArrayList<String> stringRiga = vetList.get(row);
 			for (int col = 0; col < columns; col++) {
 				vetResult[row][col] = ReadDicom.readInt(stringRiga.get(col));
-			}			
+			}
 		}
 		return vetResult;
 	}
 
-	
+	// public static ArrayList<Integer> readIntegerArrayListFromString(String
+	// strIn) {
+	// ArrayList<Integer> arrList = new ArrayList<Integer>();
+	// StringTokenizer parser = new StringTokenizer(strIn, " \t\\,\\;");
+	// // nota bene: per il tab c'è un solo slash
+	// int total = parser.countTokens();
+	// for (int i1 = 0; i1 < total; i1++) {
+	// String next = parser.nextToken().trim();
+	// Integer aux1 = Integer.parseInt(next);
+	// int aux2 = aux1.intValue();
+	// arrList.add(aux2);
+	// }
+	// return arrList;
+	// }
 
-//	public static ArrayList<Integer> readIntegerArrayListFromString(String strIn) {
-//		ArrayList<Integer> arrList = new ArrayList<Integer>();
-//		StringTokenizer parser = new StringTokenizer(strIn, " \t\\,\\;");
-//		// nota bene: per il tab c'è un solo slash
-//		int total = parser.countTokens();
-//		for (int i1 = 0; i1 < total; i1++) {
-//			String next = parser.nextToken().trim();
-//			Integer aux1 = Integer.parseInt(next);
-//			int aux2 = aux1.intValue();
-//			arrList.add(aux2);
-//		}
-//		return arrList;
-//	}
-
-
+	/***
+	 * Legge i dati da un file e li restituisce come string matrix
+	 * 
+	 * @param fileName
+	 * @return
+	 */
 	public static String[][] readStringMatrixFromFile(String fileName) {
 		ArrayList<ArrayList<String>> vetList = new ArrayList<ArrayList<String>>();
 		int rows = 0;
@@ -660,7 +848,19 @@ public class InputOutput {
 		return vetResult;
 	}
 
-	public static double[][][] addMatrix(double[][][] mat1, double[][] mat2,
+	/**
+	 * 
+	 * 
+	 * 
+	 * @param mat1
+	 * @param mat2
+	 * @param index
+	 * @return
+	 */
+	// // NB: rinominato temporaneamente per vedere se lo ho utilizzato da
+	// qualche parte od era un progetto orfano
+
+	public static double[][][] addMatrix2(double[][][] mat1, double[][] mat2,
 			int index) {
 		int slices1 = mat1.length;
 		int rows1 = mat1[0].length;
@@ -685,6 +885,12 @@ public class InputOutput {
 		return mat3;
 	}
 
+	/***
+	 * Data una matrice, la duplica
+	 * 
+	 * @param mat1
+	 * @return
+	 */
 	public static double[][][] cloneMatrix(double[][][] mat1) {
 		int slices1 = mat1.length;
 		int rows1 = mat1[0].length;
@@ -701,6 +907,12 @@ public class InputOutput {
 
 	}
 
+	/***
+	 * Trasforma un arrayList in una matrice stringa
+	 * 
+	 * @param matrixTable
+	 * @return
+	 */
 	public String[][] fromArrayListToStringTable(
 			ArrayList<ArrayList<String>> matrixTable) {
 		ArrayList<String> row1 = new ArrayList<String>();
@@ -726,6 +938,12 @@ public class InputOutput {
 		return (table);
 	}
 
+	/***
+	 * Trasforma un arrayList in una matrice double
+	 * 
+	 * @param matrixTable
+	 * @return
+	 */
 	public double[][] fromArrayListToDoubleTable(
 			ArrayList<ArrayList<Double>> matrixTable) {
 		int rows = 0;
@@ -767,6 +985,13 @@ public class InputOutput {
 		return (table);
 	}
 
+	/***
+	 * Effettua il dump di un ArrayList<ArrayList<String>>
+	 * 
+	 * @param matrixTable
+	 * @param title
+	 */
+
 	public static void dumpArrayListTable(
 			ArrayList<ArrayList<String>> matrixTable, String title) {
 		ArrayList<String> row1 = new ArrayList<String>();
@@ -786,6 +1011,12 @@ public class InputOutput {
 		return;
 	}
 
+	/***
+	 * Verifica la disponibilità di una directory
+	 * 
+	 * @param name
+	 * @return
+	 */
 	public static boolean checkDir(String name) {
 		File dirCheck = new File(name);
 		if (!dirCheck.exists())
@@ -794,6 +1025,12 @@ public class InputOutput {
 			return true;
 	}
 
+	/***
+	 * Verifica la disponibilità di un file jar
+	 * 
+	 * @param source
+	 * @return
+	 */
 	public boolean checkJar(String source) {
 		URL url1 = this.getClass().getResource("/" + source);
 		if (url1 != null)
@@ -802,54 +1039,18 @@ public class InputOutput {
 			return false;
 	}
 
+	/***
+	 * Verifica la disponibilità di un file
+	 * 
+	 * @param name
+	 * @return
+	 */
 	public static boolean checkFile(String name) {
 		File fileCheck = new File(name);
 		if (!fileCheck.exists())
 			return false;
 		else
 			return true;
-	}
-
-	/**
-	 * legge e carica in memoria un file numerico
-	 * 
-	 * @param fileName
-	 *            path del file
-	 * @return vettore col contenuto del file
-	 */
-	public double[] readFile2(String fileName) {
-		double vet1[];
-		int len = 1;
-
-		try {
-
-			BufferedReader in = new BufferedReader(new FileReader(fileName));
-			int n1 = -1;
-			while (in.readLine() != null) {
-				n1++;
-			}
-			in.close();
-			len = n1;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		vet1 = new double[len + 1];
-
-		try {
-
-			BufferedReader in = new BufferedReader(new FileReader(fileName));
-			String str;
-			int n2 = -1;
-			while ((str = in.readLine()) != null) {
-				n2++;
-				vet1[n2] = ReadDicom.readDouble(str);
-			}
-			in.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return vet1;
 	}
 
 	/**
@@ -1051,67 +1252,6 @@ public class InputOutput {
 			path[i1] = home1 + "/" + list[i1];
 		}
 		return (path);
-	}
-
-	/***
-	 * Serve al leggere i file csv (valori delimitati da ;) legge anche
-	 * eventuali token vuoti
-	 * 
-	 * @param fileName
-	 * @return
-	 */
-	public String[][] readFile6(String fileName) {
-
-		IJ.log("readFile6= " + fileName);
-
-		ArrayList<ArrayList<Object>> matrixTable = new ArrayList<ArrayList<Object>>();
-		ArrayList<Object> row1 = new ArrayList<Object>();
-		String delimiter = ";";
-
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(new File(
-					fileName)));
-			while (br.ready()) {
-				String line = br.readLine();
-				// a questo punto vedo se i primi due caratteri sono quelli di
-				// un commento, in questo caso non lo carico nella matrice
-				if (line.length() < 2)
-					continue;
-				String substr = line.substring(0, 2);
-				if (line.equals("") || substr.equals("//")
-						|| substr.equals("/*")) {
-					continue;
-				}
-				ArrayList<Object> row = new ArrayList<Object>();
-				String result = InputOutput.stripAllComments(line);
-				String[] splitted = result.split(delimiter, -1);
-				for (int i1 = 0; i1 < splitted.length; i1++) {
-					row.add(splitted[i1]);
-				}
-				matrixTable.add(row);
-			}
-			br.close();
-		} catch (Exception e) {
-			IJ.error(e.getMessage());
-		}
-
-		// ho caricato la matrice in memoria, ora si tratta di metterla nella
-		// tabella di output
-
-		IJ.log("matrixTable.size= [" + matrixTable.size() + "]x["
-				+ matrixTable.get(0).size() + "]");
-
-		// ora trasferiamo tutto nella table
-		String[][] table = new String[matrixTable.size()][matrixTable.get(0)
-				.size()];
-		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
-			ArrayList<Object> arrayList = matrixTable.get(i1);
-			row1 = arrayList;
-			for (int j1 = 0; j1 < matrixTable.get(0).size(); j1++) {
-				table[i1][j1] = (String) row1.get(j1);
-			}
-		}
-		return (table);
 	}
 
 	public static boolean isComment(String riga) {

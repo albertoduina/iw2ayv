@@ -168,30 +168,31 @@ public class UtilAyv {
 	/**
 	 * genera l'immagine differenza pixel-by-pixel
 	 * 
-	 * @param i1
+	 * @param imp1
 	 *            immagine minuendo
-	 * @param i2
+	 * @param imp2
 	 *            immagine sottraendo
 	 * @return immagine differenza
 	 */
-	public static ImagePlus genImaDifference(ImagePlus i1, ImagePlus i2) {
+	public static ImagePlus genImaDifference(ImagePlus imp1, ImagePlus imp2) {
 
 		ImageProcessor ip1;
 		ImageProcessor ip2;
 		double v1, v2, v3;
 
-		if (i1 == null)
+		if (imp1 == null)
 			return (null);
-		if (i2 == null)
+		if (imp2 == null)
 			return (null);
-		int width = i1.getWidth();
-		int height = i1.getHeight();
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
 		float[] pixels = new float[width * height];
-		ip1 = i1.getProcessor();
-		ip2 = i2.getProcessor();
+		ip1 = imp1.getProcessor();
+		ip2 = imp2.getProcessor();
 		ImageProcessor ip3 = new FloatProcessor(width, height, pixels, null);
-		ImagePlus i3 = new ImagePlus("Immagine differenza pixel-by-pixel", ip3);
-		ip3 = i3.getProcessor();
+		ImagePlus imp3 = new ImagePlus("Immagine differenza pixel-by-pixel",
+				ip3);
+		ip3 = imp3.getProcessor();
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				v1 = ip1.getPixelValue(x, y);
@@ -200,7 +201,7 @@ public class UtilAyv {
 				ip3.putPixelValue(x, y, v3);
 			}
 		}
-		return i3;
+		return imp3;
 	}
 
 	/**
@@ -786,18 +787,20 @@ public class UtilAyv {
 		ImageStatistics stat = null;
 		boolean redo = false;
 
+		int yIncr = 0;
+
 		do {
 			if (imp.isVisible())
 				imp.getWindow().toFront();
 			if (circular) {
 				// imp.setRoi(new OvalRoi(xRoi - diaRoi / 2, yRoi - diaRoi / 2,
 				// diaRoi, diaRoi));
-				imp.setRoi(new OvalRoi(xRoi, yRoi, diaRoi, diaRoi));
+				imp.setRoi(new OvalRoi(xRoi, yRoi + yIncr, diaRoi, diaRoi));
 				// imp.updateAndDraw();
 			} else {
 				// imp.setRoi(xRoi - diaRoi / 2, yRoi - diaRoi / 2, diaRoi,
 				// diaRoi);
-				imp.setRoi(xRoi, yRoi, diaRoi, diaRoi);
+				imp.setRoi(xRoi, yRoi + yIncr, diaRoi, diaRoi);
 				// imp.updateAndDraw();
 			}
 
@@ -811,9 +814,10 @@ public class UtilAyv {
 				}
 			}
 			stat = imp.getStatistics();
-			if (stat.mean == 0)
+			if (stat.mean == 0) {
 				redo = true;
-			else
+				yIncr = yIncr + 10;
+			} else
 				redo = false;
 			if (bstep)
 				ButtonMessages.ModelessMsg("Segnale medio =" + stat.mean,
@@ -1273,6 +1277,14 @@ public class UtilAyv {
 			double[] vetReference, String[] vetName) {
 		boolean testok = true;
 
+		if (vetResults == null || vetReference == null || vetName == null) {
+			IJ.log("vector null");
+			MyLog.logVector(vetResults, "vetResults");
+			MyLog.logVector(vetReference, "vetReference");
+			MyLog.logVector(vetName, "vetName");
+			return false;
+		}
+
 		if (vetResults.length != vetReference.length) {
 			IJ.log("verifyResults.vectors of different length");
 			MyLog.logVector(vetResults, "vetResults");
@@ -1281,9 +1293,9 @@ public class UtilAyv {
 		}
 
 		for (int i1 = 0; i1 < vetResults.length; i1++) {
-//			IJ.log("vetResults["+i1+"]="+vetResults[i1]);
-//			IJ.log("vetReference["+i1+"]="+vetReference[i1]);
-			
+			// IJ.log("vetResults["+i1+"]="+vetResults[i1]);
+			// IJ.log("vetReference["+i1+"]="+vetReference[i1]);
+
 			if (vetResults[i1] != vetReference[i1]) {
 				IJ.log(vetName[i1] + " ERRATO " + vetResults[i1] + " anzichè "
 						+ vetReference[i1]);
@@ -1649,6 +1661,52 @@ public class UtilAyv {
 		if (number instanceof Float && ((Float) number).isNaN())
 			return true;
 		return false;
+	}
+
+	/**
+	 * Verifica se un valore calcolato è nei limiti assegnati
+	 * 
+	 * @param signal
+	 *            valore calcolato
+	 * @param low
+	 *            limite inferiore accettabilità
+	 * @param high
+	 *            limite superiore accettabilità
+	 * @param title
+	 *            stringa con nome valore
+	 * @return true se accettato
+	 */
+	public static int checkLimits(double signal, double low, double high,
+			String title) {
+
+		int userSelection = 0;
+
+		if ((Double.isNaN(signal)) || (signal < low) || (signal > high)) {
+
+			userSelection = ButtonMessages.ModelessMsg("IL VALORE " + title
+					+ "= " + signal + " E'AL DI FUORI DAI LIMITI " + low
+					+ " - " + high , "SUCCESSIVA", "VISUALIZZA", "CONTINUA");
+			return userSelection;
+		} else
+			return 0;
+	}
+
+	/***
+	 * Verifica se un valore calcolato è nei limiti assegnati, overloaded senza
+	 * messaggio
+	 * 
+	 * @param signal
+	 * @param low
+	 * @param high
+	 * @return
+	 */
+	public static boolean checkLimits(double signal, double low, double high) {
+
+		if ((Double.isNaN(signal)) || (signal < low) || (signal > high))
+			return false;
+		else
+
+			return true;
 	}
 
 	public static double[] findMaximumPosition(ImagePlus imp1) {

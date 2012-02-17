@@ -25,6 +25,40 @@ public class UtilAyvTest {
 	}
 
 	@Test
+	public final void testCheckLimits() {
+
+		double testSignal = 100.0;
+		double low = 0.0;
+		double high = 200.0;
+		boolean ok = UtilAyv.checkLimits(testSignal, low, high);
+		assertTrue(ok);
+
+		testSignal = 200.0;
+		ok = UtilAyv.checkLimits(testSignal, low, high);
+		assertTrue(ok);
+
+		testSignal = 250.0;
+		ok = UtilAyv.checkLimits(testSignal, low, high);
+		assertFalse(ok);
+
+		testSignal = -200.0;
+		ok = UtilAyv.checkLimits(testSignal, low, high);
+		assertFalse(ok);
+
+		testSignal = Double.NaN;
+		ok = UtilAyv.checkLimits(testSignal, low, high);
+		assertFalse(ok);
+
+		testSignal = Double.NEGATIVE_INFINITY;
+		ok = UtilAyv.checkLimits(testSignal, low, high);
+		assertFalse(ok);
+
+		testSignal = Double.POSITIVE_INFINITY;
+		ok = UtilAyv.checkLimits(testSignal, low, high);
+		assertFalse(ok);
+	}
+
+	@Test
 	public final void testAfterWork() {
 		int imagesOpened;
 		int nonImagesOpened;
@@ -225,8 +259,6 @@ public class UtilAyvTest {
 		double mean = UtilAyv.vetSdKnuth(vet1);
 		assertEquals(calcExcel, mean, 1e-6);
 	}
-
-
 
 	@Test
 	public final void testGenImaDifference() {
