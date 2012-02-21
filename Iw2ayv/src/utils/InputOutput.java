@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StreamTokenizer;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -47,6 +48,151 @@ public class InputOutput {
 		String relativePath = absolutePath.substring(start + 3);
 		String outPath = UtilAyv.reverseSlash(relativePath);
 		return outPath;
+	}
+
+	/***
+	 * Lo scopo di questa utility è di estrarre dal file jar il prototipo del
+	 * file csv, che poi verrà usato dal programma. Se il file esistesse già,
+	 * l'estrazione non deve avvenire (così è possibile modificare il file senza
+	 * dover intervenire sul file jar)
+	 * 
+	 * @param fileName
+	 * @param destinationPath
+	 * @return
+	 */
+	// public boolean findCSV(String fileName) {
+	//
+	// URL url3 = this.getClass().getResource("/contMensili/p10rmn_.class");
+	// File file3 = new File(url3.getPath());
+	// MyLog.waitHere("url3= " + url3.toString());
+	//
+	// String myString = url3.toString();
+	//
+	// int start = myString.indexOf("plugins");
+	// int end = myString.lastIndexOf("!");
+	// MyLog.waitHere("start= "+start+" end= "+end);
+	// String myPart1 = myString.substring(start, end);
+	// MyLog.waitHere("myPart1= " + myPart1);
+	//
+	// end = myPart1.lastIndexOf("/");
+	// MyLog.waitHere("start= "+0+" end= "+end);
+	// String myPart2 = myPart1.substring(0, end+1);
+	// MyLog.waitHere("myPart2= " + myPart2);
+	//
+	//
+	// String parentX = file3.getParent();
+	// MyLog.waitHere("--> parentX= " + parentX);
+	//
+	// String pathX = file3.getPath();
+	// MyLog.waitHere("--> pathX= " + pathX);
+	//
+	// String myPathName = parentX + "/" + fileName;
+	// MyLog.waitHere("--> myPathName= " + myPathName);
+	//
+	// // String home4 = url2.getFile();
+	// // MyLog.waitHere("home4= " + home4);
+	//
+	// // find destination
+	// boolean present = checkFile(parentX + "/" + fileName);
+	// if (present) {
+	// MyLog.waitHere("skip perchè file già esistente");
+	// return true;
+	// }
+	//
+	// // find resource
+	// URL url1 = this.getClass().getResource("/" + fileName);
+	// if (url1 == null) {
+	// MyLog.waitHere("file " + fileName + " not found in jar");
+	// return false;
+	// }
+	// String home1 = url1.getPath();
+	// File file1 = new File(home1);
+	// String home11 = file1.getParent();
+	// // File outFile = new File("plugins\\ContMensili\\" + fileName);
+	// File outFile = new File(myPart2 + fileName);
+	//
+	// try {
+	//
+	// InputStream is = this.getClass()
+	// .getResourceAsStream("/" + fileName);
+	// if (is == null)
+	// MyLog.waitHere("is==null");
+	// else
+	// MyLog.waitHere("is= " + is);
+	// try {
+	// MyLog.waitHere("is.available()= " + is.available());
+	// } catch (IOException e1) {
+	// // TODO Auto-generated catch block
+	// e1.printStackTrace();
+	// }
+	//
+	// MyLog.waitHere("outfile= " + outFile);
+	// FileOutputStream fos = new FileOutputStream(outFile);
+	// while (is.available() > 0) {
+	// fos.write(is.read());
+	// }
+	// fos.close();
+	// is.close();
+	// } catch (IOException e) {
+	// MyLog.waitHere("GULP TIRA ARIA DI GUAI");
+	// }
+	//
+	// present = checkFile(outFile.getPath());
+	// if (present)
+	// MyLog.waitHere("file estratto");
+	// else
+	// MyLog.waitHere("FALLIMENTO file non estratto");
+	//
+	// return present;
+	// }
+
+	public boolean findCSV(String fileName) {
+
+		// ricerca del path in cui andare a scrivere
+		URL url3 = this.getClass().getResource("/contMensili/p10rmn_.class");
+		// File file3 = new File(url3.getPath());
+		String myString = url3.toString();
+		int start = myString.indexOf("plugins");
+		int end = myString.lastIndexOf("!");
+		String myPart1 = myString.substring(start, end);
+		end = myPart1.lastIndexOf("/");
+		String myPart2 = myPart1.substring(0, end + 1);
+		// definizione del nome del file che andremo a scrivere
+		File outFile = new File(myPart2 + fileName);
+		// Viene testata l'esistenza del file, se esiste non lo si copia, così
+		// vengono mantenute eventuali modifiche dell'utlizzatore
+		boolean present = checkFile(outFile.getPath());
+		if (present) {
+			// MyLog.waitHere("skip perchè file già esistente");
+			return true;
+		}
+		// ricerco la risorsa da copiare, perchè qui arrivo solo se la risorsa
+		// non esiste al di fuori del file jar
+		URL url1 = this.getClass().getResource("/" + fileName);
+		if (url1 == null) {
+			MyLog.waitHere("file " + fileName + " not found in jar");
+			return false;
+		}
+		try {
+			// tento la copia
+			InputStream is = this.getClass()
+					.getResourceAsStream("/" + fileName);
+			FileOutputStream fos = new FileOutputStream(outFile);
+			while (is.available() > 0) {
+				fos.write(is.read());
+			}
+			fos.close();
+			is.close();
+		} catch (IOException e) {
+			MyLog.waitHere("ERRORE ACCESSO");
+		}
+		present = checkFile(outFile.getPath());
+		if (present) {
+			// MyLog.waitHere("file estratto");
+		} else {
+			MyLog.waitHere("FALLIMENTO, FILE NON COPIATO");
+		}
+		return present;
 	}
 
 	/**
@@ -417,7 +563,7 @@ public class InputOutput {
 	 */
 	public String[][] readFile6(String fileName) {
 
-		IJ.log("readFile6= " + fileName);
+		// IJ.log("readFile6= " + fileName);
 
 		ArrayList<ArrayList<Object>> matrixTable = new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> row1 = new ArrayList<Object>();

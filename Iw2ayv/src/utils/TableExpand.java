@@ -1,9 +1,8 @@
 package utils;
 
+import ij.IJ;
+
 import java.util.ArrayList;
-
-
-
 
 public class TableExpand {
 
@@ -20,13 +19,15 @@ public class TableExpand {
 	public static int PLUGIN = 5;
 
 	public static String[][] loadTable(String path) {
-
 		ArrayList<ArrayList<String>> tableArray = new InputOutput()
 				.readFile3(path);
 		String[][] tableExpand = new InputOutput()
 				.fromArrayListToStringTable(tableArray);
+		return tableExpand;
+	}
 
-		
+	public static String[][] loadTableCSV(String path) {
+		String[][] tableExpand = new InputOutput().readFile6(path);
 		return tableExpand;
 	}
 

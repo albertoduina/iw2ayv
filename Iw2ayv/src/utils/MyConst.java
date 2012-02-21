@@ -7,8 +7,9 @@ public class MyConst {
 	public static final String SEQUENZE_FILE = "iw2ayv.txt";
 	public static final String XLS_FILE = "Result1.xls";
 	public static final String TXT_FILE = "Result1.txt";
-	public static final String CODE_FILE = "codiciNew.txt";
-	public static final String EXPAND_FILE = "expand.txt";
+	public static final String CODE_FILE = "codiciNew.csv";
+	public static final String LIMITS_FILE = "limiti.csv";
+	public static final String EXPAND_FILE = "expand.csv";
 	public static final String DEFAULT_PATH = "C:/Dati/";
 
 	public static final int HMEAN = 2;

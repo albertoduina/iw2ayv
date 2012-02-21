@@ -28,6 +28,15 @@ public class InputOutputTest {
 	}
 
 	@Test
+	public final void testFindCSV() {
+		String fileName = "codiciNew.csv";
+		boolean ok = new InputOutput().findCSV(fileName);
+
+	}
+
+	
+	
+	@Test
 	public final void testReadDoubleMatrixFromFile() {
 		String matPath = "./data/mat02.txt";
 		double[][] expected = {
