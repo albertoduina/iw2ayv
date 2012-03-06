@@ -4,9 +4,11 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.gui.Overlay;
+import ij.gui.Roi;
 import ij.io.Opener;
 import ij.process.ImageConverter;
 import ij.process.ImageProcessor;
+import ij.process.ImageStatistics;
 
 public class MyStackUtils {
 
@@ -135,21 +137,60 @@ public class MyStackUtils {
 		ImagePlus newImpStack = new ImagePlus("INPUT_STACK_float", newStack);
 		return newImpStack;
 	}
+	
+	
+	/***
+	 * Estrazione del valore dei pixel da uno stack a 16 bit e restituzione
+	 * sotto forma di matrice a 3 dimensioni a 32 bit [slice][column[[row]
+	 * 
+	 * @param imp1
+	 *            stack ImagePlus
+	 * @return pixel matrix [slices][height][width]
+	 */
+	public static double[][][] stack16ToMatrix32(ImagePlus imp1) {
+		ImageStack stack1 = imp1.getImageStack();
+		int slices1 = imp1.getStackSize();
+		int width1 = imp1.getWidth();
+		int height1 = imp1.getHeight();
+		double[][][] ret = new double[slices1][width1][height1];
+		for (int slice = 0; slice < ret.length; slice++) {
+			ImageProcessor ip1 = stack1.getProcessor(slice + 1);
+			if (imp1.getType() == ImagePlus.GRAY16) {
+				short[] sdata = (short[]) ip1.getPixels();
+				for (int i1 = 0; i1 < width1; i1++) {
+					for (int i2 = 0; i2 < height1; i2++) {
+						ret[slice][i1][i2] = sdata[i1 + i2 * width1];
+					}
+				}
+			}
+			if (imp1.getType() == ImagePlus.GRAY32) {
+				float[] sdata = (float[]) ip1.getPixels();
+				for (int i1 = 0; i1 < width1; i1++) {
+					for (int i2 = 0; i2 < height1; i2++) {
+						ret[slice][i1][i2] = sdata[i1 + i2 * width1];
+					}
+				}
+			}
 
-//	public ImagePlus extractZStack(ImagePlus imp1, int numberOfFrames,
-//			int numberOfTemporalPositions) {
-//
-//		int numberOfSlices = numberOfFrames / numberOfTemporalPositions;
-//		ImageStack zStack = new ImageStack(imp1.getWidth(), imp1.getHeight());
-//		for (int i1 = 0; i1 < numberOfSlices; i1++) {
-//		}
-//
-//		return null;
-//	}
-//
-//	public ImagePlus extractTimeStack(ImagePlus imp1, int slice) {
-//		return null;
-//	}
+		}
+		return ret;
+	}
+
+
+	// public ImagePlus extractZStack(ImagePlus imp1, int numberOfFrames,
+	// int numberOfTemporalPositions) {
+	//
+	// int numberOfSlices = numberOfFrames / numberOfTemporalPositions;
+	// ImageStack zStack = new ImageStack(imp1.getWidth(), imp1.getHeight());
+	// for (int i1 = 0; i1 < numberOfSlices; i1++) {
+	// }
+	//
+	// return null;
+	// }
+	//
+	// public ImagePlus extractTimeStack(ImagePlus imp1, int slice) {
+	// return null;
+	// }
 
 	/***
 	 * Estrae l'immagine da un mosaico. Attenzione che la prima immagine dovrà
@@ -201,7 +242,6 @@ public class MyStackUtils {
 		return imp3;
 	}
 
-	
 	/***
 	 * Esegue la comparazione di due stack, ritorna true se sono uguali
 	 * 
@@ -230,5 +270,32 @@ public class MyStackUtils {
 		return equality;
 	}
 
+	/***
+	 * Restituisce, analogamente a RoiManager le ImageStatistics della Roi per
+	 * ogni immagine dello Stack
+	 * 
+	 * @param stack
+	 * @param roi1
+	 * @return
+	 */
+	public static ImageStatistics[] stackStatistics(ImagePlus impStack, Roi roi1) {
+
+		if (impStack == null) {
+			IJ.log("imageFromStack.stack== null");
+			return null;
+		}
+		ImageStack imaStack = impStack.getImageStack();
+		if (imaStack == null) {
+			IJ.log("imageFromStack.imaStack== null");
+			return null;
+		}
+		ImageStatistics stat1[] = new ImageStatistics[imaStack.getSize()];
+		impStack.setRoi(roi1);
+		for (int i1 = 0; i1 < imaStack.getSize(); i1++) {
+			ImagePlus imp1 = imageFromStack(impStack, i1+1);
+			stat1[i1] = imp1.getStatistics();
+		}
+		return stat1;
+	}
 
 }

@@ -366,23 +366,6 @@ public class UtilAyvTest {
 
 	}
 
-	@Test
-	public final void testFirstCoil() {
-		String codeInput = "C:BA1,2;SP4";
-		// IJ.log("codice ingresso =" + codeInput);
-		String coil = UtilAyv.firstCoil(codeInput);
-		// IJ.log("codice letto =" + coil);
-		assertTrue(coil.equals("C:BA1,2"));
-	}
-
-	@Test
-	public final void testFirstCoilWithoutSemicolon() {
-		String codeInput = "C:BA1,2";
-		// IJ.log("codice ingresso =" + codeInput);
-		String coil = UtilAyv.firstCoil(codeInput);
-		// IJ.log("codice letto =" + coil);
-		assertTrue(coil.equals("C:BA1,2"));
-	}
 
 	@Test
 	public final void testFindMaximumPosition() {

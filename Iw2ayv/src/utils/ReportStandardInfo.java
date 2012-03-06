@@ -124,11 +124,8 @@ public class ReportStandardInfo {
 		String elabDate = strDay + "-" + strMonth + "-" + strYear + "_"
 				+ version;
 
-		String coil1 = ReadDicom.readDicomParameter(imp1, DICOM_COIL);
-		String coil = UtilAyv.firstCoil(coil1);
-		// IJ.log("coil1=" + coil1);
-		// IJ.log("coil=" + coil);
-
+		// String coil1 = ReadDicom.readDicomParameter(imp1, DICOM_COIL);
+		String coil = ReadDicom.getFirstCoil(imp1);
 		if (coil.equals("MISSING")) {
 			coil = new UtilAyv().kludge(path1);
 		}
@@ -208,8 +205,11 @@ public class ReportStandardInfo {
 		String strYear2 = "" + (cal.get(Calendar.YEAR));
 		String elabDate = strDay2 + "-" + strMonth2 + "-" + strYear2 + "_"
 				+ version;
-		String coil = UtilAyv.firstCoil(ReadDicom.readDicomParameter(imp1,
-				DICOM_COIL));
+		// String coil = UtilAyv.getFirstCoil(ReadDicom.readDicomParameter(imp1,
+		// DICOM_COIL));
+
+		String coil = ReadDicom.getFirstCoil(imp1);
+
 		// IJ.log("coil=="+coil);
 		if (coil.equals("MISSING")) {
 			coil = new UtilAyv().kludge(path);

@@ -11,13 +11,21 @@ import ij.*;
 import ij.gui.*;
 import ij.process.*;
 
-/** This sample ImageJ plugin generates an RGB image. */
+
+
+/***
+ * About box class, generation and display
+ * 
+ * @author Alberto Duina - SPEDALI CIVILI DI BRESCIA - Servizio di Fisica
+ *         Sanitaria
+ *
+ */
 public class AboutBox {
 	static final int SMALL_FONT = 10, MEDIUM_FONT = 14, LARGE_FONT = 18;
 
 	public void about(String arg, Class<?> myClass) {
 
-		int lines = 6;
+		int lines = 7;
 
 		String[] text = new String[lines];
 		text[0] = arg;
@@ -26,6 +34,7 @@ public class AboutBox {
 		text[3] = "©2007-2012  Alberto Duina";
 		text[4] = "albertoduina@virgilio.it";
 		text[5] = "VERSIONE " + myImplementationVersion(myClass);
+		text[6] = "VERSIONE libreria iw2ayv " + myImplementationVersion(this.getClass());
 
 		int w = 150, h = 150;
 		ImageProcessor ip = new ColorProcessor(w, h);
@@ -94,10 +103,12 @@ public class AboutBox {
 		ip.drawString(text[4], x(text[4], ip, max), y);
 		y += 18;
 		ip.drawString(text[5], x(text[5], ip, max), y);
+		y += 18;
+		ip.drawString(text[6], x(text[6], ip, max), y);
 		ImageWindow.centerNextImage();
 
 		new ImagePlus("Controlli Mensili", ip).show();
-		IJ.wait(2000);
+		IJ.wait(2500);
 		close();
 
 	}
@@ -182,6 +193,9 @@ public class AboutBox {
 		ip.drawString(text[4], x(text[4], ip, max), y);
 		y += 18;
 		ip.drawString(text[5], x(text[5], ip, max), y);
+		ImageWindow.centerNextImage();
+		y += 18;
+		ip.drawString(text[6], x(text[6], ip, max), y);
 		ImageWindow.centerNextImage();
 
 		new ImagePlus("TITOLO10", ip).show();

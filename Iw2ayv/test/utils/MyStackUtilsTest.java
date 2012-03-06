@@ -5,7 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.Roi;
 import ij.io.Opener;
+import ij.process.ImageStatistics;
 
 import org.junit.After;
 import org.junit.Before;
@@ -77,6 +79,7 @@ public class MyStackUtilsTest {
 		MyLog.waitHere();
 
 	}
+
 	@Test
 	public final void testCompareStacks() {
 		String[] list1 = InputOutput
@@ -91,6 +94,27 @@ public class MyStackUtilsTest {
 		imp2 = MyStackUtils.imagesToStack16(list1);
 		boolean result2 = MyStackUtils.compareStacks(imp1, imp2);
 		assertFalse("Stacks must differ!", result2);
+	}
+
+	@Test
+	public final void testStackStatistics() {
+		String[] list1 = InputOutput
+				.readStringArrayFromFile("./data/list1.txt");
+		ImagePlus imp1 = MyStackUtils.imagesToStack16(list1);
+		int len = imp1.getImageStackSize();
+		assertEquals(16, len);
+		// --- stack ready
+
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
+		imp1.setRoi(width / 3, height / 3, width / 3, height / 3);
+		Roi roi1 = imp1.getRoi();
+
+		ImageStatistics[] stat1 = MyStackUtils.stackStatistics(imp1, roi1);
+
+		for (int i1 = 0; i1 < stat1.length; i1++) {
+			IJ.log("slice= " + (i1+1) + " mean= " + stat1[i1].mean);
+		}
 	}
 
 }

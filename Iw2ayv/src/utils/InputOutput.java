@@ -995,9 +995,8 @@ public class InputOutput {
 	}
 
 	/**
-	 * 
-	 * 
-	 * 
+	 * Viene utilizzato da FFTJ
+	 *  
 	 * @param mat1
 	 * @param mat2
 	 * @param index
@@ -1006,7 +1005,7 @@ public class InputOutput {
 	// // NB: rinominato temporaneamente per vedere se lo ho utilizzato da
 	// qualche parte od era un progetto orfano
 
-	public static double[][][] addMatrix2(double[][][] mat1, double[][] mat2,
+	public static double[][][] addMatrix(double[][][] mat1, double[][] mat2,
 			int index) {
 		int slices1 = mat1.length;
 		int rows1 = mat1[0].length;

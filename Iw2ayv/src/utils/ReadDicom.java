@@ -3,9 +3,14 @@ package utils;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
+import ij.io.Opener;
+import ij.plugin.DICOM;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class ReadDicom {
@@ -79,8 +84,7 @@ public class ReadDicom {
 		}
 	}
 
-	public static String readDicomParameter(String header,
-			String userInput) {
+	public static String readDicomParameter(String header, String userInput) {
 		// N.B. userInput => 9 characs [group,element] in format: xxxx,xxxx (es:
 		// "0020,0013")
 		// boolean bAbort;
@@ -258,4 +262,64 @@ public class ReadDicom {
 		return pixelsDataFound;
 	}
 
+	/***
+	 * Testa se è un file dicom ed è un immagine visualizzabile
+	 * 
+	 * @param fileName1
+	 * @return
+	 */
+	public static boolean isDicomImage(String fileName1) {
+		// IJ.redirectErrorMessages();
+		int type = (new Opener()).getFileType(fileName1);
+		if (type != Opener.DICOM) {
+			return false;
+		}
+		ImagePlus imp1 = new Opener().openImage(fileName1);
+		if (imp1 == null) {
+			return false;
+		}
+		String info = new DICOM().getInfo(fileName1);
+		if (info == null || info.length() == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	
+	/***
+	 * Legge il codice dall'header Dicom
+	 * @param imp1
+	 * @return
+	 */
+	public static String getCode(ImagePlus imp1) {
+
+		String seriesDescription = ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_SERIES_DESCRIPTION);
+		String codice = "";
+		if (seriesDescription.length() >= 5) {
+			codice = seriesDescription.substring(0, 5).trim();
+		}
+		return codice;
+	}
+	
+
+
+	public static String getFirstCoil(ImagePlus imp1) {
+			
+		String total = ReadDicom.readDicomParameter(
+				imp1, MyConst.DICOM_COIL);
+		int i1 = total.indexOf(";");
+		String coil = "";
+		if (i1 == -1) {
+			coil = total;
+		} else {
+			coil = total.substring(0, i1);
+		}
+		return coil;
+	}
+
+	
+	
+	
 }

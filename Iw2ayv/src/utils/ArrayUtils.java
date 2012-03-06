@@ -2,6 +2,14 @@ package utils;
 
 import java.util.List;
 
+/***
+ * Array utilities
+ * 
+ * @author Alberto Duina - SPEDALI CIVILI DI BRESCIA - Servizio di Fisica
+ *         Sanitaria
+ *
+ */
+
 public class ArrayUtils {
 	/**
 	 * Conversion from arrayList<String> to String[]

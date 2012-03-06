@@ -6,6 +6,13 @@ import ij.IJ;
 import java.awt.Frame;
 
 
+/***
+ * Button messages class
+ * 
+ * @author Alberto Duina - SPEDALI CIVILI DI BRESCIA - Servizio di Fisica
+ *         Sanitaria
+ *
+ */
 
 public class ButtonMessages {
 

@@ -78,7 +78,9 @@ public class UtilAyv {
 				+ Thread.currentThread().getStackTrace()[2].getMethodName());
 		new WaitForUserDialog("Do something, then click OK.").show();
 	}
-
+	
+	
+	
 	/**
 	 * legge un double da una stringa
 	 * 
@@ -1635,17 +1637,20 @@ public class UtilAyv {
 		location += len;
 		return new String(buf);
 	}
+	
+	
 
-	public static String firstCoil(String total) {
-		int i1 = total.indexOf(";");
-		String out = "";
-		if (i1 == -1) {
-			out = total;
-		} else {
-			out = total.substring(0, i1);
-		}
-		return out;
-	}
+
+//	public static String getFirstCoil(String total) {
+//		int i1 = total.indexOf(";");
+//		String out = "";
+//		if (i1 == -1) {
+//			out = total;
+//		} else {
+//			out = total.substring(0, i1);
+//		}
+//		return out;
+//	}
 
 	public static boolean isInfinite(Number number) {
 		if (number instanceof Double && ((Double) number).isInfinite())
