@@ -14,23 +14,23 @@ import ij.IJ;
  */
 public class ReadVersion {
 
-	public static void readVersionInfoInManifestDemo() {
-		Package[] localPackages = Package.getPackages();
-		String[] packageNames = new String[localPackages.length];
-
-		for (int i1 = 0; i1 < localPackages.length; i1++) {
-			packageNames[i1] = localPackages[i1].toString();
-		}
-
-		for (int i1 = 0; i1 < localPackages.length; i1++) {
-			if ((!packageNames[i1].contains("Java Platform API"))
-					&& (!packageNames[i1].contains("ij"))) {
-				IJ.log(packageNames[i1]);
-				IJ.log(localPackages[i1].getImplementationVersion());
-				MyLog.waitHere();
-			}
-		}
-	}
+	// public static void readVersionInfoInManifestDemo() {
+	// Package[] localPackages = Package.getPackages();
+	// String[] packageNames = new String[localPackages.length];
+	//
+	// for (int i1 = 0; i1 < localPackages.length; i1++) {
+	// packageNames[i1] = localPackages[i1].toString();
+	// }
+	//
+	// for (int i1 = 0; i1 < localPackages.length; i1++) {
+	// if ((!packageNames[i1].contains("Java Platform API"))
+	// && (!packageNames[i1].contains("ij"))) {
+	// IJ.log(packageNames[i1]);
+	// IJ.log(localPackages[i1].getImplementationVersion());
+	// MyLog.waitHere();
+	// }
+	// }
+	// }
 
 	public static String readVersionInfoInManifest(String name1) {
 		Package[] localPackages = Package.getPackages();
