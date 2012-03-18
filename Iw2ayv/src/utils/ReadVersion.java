@@ -1,5 +1,10 @@
 package utils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
+
 import ij.IJ;
 
 /**
@@ -52,4 +57,39 @@ public class ReadVersion {
 		return out;
 	}
 
+	public String readDateInfoInManifest(String name1) {
+		
+		
+		String[] result = InputOutput.readStringArrayFromFile("/META-INF/MANIFEST.MF");
+		MyLog.logVector(result, "result");
+
+//		try {
+//			InputStream stream = getClass().getResourceAsStream(
+//					"/META-INF/MANIFEST.MF");
+//			if (stream == null) {
+//				System.out.println("Couldn't find manifest.");
+//				return null;
+//			}
+//			
+//			
+//
+//			Manifest manifest = new Manifest(stream);
+//			MyLog.waitHere("manifest= "+manifest);
+//			Attributes attributes = manifest.getMainAttributes();
+//			String impTitle = attributes.getValue("Implementation-Title");
+//			MyLog.waitHere(impTitle);
+//			String impVersion = attributes.getValue("Implementation-Version");
+//			MyLog.waitHere(impVersion);
+//			String impBuildDate = attributes.getValue("Built-Date");
+//			MyLog.waitHere(impBuildDate);
+//			String impBuiltBy = attributes.getValue("Built-By");
+//			MyLog.waitHere(impBuiltBy);
+//
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+
+		return null;
+	}
 }

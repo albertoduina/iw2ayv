@@ -263,4 +263,20 @@ public class MyFwhm {
 		return x2;
 	}
 
+	/***
+	 * 
+	 * @param x0
+	 * @param y0
+	 * @param x1
+	 * @param y1
+	 * @return
+	 */
+	public static double lengthCalculation(double x0, double y0, double x1,
+			double y1) {
+
+		double len = Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+
+		return len;
+	}
+
 }
