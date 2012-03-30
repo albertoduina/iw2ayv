@@ -9,15 +9,15 @@ import java.util.Calendar;
 
 public class ReportStandardInfo {
 
-	private final static String DICOM_SERIES_DESCRIPTION = "0008,103E";
-
-	private final static String DICOM_ACQUISITION_DATE = "0008,0022";
-
-	private final static String DICOM_STATION_NAME = "0008,1010";
-
-	private final static String DICOM_PATIENT_NAME = "0010,0010";
-
-	private final static String DICOM_COIL = "0051,100F";
+	// private final static String DICOM_SERIES_DESCRIPTION = "0008,103E";
+	//
+	// private final static String DICOM_ACQUISITION_DATE = "0008,0022";
+	//
+	// private final static String DICOM_STATION_NAME = "0008,1010";
+	//
+	// private final static String DICOM_PATIENT_NAME = "0010,0010";
+	//
+	// private final static String DICOM_COIL = "0051,100F";
 
 	private static String[] simpleHeader = { "none", "none", "none", "none",
 			"none", "none", "<END>" };
@@ -77,7 +77,8 @@ public class ReportStandardInfo {
 		if (InputOutput.isCode(aux3, tabCodici))
 			codice2 = aux3.substring(0, 5).trim();
 		else {
-			aux3 = ReadDicom.readDicomParameter(imp1, DICOM_SERIES_DESCRIPTION);
+			aux3 = ReadDicom.readDicomParameter(imp1,
+					MyConst.DICOM_SERIES_DESCRIPTION);
 			codice2 = aux3.substring(0, 5).trim();
 		}
 		String codice = "";
@@ -87,16 +88,20 @@ public class ReportStandardInfo {
 			codice = codice2;
 
 		String stationName = ReadDicom.readDicomParameter(imp1,
-				DICOM_STATION_NAME);
-		String patName = ReadDicom.readDicomParameter(imp1, DICOM_PATIENT_NAME);
+				MyConst.DICOM_STATION_NAME);
+		String patName = ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_PATIENT_NAME);
 		String[] mesi = { "gen", "feb", "mar", "apr", "mag", "giu", "lug",
 				"ago", "set", "ott", "nov", "dic" };
 		// data acquisizione
 		String strDay = "none";
 		String strMonth = "none";
 		String strYear = "none";
-		String acqDate2 = ReadDicom.readDicomParameter(imp1,
-				DICOM_ACQUISITION_DATE);
+		// String acqDate2 = ReadDicom.readDicomParameter(imp1,
+		// MyConst.DICOM_ACQUISITION_DATE);
+
+		String acqDate2 = readDate(imp1);
+
 		strDay = acqDate2.substring(6).trim();
 		strMonth = mesi[ReadDicom.readInt(acqDate2.substring(4, 6).trim()) - 1];
 		strYear = acqDate2.substring(0, 4).trim();
@@ -142,6 +147,22 @@ public class ReportStandardInfo {
 	}
 
 	/**
+	 * Lettura di AcqDate di una immagine (Siemens + Philips)
+	 * 
+	 * @param imp1
+	 *            ImagePlus immagine
+	 * @return acqDate
+	 */
+	public static String readDate(ImagePlus imp1) {
+		String acqTime = ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_ACQUISITION_DATE);
+		if (acqTime.equals("MISSING"))
+			acqTime = ReadDicom.readDicomParameter(imp1,
+					MyConst.DICOM_IMAGE_DATE);
+		return acqTime;
+	}
+
+	/**
 	 * legge un gruppo di informazioni che verranno inserite nella ResultsTable
 	 * 
 	 * @param strRiga
@@ -174,19 +195,24 @@ public class ReportStandardInfo {
 			codice = aux3.substring(0, 5).trim();
 		else {
 			// or: the code is in the dicomSeriesDescription
-			aux3 = ReadDicom.readDicomParameter(imp1, DICOM_SERIES_DESCRIPTION);
+			aux3 = ReadDicom.readDicomParameter(imp1,
+					MyConst.DICOM_SERIES_DESCRIPTION);
 
 			codice = aux3.substring(0, 5).trim();
 		}
 
 		String stationName = ReadDicom.readDicomParameter(imp1,
-				DICOM_STATION_NAME);
-		String patName = ReadDicom.readDicomParameter(imp1, DICOM_PATIENT_NAME);
+				MyConst.DICOM_STATION_NAME);
+		String patName = ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_PATIENT_NAME);
 		String[] mesi = { "gen", "feb", "mar", "apr", "mag", "giu", "lug",
 				"ago", "set", "ott", "nov", "dic" };
 		// acquisitionDate
-		String acqDate2 = ReadDicom.readDicomParameter(imp1,
-				DICOM_ACQUISITION_DATE);
+		// String acqDate2 = ReadDicom.readDicomParameter(imp1,
+		// MyConst.DICOM_ACQUISITION_DATE);
+
+		String acqDate2 = readDate(imp1);
+
 		String strDay = acqDate2.substring(6).trim();
 		String strMonth = mesi[ReadDicom.readInt(acqDate2.substring(4, 6)
 				.trim()) - 1];
@@ -222,6 +248,7 @@ public class ReportStandardInfo {
 		simpleHeader[3] = acqDate;
 		simpleHeader[4] = elabDate;
 		simpleHeader[5] = coil;
+		MyLog.logVector(simpleHeader, "simpleHeader");
 
 		return (simpleHeader);
 	}
