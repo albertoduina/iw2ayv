@@ -642,7 +642,7 @@ public class InputOutput {
 		try {
 			URL url1 = this.getClass().getResource("/" + fileName);
 			if (url1 == null) {
-				IJ.log("readFile6: file " + fileName + " not visible or null");
+				IJ.log("readFile7: file " + fileName + " not visible or null");
 				return null;
 			}
 			InputStream is = getClass().getResourceAsStream("/" + fileName);
@@ -664,7 +664,7 @@ public class InputOutput {
 				for (int i1 = 0; i1 < splitted.length; i1++) {
 					if (i1 == 1)
 						continue;
-					row.add(splitted[i1]);
+					row.add(splitted[i1].trim());
 				}
 				matrixTable.add(row);
 			}
