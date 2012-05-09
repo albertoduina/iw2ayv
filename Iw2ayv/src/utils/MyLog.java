@@ -3,6 +3,10 @@ package utils;
 import ij.IJ;
 import ij.gui.WaitForUserDialog;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MyLog {
@@ -319,7 +323,7 @@ public class MyLog {
 	public static void waitMessage(String str) {
 		new WaitForUserDialog(str).show();
 	}
-	
+
 	public static void waitHere(String str) {
 		new WaitForUserDialog("file="
 				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
@@ -336,7 +340,6 @@ public class MyLog {
 				.show();
 	}
 
-
 	public static void waitThere(String str) {
 		new WaitForUserDialog("file="
 				+ Thread.currentThread().getStackTrace()[3].getFileName() + " "
@@ -345,7 +348,6 @@ public class MyLog {
 				+ "\n \n" + str).show();
 	}
 
-	
 	public static void caller() {
 		// dovrebbe ricavare dallo stackTrace l'albero delle chiamate SLOW but
 		// USEFUL!
@@ -388,5 +390,39 @@ public class MyLog {
 							.getMethodName() + " " + str);
 		}
 		IJ.log("___________________________________________");
+	}
+
+	/***
+	 * Append a line to a log file
+	 * 
+	 * @param path
+	 * @param linea
+	 */
+	public static void appendLog(String path, String linea) {
+
+		BufferedWriter out;
+		try {
+			out = new BufferedWriter(new FileWriter(path, true));
+			out.write(linea);
+			out.newLine();
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	/***
+	 * Initialize a log file
+	 * 
+	 * @param path
+	 */
+	public static void initLog(String path) {
+		File f1 = new File(path);
+		if (f1.exists()) {
+			f1.delete();
+		}
+		appendLog(path, "---- INIZIO ---------");
 	}
 }

@@ -189,16 +189,17 @@ public class ReportStandardInfo {
 		// IJ.log("getSimpleStandardInfo.aux3=" + aux3);
 		String codice;
 		// 2 possibilities: the first 5 letters of filename are the CODE or
-		if (InputOutput.isCode(aux3.substring(0, 5).trim(), tabCodici))
+		// if (InputOutput.isCode(aux3.substring(0, 5).trim(), tabCodici))
+		if (InputOutput.isCode(UtilAyv.getFiveLetters(aux3).trim(), tabCodici))
 			// main possibility: the first 5 letters of the filename are a
 			// recognized code (in codici.txt)
-			codice = aux3.substring(0, 5).trim();
+			codice = UtilAyv.getFiveLetters(aux3).trim();
 		else {
 			// or: the code is in the dicomSeriesDescription
 			aux3 = ReadDicom.readDicomParameter(imp1,
 					MyConst.DICOM_SERIES_DESCRIPTION);
 
-			codice = aux3.substring(0, 5).trim();
+			codice = UtilAyv.getFiveLetters(aux3).trim();
 		}
 
 		String stationName = ReadDicom.readDicomParameter(imp1,

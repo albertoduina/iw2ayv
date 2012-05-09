@@ -26,9 +26,11 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -78,9 +80,7 @@ public class UtilAyv {
 				+ Thread.currentThread().getStackTrace()[2].getMethodName());
 		new WaitForUserDialog("Do something, then click OK.").show();
 	}
-	
-	
-	
+
 	/**
 	 * legge un double da una stringa
 	 * 
@@ -221,6 +221,17 @@ public class UtilAyv {
 		String params = "Subtract create 32-bit";
 		ImagePlus imp3 = ic1.run(params, imp1, imp2);
 		return imp3;
+	}
+
+	public static String getFiveLetters(String codice1) {
+
+		String codice;
+		if (codice1.length() >= 5) {
+			codice = codice1.substring(0, 5).trim();
+		} else {
+			codice = "_xxx_";
+		}
+		return codice;
 	}
 
 	/**
@@ -1637,20 +1648,17 @@ public class UtilAyv {
 		location += len;
 		return new String(buf);
 	}
-	
-	
 
-
-//	public static String getFirstCoil(String total) {
-//		int i1 = total.indexOf(";");
-//		String out = "";
-//		if (i1 == -1) {
-//			out = total;
-//		} else {
-//			out = total.substring(0, i1);
-//		}
-//		return out;
-//	}
+	// public static String getFirstCoil(String total) {
+	// int i1 = total.indexOf(";");
+	// String out = "";
+	// if (i1 == -1) {
+	// out = total;
+	// } else {
+	// out = total.substring(0, i1);
+	// }
+	// return out;
+	// }
 
 	public static boolean isInfinite(Number number) {
 		if (number instanceof Double && ((Double) number).isInfinite())
@@ -1690,7 +1698,7 @@ public class UtilAyv {
 
 			userSelection = ButtonMessages.ModelessMsg("IL VALORE " + title
 					+ "= " + signal + " E'AL DI FUORI DAI LIMITI " + low
-					+ " - " + high , "SUCCESSIVA", "VISUALIZZA", "CONTINUA");
+					+ " - " + high, "SUCCESSIVA", "VISUALIZZA", "CONTINUA");
 			return userSelection;
 		} else
 			return 0;

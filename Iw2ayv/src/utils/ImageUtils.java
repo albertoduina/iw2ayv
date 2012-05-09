@@ -53,27 +53,30 @@ public class ImageUtils {
 		return classiSimulata;
 	}
 
-	public static int[][] generaSimulata12classi(int xCenterRoi,
-			int yCenterRoi, int latoRoi, ImagePlus imp1, boolean step,
-			boolean verbose, boolean test) {
+	// la routine seguente era utilizzata da p5rmn ed è stato uniformato agli
+	// altri, salvando la simulata, per cui non serve più
 
-		if (imp1 == null) {
-			MyLog.waitHere("generaSimulata12classi imp1==null");
-			return (null);
-		}
-
-		ImagePlus impSimulata = simulata12Classi(xCenterRoi, yCenterRoi,
-				latoRoi, imp1);
-		if (verbose) {
-			UtilAyv.showImageMaximized(impSimulata);
-			IJ.run("Enhance Contrast", "saturated=0.5");
-		}
-		if (step)
-			ButtonMessages.ModelessMsg("Immagine Simulata", "CONTINUA");
-		int[][] classiSimulata = numeroPixelsClassi(impSimulata);
-
-		return classiSimulata;
-	}
+	// public static int[][] generaSimulata12classi(int xCenterRoi,
+	// int yCenterRoi, int latoRoi, ImagePlus imp1, boolean step,
+	// boolean verbose, boolean test) {
+	//
+	// if (imp1 == null) {
+	// MyLog.waitHere("generaSimulata12classi imp1==null");
+	// return (null);
+	// }
+	//
+	// ImagePlus impSimulata = simulata12Classi(xCenterRoi, yCenterRoi,
+	// latoRoi, imp1);
+	// if (verbose) {
+	// UtilAyv.showImageMaximized(impSimulata);
+	// IJ.run("Enhance Contrast", "saturated=0.5");
+	// }
+	// if (step)
+	// ButtonMessages.ModelessMsg("Immagine Simulata", "CONTINUA");
+	// int[][] classiSimulata = numeroPixelsClassi(impSimulata);
+	//
+	// return classiSimulata;
+	// }
 
 	/**
 	 * Genera l'immagine simulata a 11+1 livelli
