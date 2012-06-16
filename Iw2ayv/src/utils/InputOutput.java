@@ -7,6 +7,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -193,6 +194,26 @@ public class InputOutput {
 			MyLog.waitHere("FALLIMENTO, FILE NON COPIATO");
 		}
 		return present;
+	}
+
+	/**
+	 * Copied from www.coderanch.com/t/278095/Streams/java/Wildcard-delete-File-Object
+	 * Author Edwin Dalorzo
+	 */
+	public static void deleteMultipleFiles(File dir, final String ext) {
+
+		File[] toBeDeleted = dir.listFiles(new FileFilter() {
+			public boolean accept(File theFile) {
+				if (theFile.isFile()) {
+					return theFile.getName().endsWith("." + ext);
+				}
+				return false;
+			}
+		});
+
+		for (File deletableFile : toBeDeleted) {
+			deletableFile.delete();
+		}
 	}
 
 	/**
@@ -996,7 +1017,7 @@ public class InputOutput {
 
 	/**
 	 * Viene utilizzato da FFTJ
-	 *  
+	 * 
 	 * @param mat1
 	 * @param mat2
 	 * @param index

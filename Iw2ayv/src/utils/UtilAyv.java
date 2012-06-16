@@ -719,7 +719,7 @@ public class UtilAyv {
 		win.setExtendedState(ImageWindow.MAXIMIZED_BOTH);
 	}
 
-	public static void showImageMaximized(ImagePlus imp) {
+	public static ImageWindow  showImageMaximized(ImagePlus imp) {
 		imp.show();
 		ImageWindow win = IJ.getImage().getWindow();
 		win.setBounds(win.getMaximumBounds());
@@ -729,6 +729,7 @@ public class UtilAyv {
 		win.maximize();
 		IJ.wait(20);
 		win.maximize();
+		return win;
 	}
 
 	/**

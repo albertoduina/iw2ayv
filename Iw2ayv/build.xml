@@ -105,7 +105,7 @@
 		<copy file="./MANIFEST.MF" todir="${data}" />
 		<copy file="./MANIFEST.MF" todir="${binUtils}" />
 
-		<jar destfile="${dist}/iw2ayv.jar" manifest="MANIFEST.MF">
+		<jar destfile="${dist}/iw2ayv_${build.number}.jar" manifest="MANIFEST.MF">
 			<fileset dir="${output}" />
 			<!--fileset dir="${src}"/-->
 			<!--fileset dir="${test}"/-->
@@ -143,20 +143,20 @@
 		<echo message="Eseguo cond_INS" />
 		<delete dir="${productDirINSIDE}/iw2ayv" />
 		<mkdir dir="${productDirINSIDE}/iw2ayv" />
-		<copy file="${dist}/iw2ayv.jar" todir="${productDirINSIDE}/iw2ayv" />
+		<copy file="${dist}/iw2ayv_${build.number}.jar" todir="${productDirINSIDE}/iw2ayv" />
 	</target>
 	<target name="cond_OLD" depends="init" if="old">
 		<echo message="Eseguo cond_OLD" />
 		<delete dir="${productDirOLD}/iw2ayv" />
 		<mkdir dir="${productDirOLD}/iw2ayv" />
-		<copy file="${dist}/iw2ayv.jar" todir="${productDirOLD}/iw2ayv" />
+		<copy file="${dist}/iw2ayv_${build.number}.jar" todir="${productDirOLD}/iw2ayv" />
 		<copy file="${pathImageJ}" todir="${productDirOLD}\.." />
 	</target>
 	<target name="cond_WIN7" depends="init" if="win7">
 		<echo message="Eseguo cond_WIN7" />
 		<delete dir="${productDirWIN7}/iw2ayv" />
 		<mkdir dir="${productDirWIN7}/iw2ayv" />
-		<copy file="${dist}/iw2ayv.jar" todir="${productDirWIN7}/iw2ayv" />
+		<copy file="${dist}/iw2ayv_${build.number}.jar" todir="${productDirWIN7}/iw2ayv" />
 		<copy file="${pathImageJ}" todir="${productDirWIN7}\.." />
 	</target>
 
