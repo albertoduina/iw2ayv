@@ -224,7 +224,39 @@ public class MyLog {
 		}
 	}
 
+	public static void logVector(short vect[], String nome) {
+		String stri = "";
+		if (vect == null) {
+			IJ.log("Warning vector " + nome + " = null");
+		} else {
+
+			IJ.log("----------- " + nome + "  [ " + vect.length
+					+ " ] -----------");
+			for (int i1 = 0; i1 < vect.length; i1++) {
+				stri = stri + vect[i1] + ",  ";
+			}
+			IJ.log(stri);
+			IJ.log("---------------------------------------------");
+		}
+	}
+
 	public static void logVector(int vect[], String nome) {
+		String stri = "";
+		if (vect == null) {
+			IJ.log("Warning vector " + nome + " = null");
+		} else {
+
+			IJ.log("----------- " + nome + "  [ " + vect.length
+					+ " ] -----------");
+			for (int i1 = 0; i1 < vect.length; i1++) {
+				stri = stri + vect[i1] + ",  ";
+			}
+			IJ.log(stri);
+			IJ.log("---------------------------------------------");
+		}
+	}
+
+	public static void logVector(byte vect[], String nome) {
 		String stri = "";
 		if (vect == null) {
 			IJ.log("Warning vector " + nome + " = null");
@@ -250,6 +282,25 @@ public class MyLog {
 
 			for (int i1 = 0; i1 < vect.length; i1++) {
 				stri = stri + vect[i1] + ",  ";
+			}
+			IJ.log(stri);
+		}
+		IJ.log("---------------------------------------------");
+	}
+
+	public static void logVector(boolean vect[], String nome) {
+		String stri = "";
+		if (vect == null) {
+			IJ.log("Warning vector " + nome + " = null");
+		} else {
+			IJ.log("----------- " + nome + "  [ " + vect.length
+					+ " ] -----------");
+
+			for (int i1 = 0; i1 < vect.length; i1++) {
+				if (vect[i1])
+					stri = stri + "T, ";
+				else
+					stri = stri + "F, ";
 			}
 			IJ.log(stri);
 		}

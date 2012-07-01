@@ -26,4 +26,24 @@ public class ArrayUtils {
 		}
 		return outStrArr;
 	}
+
+	/**
+	 * Conversion from arrayList<Integer> to int[]
+	 * 
+	 * @param inArrayList
+	 *            arrayList input
+	 * @return String[] output
+	 */
+	public static int[] arrayListToArrayInt(List<Integer> inArrayList) {
+		int[] outIntArr = new int[inArrayList.size()];
+		int i1=0;
+		for (Integer n : inArrayList) {
+			outIntArr[i1++] = n;
+		}
+		return outIntArr;
+	}
+
+
+
+
 }

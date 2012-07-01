@@ -723,11 +723,11 @@ public class UtilAyv {
 		imp.show();
 		ImageWindow win = IJ.getImage().getWindow();
 		win.setBounds(win.getMaximumBounds());
-		IJ.wait(20);
+		IJ.wait(40);
 		win.maximize();
-		IJ.wait(20);
+		IJ.wait(40);
 		win.maximize();
-		IJ.wait(20);
+		IJ.wait(40);
 		win.maximize();
 		return win;
 	}

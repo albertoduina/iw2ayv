@@ -74,7 +74,7 @@ public class ReadDicom {
 			}
 		} else {
 			String aux1 = (String) imp.getProperty("Info");
-			IJ.log("aux1= " + aux1);
+			MyLog.waitHere("aux1= " + aux1);
 
 			IJ.log("" + imp.getTitle());
 

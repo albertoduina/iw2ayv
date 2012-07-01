@@ -14,15 +14,28 @@ public class ReadAscconv {
 
 	public String read(String path1) {
 		String blob = "";
+		int index1 = 0;
+		int index2 = 0;
+		int fromIndex = 0;
+
 		try {
 			FileInputStream fis = new FileInputStream(path1);
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			int size = bis.available();
 			String header = getString(bis, size - 20);
-			int fromIndex = 1;
-			int index1 = header.indexOf("### ASCCONV BEGIN", fromIndex);
-			int index2 = header.indexOf("ASCCONV END ###", fromIndex + 1);
-//			IJ.log("indexBegin= " + index1 + "  indexEnd= " + index2);
+			fromIndex = 1;
+			index1 = header.indexOf("### ASCCONV BEGIN", fromIndex);
+			// if (index1 > 0) {
+			// MyLog.waitHere("trovato begin in "+index1);
+			// }
+
+			index2 = header.indexOf("ASCCONV END ###", index1 + 1);
+
+			// if (index1 > 0) {
+			// MyLog.waitHere("trovato end in "+index2);
+			// }
+
+			// IJ.log("indexBegin= " + index1 + "  indexEnd= " + index2);
 
 			while ((index1 > 0) && (index2 > 0)) {
 				blob = header.substring(index1, index2 + 19);
@@ -43,7 +56,7 @@ public class ReadAscconv {
 			bis = null; // BufferedInputStream.close() erst ab Java 1.2
 						// definiert
 		}
-//		IJ.log(blob);
+		// IJ.log(blob);
 		return blob;
 	}
 
@@ -58,16 +71,16 @@ public class ReadAscconv {
 		location += len;
 		return new String(buf);
 	}
-	
+
 	public static String readAscParameter(String header, String userInput) {
-		String attribute="????";
+		String attribute = "????";
 		if (header != null) {
 			int idx1 = header.indexOf(userInput);
 			int idx2 = header.indexOf("=", idx1);
 			int idx3 = header.indexOf("\n", idx2);
-			if (idx1 >= 0  && idx3 >= 0) {
+			if (idx1 >= 0 && idx3 >= 0) {
 				try {
-					attribute = header.substring(idx2+1, idx3);
+					attribute = header.substring(idx2 + 1, idx3);
 					attribute = attribute.trim();
 					return (attribute);
 				} catch (Throwable e) { // Anything else
@@ -81,6 +94,60 @@ public class ReadAscconv {
 		} else {
 			return (null);
 		}
+	}
+
+	public static String readAscParameterContains(String header,
+			String[] userInput) {
+		String attribute = "????";
+		if (header != null) {
+			boolean found = false;
+			String delims = "\n";
+			String[] tokens = header.split(delims);
+			String token = "  ";
+			boolean ok2 = false;
+
+			for (int i1 = 0; i1 < tokens.length; i1++) {
+				// MyLog.waitHere("tokens " + i1 + " = " + tokens[i1]);
+				token = tokens[i1].trim();
+				boolean ok = true;
+				// boolean debug = false;
+				// if (token
+				// .equals("sCoilSelectMeas.aRxCoilSelectData[0].asList[0].sCoilElementID.tCoilID	 = 	\"\"HeadNeck_20\"\""))
+				// {
+				// debug = true;
+				// }
+				//
+				// if (debug)
+				// IJ.log("token= " + token);
+				for (int i2 = 0; i2 < userInput.length; i2++) {
+					String test = userInput[i2];
+					// if (debug)
+					// IJ.log("testo contro " + test + " risulta= "
+					// + token.indexOf(test));
+					if ((token.indexOf(test)) < 0)
+						ok = false;
+				}
+				if (ok) {
+					int idx2 = token.indexOf("=");
+					// IJ.log("token= " + token + " idx2= " + idx2);
+					try {
+						attribute = token.substring(idx2 + 1);
+						attribute = attribute.trim();
+						ok2 = true;
+						// IJ.log("trovato= " + attribute);
+						return (attribute);
+					} catch (Throwable e) { // Anything else
+						MyLog.here("value PROBLEM");
+						ok2 = false;
+						return (attribute);
+					}
+
+				}
+
+			}
+		} else
+			attribute = "MISSING";
+		return (attribute);
 	}
 
 	/**
@@ -134,6 +201,5 @@ public class ReadAscconv {
 		}
 		return x;
 	}
-
 
 }

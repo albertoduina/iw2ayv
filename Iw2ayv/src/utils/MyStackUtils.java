@@ -137,8 +137,7 @@ public class MyStackUtils {
 		ImagePlus newImpStack = new ImagePlus("INPUT_STACK_float", newStack);
 		return newImpStack;
 	}
-	
-	
+
 	/***
 	 * Estrazione del valore dei pixel da uno stack a 16 bit e restituzione
 	 * sotto forma di matrice a 3 dimensioni a 32 bit [slice][column[[row]
@@ -176,7 +175,6 @@ public class MyStackUtils {
 		return ret;
 	}
 
-
 	// public ImagePlus extractZStack(ImagePlus imp1, int numberOfFrames,
 	// int numberOfTemporalPositions) {
 	//
@@ -194,54 +192,83 @@ public class MyStackUtils {
 
 	/***
 	 * Estrae l'immagine da un mosaico. Attenzione che la prima immagine dovrà
-	 * essere la 1
+	 * essere la 0
 	 * 
 	 * @param imp1
 	 *            Immagine mosaic
-	 * @param num
-	 *            Numero della immagine da estrarre, si parte da 1 in alto a sx
+	 * @param num2
+	 *            Numero della immagine da estrarre, si parte da 0 in alto a sx
 	 *            e ci si muove prima verso destra
 	 * @return Immgine estratta
 	 */
 	public static ImagePlus imageFromMosaic(ImagePlus imp1, int num) {
+
 		int step = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
 				MyConst.DICOM_PHASE_ENCODING_STEPS)); // 64
+
 		int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
 				MyConst.DICOM_COLUMNS)); // 384
+
 		int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
 				MyConst.DICOM_ROWS)); // 384
+
 		int cropWidth = step;
 		int cropHeight = step;
-		IJ.log("cropWidth= " + cropWidth + " cropHeight= " + cropHeight);
-		IJ.log("height / steps= " + (height / step));
 		int box = width / step;
 
 		int rigona = (num / box); // 252
-		int colonnona = num - rigona * box - 1; // 131 (27)
-
-		// MyLog.waitHere("num= " + num + " rigona= " + rigona + " colonnona= "
-		// + colonnona);
-		// ImagePlus imp2 = imp1.duplicate();
+		int colonnona = num - rigona * box; // 131 (27)
 		ImageProcessor ip2 = imp1.getProcessor();
-		Overlay over2 = new Overlay();
-		imp1.setOverlay(over2);
-
 		int startRiga = rigona * step;
 		int startColonna = colonnona * step;
-		MyLog.waitHere("startRiga= " + startRiga + " startColonna= "
-				+ startColonna);
 
 		imp1.setRoi(startColonna, startRiga, cropWidth, cropHeight);
-		over2.addElement(imp1.getRoi());
-		imp1.updateAndDraw();
-		MyLog.waitHere();
-
-		ImagePlus imp3 = new ImagePlus("TITOLO", ip2.crop());
-		imp3.show();
-
+		String title = "SUBMOSAIC "+num;
+		ImagePlus imp3 = new ImagePlus(title, ip2.crop());
 		return imp3;
 	}
 
+	
+	/***
+	 * Estrae l'immagine da un mosaico. Attenzione che la prima immagine dovrà
+	 * essere la 0 (questa routine serve esclusivamente a creare una immagine 
+	 * farlocca per testare il posizionamento automatico)
+	 * NON USARE SE NON PER CREARE IMMAGINI FARLOCCHE
+	 * 
+	 * @param imp1
+	 *            Immagine mosaic
+	 * @param num2
+	 *            Numero della immagine da estrarre, si parte da 0 in alto a sx
+	 *            e ci si muove prima verso destra
+	 * @return Immgine estratta
+	 */
+	public static ImagePlus imageFromMosaicWithOffset(ImagePlus imp1, int num, int offX, int offY) {
+
+		int step = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_PHASE_ENCODING_STEPS)); // 64
+
+		int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_COLUMNS)); // 384
+
+		int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_ROWS)); // 384
+
+		int cropWidth = step;
+		int cropHeight = step;
+		int box = width / step;
+
+		int rigona = (num / box); // 252
+		int colonnona = num - rigona * box; // 131 (27)
+		ImageProcessor ip2 = imp1.getProcessor();
+		int startRiga = rigona * step+offX;
+		int startColonna = colonnona * step+offY;
+
+		imp1.setRoi(startColonna, startRiga, cropWidth, cropHeight);
+		String title = "SUBMOSAIC "+num;
+		ImagePlus imp3 = new ImagePlus(title, ip2.crop());
+		return imp3;
+	}
+	
 	/***
 	 * Esegue la comparazione di due stack, ritorna true se sono uguali
 	 * 
@@ -292,7 +319,7 @@ public class MyStackUtils {
 		ImageStatistics stat1[] = new ImageStatistics[imaStack.getSize()];
 		impStack.setRoi(roi1);
 		for (int i1 = 0; i1 < imaStack.getSize(); i1++) {
-			ImagePlus imp1 = imageFromStack(impStack, i1+1);
+			ImagePlus imp1 = imageFromStack(impStack, i1 + 1);
 			stat1[i1] = imp1.getStatistics();
 		}
 		return stat1;

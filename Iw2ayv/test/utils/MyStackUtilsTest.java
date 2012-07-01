@@ -74,12 +74,29 @@ public class MyStackUtilsTest {
 		String path = "./data/mosaic.dcm";
 
 		ImagePlus imp1 = UtilAyv.openImageMaximized(path);
-		MyLog.waitHere();
-		ImagePlus imp2 = MyStackUtils.imageFromMosaic(imp1, 1);
-		MyLog.waitHere();
+		// MyLog.waitHere();
+		for (int i1 = 0; i1 < 36; i1++) {
+			ImagePlus imp2 = MyStackUtils.imageFromMosaic(imp1, i1);
+			imp2.show();
+			IJ.wait(1000);
+		}
 
 	}
 
+	
+	@Test
+	public final void testImageFromMosaicWithOffset() {
+		String path = "./data/mosaic.dcm";
+
+		ImagePlus imp1 = UtilAyv.openImageMaximized(path);
+		// MyLog.waitHere();
+		for (int i1 = 0; i1 < 36; i1++) {
+			ImagePlus imp2 = MyStackUtils.imageFromMosaicWithOffset(imp1, i1, 5, 5);
+			imp2.show();
+			IJ.wait(1000);
+		}
+
+	}
 	@Test
 	public final void testCompareStacks() {
 		String[] list1 = InputOutput
@@ -113,7 +130,7 @@ public class MyStackUtilsTest {
 		ImageStatistics[] stat1 = MyStackUtils.stackStatistics(imp1, roi1);
 
 		for (int i1 = 0; i1 < stat1.length; i1++) {
-			IJ.log("slice= " + (i1+1) + " mean= " + stat1[i1].mean);
+			IJ.log("slice= " + (i1 + 1) + " mean= " + stat1[i1].mean);
 		}
 	}
 
