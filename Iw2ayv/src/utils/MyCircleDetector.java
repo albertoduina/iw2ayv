@@ -81,67 +81,22 @@ public class MyCircleDetector {
 		ip12.findEdges();
 		imp12.updateAndDraw();
 
-		ImagePlus imp13 = imp12.duplicate();
-		ImageProcessor ip13 = imp13.getProcessor();
-		short[] pixels13 = (short[]) ip13.getPixels();
-		int threshold = ip13.getAutoThreshold();
-
-		int slices = 1;
-		ImagePlus imp14 = NewImage.createByteImage("Thresholded",
-				imp13.getWidth(), imp13.getHeight(), slices,
-				NewImage.FILL_BLACK);
+		ImagePlus imp14 = applyThreshold(imp12);
 		ByteProcessor ip14 = (ByteProcessor) imp14.getProcessor();
 		byte[] pixels14 = (byte[]) ip14.getPixels();
-		for (int i1 = 0; i1 < pixels14.length; i1++) {
-			if (pixels13[i1] >= threshold) {
-				pixels14[i1] = (byte) 100;
-			} else {
-				pixels14[i1] = (byte) 0;
-			}
-		}
 
-		ip14.resetMinAndMax();
+
+		ImagePlus imp16 = circleOutline(imp14);
+
 		if (step) {
-			UtilAyv.showImageMaximized(imp14);
-			MyLog.waitHere("maschera pixel bordo largo");
-		}
-
-		// ora cerco di "dimagrire" il bordo il criterio è che scansiono da sx a
-		// dx e marco il secondo pixel (se sono solo 2)
-		// poi scansiono dall'alto in basso e marco il secondo pixel (se sono
-		// solo 2)
-
-		ImagePlus imp15 = NewImage.createByteImage("Thresholded",
-				imp13.getWidth(), imp13.getHeight(), slices,
-				NewImage.FILL_BLACK);
-		ByteProcessor ip15 = (ByteProcessor) imp15.getProcessor();
-		byte[] pixels15 = (byte[]) ip15.getPixels();
-
-		boolean[] pixels16 = perimeterDetecor(imp14);
-
-		for (int i1 = 0; i1 < pixels15.length; i1++) {
-			if (pixels16[i1]) {
-				pixels15[i1] = (byte) 255;
-				if (pixels14[i1] != 0)
-					pixels14[i1] = (byte) 255;
-				else
-					pixels14[i1] = (byte) 150;
-
-			}
-		}
-		ip14.resetMinAndMax();
-		imp14.updateAndDraw();
-		ip15.resetMinAndMax();
-		imp15.updateAndDraw();
-
-		// MyLog.logVector(pixels14, "pixels14");
-		if (step) {
-			UtilAyv.showImageMaximized(imp15);
+			UtilAyv.showImageMaximized(imp16);
 			MyLog.waitHere("maschera pixel bordo stretto");
 		}
 
-		imp15.setOverlay(over14);
+		imp16.setOverlay(over14);
 		over14.clear();
+		ImageProcessor ip16 = imp16.getProcessor();
+		byte[] pixels16 = (byte[]) ip16.getPixels();
 
 		// acquisisco le coordinate dei pixels a 255
 
@@ -151,7 +106,7 @@ public class MyCircleDetector {
 		for (int i1 = 0; i1 < ip14.getWidth(); i1++) {
 			for (int i2 = 0; i2 < ip14.getHeight(); i2++) {
 				int aux1 = i1 * ip14.getWidth() + i2;
-				if (pixels15[aux1] != 0) {
+				if (pixels16[aux1] != 0) {
 					vetX14.add(i2);
 					vetY14.add(i1);
 				}
@@ -161,13 +116,9 @@ public class MyCircleDetector {
 		int[] xPoints = ArrayUtils.arrayListToArrayInt(vetX14);
 		int[] yPoints = ArrayUtils.arrayListToArrayInt(vetY14);
 
-		// MyLog.logVector(xPoints, "xPoints");
-		// MyLog.logVector(yPoints, "yPoints");
-
 		imp14.setRoi(new PointRoi(xPoints, yPoints, xPoints.length));
 
 		// disegno i punti
-		// imp14.setRoi(new PointRoi(xPeaks, yPeaks, 4));
 		over14.addElement(imp14.getRoi());
 		imp14.updateAndDraw();
 		// MyLog.waitHere();
@@ -197,6 +148,32 @@ public class MyCircleDetector {
 		out2[1] = yRoi;
 		out2[2] = diamRoi;
 		return out2;
+	}
+
+	/**
+	 * Applica il threshold all'immagine
+	 * 
+	 * @param imp1
+	 * @return
+	 */
+	public static ImagePlus applyThreshold(ImagePlus imp1) {
+		int slices = 1;
+		ImageProcessor ip1 = imp1.getProcessor();
+		short[] pixels1 = (short[]) ip1.getPixels();
+		int threshold = ip1.getAutoThreshold();
+		ImagePlus imp2 = NewImage.createByteImage("Thresholded",
+				imp1.getWidth(), imp1.getHeight(), slices, NewImage.FILL_BLACK);
+		ByteProcessor ip2 = (ByteProcessor) imp2.getProcessor();
+		byte[] pixels2 = (byte[]) ip2.getPixels();
+		for (int i1 = 0; i1 < pixels2.length; i1++) {
+			if (pixels1[i1] >= threshold) {
+				pixels2[i1] = (byte) 100;
+			} else {
+				pixels2[i1] = (byte) 0;
+			}
+		}
+		ip2.resetMinAndMax();
+		return imp2;
 	}
 
 	/***
@@ -629,22 +606,23 @@ public class MyCircleDetector {
 		return g;
 	}
 
-	public static boolean[] perimeterDetecor(ImagePlus imp1) {
+	/**
+	 * Traccia il perimetro esterno, di larghezza 1 pixel, del cerchio
+	 * 
+	 * @param imp1
+	 * @return
+	 */
+
+	public static ImagePlus circleOutline(ImagePlus imp1) {
 		ImageProcessor ip1 = imp1.getProcessor();
 		byte[] pixels1 = (byte[]) ip1.getPixels();
 		int width = imp1.getWidth();
 		int height = imp1.getHeight();
 		boolean previous;
 		boolean actual;
-		boolean next;
 		boolean inside;
 		int auxPrevious = 0;
 		int auxActual = 0;
-		ImagePlus imp15 = NewImage.createByteImage("VERTICALE",
-				imp1.getWidth(), imp1.getHeight(), 1, NewImage.FILL_BLACK);
-		ByteProcessor ip15 = (ByteProcessor) imp15.getProcessor();
-		byte[] pixels15 = (byte[]) ip15.getPixels();
-		// UtilAyv.showImageMaximized(imp15);
 
 		// scansione verticale
 		boolean[] pixels2 = new boolean[pixels1.length];
@@ -654,7 +632,6 @@ public class MyCircleDetector {
 				previous = false;
 				actual = false;
 				String deb = "deb= ";
-				imp15.setRoi(i1, i2, 1, 1);
 				auxActual = i1 + i2 * height;
 				auxPrevious = auxActual - height;
 				if (auxPrevious < 0)
@@ -666,33 +643,16 @@ public class MyCircleDetector {
 				if (!inside && !previous && actual) { // fronte salita
 					deb = deb + "a";
 					pixels2[auxActual] = true;
-					pixels15[auxActual] = (byte) 255;
 				} else if (!inside && previous && !actual) { // fronte discesa
 					deb = deb + "b";
 					inside = true;
 				} else if (inside && previous && !actual) {
 					deb = deb + "c";
 					pixels2[auxPrevious] = true;
-					pixels15[auxPrevious] = (byte) 255;
 					inside = false;
 				}
-				// IJ.log(deb + " auxActual=" + auxActual + " auxPrevious="
-				// + auxPrevious + " inside=" + inside + " previous="
-				// + previous + " actual=" + actual);
-				// imp15.updateAndDraw();
-				// if (i1 > 12)
-				// // MyLog.waitHere();
-				// IJ.wait(1);
 			}
 		}
-		// MyLog.waitHere();
-		// scansione orizzontale
-		ImagePlus imp25 = NewImage.createByteImage("ORIZZONTALE",
-				imp1.getWidth(), imp1.getHeight(), 1, NewImage.FILL_BLACK);
-		ByteProcessor ip25 = (ByteProcessor) imp25.getProcessor();
-		byte[] pixels25 = (byte[]) ip25.getPixels();
-		// UtilAyv.showImageMaximized(imp25);
-
 		// scansione orizzontale
 		boolean[] pixels3 = new boolean[pixels1.length];
 		for (int i1 = 0; i1 < width; i1++) {
@@ -701,7 +661,6 @@ public class MyCircleDetector {
 				previous = false;
 				actual = false;
 				String deb = "deb= ";
-				imp15.setRoi(i1, i2, 1, 1);
 				auxActual = i1 * width + i2;
 				auxPrevious = auxActual - 1;
 				if (auxPrevious < 0)
@@ -713,34 +672,26 @@ public class MyCircleDetector {
 				if (!inside && !previous && actual) { // fronte salita
 					deb = deb + "a";
 					pixels3[auxActual] = true;
-					pixels25[auxActual] = (byte) 255;
 				} else if (!inside && previous && !actual) { // fronte discesa
 					deb = deb + "b";
 					inside = true;
 				} else if (inside && previous && !actual) {
 					deb = deb + "c";
 					pixels3[auxPrevious] = true;
-					pixels25[auxPrevious] = (byte) 255;
 					inside = false;
 				}
-				// IJ.log(deb + " auxActual=" + auxActual + " auxPrevious="
-				// + auxPrevious + " inside=" + inside + " previous="
-				// + previous + " actual=" + actual);
-				// imp25.updateAndDraw();
-				// if (i1 > 12)
-				// // MyLog.waitHere();
-				// IJ.wait(1);
 			}
 		}
-
-		boolean[] pixels4 = new boolean[pixels1.length];
+		ImagePlus imp15 = NewImage.createByteImage("OUTLINE", imp1.getWidth(),
+				imp1.getHeight(), 1, NewImage.FILL_BLACK);
+		ByteProcessor ip15 = (ByteProcessor) imp15.getProcessor();
+		byte[] pixels15 = (byte[]) ip15.getPixels();
 
 		for (int i1 = 0; i1 < pixels1.length; i1++) {
 			if (pixels2[i1] || pixels3[i1]) {
-				pixels4[i1] = true;
+				pixels15[i1] = (byte) 255;
 			}
 		}
-
-		return pixels4;
+		return imp15;
 	}
 }

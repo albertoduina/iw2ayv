@@ -66,7 +66,7 @@ public class MyStackUtils {
 	}
 
 	/**
-	 * Costruisce uno stack a 16 bit
+	 * Costruisce uno stack di immagini a 16 bit, a partire dal vettore dei path.
 	 * 
 	 * @param path
 	 *            path of image files
