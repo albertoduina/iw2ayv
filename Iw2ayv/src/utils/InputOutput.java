@@ -584,7 +584,7 @@ public class InputOutput {
 	 */
 	public String[][] readFile6(String fileName) {
 
-		// IJ.log("readFile6= " + fileName);
+		//  MyLog.waitHere("entro in readFile6 con fileName= " + fileName);
 
 		ArrayList<ArrayList<Object>> matrixTable = new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> row1 = new ArrayList<Object>();
@@ -593,11 +593,11 @@ public class InputOutput {
 		try {
 			URL url1 = this.getClass().getResource("/" + fileName);
 			if (url1 == null) {
-				IJ.log("readFile6: file " + fileName + " not visible or null");
+				MyLog.waitHere("readFile6: file " + fileName + " not visible or null");
 				return null;
 			}
 			InputStream is = getClass().getResourceAsStream("/" + fileName);
-			// IJ.log("readFile3.is =" + is);
+			// IJ.log("readFile6.is =" + is);
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 

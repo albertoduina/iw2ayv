@@ -85,7 +85,6 @@ public class MyCircleDetector {
 		ByteProcessor ip14 = (ByteProcessor) imp14.getProcessor();
 		byte[] pixels14 = (byte[]) ip14.getPixels();
 
-
 		ImagePlus imp16 = circleOutline(imp14);
 
 		if (step) {
@@ -528,82 +527,6 @@ public class MyCircleDetector {
 		}
 		return profile2;
 
-	}
-
-	/*
-	 * THRESHOLDING ALGO TESTS
-	 */
-
-	public static int IsoData(int[] data) {
-		// Also called intermeans
-		// Iterative procedure based on the isodata algorithm [T.W. Ridler, S.
-		// Calvard, Picture
-		// thresholding using an iterative selection method, IEEE Trans. System,
-		// Man and
-		// Cybernetics, SMC-8 (1978) 630-632.]
-		// The procedure divides the image into objects and background by taking
-		// an initial threshold,
-		// then the averages of the pixels at or below the threshold and pixels
-		// above are computed.
-		// The averages of those two values are computed, the threshold is
-		// incremented and the
-		// process is repeated until the threshold is larger than the composite
-		// average. That is,
-		// threshold = (average background + average objects)/2
-		// The code in ImageJ that implements this function is the
-		// getAutoThreshold() method in the ImageProcessor class.
-		//
-		// From: Tim Morris (dtm@ap.co.umist.ac.uk)
-		// Subject: Re: Thresholding method?
-		// posted to sci.image.processing on 1996/06/24
-		// The algorithm implemented in NIH Image sets the threshold as that
-		// grey
-		// value, G, for which the average of the averages of the grey values
-		// below and above G is equal to G. It does this by initialising G to
-		// the
-		// lowest sensible value and iterating:
-
-		// L = the average grey value of pixels with intensities < G
-		// H = the average grey value of pixels with intensities > G
-		// is G = (L + H)/2?
-		// yes => exit
-		// no => increment G and repeat
-		//
-		// There is a discrepancy with IJ because they are slightly different
-		// methods
-		int i, l, toth, totl, h, g = 0;
-		for (i = 1; i < data.length; i++) {
-			if (data[i] > 0) {
-				g = i + 1;
-				break;
-			}
-		}
-		while (true) {
-			l = 0;
-			totl = 0;
-			for (i = 0; i < g; i++) {
-				totl = totl + data[i];
-				l = l + (data[i] * i);
-			}
-			h = 0;
-			toth = 0;
-			for (i = g + 1; i < data.length; i++) {
-				toth += data[i];
-				h += (data[i] * i);
-			}
-			if (totl > 0 && toth > 0) {
-				l /= totl;
-				h /= toth;
-				if (g == (int) Math.round((l + h) / 2.0))
-					break;
-			}
-			g++;
-			if (g > data.length - 2) {
-				IJ.log("IsoData Threshold not found.");
-				return -1;
-			}
-		}
-		return g;
 	}
 
 	/**

@@ -249,7 +249,7 @@ public class ReportStandardInfo {
 		simpleHeader[3] = acqDate;
 		simpleHeader[4] = elabDate;
 		simpleHeader[5] = coil;
-		MyLog.logVector(simpleHeader, "simpleHeader");
+		// MyLog.logVector(simpleHeader, "simpleHeader");
 
 		return (simpleHeader);
 	}

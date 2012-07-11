@@ -719,7 +719,7 @@ public class UtilAyv {
 		win.setExtendedState(ImageWindow.MAXIMIZED_BOTH);
 	}
 
-	public static ImageWindow  showImageMaximized(ImagePlus imp) {
+	public static ImageWindow showImageMaximized(ImagePlus imp) {
 		imp.show();
 		ImageWindow win = IJ.getImage().getWindow();
 		win.setBounds(win.getMaximumBounds());
@@ -1292,7 +1292,7 @@ public class UtilAyv {
 		boolean testok = true;
 
 		if (vetResults == null || vetReference == null || vetName == null) {
-			IJ.log("vector null");
+			MyLog.waitHere("vector null");
 			MyLog.logVector(vetResults, "vetResults");
 			MyLog.logVector(vetReference, "vetReference");
 			MyLog.logVector(vetName, "vetName");
@@ -1300,19 +1300,17 @@ public class UtilAyv {
 		}
 
 		if (vetResults.length != vetReference.length) {
-			IJ.log("verifyResults.vectors of different length");
+			MyLog.waitHere("verifyResults.vectors of different length");
 			MyLog.logVector(vetResults, "vetResults");
 			MyLog.logVector(vetReference, "vetReference");
 			return false;
 		}
 
 		for (int i1 = 0; i1 < vetResults.length; i1++) {
-			// IJ.log("vetResults["+i1+"]="+vetResults[i1]);
-			// IJ.log("vetReference["+i1+"]="+vetReference[i1]);
 
 			if (vetResults[i1] != vetReference[i1]) {
-				IJ.log(vetName[i1] + " ERRATO " + vetResults[i1] + " anzichè "
-						+ vetReference[i1]);
+				MyLog.waitHere(vetName[i1] + " ERRATO " + vetResults[i1]
+						+ " anzichè " + vetReference[i1]);
 				testok = false;
 			}
 		}
