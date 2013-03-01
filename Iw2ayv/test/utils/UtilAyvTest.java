@@ -366,7 +366,6 @@ public class UtilAyvTest {
 
 	}
 
-
 	@Test
 	public final void testFindMaximumPosition() {
 		ImagePlus imp1 = UtilAyv.openImageNoDisplay(".\\Test4\\B003_testP2",
@@ -391,6 +390,31 @@ public class UtilAyvTest {
 
 		double out = UtilAyv.roundDoubleDecimals(in1, 2);
 		MyLog.waitHere("" + out);
+	}
+
+	@Test
+	public final void testToFloat0() {
+		double in1 = 23.123556789;
+		float out = UtilAyv.toFloat(in1);
+		MyLog.waitHere("" + out);
+	}
+
+	@Test
+	public final void testToFloat1() {
+		double[] in1 = { 23.123556789, 11.1111111, 17.7776543 };
+		float[] out = UtilAyv.toFloat(in1);
+		MyLog.logVector(out, "out");
+		MyLog.waitHere();
+	}
+
+	@Test
+	public final void testToFloat2() {
+		double[][] in1 = { { 23.123556789, 11.1111111, 17.7776543, 4 },
+				{ 22.123556789, 12.1111111, 172.7776543, 3 },
+				{ 24.123556789, 14.1111111, 174.7776543, 5 } };
+		float[][] out = UtilAyv.toFloat(in1);
+		MyLog.logMatrix(out, "out");
+		MyLog.waitHere();
 	}
 
 }

@@ -20,7 +20,7 @@ public class MyFwhm {
 	 * @return
 	 */
 	public static double[] analyzeProfile(double[] profi1, double dimPixel,
-			boolean invert, boolean step) {
+			String title, boolean invert, boolean step) {
 
 		double[] profi2;
 		if (invert) {
@@ -28,9 +28,10 @@ public class MyFwhm {
 		} else {
 			profi2 = profi1;
 		}
-		// double[] profi3 = smooth3(profi2, 10);
+		double[] profi3 = smooth3(profi2, 10);
 		int[] vetHalfPoint = halfPointSearch(profi2);
-		double fwhm = calcFwhm(vetHalfPoint, profi2) * dimPixel;
+		boolean printPlot = step;
+		double fwhm = calcFwhm(vetHalfPoint, profi2, dimPixel, title, printPlot);
 		double peak = peakPosition(profi2);
 		double[] outFwhm = new double[2];
 		outFwhm[0] = fwhm;
@@ -48,7 +49,8 @@ public class MyFwhm {
 	 *            profilo di cui calcolare l'FWHM
 	 * @return FWHM calcolata in pixels
 	 */
-	public static double calcFwhm(int[] vetUpDwPoints, double[] profile) {
+	public static double calcFwhm(int[] vetUpDwPoints, double[] profile,
+			double dimPixel, String title, boolean printPlot) {
 
 		double[] a = Tools.getMinMax(profile);
 		double min = a[0];
@@ -74,9 +76,16 @@ public class MyFwhm {
 		py2 = (max - min) / 2.0 + min;
 		double dx = xLinearInterpolation(px0, py0, px1, py1, py2);
 		// IJ.log("punto interpolato a dx= " + dx);
+		//
+		// qui posso mettere il plot con magari uno switch per escluderlo
+		//
 
 		// px2 = px0 + (px1 - px0) / (py1 - py0) * (py2 - py0);
-		double fwhm = dx - sx; // NOTA BENE è in pixels
+		double fwhm = (dx - sx) * dimPixel; // NOTA BENE è in pixels
+
+		if (printPlot)
+			createPlot(profile, title, vetUpDwPoints, fwhm);
+
 		return (fwhm);
 	}
 
@@ -277,6 +286,95 @@ public class MyFwhm {
 		double len = Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
 
 		return len;
+	}
+
+	public static void createPlot(double profile1[], String title,
+			int[] vetUpDwPoints, double fwhm2) {
+
+		double[] a = Tools.getMinMax(profile1);
+		double min = a[0];
+		double max = a[1];
+		double half = (max - min) / 2.0 + min;
+
+		double[] xVectPointsX = new double[2];
+		double[] yVectPointsX = new double[2];
+
+		double[] xVectPointsO = new double[2];
+		double[] yVectPointsO = new double[2];
+
+		double[] xVetLineHalf = new double[2];
+		double[] yVetLineHalf = new double[2];
+		int len1 = profile1.length;
+		double[] xcoord1 = new double[len1];
+		for (int j = 0; j < len1; j++)
+			xcoord1[j] = j;
+		Plot plot = new Plot("Profilo penetrazione__" + title, "pixel",
+				"valore", xcoord1, profile1);
+		plot.setLimits(0, len1, min, max);
+		plot.setLineWidth(1);
+		plot.setColor(Color.blue);
+		xVectPointsX[0] = (double) vetUpDwPoints[0];
+		xVectPointsX[1] = (double) vetUpDwPoints[2];
+		yVectPointsX[0] = profile1[vetUpDwPoints[0]];
+		yVectPointsX[1] = profile1[vetUpDwPoints[2]];
+		plot.addPoints(xVectPointsX, yVectPointsX, PlotWindow.BOX);
+
+		xVectPointsO[0] = (double) vetUpDwPoints[1];
+		xVectPointsO[1] = (double) vetUpDwPoints[3];
+		yVectPointsO[0] = profile1[vetUpDwPoints[1]];
+		yVectPointsO[1] = profile1[vetUpDwPoints[3]];
+		plot.addPoints(xVectPointsO, yVectPointsO, PlotWindow.CIRCLE);
+
+		plot.changeFont(new Font("Helvetica", Font.PLAIN, 12));
+
+		// interpolazione lineare sinistra
+		double px0 = vetUpDwPoints[0];
+		double px1 = vetUpDwPoints[1];
+		double px2 = 0;
+		double py0 = profile1[vetUpDwPoints[0]];
+		double py1 = profile1[vetUpDwPoints[1]];
+		double py2 = 0;
+		py2 = half;
+		px2 = px0 + (px1 - px0) / (py1 - py0) * (py2 - py0);
+		double sx = px2;
+		// interpolazione lineare destra
+		px0 = vetUpDwPoints[2];
+		px1 = vetUpDwPoints[3];
+		py0 = profile1[vetUpDwPoints[2]];
+		py1 = profile1[vetUpDwPoints[3]];
+		py2 = half;
+		px2 = px0 + (px1 - px0) / (py1 - py0) * (py2 - py0);
+		double dx = px2;
+		double xlabel = 0.02;
+		double ylabel = 0.58;
+
+		plot.addLabel(xlabel, ylabel, title);
+		plot.addLabel(xlabel, ylabel + 0.05,
+				"peak / 2       =     " + IJ.d2s(max / 2, 2));
+		plot.addLabel(xlabel, ylabel + 0.10, "dw_sx     " + vetUpDwPoints[0]
+				+ " =   " + IJ.d2s(profile1[vetUpDwPoints[0]], 2));
+		plot.addLabel(xlabel, ylabel + 0.15, "dw_dx    " + vetUpDwPoints[2]
+				+ " =   " + IJ.d2s(profile1[vetUpDwPoints[2]], 2));
+		plot.addLabel(xlabel, ylabel + 0.20, "up_sx     " + vetUpDwPoints[1]
+				+ " =   " + IJ.d2s(profile1[vetUpDwPoints[1]], 2));
+		plot.addLabel(xlabel, ylabel + 0.25, "up_dx   " + vetUpDwPoints[3]
+				+ " =   " + IJ.d2s(profile1[vetUpDwPoints[3]], 2));
+		plot.addLabel(xlabel, ylabel + 0.30,
+				"interp_sx      =  " + IJ.d2s(sx, 2));
+		plot.addLabel(xlabel, ylabel + 0.35,
+				"interp_dx      =  " + IJ.d2s(dx, 2));
+		plot.addLabel(xlabel, ylabel + 0.40,
+				"fwhm            =  " + IJ.d2s(fwhm2, 2));
+		plot.setColor(Color.green);
+		xVetLineHalf[0] = 0;
+		xVetLineHalf[1] = len1;
+		yVetLineHalf[0] = half;
+		yVetLineHalf[1] = half;
+		plot.addPoints(xVetLineHalf, yVetLineHalf, PlotWindow.LINE);
+		plot.setColor(Color.red);
+		plot.show();
+
+		plot.draw();
 	}
 
 }

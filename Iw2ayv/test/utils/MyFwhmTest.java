@@ -36,14 +36,14 @@ public class MyFwhmTest {
 		double dimPixel = 0.98765432;
 		boolean invert = true;
 		boolean step = false;
-		// String title = "profi1";
+		String title = "profi1";
 		// Color color = Color.red;
 		// Plot plot = MyPlot.basePlot(profi1, title, color);
 		// plot.show();
 		// MyLog.waitHere();
 
-		double[] outFwhm = MyFwhm
-				.analyzeProfile(profi1, dimPixel, invert, step);
+		double[] outFwhm = MyFwhm.analyzeProfile(profi1, dimPixel, title,
+				invert, step);
 		double[] expected = { 30.980876270156863, 65.0 };
 		// MyLog.logVector(outFwhm, "outFwhm");
 		assertTrue(UtilAyv.compareVectors(outFwhm, expected, 1e-12,
@@ -86,7 +86,11 @@ public class MyFwhmTest {
 				.readDoubleArrayFromFile("./data/vet12.txt");
 		double[] profi2 = MyFwhm.invertProfile(profi1);
 		int[] out2 = MyFwhm.halfPointSearch(profi2);
-		double fwhm = MyFwhm.calcFwhm(out2, profi2);
+		boolean printPlot = true;
+		double dimPixel = 1;
+		double fwhm = MyFwhm.calcFwhm(out2, profi2, dimPixel, "title",
+				printPlot);
+		MyLog.waitHere();
 		// IJ.log("fwhm=" + fwhm);
 		double expected = 31.36813725490196;
 		assertEquals(expected, fwhm, 1e-12);
@@ -136,10 +140,13 @@ public class MyFwhmTest {
 				.readDoubleArrayFromFile("./data/vet12.txt");
 		double[] profi2 = MyFwhm.invertProfile(profi1);
 		int[] upDwPoints = MyFwhm.halfPointSearch(profi2);
-		double fwhm = MyFwhm.calcFwhm(upDwPoints, profi2) * 1.00;
+		boolean printPlot = false;
+		String title = "";
+		double dimPixel = 1.;
+		double fwhm = MyFwhm.calcFwhm(upDwPoints, profi2, dimPixel, title,
+				printPlot) * 1.00;
 		MyFwhm.minimalPlot(profi2, upDwPoints, "P L O T", "base", "altezza",
 				fwhm, true);
 		MyLog.waitHere();
 	}
-
 }

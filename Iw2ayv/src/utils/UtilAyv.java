@@ -164,7 +164,43 @@ public class UtilAyv {
 			if (mask != null)
 				ip.reset(mask);
 		}
+	}
 
+	public static void autoAdjust(ImagePlus imp) {
+		double min, max;
+
+		ImageProcessor ip = imp.getProcessor();
+		Calibration cal = imp.getCalibration();
+		imp.setCalibration(null);
+		ImageStatistics stats = imp.getStatistics();
+		imp.setCalibration(cal);
+		int[] histogram = stats.histogram;
+		int threshold = stats.pixelCount / 5000;
+		int i = -1;
+		boolean found = false;
+		do {
+			i++;
+			found = histogram[i] > threshold;
+		} while (!found && i < 255);
+		int hmin = i;
+		i = 256;
+		do {
+			i--;
+			found = histogram[i] > threshold;
+		} while (!found && i > 0);
+		int hmax = i;
+		if (hmax > hmin) {
+			imp.killRoi();
+			min = stats.histMin + hmin * stats.binSize;
+			max = stats.histMin + hmax * stats.binSize;
+			ip.setMinAndMax(min, max);
+		}
+		Roi roi = imp.getRoi();
+		if (roi != null) {
+			ImageProcessor mask = roi.getMask();
+			if (mask != null)
+				ip.reset(mask);
+		}
 	}
 
 	/**
@@ -423,7 +459,48 @@ public class UtilAyv {
 			data[i] = getNum(st);
 		}
 		return data;
-	} // getPos
+	}
+
+	/***
+	 * estrae da una stringa delle preferenze di ImageJ i dati, separati da ;
+	 * 
+	 * @param xData
+	 * @param lato
+	 * @return
+	 */
+	public static int[] getPos2(String xData, int lato) {
+
+		StringTokenizer st = new StringTokenizer(xData, ";");
+		int nTokens = st.countTokens();
+		if (nTokens < 1)
+			return new int[0];
+		int n = nTokens;
+		int data[] = new int[n];
+		double aux1;
+		for (int i = 0; i < n; i++) {
+			aux1 = getNum2(st) * lato;
+			data[i] = (int) Math.round(aux1);
+		}
+		return data;
+	}
+
+	/***
+	 * mette
+	 * 
+	 * @param positions
+	 * @param lato
+	 * @return
+	 */
+	public static String putPos2(int[] positions, int lato) {
+
+		String positionsString = "";
+		double aux1;
+		for (int i1 = 0; i1 < positions.length; i1++) {
+			aux1 = (double) positions[i1]/ (double) lato;
+			positionsString = positionsString + aux1 + ";";
+		}
+		return positionsString;
+	}
 
 	/**
 	 * estrae i tokens dallo string tokenizer
@@ -443,7 +520,19 @@ public class UtilAyv {
 			IJ.log("getNum error");
 		}
 		return (d1);
-	}// getNum
+	}
+
+	public static double getNum2(StringTokenizer st) {
+
+		double d1 = 0;
+		String token = st.nextToken();
+		try {
+			d1 = ReadDicom.readDouble(token);
+		} catch (NumberFormatException e) {
+			IJ.log("getNum error");
+		}
+		return (d1);
+	}
 
 	/**
 	 * estrae il valore reale dei pixels dalle immagini calibrate e non
@@ -481,7 +570,7 @@ public class UtilAyv {
 
 	public static boolean compareImagesByImageProcessors(ImagePlus imp1,
 			ImagePlus imp2) {
-		if (imp1.getBitDepth() != imp1.getBitDepth())
+		if (imp1.getBitDepth() != imp2.getBitDepth())
 			return false;
 		if (imp1.getBitDepth() == 32) {
 			float[] ip1 = (float[]) imp1.getProcessor().getPixels();
@@ -1416,7 +1505,7 @@ public class UtilAyv {
 	public static void saveResults2(int[] vetRiga, String fileDir,
 			String[][] iw2ayvTable) {
 
-		IJ.run("Excel...", "select...=[" + fileDir + MyConst.XLS_FILE + "]");
+		// IJ.run("Excel...", "select...=[" + fileDir + MyConst.XLS_FILE + "]");
 		TableSequence lr = new TableSequence();
 		for (int i1 = 0; i1 < vetRiga.length; i1++) {
 			lr.putDone(iw2ayvTable, vetRiga[i1]);
@@ -1433,7 +1522,7 @@ public class UtilAyv {
 	public static void saveResults(int[] vetRiga, String fileDir,
 			String[][] iw2ayvTable) {
 
-		IJ.run("Excel...", "select...=[" + fileDir + MyConst.XLS_FILE + "]");
+		// IJ.run("Excel...", "select...=[" + fileDir + MyConst.XLS_FILE + "]");
 
 		try {
 			mySaveAs(fileDir + MyConst.TXT_FILE);
@@ -1778,6 +1867,38 @@ public class UtilAyv {
 		BigDecimal bd = new BigDecimal(x1);
 		bd = bd.setScale(decimalPlaces, BigDecimal.ROUND_HALF_DOWN);
 		return bd.doubleValue();
+	}
+
+	/***
+	 * Conversione da double a float
+	 * 
+	 * @param in1
+	 * @return
+	 */
+	public static float toFloat(double in1) {
+		return (float) in1;
+	}
+
+	public static float[] toFloat(double[] in1) {
+		if (in1 == null)
+			return null;
+		float[] out1 = new float[in1.length];
+		for (int i1 = 0; i1 < in1.length; i1++) {
+			out1[i1] = (float) in1[i1];
+		}
+		return out1;
+	}
+
+	public static float[][] toFloat(double[][] in1) {
+		if (in1 == null)
+			return null;
+		float[][] out1 = new float[in1.length][in1[0].length];
+		for (int i1 = 0; i1 < in1.length; i1++) {
+			for (int i2 = 0; i2 < in1[0].length; i2++) {
+				out1[i1][i2] = (float) in1[i1][i2];
+			}
+		}
+		return out1;
 	}
 
 } // UtilAyv

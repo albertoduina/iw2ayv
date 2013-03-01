@@ -83,7 +83,6 @@ public class MyStackUtilsTest {
 
 	}
 
-	
 	@Test
 	public final void testImageFromMosaicWithOffset() {
 		String path = "./data/mosaic.dcm";
@@ -91,12 +90,14 @@ public class MyStackUtilsTest {
 		ImagePlus imp1 = UtilAyv.openImageMaximized(path);
 		// MyLog.waitHere();
 		for (int i1 = 0; i1 < 36; i1++) {
-			ImagePlus imp2 = MyStackUtils.imageFromMosaicWithOffset(imp1, i1, 5, 5);
+			ImagePlus imp2 = MyStackUtils.imageFromMosaicWithOffset(imp1, i1,
+					5, 5);
 			imp2.show();
 			IJ.wait(1000);
 		}
 
 	}
+
 	@Test
 	public final void testCompareStacks() {
 		String[] list1 = InputOutput

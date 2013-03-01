@@ -129,7 +129,8 @@ public class DirectoryChooser2 {
 		OpenDialog od = new OpenDialog(title, null);
 		directory = od.getDirectory() + od.getFileName() + "/";
 		System.setProperty("apple.awt.fileDialogForDirectories", "false");
-		Prefs.useJFileChooser = saveUseJFC;
+	
+	Prefs.useJFileChooser = saveUseJFC;
 	}
 
 	/** Returns the directory selected by the user. */

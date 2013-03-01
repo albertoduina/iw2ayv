@@ -18,39 +18,33 @@ public class MyConst {
 	public static final int TOKENS4 = 4;
 	public static final int TOKENS2 = 2;
 	public static final int TOKENS1 = 1;
-	
-	
-	
-	
+
 	public static String DICOM_ACQUISITION_DATE = "0008,0022";
 	public static String DICOM_IMAGE_DATE = "0008,0023";
 
-//	public static final String DICOM_ACQTIME = "0008,0032";
+	// public static final String DICOM_ACQTIME = "0008,0032";
 	public static final String DICOM_ACQUISITION_TIME = "0008,0032";
 	public static final String DICOM_IMATIME = "0008,0033";
 	public static final String DICOM_SERIES_DESCRIPTION = "0008,103E";
 	public static String DICOM_STATION_NAME = "0008,1010";
 
-	
 	public static final String DICOM_PATIENT_NAME = "0010,0010";
-	
+
 	public static final String DICOM_SLICE_THICKNESS = "0018,0050";
 	public static final String DICOM_ECHO_TIME = "0018,0081";
 	public static final String DICOM_SPACING_BETWEEN_SLICES = "0018,0088";
 	public static final String DICOM_PHASE_ENCODING_STEPS = "0018,0089";
-	
+
 	public static final String DICOM_SERIES_NUMBER = "0020,0011";
 	public static final String DICOM_ACQUISITION_NUMBER = "0020,0012";
 	public static final String DICOM_IMAGE_NUMBER = "0020,0013";
 	public static final String DICOM_IMAGE_POSITION = "0020,0032";
-	
+
 	public static final String DICOM_ROWS = "0028,0010";
 	public static final String DICOM_COLUMNS = "0028,0011";
 	public static final String DICOM_PIXEL_SPACING = "0028,0030";
-	
-	
+
 	public static final String DICOM_COIL = "0051,100F";
-	
 
 	public static final double PLUS_20_PERC = 1.2;
 	public static final double PLUS_10_PERC = 1.1;
@@ -147,7 +141,6 @@ public class MyConst {
 	// double num11 = 5238.0;
 	// double num12 = 48005.0;
 
-	
 	// ------------ p10rmn -----------------------
 	public static final int P10_CIRCLE_NUMBER = 5;
 	public static final int P10_DIAM_PHANTOM = 220;
@@ -181,7 +174,12 @@ public class MyConst {
 	public static final int P11_MROI_7X7_PIXEL = 7;
 	public static final int P11_CHECK_PIXEL_MULTIPLICATOR = 5;
 	public static final int P11_DIAM_ROI_BACKGROUND = 10;
+	// ========================================================================
+	// TODO ATTENZIONE: P11_X_ROI_BACKGROUND ANDREBBE CAMBIATA, UTILIZZANDO IN
+	// QUALCHE MODO WIDTH, QUESTO PER RENDERE ANALIZZABILI ANCHE IMMAGINI DI
+	// DIFFERENTE MATRICE
 	public static final int P11_X_ROI_BACKGROUND = 230;
+	// ========================================================================
 	public static final int P11_Y_ROI_BACKGROUND = 10;
 	public static String[] P11_vetName = { "zero", "SIGNAL", "BACKNOISE",
 			"SNRATIO", "FWHM", "NUM_CLASS1", "NUM_CLASS2", "NUM_CLASS3",
@@ -189,7 +187,6 @@ public class MyConst {
 			"NUM_CLASS8", "NUM_CLASS9", "NUM_CLASS10", "NUM_CLASS11",
 			"NUM_CLASS12" };
 
-	
 	// ------------ p6rmn -----------------------
 
 	public static final double[] P6_REFERENCE_LINE_SIEMENS = { 51, 36, 52, 192 };

@@ -53,9 +53,7 @@ public class InputOutput {
 
 	/***
 	 * Lo scopo di questa utility è di estrarre dal file jar il prototipo del
-	 * file csv, che poi verrà usato dal programma. Se il file esistesse già,
-	 * l'estrazione non deve avvenire (così è possibile modificare il file senza
-	 * dover intervenire sul file jar)
+	 * file csv, che poi verrà usato dal programma.
 	 * 
 	 * @param fileName
 	 * @param destinationPath
@@ -164,8 +162,10 @@ public class InputOutput {
 		// vengono mantenute eventuali modifiche dell'utlizzatore
 		boolean present = checkFile(outFile.getPath());
 		if (present) {
+			// CANCELLO, PER EVITARE RESTINO ATTIVE VECCHIE VERSIONI
+			outFile.delete();
 			// MyLog.waitHere("skip perchè file già esistente");
-			return true;
+			// return true;
 		}
 		// ricerco la risorsa da copiare, perchè qui arrivo solo se la risorsa
 		// non esiste al di fuori del file jar
@@ -180,6 +180,7 @@ public class InputOutput {
 					.getResourceAsStream("/" + fileName);
 			FileOutputStream fos = new FileOutputStream(outFile);
 			while (is.available() > 0) {
+	//			MyLog.waitHere("SCRIVO "+fileName);
 				fos.write(is.read());
 			}
 			fos.close();
@@ -197,7 +198,8 @@ public class InputOutput {
 	}
 
 	/**
-	 * Copied from www.coderanch.com/t/278095/Streams/java/Wildcard-delete-File-Object
+	 * Copied from
+	 * www.coderanch.com/t/278095/Streams/java/Wildcard-delete-File-Object
 	 * Author Edwin Dalorzo
 	 */
 	public static void deleteMultipleFiles(File dir, final String ext) {
@@ -584,7 +586,7 @@ public class InputOutput {
 	 */
 	public String[][] readFile6(String fileName) {
 
-		//  MyLog.waitHere("entro in readFile6 con fileName= " + fileName);
+		// MyLog.waitHere("entro in readFile6 con fileName= " + fileName);
 
 		ArrayList<ArrayList<Object>> matrixTable = new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> row1 = new ArrayList<Object>();
@@ -593,7 +595,8 @@ public class InputOutput {
 		try {
 			URL url1 = this.getClass().getResource("/" + fileName);
 			if (url1 == null) {
-				MyLog.waitHere("readFile6: file " + fileName + " not visible or null");
+				MyLog.waitHere("readFile6: file " + fileName
+						+ " not visible or null");
 				return null;
 			}
 			InputStream is = getClass().getResourceAsStream("/" + fileName);

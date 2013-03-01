@@ -66,7 +66,8 @@ public class MyStackUtils {
 	}
 
 	/**
-	 * Costruisce uno stack di immagini a 16 bit, a partire dal vettore dei path.
+	 * Costruisce uno stack di immagini a 16 bit, a partire dal vettore dei
+	 * path.
 	 * 
 	 * @param path
 	 *            path of image files
@@ -89,6 +90,7 @@ public class MyStackUtils {
 			ImageProcessor ip1 = imp1.getProcessor();
 			if (f1 == 0)
 				newStack.update(ip1);
+
 			String sliceInfo1 = imp1.getTitle();
 			String sliceInfo2 = (String) imp1.getProperty("Info");
 			// aggiungo i dati header alle singole immagini dello stack
@@ -96,6 +98,7 @@ public class MyStackUtils {
 				sliceInfo1 += "\n" + sliceInfo2;
 			newStack.addSlice(sliceInfo2, ip1);
 		}
+
 		ImagePlus newImpStack = new ImagePlus("INPUT_STACK", newStack);
 		if (path.length == 1) {
 			String sliceInfo3 = imp1.getTitle();
@@ -204,13 +207,13 @@ public class MyStackUtils {
 	public static ImagePlus imageFromMosaic(ImagePlus imp1, int num) {
 
 		int step = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_PHASE_ENCODING_STEPS)); // 64
+				MyConst.DICOM_PHASE_ENCODING_STEPS)); // 64 "0018,0089"
 
 		int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_COLUMNS)); // 384
+				MyConst.DICOM_COLUMNS)); // 384 "0028,0011"
 
 		int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_ROWS)); // 384
+				MyConst.DICOM_ROWS)); // 384 "0028,0010"
 
 		int cropWidth = step;
 		int cropHeight = step;
@@ -223,17 +226,16 @@ public class MyStackUtils {
 		int startColonna = colonnona * step;
 
 		imp1.setRoi(startColonna, startRiga, cropWidth, cropHeight);
-		String title = "SUBMOSAIC "+num;
+		String title = "SUBMOSAIC " + num;
 		ImagePlus imp3 = new ImagePlus(title, ip2.crop());
 		return imp3;
 	}
 
-	
 	/***
 	 * Estrae l'immagine da un mosaico. Attenzione che la prima immagine dovrà
-	 * essere la 0 (questa routine serve esclusivamente a creare una immagine 
-	 * farlocca per testare il posizionamento automatico)
-	 * NON USARE SE NON PER CREARE IMMAGINI FARLOCCHE
+	 * essere la 0 (questa routine serve esclusivamente a creare una immagine
+	 * farlocca per testare il posizionamento automatico) NON USARE SE NON PER
+	 * CREARE IMMAGINI FARLOCCHE
 	 * 
 	 * @param imp1
 	 *            Immagine mosaic
@@ -242,7 +244,8 @@ public class MyStackUtils {
 	 *            e ci si muove prima verso destra
 	 * @return Immgine estratta
 	 */
-	public static ImagePlus imageFromMosaicWithOffset(ImagePlus imp1, int num, int offX, int offY) {
+	public static ImagePlus imageFromMosaicWithOffset(ImagePlus imp1, int num,
+			int offX, int offY) {
 
 		int step = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
 				MyConst.DICOM_PHASE_ENCODING_STEPS)); // 64
@@ -260,15 +263,15 @@ public class MyStackUtils {
 		int rigona = (num / box); // 252
 		int colonnona = num - rigona * box; // 131 (27)
 		ImageProcessor ip2 = imp1.getProcessor();
-		int startRiga = rigona * step+offX;
-		int startColonna = colonnona * step+offY;
+		int startRiga = rigona * step + offX;
+		int startColonna = colonnona * step + offY;
 
 		imp1.setRoi(startColonna, startRiga, cropWidth, cropHeight);
-		String title = "SUBMOSAIC "+num;
+		String title = "SUBMOSAIC " + num;
 		ImagePlus imp3 = new ImagePlus(title, ip2.crop());
 		return imp3;
 	}
-	
+
 	/***
 	 * Esegue la comparazione di due stack, ritorna true se sono uguali
 	 * 
