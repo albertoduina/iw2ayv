@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+
 import ij.*;
 import ij.gui.*;
 import ij.process.*;
@@ -23,7 +24,8 @@ import ij.process.*;
 public class AboutBox {
 	static final int SMALL_FONT = 10, MEDIUM_FONT = 14, LARGE_FONT = 18;
 
-	public void about(String arg, Class<?> myClass) {
+	public void about(String arg, String version1) {
+//		public void about(String arg, Class<?> myClass) {
 
 		int lines = 7;
 
@@ -33,8 +35,19 @@ public class AboutBox {
 		text[2] = "Servizio di Fisica Sanitaria";
 		text[3] = "©2007-2012  Alberto Duina";
 		text[4] = "albertoduina@virgilio.it";
-		text[5] = "VERSIONE " + myImplementationVersion(myClass);
-		text[6] = "VERSIONE libreria iw2ayv " + myImplementationVersion(this.getClass());
+//		text[5] = "VERSIONE " + myImplementationVersion(myClass);
+//		text[6] = "VERSIONE libreria iw2ayv " + myImplementationVersion(this.getClass());
+		text[5] = "VERSIONE " + version1;
+		text[6] = "VERSIONE libreria iw2ayv " + MyVersionUtils.getVersion();
+		
+		
+		
+		
+//		VERSION = className + "_build_"
+//				+ MyVersion.CURRENT_VERSION
+//				+ "_iw2ayv_build_"
+//				+ MyVersionUtils.CURRENT_VERSION;
+
 
 		int w = 150, h = 150;
 		ImageProcessor ip = new ColorProcessor(w, h);

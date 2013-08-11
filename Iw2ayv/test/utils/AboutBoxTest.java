@@ -29,7 +29,8 @@ public class AboutBoxTest {
 	@Test
 	public void testAboutBox() {
 		
-		new AboutBox().about("Messaggio", this.getClass());	
+//		new AboutBox().about("Messaggio", this.getClass());	
+		new AboutBox().about("Messaggio", MyVersionUtils.getVersion());	
 	}
 	
 	@Test

@@ -1381,10 +1381,11 @@ public class UtilAyv {
 		boolean testok = true;
 
 		if (vetResults == null || vetReference == null || vetName == null) {
-			MyLog.waitHere("vector null");
 			MyLog.logVector(vetResults, "vetResults");
 			MyLog.logVector(vetReference, "vetReference");
 			MyLog.logVector(vetName, "vetName");
+			MyLog.waitHere("vector null");
+
 			return false;
 		}
 
@@ -1405,6 +1406,46 @@ public class UtilAyv {
 		}
 		return testok;
 	}
+	
+	
+	
+	/**
+	 * 
+	 * @param vetResults
+	 * @param vetReference
+	 * @param verbose
+	 * @return
+	 */
+	public static boolean verifyResults1(double[] vetResults,
+			double[] vetReference) {
+		boolean testok = true;
+
+		if (vetResults == null || vetReference == null ) {
+			MyLog.logVector(vetResults, "vetResults");
+			MyLog.logVector(vetReference, "vetReference");
+			MyLog.waitHere("vector null");
+
+			return false;
+		}
+
+		if (vetResults.length != vetReference.length) {
+			MyLog.waitHere("verifyResults.vectors of different length");
+			MyLog.logVector(vetResults, "vetResults");
+			MyLog.logVector(vetReference, "vetReference");
+			return false;
+		}
+
+		for (int i1 = 0; i1 < vetResults.length; i1++) {
+
+			if (vetResults[i1] != vetReference[i1]) {
+				MyLog.waitHere("ERRATO " + vetResults[i1]
+						+ " anzichè " + vetReference[i1]);
+				testok = false;
+			}
+		}
+		return testok;
+	}
+
 
 	public static boolean verifyResults2(int[] xMeasuredPoints,
 			int[] yMeasuredPoints, int[] xRefPoints, int[] yRefPoints,

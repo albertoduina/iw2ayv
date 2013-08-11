@@ -401,6 +401,20 @@ public class MyLog {
 				+ Thread.currentThread().getStackTrace()[2].getMethodName()
 				+ " " + str);
 	}
+	
+	public static  String qui() {
+		String out=("file="
+				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
+				+ " line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ " class="
+				+ Thread.currentThread().getStackTrace()[2].getClassName()
+				+ " method="
+					+ Thread.currentThread().getStackTrace()[2].getMethodName()
+				+ "\n \n");
+		return out;
+	}
+
 
 	public static void waitMessage(String str) {
 		new WaitForUserDialog(str).show();

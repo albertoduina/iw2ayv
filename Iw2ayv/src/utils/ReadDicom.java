@@ -16,6 +16,8 @@ import java.util.StringTokenizer;
 public class ReadDicom {
 
 	private static final int PIXEL_DATA = 0x7FE00010;
+	private static final int NON_IMAGE = 0x7FE10010;
+	private static final int BINARY_DATA = 0x7FE11010;
 
 	/**
 	 * La seguente routine, che si occupa di estrarre dati dall'header delle
@@ -262,6 +264,7 @@ public class ReadDicom {
 		return pixelsDataFound;
 	}
 
+
 	/***
 	 * Testa se è un file dicom ed è un immagine visualizzabile
 	 * 
@@ -286,9 +289,9 @@ public class ReadDicom {
 		}
 	}
 
-	
 	/***
 	 * Legge il codice dall'header Dicom
+	 * 
 	 * @param imp1
 	 * @return
 	 */
@@ -302,13 +305,10 @@ public class ReadDicom {
 		}
 		return codice;
 	}
-	
-
 
 	public static String getFirstCoil(ImagePlus imp1) {
-			
-		String total = ReadDicom.readDicomParameter(
-				imp1, MyConst.DICOM_COIL);
+
+		String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
 		int i1 = total.indexOf(";");
 		String coil = "";
 		if (i1 == -1) {
@@ -319,7 +319,4 @@ public class ReadDicom {
 		return coil;
 	}
 
-	
-	
-	
 }

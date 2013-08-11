@@ -34,4 +34,23 @@ public class MyPlot {
 		return plot;
 	}
 
+	public static Plot basePlot(double[][] profile, String title, Color color) {
+
+		double[] profilex = new double[profile.length];
+		double[] profiley = new double[profile.length];
+
+		for (int i1 = 0; i1 < profile.length; i1++) {
+			profilex[i1]= profile[i1][0];
+			profiley[i1]= profile[i1][1];
+		}
+
+		double[] a = Tools.getMinMax(profilex);
+		double[] b = Tools.getMinMax(profiley);
+
+		Plot plot = new Plot(title, "pixel", "valore", profilex, profiley);
+		plot.setLimits(a[0], a[1], b[0], b[1] * 1.1);
+		plot.setColor(color);
+		return plot;
+	}
+
 }

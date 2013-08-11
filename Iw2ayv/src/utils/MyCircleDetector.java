@@ -150,7 +150,7 @@ public class MyCircleDetector {
 	}
 
 	/**
-	 * Applica il threshold all'immagine
+	 * Applica il threshold automatico di ImageJ all'immagine
 	 * 
 	 * @param imp1
 	 * @return
@@ -176,8 +176,8 @@ public class MyCircleDetector {
 	}
 
 	/***
-	 * Riceve una ImagePlus, su cui è stato effettuato un threshold binario con
-	 * impostata una Line, restituisce le coordinate dei 2 picchi
+	 * Riceve una ImagePlus, con impostata una Line, restituisce le coordinate
+	 * dei 2 picchi
 	 * 
 	 * @param imp1
 	 * @param dimPixel
@@ -530,7 +530,9 @@ public class MyCircleDetector {
 	}
 
 	/**
-	 * Traccia il perimetro esterno, di larghezza 1 pixel, del cerchio
+	 * Partendo da una immagine a cui è stato applicato il treshold automatico
+	 * di ImageJ, traccia il perimetro esterno, di larghezza 1 pixel, del
+	 * cerchio
 	 * 
 	 * @param imp1
 	 * @return
