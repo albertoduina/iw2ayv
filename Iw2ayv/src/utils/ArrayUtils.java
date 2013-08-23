@@ -44,6 +44,16 @@ public class ArrayUtils {
 	}
 
 
+	public static double[] arrayListToArrayDouble(List<Double> inArrayList) {
+		
+		double[] outIntArr = new double[inArrayList.size()];
+		int i1=0;
+		for (Double n : inArrayList) {
+			outIntArr[i1++] = n;
+		}
+		return outIntArr;
+	}
+
 
 
 }

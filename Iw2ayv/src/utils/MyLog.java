@@ -102,6 +102,31 @@ public class MyLog {
 		}
 		IJ.log("---------------------------------------------");
 	}
+	
+	public static void logMatrixVertical(double mat[][], String nome) {
+		String stri = "";
+		int rows = 0;
+		int columns = 0;
+		if (mat == null) {
+			IJ.log("Warning matrix " + nome + " = null");
+		} else {
+			rows = mat.length;
+			columns = mat[0].length;
+			// IJ.log("rows=" + rows + " columns= " + columns);
+
+			IJ.log("---- " + nome + " [ " + rows + "x" + columns + " ] ----");
+			for (int i1 = 0; i1 < columns; i1++) {
+				stri = "";
+				for (int i2 = 0; i2 < rows; i2++) {
+					stri += mat[i2][i1] + ",  ";
+				}
+				IJ.log(stri);
+			}
+		}
+		IJ.log("---------------------------------------------");
+	}
+
+	
 
 	public static void logMatrix(float mat[][], String nome) {
 		String stri = "";

@@ -1941,6 +1941,37 @@ public class UtilAyv {
 		}
 		return out1;
 	}
+	
+	
+	public static double toDouble (float in1) {
+		return (double) in1;
+	}
+
+	public static double[] toDouble(float[] in1) {
+		if (in1 == null)
+			return null;
+		double[] out1 = new double[in1.length];
+		for (int i1 = 0; i1 < in1.length; i1++) {
+			out1[i1] = (double) in1[i1];
+		}
+		return out1;
+	}
+
+	public static double[][] toDouble(float[][] in1) {
+		if (in1 == null)
+			return null;
+		double[][] out1 = new double[in1.length][in1[0].length];
+		for (int i1 = 0; i1 < in1.length; i1++) {
+			for (int i2 = 0; i2 < in1[0].length; i2++) {
+				out1[i1][i2] = (double) in1[i1][i2];
+			}
+		}
+		return out1;
+	}
+
+	
+	
+	
 
 } // UtilAyv
 
