@@ -1,8 +1,16 @@
 package utils;
 
 import ij.IJ;
+import ij.ImagePlus;
+import ij.WindowManager;
+import ij.gui.ImageWindow;
+import ij.gui.MessageDialog;
 import ij.gui.WaitForUserDialog;
+import ij.process.ColorProcessor;
+import ij.process.ImageProcessor;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -102,7 +110,7 @@ public class MyLog {
 		}
 		IJ.log("---------------------------------------------");
 	}
-	
+
 	public static void logMatrixVertical(double mat[][], String nome) {
 		String stri = "";
 		int rows = 0;
@@ -125,8 +133,6 @@ public class MyLog {
 		}
 		IJ.log("---------------------------------------------");
 	}
-
-	
 
 	public static void logMatrix(float mat[][], String nome) {
 		String stri = "";
@@ -328,6 +334,7 @@ public class MyLog {
 		}
 		IJ.log("---------------------------------------------");
 	}
+
 	public static void logVectorVertical(String vect[], String nome) {
 		String stri = "";
 		if (vect == null) {
@@ -426,20 +433,18 @@ public class MyLog {
 				+ Thread.currentThread().getStackTrace()[2].getMethodName()
 				+ " " + str);
 	}
-	
-	public static  String qui() {
-		String out=("file="
+
+	public static String qui() {
+		String out = ("file="
 				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
 				+ " line="
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ " class="
 				+ Thread.currentThread().getStackTrace()[2].getClassName()
 				+ " method="
-					+ Thread.currentThread().getStackTrace()[2].getMethodName()
-				+ "\n \n");
+				+ Thread.currentThread().getStackTrace()[2].getMethodName() + "\n \n");
 		return out;
 	}
-
 
 	public static void waitMessage(String str) {
 		new WaitForUserDialog(str).show();
@@ -451,6 +456,17 @@ public class MyLog {
 				+ " line="
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "\n \n" + str).show();
+	}
+
+	public static void waitHere(String str, boolean debug) {
+		if (debug)
+			new WaitForUserDialog("file="
+					+ Thread.currentThread().getStackTrace()[2].getFileName()
+					+ " " + " line="
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "\n \n" + str).show();
+		else
+			new WaitForUserDialog(str).show();
 	}
 
 	public static void waitHere() {
@@ -546,4 +562,12 @@ public class MyLog {
 		}
 		appendLog(path, "---- INIZIO ---------");
 	}
+
+	public static void waitHere(String str, int milliseconds, boolean debug) {
+		MessageDialog md1 = new MessageDialog(null, "Messaggio", str);
+		md1.setVisible(true);
+		IJ.wait(milliseconds);
+		md1.setVisible(false);
+	}
+
 }

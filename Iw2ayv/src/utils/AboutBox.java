@@ -103,21 +103,21 @@ public class AboutBox {
 		ip.setFont(new Font("SansSerif", Font.ROMAN_BASELINE, LARGE_FONT));
 		ip.setJustification(ImageProcessor.LEFT_JUSTIFY);
 		int y = 80;
-		ip.drawString(text[0], x(text[0], ip, max), y);
+		ip.drawString(text[0], xDim(text[0], ip, max), y);
 		ip.setFont(new Font("SansSerif", Font.ROMAN_BASELINE, LARGE_FONT));
 		y += 30;
-		ip.drawString(text[1], x(text[1], ip, max), y);
+		ip.drawString(text[1], xDim(text[1], ip, max), y);
 		y += 25;
-		ip.drawString(text[2], x(text[2], ip, max), y);
+		ip.drawString(text[2], xDim(text[2], ip, max), y);
 		y += 25;
 		ip.setFont(new Font("SansSerif", Font.ITALIC, MEDIUM_FONT));
-		ip.drawString(text[3], x(text[3], ip, max), y);
+		ip.drawString(text[3], xDim(text[3], ip, max), y);
 		y += 18;
-		ip.drawString(text[4], x(text[4], ip, max), y);
+		ip.drawString(text[4], xDim(text[4], ip, max), y);
 		y += 18;
-		ip.drawString(text[5], x(text[5], ip, max), y);
+		ip.drawString(text[5], xDim(text[5], ip, max), y);
 		y += 18;
-		ip.drawString(text[6], x(text[6], ip, max), y);
+		ip.drawString(text[6], xDim(text[6], ip, max), y);
 		ImageWindow.centerNextImage();
 
 		new ImagePlus("Controlli Mensili", ip).show();
@@ -193,22 +193,22 @@ public class AboutBox {
 		ip.setFont(new Font("SansSerif", Font.ROMAN_BASELINE, LARGE_FONT));
 		ip.setJustification(ImageProcessor.LEFT_JUSTIFY);
 		int y = 80;
-		ip.drawString(text[0], x(text[0], ip, max), y);
+		ip.drawString(text[0], xDim(text[0], ip, max), y);
 		ip.setFont(new Font("SansSerif", Font.ROMAN_BASELINE, LARGE_FONT));
 		y += 30;
-		ip.drawString(text[1], x(text[1], ip, max), y);
+		ip.drawString(text[1], xDim(text[1], ip, max), y);
 		y += 25;
-		ip.drawString(text[2], x(text[2], ip, max), y);
+		ip.drawString(text[2], xDim(text[2], ip, max), y);
 		y += 25;
 		ip.setFont(new Font("SansSerif", Font.ITALIC, MEDIUM_FONT));
-		ip.drawString(text[3], x(text[3], ip, max), y);
+		ip.drawString(text[3], xDim(text[3], ip, max), y);
 		y += 18;
-		ip.drawString(text[4], x(text[4], ip, max), y);
+		ip.drawString(text[4], xDim(text[4], ip, max), y);
 		y += 18;
-		ip.drawString(text[5], x(text[5], ip, max), y);
+		ip.drawString(text[5], xDim(text[5], ip, max), y);
 		ImageWindow.centerNextImage();
 		y += 18;
-		ip.drawString(text[6], x(text[6], ip, max), y);
+		ip.drawString(text[6], xDim(text[6], ip, max), y);
 		ImageWindow.centerNextImage();
 
 		new ImagePlus("TITOLO10", ip).show();
@@ -316,19 +316,19 @@ public class AboutBox {
 		ip.setFont(new Font("SansSerif", Font.ROMAN_BASELINE, LARGE_FONT));
 		ip.setJustification(ImageProcessor.LEFT_JUSTIFY);
 		int y = 80;
-		ip.drawString(text[0], x(text[0], ip, max), y);
+		ip.drawString(text[0], xDim(text[0], ip, max), y);
 		ip.setFont(new Font("SansSerif", Font.ROMAN_BASELINE, LARGE_FONT));
 		y += 30;
-		ip.drawString(text[1], x(text[1], ip, max), y);
+		ip.drawString(text[1], xDim(text[1], ip, max), y);
 		y += 25;
-		ip.drawString(text[2], x(text[2], ip, max), y);
+		ip.drawString(text[2], xDim(text[2], ip, max), y);
 		y += 25;
 		ip.setFont(new Font("SansSerif", Font.ITALIC, MEDIUM_FONT));
-		ip.drawString(text[3], x(text[3], ip, max), y);
+		ip.drawString(text[3], xDim(text[3], ip, max), y);
 		y += 18;
-		ip.drawString(text[4], x(text[4], ip, max), y);
+		ip.drawString(text[4], xDim(text[4], ip, max), y);
 		y += 18;
-		ip.drawString(text[5], x(text[5], ip, max), y);
+		ip.drawString(text[5], xDim(text[5], ip, max), y);
 		ImageWindow.centerNextImage();
 
 		new ImagePlus("Controlli Mensili", ip).show();
@@ -337,7 +337,7 @@ public class AboutBox {
 
 	}
 
-	int x(String text, ImageProcessor ip, int max) {
+	int xDim(String text, ImageProcessor ip, int max) {
 		return ip.getWidth() - max + (max - ip.getStringWidth(text)) / 2 - 10;
 	}
 
@@ -422,17 +422,17 @@ public class AboutBox {
 		ip.setFont(new Font("SansSerif", Font.ROMAN_BASELINE, LARGE_FONT));
 		ip.setJustification(ImageProcessor.LEFT_JUSTIFY);
 		int y = 80;
-		ip.drawString(text[0], x(text[0], ip, max), y);
+		ip.drawString(text[0], xDim(text[0], ip, max), y);
 		ip.setFont(new Font("SansSerif", Font.ROMAN_BASELINE, LARGE_FONT));
 		y += 30;
-		ip.drawString(text[1], x(text[1], ip, max), y);
+		ip.drawString(text[1], xDim(text[1], ip, max), y);
 		y += 25;
-		ip.drawString(text[2], x(text[2], ip, max), y);
+		ip.drawString(text[2], xDim(text[2], ip, max), y);
 		y += 25;
 		ip.setFont(new Font("SansSerif", Font.ITALIC, MEDIUM_FONT));
-		ip.drawString(text[3], x(text[3], ip, max), y);
+		ip.drawString(text[3], xDim(text[3], ip, max), y);
 		y += 18;
-		ip.drawString(text[4], x(text[4], ip, max), y);
+		ip.drawString(text[4], xDim(text[4], ip, max), y);
 		y += 18;
 		// ip.drawString(text[5], x(text[5], ip, max), y);
 		ImageWindow.centerNextImage();
