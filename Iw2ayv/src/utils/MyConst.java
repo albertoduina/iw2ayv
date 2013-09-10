@@ -87,7 +87,21 @@ public class MyConst {
 	public static final int P3_ROI_LIMIT = 10;
 	public static String[] P3_vetName = { "SEGNALE", "RUMORE", "SNR", "GHOST1",
 			"GHOST2", "GHOST3", "GHOST4", "UNIF.INT.%" };
-
+	
+	// ------------ p12rmn -----------------------
+	public static final int P12_DIAM_PHANTOM = 174;
+	public static final int P12_X_ROI_TESTSIEMENS = 40;
+	public static final int P12_Y_ROI_TESTSIEMENS = 26;
+	public static final int P12_X_ROI_TESTGE = 39;
+	public static final int P12_Y_ROI_TESTGE = 35;
+	public static final double P12_AREA_PERC_80_DIAM = 0.89;
+	public static final int P12_DIAM_FOR_450_PIXELS = 24; // area > 450 pixels
+	public static final int P12_DIAM_ROI_GHOSTS = 20;
+	public static final int P12_DIAM_ROI_BACKGROUND = 20;
+	public static final int P12_ROI_LIMIT = 10;
+	public static String[] P12_vetName = { "SEGNALE", "RUMORE", "SNR", "GHOST1",
+			"GHOST2", "GHOST3", "GHOST4", "UNIF.INT.%" };
+	
 	// ------------ p4rmn -----------------------
 	public static final double P4_X_START_REFLINE_TESTSIEMENS = 51.0;
 	public static final double P4_Y_START_REFLINE_TESTSIEMENS = 112.0;

@@ -14,6 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
 public class UtilAyvTest {
 
 	@Before
@@ -56,6 +57,19 @@ public class UtilAyvTest {
 		testSignal = Double.POSITIVE_INFINITY;
 		ok = UtilAyv.checkLimits(testSignal, low, high);
 		assertFalse(ok);
+	}
+
+	
+	
+	@Test
+	public final void testDecoderLimiti() {
+
+		String[][] limiti = new InputOutput().readFile6("LIMITI.csv");
+		MyLog.logMatrix(limiti, "limiti");
+		MyLog.waitHere();
+		String[] result = UtilAyv.decoderLimiti(limiti, "P10MAX");
+		MyLog.logVector(result, "result");
+
 	}
 
 	@Test

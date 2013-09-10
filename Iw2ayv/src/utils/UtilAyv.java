@@ -496,7 +496,7 @@ public class UtilAyv {
 		String positionsString = "";
 		double aux1;
 		for (int i1 = 0; i1 < positions.length; i1++) {
-			aux1 = (double) positions[i1]/ (double) lato;
+			aux1 = (double) positions[i1] / (double) lato;
 			positionsString = positionsString + aux1 + ";";
 		}
 		return positionsString;
@@ -812,11 +812,17 @@ public class UtilAyv {
 		imp.show();
 		ImageWindow win = IJ.getImage().getWindow();
 		win.setBounds(win.getMaximumBounds());
-		IJ.wait(40);
+		// MyLog.waitHere("MaximumBounds " + win.getMaximumBounds() + "\n"
+		// // + "MaximizedBounds= " + win.getMaximizedBounds() + "\n"
+		// + "RealBounds= " + win.getBounds());
+		IJ.wait(10);
+		// win.setBounds(win.getMaximumBounds());
 		win.maximize();
-		IJ.wait(40);
+		IJ.wait(10);
+		// win.setBounds(win.getMaximumBounds());
 		win.maximize();
-		IJ.wait(40);
+		IJ.wait(10);
+		// win.setBounds(win.getMaximumBounds());
 		win.maximize();
 		return win;
 	}
@@ -1384,7 +1390,7 @@ public class UtilAyv {
 			MyLog.logVector(vetResults, "vetResults");
 			MyLog.logVector(vetReference, "vetReference");
 			MyLog.logVector(vetName, "vetName");
-			MyLog.waitHere("vector null");
+			MyLog.caller("verifyResults1 vector null");
 
 			return false;
 		}
@@ -1406,9 +1412,7 @@ public class UtilAyv {
 		}
 		return testok;
 	}
-	
-	
-	
+
 	/**
 	 * 
 	 * @param vetResults
@@ -1420,7 +1424,7 @@ public class UtilAyv {
 			double[] vetReference) {
 		boolean testok = true;
 
-		if (vetResults == null || vetReference == null ) {
+		if (vetResults == null || vetReference == null) {
 			MyLog.logVector(vetResults, "vetResults");
 			MyLog.logVector(vetReference, "vetReference");
 			MyLog.waitHere("vector null");
@@ -1438,14 +1442,13 @@ public class UtilAyv {
 		for (int i1 = 0; i1 < vetResults.length; i1++) {
 
 			if (vetResults[i1] != vetReference[i1]) {
-				MyLog.waitHere("ERRATO " + vetResults[i1]
-						+ " anzichè " + vetReference[i1]);
+				MyLog.waitHere("ERRATO " + vetResults[i1] + " anzichè "
+						+ vetReference[i1]);
 				testok = false;
 			}
 		}
 		return testok;
 	}
-
 
 	public static boolean verifyResults2(int[] xMeasuredPoints,
 			int[] yMeasuredPoints, int[] xRefPoints, int[] yRefPoints,
@@ -1820,10 +1823,10 @@ public class UtilAyv {
 	 */
 	public static int checkLimits(double signal, double low, double high,
 			String title) {
-
 		int userSelection = 0;
 
-		if ((Double.isNaN(signal)) || (signal < low) || (signal > high)) {
+		if ((Double.isNaN(signal)) || (Double.isInfinite(signal))
+				|| (signal < low) || (signal > high)) {
 
 			userSelection = ButtonMessages.ModelessMsg("IL VALORE " + title
 					+ "= " + signal + " E'AL DI FUORI DAI LIMITI " + low
@@ -1831,6 +1834,18 @@ public class UtilAyv {
 			return userSelection;
 		} else
 			return 0;
+	}
+
+	public static boolean checkLimits2(double signal, double low, double high,
+			String title) {
+
+		if ((Double.isNaN(signal)) || (Double.isInfinite(signal))
+				|| (signal < low) || (signal > high)) {
+			MyLog.waitHere("IL VALORE DI " + title + " = " + signal
+					+ " E'AL DI FUORI DEI LIMITI " + low + " , " + high);
+			return true;
+		} else
+			return false;
 	}
 
 	/***
@@ -1844,7 +1859,8 @@ public class UtilAyv {
 	 */
 	public static boolean checkLimits(double signal, double low, double high) {
 
-		if ((Double.isNaN(signal)) || (signal < low) || (signal > high))
+		if ((Double.isNaN(signal)) || (Double.isInfinite(signal))
+				|| (signal < low) || (signal > high))
 			return false;
 		else
 
@@ -1941,9 +1957,8 @@ public class UtilAyv {
 		}
 		return out1;
 	}
-	
-	
-	public static double toDouble (float in1) {
+
+	public static double toDouble(float in1) {
 		return (double) in1;
 	}
 
@@ -1968,10 +1983,36 @@ public class UtilAyv {
 		}
 		return out1;
 	}
+	
+	public static String[] decoderLimiti(String[][] tableLimiti, String vetName) {
+		String[] result;
+		if (tableLimiti == null)
+			MyLog.waitHere("tableLimiti == null");
+		if (vetName == null || vetName == "")
+			MyLog.waitHere("vetName == none");
+		for (int i1 = 0; i1 < tableLimiti.length; i1++) {
+			if (tableLimiti[i1][0].equals(vetName)) {
+				result = tableLimiti[i1];
+				return result;
+			}
+		}
+		return null;
+	}
 
-	
-	
-	
+	public static double[] doubleLimiti(String[] in1) {
+		if (in1 == null)
+			return null;
+		double[] result = new double[in1.length - 1];
+		int i2 = 0;
+		// MyLog.logVector(in1, "in1");
+		// MyLog.waitHere();
+		for (int i1 = 1; i1 < in1.length; i1++) {
+
+			result[i2++] = ReadDicom.readDouble(in1[i1]);
+		}
+		return result;
+	}
+
 
 } // UtilAyv
 

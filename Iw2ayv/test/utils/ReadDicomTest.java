@@ -34,6 +34,29 @@ public class ReadDicomTest {
 	}
 
 	@Test
+	public final void testContainsCoilParameter() {
+		String path = ".\\Test4\\15_18130558_HE3,4vNE1,2vSP1,2_O12S_";
+		ImagePlus imp = new Opener().openImage(path);
+		if (imp == null) {
+			fail("Manca immagine");
+		}
+
+		String coil = ReadDicom.getAllCoils(imp);
+		MyLog.waitHere("Coil= " + coil);
+
+		boolean ok = coil.contains("ne1,2");
+		ok = coil.toLowerCase().contains("nE1,2".toLowerCase());
+	
+		if (ok)
+			MyLog.waitHere("trovato URRAH");
+		else
+			MyLog.waitHere("fallito");
+
+		// String parameter = ReadDicom.readDicomParameter(imp, "0008,0005");
+		// assertEquals("ISO_IR 100", parameter);
+	}
+
+	@Test
 	public final void testHasHeader() {
 
 		String path = ".\\Test4\\01";
@@ -80,6 +103,5 @@ public class ReadDicomTest {
 		boolean dic = ReadDicom.isDicomOld(".\\Test4\\01");
 		assertTrue("non dicom", dic);
 	}
-
 
 }

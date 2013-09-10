@@ -1,5 +1,6 @@
 package utils;
 
+import ij.gui.GUI;
 import ij.gui.MultiLineLabel;
 
 import java.awt.Button;
@@ -61,6 +62,7 @@ public class ModelessDialog extends Dialog implements ActionListener {
 	public ModelessDialog(String question, String cinque, String quattro,
 			String tre, String due, String uno, boolean modal) {
 		super(new Frame(), modal);
+		
 		strUno = uno;
 		strDue = due;
 		strTre = tre;
@@ -221,6 +223,7 @@ public class ModelessDialog extends Dialog implements ActionListener {
 
 	public ModelessDialog(String question) {
 		this(question, false);
+		GUI.center(this);
 	}
 
 	

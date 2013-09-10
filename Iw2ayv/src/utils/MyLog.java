@@ -15,7 +15,17 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class MyLog {
 
@@ -344,7 +354,7 @@ public class MyLog {
 					+ " ] -----------");
 
 			for (int i1 = 0; i1 < vect.length; i1++) {
-				stri = stri + vect[i1] + "\n";
+				stri = stri + i1+"  "+ vect[i1] + "\n";
 			}
 			IJ.log(stri);
 		}
@@ -538,9 +548,11 @@ public class MyLog {
 	public static void appendLog(String path, String linea) {
 
 		BufferedWriter out;
+		String time = new SimpleDateFormat("yyyy-MM-dd hh:mm").format(new Date());
+		
 		try {
 			out = new BufferedWriter(new FileWriter(path, true));
-			out.write(linea);
+			out.write(time+ " "+linea);
 			out.newLine();
 			out.close();
 		} catch (IOException e) {
@@ -564,10 +576,28 @@ public class MyLog {
 	}
 
 	public static void waitHere(String str, int milliseconds, boolean debug) {
-		MessageDialog md1 = new MessageDialog(null, "Messaggio", str);
-		md1.setVisible(true);
-		IJ.wait(milliseconds);
-		md1.setVisible(false);
+
+		String stri1 = "file="
+				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
+				+ " line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber();
+
+		ScheduledExecutorService s = Executors
+				.newSingleThreadScheduledExecutor();
+
+		final ModelessDialog wfud = new ModelessDialog("\n" + stri1 + "\n\n\n"
+				+ str);
+
+		// JFrame f = new JFrame();
+		//
+		// final JDialog jd1 = new JDialog(f, "Messaggio"+stri1, true);
+		s.schedule(new Runnable() {
+			@Override
+			public void run() {
+				wfud.dispose();
+			}
+		}, milliseconds, TimeUnit.SECONDS);
+		wfud.setVisible(true);
 	}
 
 }
