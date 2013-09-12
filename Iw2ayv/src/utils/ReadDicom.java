@@ -166,6 +166,22 @@ public class ReadDicom {
 	}
 
 	/**
+	 * Ertrae tutte le parti di un parametro Dicom costituito da una stringa
+	 * multipla
+	 * 
+	 * @param s1
+	 * @return
+	 */
+	public static String[] parseString(String s1) {
+		StringTokenizer parser = new StringTokenizer(s1, " \t\\;");
+		int total = parser.countTokens();
+		String[] vet = new String[total];
+		for (int i2 = 0; i2 < total; i2++)
+			vet[i2] = parser.nextToken();
+		return vet;
+	}
+
+	/**
 	 * legge un valore double da una stringa
 	 * 
 	 * @param s1
@@ -264,7 +280,6 @@ public class ReadDicom {
 		return pixelsDataFound;
 	}
 
-
 	/***
 	 * Testa se è un file dicom ed è un immagine visualizzabile
 	 * 
@@ -318,15 +333,11 @@ public class ReadDicom {
 		}
 		return coil;
 	}
-	
+
 	public static String getAllCoils(ImagePlus imp1) {
 
 		String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
 		return total;
 	}
-
-	
-	
-	
 
 }

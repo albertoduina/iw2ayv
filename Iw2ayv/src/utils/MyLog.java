@@ -354,7 +354,7 @@ public class MyLog {
 					+ " ] -----------");
 
 			for (int i1 = 0; i1 < vect.length; i1++) {
-				stri = stri + i1+"  "+ vect[i1] + "\n";
+				stri = stri + i1 + "  " + vect[i1] + "\n";
 			}
 			IJ.log(stri);
 		}
@@ -548,11 +548,12 @@ public class MyLog {
 	public static void appendLog(String path, String linea) {
 
 		BufferedWriter out;
-		String time = new SimpleDateFormat("yyyy-MM-dd hh:mm").format(new Date());
-		
+		String time = new SimpleDateFormat("yyyy-MM-dd hh:mm")
+				.format(new Date());
+
 		try {
 			out = new BufferedWriter(new FileWriter(path, true));
-			out.write(time+ " "+linea);
+			out.write(time + " " + linea);
 			out.newLine();
 			out.close();
 		} catch (IOException e) {
@@ -598,6 +599,26 @@ public class MyLog {
 			}
 		}, milliseconds, TimeUnit.SECONDS);
 		wfud.setVisible(true);
+	}
+
+	public static void logDebug(int riga, String prg, String fileDir) {
+		String[][] table = new TableSequence().loadTable(fileDir
+				+ MyConst.SEQUENZE_FILE);
+		String tableRiga = TableSequence.getRow(table, riga);
+		String tablePath = TableSequence.getPath(table, riga);
+		File f1 = new File(tablePath);
+		String tableCode = TableSequence.getCode(table, riga);
+		String tableCoil = TableSequence.getCoil(table, riga);
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(tablePath, true);
+		String imaCode = ReadDicom
+				.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION)
+				.substring(0, 5).trim();
+		String imaCoil = ReadDicom.getAllCoils(imp1);
+		MyLog.appendLog(fileDir + "MyLog.txt",
+				prg + " > logDebug name= " + f1.getName() + "  tableRiga= "
+						+ tableRiga + " tableCode= " + tableCode + " imaCode= "
+						+ imaCode + " tableCoil=" + tableCoil + " imaCoil= "
+						+ imaCoil);
 	}
 
 }

@@ -32,6 +32,7 @@ public class MyConst {
 
 	public static final String DICOM_SLICE_THICKNESS = "0018,0050";
 	public static final String DICOM_ECHO_TIME = "0018,0081";
+	public static final String DICOM_IMAGING_FREQUENCY = "0018,0084";
 	public static final String DICOM_SPACING_BETWEEN_SLICES = "0018,0088";
 	public static final String DICOM_PHASE_ENCODING_STEPS = "0018,0089";
 
@@ -87,7 +88,7 @@ public class MyConst {
 	public static final int P3_ROI_LIMIT = 10;
 	public static String[] P3_vetName = { "SEGNALE", "RUMORE", "SNR", "GHOST1",
 			"GHOST2", "GHOST3", "GHOST4", "UNIF.INT.%" };
-	
+
 	// ------------ p12rmn -----------------------
 	public static final int P12_DIAM_PHANTOM = 174;
 	public static final int P12_X_ROI_TESTSIEMENS = 40;
@@ -99,9 +100,9 @@ public class MyConst {
 	public static final int P12_DIAM_ROI_GHOSTS = 20;
 	public static final int P12_DIAM_ROI_BACKGROUND = 20;
 	public static final int P12_ROI_LIMIT = 10;
-	public static String[] P12_vetName = { "SEGNALE", "RUMORE", "SNR", "GHOST1",
-			"GHOST2", "GHOST3", "GHOST4", "UNIF.INT.%" };
-	
+	public static String[] P12_vetName = { "SEGNALE", "RUMORE", "SNR",
+			"GHOST1", "GHOST2", "GHOST3", "GHOST4", "UNIF.INT.%" };
+
 	// ------------ p4rmn -----------------------
 	public static final double P4_X_START_REFLINE_TESTSIEMENS = 51.0;
 	public static final double P4_Y_START_REFLINE_TESTSIEMENS = 112.0;
@@ -243,5 +244,4 @@ public class MyConst {
 	public static final int P8_TOKENS4 = 4;
 	public static final double P8_PHANTOM_SIDE = 120.0;
 	public static final double P8_PHANTOM_DIAGONAL = 169.7;
-
 }
