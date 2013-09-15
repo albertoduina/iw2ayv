@@ -20,7 +20,7 @@ public class ReportStandardInfo {
 	// private final static String DICOM_COIL = "0051,100F";
 
 	private static String[] simpleHeader = { "none", "none", "none", "none",
-			"none", "none", "<END>" };
+			"none", "none", "none", "<END>" };
 
 	/**
 	 * legge un gruppo di informazioni che verranno inserite nella ResultsTable
@@ -42,7 +42,7 @@ public class ReportStandardInfo {
 		String[][] out1 = { { "Codice", "none" }, { "Station", "none" },
 				{ "Patient", "none" }, { "AcqDate", "none" },
 				{ "ElabDate", "none" }, { "Coil", "none" },
-				{ "<END>", "<END>" } };
+				{ "Frequeny", "none" }, { "<END>", "<END>" } };
 
 		if (tabImmagini == null) {
 			out1[0][1] = "TEST";
@@ -51,6 +51,8 @@ public class ReportStandardInfo {
 			out1[3][1] = "TEST";
 			out1[4][1] = "TEST";
 			out1[5][1] = "TEST";
+			out1[6][1] = "TEST";
+			out1[7][1] = "TEST";
 			return (out1);
 		}
 
@@ -91,6 +93,10 @@ public class ReportStandardInfo {
 				MyConst.DICOM_STATION_NAME);
 		String patName = ReadDicom.readDicomParameter(imp1,
 				MyConst.DICOM_PATIENT_NAME);
+		
+		String frequency = ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_IMAGING_FREQUENCY);
+
 		String[] mesi = { "gen", "feb", "mar", "apr", "mag", "giu", "lug",
 				"ago", "set", "ott", "nov", "dic" };
 		// data acquisizione
@@ -128,6 +134,7 @@ public class ReportStandardInfo {
 
 		String elabDate = strDay + "-" + strMonth + "-" + strYear + "_"
 				+ version;
+		
 
 		// String coil1 = ReadDicom.readDicomParameter(imp1, DICOM_COIL);
 		String coil = ReadDicom.getFirstCoil(imp1);
@@ -142,6 +149,7 @@ public class ReportStandardInfo {
 		out1[3][1] = acqDate;
 		out1[4][1] = elabDate;
 		out1[5][1] = coil;
+		out1[6][1] = frequency;
 
 		return (out1);
 	}
@@ -206,6 +214,9 @@ public class ReportStandardInfo {
 				MyConst.DICOM_STATION_NAME);
 		String patName = ReadDicom.readDicomParameter(imp1,
 				MyConst.DICOM_PATIENT_NAME);
+		String frequency = ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_IMAGING_FREQUENCY);
+
 		String[] mesi = { "gen", "feb", "mar", "apr", "mag", "giu", "lug",
 				"ago", "set", "ott", "nov", "dic" };
 		// acquisitionDate
@@ -249,6 +260,7 @@ public class ReportStandardInfo {
 		simpleHeader[3] = acqDate;
 		simpleHeader[4] = elabDate;
 		simpleHeader[5] = coil;
+		simpleHeader[6] = frequency;
 		// MyLog.logVector(simpleHeader, "simpleHeader");
 
 		return (simpleHeader);
