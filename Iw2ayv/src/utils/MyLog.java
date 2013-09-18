@@ -11,6 +11,7 @@ import ij.process.ImageProcessor;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -469,14 +470,17 @@ public class MyLog {
 	}
 
 	public static void waitHere(String str, boolean debug) {
-		if (debug)
+		if (debug) {
+			IJ.beep();
 			new WaitForUserDialog("file="
 					+ Thread.currentThread().getStackTrace()[2].getFileName()
 					+ " " + " line="
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "\n \n" + str).show();
-		else
+		} else {
+			IJ.beep();
 			new WaitForUserDialog(str).show();
+		}
 	}
 
 	public static void waitHere() {

@@ -218,6 +218,10 @@ public class UtilAyv {
 		ImageProcessor ip2;
 		double v1, v2, v3;
 
+		if (UtilAyv.compareImagesByDifference(imp1,imp2)) MyLog.waitThere("ATTENZIONE SONO STATE PASSATE A GENIMADIFFERENCE \n"
+				+ "DUE IMMAGINU UGUALI, L'IMMAGINE DIFFERENZA VARRA' \n"
+				+ "PERTANTO ZERO E SI AVRA' UN SNR INFINITY");
+
 		if (imp1 == null)
 			return (null);
 		if (imp2 == null)
@@ -1841,7 +1845,7 @@ public class UtilAyv {
 
 		if ((Double.isNaN(signal)) || (Double.isInfinite(signal))
 				|| (signal < low) || (signal > high)) {
-			MyLog.waitHere("IL VALORE DI " + title + " = " + signal
+			MyLog.waitThere("IL VALORE DI " + title + " = " + signal
 					+ " E'AL DI FUORI DEI LIMITI " + low + " , " + high);
 			return true;
 		} else
