@@ -218,9 +218,10 @@ public class UtilAyv {
 		ImageProcessor ip2;
 		double v1, v2, v3;
 
-		if (UtilAyv.compareImagesByDifference(imp1,imp2)) MyLog.waitThere("ATTENZIONE SONO STATE PASSATE A GENIMADIFFERENCE \n"
-				+ "DUE IMMAGINU UGUALI, L'IMMAGINE DIFFERENZA VARRA' \n"
-				+ "PERTANTO ZERO E SI AVRA' UN SNR INFINITY");
+		if (UtilAyv.compareImagesByDifference(imp1, imp2))
+			MyLog.waitThere("ATTENZIONE SONO STATE PASSATE A GENIMADIFFERENCE \n"
+					+ "DUE IMMAGINU UGUALI, L'IMMAGINE DIFFERENZA VARRA' \n"
+					+ "PERTANTO ZERO E SI AVRA' UN SNR INFINITY");
 
 		if (imp1 == null)
 			return (null);
@@ -813,21 +814,38 @@ public class UtilAyv {
 	}
 
 	public static ImageWindow showImageMaximized(ImagePlus imp) {
-		imp.show();
-		ImageWindow win = IJ.getImage().getWindow();
+
+		double mag1 = 0;
+		ImageWindow win = imp.getWindow();
+		if (win != null) {
+			MyLog.waitThere("immagine già visualizzata !");
+		} else {
+			imp.show();
+			do {
+				win = imp.getWindow();
+				mag1 = win.getCanvas().getMagnification();
+				if (mag1 > 1.0) {
+					MyLog.waitThere("dimensione immagine errata");
+					win.close();
+					imp.show();
+				}
+			} while (mag1 > 1.0);
+		}
+		win = imp.getWindow();
 		win.setBounds(win.getMaximumBounds());
-		// MyLog.waitHere("MaximumBounds " + win.getMaximumBounds() + "\n"
-		// // + "MaximizedBounds= " + win.getMaximizedBounds() + "\n"
-		// + "RealBounds= " + win.getBounds());
-		IJ.wait(10);
-		// win.setBounds(win.getMaximumBounds());
 		win.maximize();
-		IJ.wait(10);
-		// win.setBounds(win.getMaximumBounds());
-		win.maximize();
-		IJ.wait(10);
-		// win.setBounds(win.getMaximumBounds());
-		win.maximize();
+		// double mag2 = win.getCanvas().getMagnification();
+		// IJ.log("mag2= " + mag2);
+		// IJ.wait(10);
+		// // win.setBounds(win.getMaximumBounds());
+		// win.maximize();
+		// double mag3 = win.getCanvas().getMagnification();
+		// IJ.log("mag3= " + mag3);
+		// // MyLog.waitHere();
+		//
+		// IJ.wait(10);
+		// // win.setBounds(win.getMaximumBounds());
+		// win.maximize();
 		return win;
 	}
 
@@ -2019,7 +2037,16 @@ public class UtilAyv {
 
 	/**
 	 * Test sulle immagini ricevute in automatico da Sequenze. In caso di
-	 * problemi viene dato un messaggio esplicativo e restituito false.
+	 * problemi viene dato un messaggio esplicativo e restituito false. Vengono
+	 * eseguiti i seguenti controlli sul gruppo di righe (e quindi di immagini)
+	 * passate al plugin. I controlli effettuati sono: verifica che le immagini
+	 * siano acquisite tutte dalla stessa sequenza. Verifica che tutte le
+	 * immagini siano acquisite dalla stessa bobina (oppure MISSIONG). Verifiche
+	 * sugli echi delle immagini: Caso singola immagine p4, p6, p8: non ne devo
+	 * passare più di una. Caso due immagini p3, p10 e p12: due sole immagini
+	 * acquisite una di seguito all'altra con lo stesso eco. Caso di p5 e p10 e
+	 * p11 quattro immagini, due gruppi di due echi diversi, acquisiti uno dopo
+	 * l'altro il primo eco deve essere inferiore al secondo eco
 	 * 
 	 * @param vetRiga
 	 * @param iw2ayvTable
@@ -2027,7 +2054,7 @@ public class UtilAyv {
 	 * @return
 	 */
 	public static boolean checkImages(int[] vetRiga, String[][] iw2ayvTable,
-			int sel) {
+			int sel, boolean debug) {
 		String[] coil = new String[vetRiga.length];
 		String[] descr = new String[vetRiga.length];
 		String[] echo = new String[vetRiga.length];
@@ -2063,13 +2090,19 @@ public class UtilAyv {
 		for (int i1 = 1; i1 < vetRiga.length; i1++) {
 			if (!descr0.equals(descr[i1])) {
 
-				MyLog.waitThere("AUTOMATICO la descrizione delle sequenze ricevute è differente "
-						+ stampa + "   " + descr0 + "  " + descr[i1]);
+				MyLog.waitThere(
+						"Problema sui dati ricevuti in AUTOMATICO: \n"
+								+ "la descrizione delle sequenze ricevute è differente "
+								+ stampa + "   " + descr0 + "  " + descr[i1],
+						debug);
 				return false;
 			}
 			if (!coil0.equals(coil[i1])) {
-				MyLog.waitThere("AUTOMATICO le immagini ricevute devono essere tutte acquisite con la stessa bobina"
-						+ stampa + "  " + coil0 + "  " + coil[i1]);
+				MyLog.waitThere(
+						"Problema sui dati ricevuti in AUTOMATICO: \n"
+								+ "le immagini ricevute devono essere tutte acquisite \n"
+								+ "con la stessa bobina" + stampa + "  "
+								+ coil0 + "  " + coil[i1], debug);
 				return false;
 			}
 		}
@@ -2078,8 +2111,9 @@ public class UtilAyv {
 		case 1:
 			// questo è il caso della singola immagine p4, p6, p8
 			if (vetRiga.length != 1) {
-				MyLog.waitThere("AUTOMATICO errore sul numero parametri ricevuti da Sequenze previsti= 1 reali= "
-						+ stampa);
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "errore sul numero parametri ricevuti da Sequenze \n"
+						+ "previsti= 1 reali= " + stampa, debug);
 				return false;
 			}
 			break;
@@ -2089,18 +2123,21 @@ public class UtilAyv {
 			// due sole immagini acquisite una di seguito all'altra.
 			// hanno lo stesso eco
 			if (vetRiga.length != 2) {
-				MyLog.waitThere("AUTOMATICO errore sul numero parametri ricevuti da Sequenze previsti= 2 reali= "
-						+ stampa);
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "errore sul numero parametri ricevuti da Sequenze \n"
+						+ "previsti= 2 reali= " + stampa, debug);
 				return false;
 			}
 			if (!echo[0].equals(echo[1])) {
-				MyLog.waitThere("AUTOMATICO immagini ricevute con tempi di echo differenti "
-						+ stampa);
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "immagini ricevute con tempi di echo differenti "
+						+ stampa, debug);
 				return false;
 			}
 			if (!ima[0].equals("1") || !ima[1].equals("1")) {
-				MyLog.waitThere("AUTOMATICO non soddisfatta la condizione ima1= 1 && ima2= 1 "
-						+ stampa);
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "non soddisfatta la condizione ima1= 1 && ima2= 1 \n"
+						+ "" + stampa, debug);
 				return false;
 			}
 			break;
@@ -2111,37 +2148,35 @@ public class UtilAyv {
 			// dopo l'altro
 			// il primo eco deve essere inferiore al secondo eco
 			if (vetRiga.length != 4) {
-				MyLog.waitThere("AUTOMATICO errore sul numero parametri ricevuti da Sequenze previsti= 4 reali= "
-						+ stampa);
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "errore sul numero parametri ricevuti da Sequenze \n"
+						+ "previsti= 4 reali= " + stampa, debug);
 				return false;
 			}
 			if (!echo[0].equals(echo[2]) || !echo[1].equals(echo[3])) {
-				MyLog.waitThere("AUTOMATICO i tempi di echo devono essere a due a due uguali "
-						+ stampa);
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "i tempi di echo devono essere a due a due uguali \n"
+						+ "" + stampa + "\n \nechi= " + echo[0] + " " + echo[1]
+						+ " " + echo[2] + " " + echo[3], debug);
 				return false;
 			}
 			if (!(ReadDicom.readInt(echo[0]) < ReadDicom.readInt(echo[1]))) {
-				MyLog.waitThere("AUTOMATICO i tempi di echo delle prime immagini devono essere inferiori a quelli delle seconde "
-						+ stampa
-						+ " echi= "
-						+ echo[0]
-						+ " "
-						+ echo[1]
-						+ " "
-						+ echo[2] + " " + echo[3]);
+				MyLog.waitThere(
+						"Problema sui dati ricevuti in AUTOMATICO: \n"
+								+ "i tempi di echo delle prime immagini devono essere \n"
+								+ "inferiori a quelli delle seconde " + stampa
+								+ "\n \nechi= " + echo[0] + " " + echo[1] + " "
+								+ echo[2] + " " + echo[3], debug);
 
 				return false;
 			}
 			if (!(ima[0].equals("1") && ima[1].equals("2")
 					&& ima[2].equals("1") && ima[3].equals("2"))) {
-				MyLog.waitThere("AUTOMATICO non soddisfatta la condizione ima1= 1, ima2= 2, ima3= 1, ima4=2 "
-						+ stampa
-						+ "  ima="
-						+ ima[0]
-						+ " "
-						+ ima[1]
-						+ " "
-						+ ima[2] + " " + ima[3]);
+				MyLog.waitThere(
+						"Problema sui dati ricevuti in AUTOMATICO: \n"
+								+ "non soddisfatta la condizione ima1= 1, ima2= 2, ima3= 1, ima4=2 \n"
+								+ "" + stampa + "  ima=" + ima[0] + " "
+								+ ima[1] + " " + ima[2] + " " + ima[3], debug);
 				return false;
 			}
 			break;
@@ -2151,32 +2186,26 @@ public class UtilAyv {
 			// questo è il caso tipico di p3 e p10 e p12, nell'ipotetico caso di
 			// quattro immagini
 			if (vetRiga.length != 4) {
-				MyLog.waitThere("AUTOMATICO errore sul numero parametri ricevuti da Sequenze previsti= 4 reali= "
-						+ stampa);
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "errore sul numero parametri ricevuti da Sequenze \n"
+						+ "previsti= 4 reali= " + stampa, debug);
 				return false;
 			}
 			if (!echo[0].equals(echo[1]) || !echo[0].equals(echo[2])
 					|| !echo[0].equals(echo[3])) {
-				MyLog.waitThere("AUTOMATICO immagini ricevute con tempi di echo differenti "
-						+ stampa
-						+ " echi= "
-						+ echo[0]
-						+ " "
-						+ echo[1]
-						+ " "
-						+ echo[2] + " " + echo[3]);
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "immagini ricevute con tempi di echo differenti \n"
+						+ "" + stampa + "\n \nechi= " + echo[0] + " " + echo[1]
+						+ " " + echo[2] + " " + echo[3], debug);
 				return false;
 			}
 			if (!ima[0].equals("1") || !ima[1].equals("2")
 					|| !ima[2].equals("1") || !ima[3].equals("2")) {
-				MyLog.waitThere("AUTOMATICO non soddisfatta la condizione ima1= 1, ima2= 2, ima3= 1, ima4=2 "
-						+ stampa
-						+ "  ima="
-						+ ima[0]
-						+ " "
-						+ ima[1]
-						+ " "
-						+ ima[2] + " " + ima[3]);
+				MyLog.waitThere(
+						"Problema sui dati ricevuti in AUTOMATICO: \n"
+								+ "non soddisfatta la condizione ima1= 1, ima2= 2, ima3= 1, ima4=2 \n"
+								+ "" + stampa + "  ima=" + ima[0] + " "
+								+ ima[1] + " " + ima[2] + " " + ima[3], debug);
 				return false;
 			}
 			break;

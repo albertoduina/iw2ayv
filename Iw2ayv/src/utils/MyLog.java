@@ -483,6 +483,21 @@ public class MyLog {
 		}
 	}
 
+	public static void waitHere(String str, boolean debug, String uno,
+			String due) {
+		if (debug) {
+			IJ.beep();
+			ButtonMessages.ModelessMsg(("file="
+					+ Thread.currentThread().getStackTrace()[2].getFileName()
+					+ " " + " line="
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "\n \n" + str), uno, due);
+		} else {
+			IJ.beep();
+			ButtonMessages.ModelessMsg(str, uno, due);
+		}
+	}
+
 	public static void waitHere() {
 		new WaitForUserDialog("file="
 				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
@@ -497,6 +512,21 @@ public class MyLog {
 				+ " line="
 				+ Thread.currentThread().getStackTrace()[3].getLineNumber()
 				+ "\n \n" + str).show();
+	}
+
+	public static void waitThere(String str, boolean debug) {
+		if (debug) {
+			IJ.beep();
+
+			new WaitForUserDialog("file="
+					+ Thread.currentThread().getStackTrace()[3].getFileName()
+					+ " " + " line="
+					+ Thread.currentThread().getStackTrace()[3].getLineNumber()
+					+ "\n \n" + str).show();
+		} else {
+			IJ.beep();
+			new WaitForUserDialog(str).show();
+		}
 	}
 
 	public static void caller() {
