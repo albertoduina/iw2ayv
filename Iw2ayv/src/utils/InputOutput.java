@@ -1154,6 +1154,54 @@ public class InputOutput {
 		return (table);
 	}
 
+	
+	/***
+	 * Trasforma un arrayList in una matrice double
+	 * 
+	 * @param matrixTable
+	 * @return
+	 */
+	public double[][] fromArrayListToDoubleTableSwapped(
+			ArrayList<ArrayList<Double>> matrixTable) {
+		int rows = 0;
+		int columns = 0;
+
+		ArrayList<Double> row1 = new ArrayList<Double>();
+		if (matrixTable == null) {
+			MyLog.here("fromArrayListToDoubleTable.matrixTable == null");
+			return null;
+		}
+		if (matrixTable.size() == 0) {
+			MyLog.here("fromArrayListToDoubleTable.matrixTable == 0");
+			return null;
+		}
+		rows = matrixTable.size();
+		columns = 0;
+
+		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
+			if (matrixTable.get(i1).size() > columns)
+				columns = matrixTable.get(i1).size();
+		}
+		// IJ.log("rows=" + rows + " columns= " + columns);
+
+		// ora trasferiamo tutto nella table
+		double[][] table = new double[columns][rows];
+		for (int i1 = 0; i1 < columns; i1++) {
+			for (int j1 = 0; j1 < rows; j1++) {
+				table[i1][j1] = Double.NaN;
+			}
+		}
+		
+		for (int i1 = 0; i1 <matrixTable.get(i1).size(); i1++) {
+			ArrayList<Double> arrayList = matrixTable.get(i1);
+			row1 = arrayList;
+			for (int j1 = 0; j1 < matrixTable.size(); j1++) {
+				table[i1][j1] = (Double) row1.get(j1).doubleValue();
+			}
+		}
+		return (table);
+	}
+
 	/***
 	 * Effettua il dump di un ArrayList<ArrayList<String>>
 	 * 

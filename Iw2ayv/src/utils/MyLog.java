@@ -104,11 +104,16 @@ public class MyLog {
 		int rows = 0;
 		int columns = 0;
 		if (mat == null) {
-			IJ.log("Warning matrix " + nome + " = null");
+			MyLog.waitThere("Warning matrix " + nome + " = null");
+			return;
 		} else {
 			rows = mat.length;
+			if (rows == 0) {
+				MyLog.waitThere("Warning matrix " + nome + " length=0");
+				return;
+			}
 			columns = mat[0].length;
-			// IJ.log("rows=" + rows + " columns= " + columns);
+			// MyLog.waitThere("rows=" + rows + " columns= " + columns);
 
 			IJ.log("---- " + nome + " [ " + rows + "x" + columns + " ] ----");
 			for (int i1 = 0; i1 < rows; i1++) {
@@ -127,9 +132,15 @@ public class MyLog {
 		int rows = 0;
 		int columns = 0;
 		if (mat == null) {
-			IJ.log("Warning matrix " + nome + " = null");
+			MyLog.waitThere("Warning matrix " + nome + " = null");
+			return;
 		} else {
 			rows = mat.length;
+			if (rows == 0) {
+				MyLog.waitThere("Warning matrix " + nome + " length=0");
+				return;
+			}
+
 			columns = mat[0].length;
 			// IJ.log("rows=" + rows + " columns= " + columns);
 
@@ -150,9 +161,15 @@ public class MyLog {
 		int rows = 0;
 		int columns = 0;
 		if (mat == null) {
-			IJ.log("Warning matrix " + nome + " = null");
+			MyLog.waitThere("Warning matrix " + nome + " = null");
+			return;
 		} else {
 			rows = mat.length;
+			if (rows == 0) {
+				MyLog.waitThere("Warning matrix " + nome + " length=0");
+				return;
+			}
+
 			columns = mat[0].length;
 			// IJ.log("rows=" + rows + " columns= " + columns);
 
@@ -173,9 +190,15 @@ public class MyLog {
 		int rows = 0;
 		int columns = 0;
 		if (mat == null) {
-			IJ.log("Warning matrix " + nome + " = null");
+			MyLog.waitThere("Warning matrix " + nome + " = null");
+			return;
 		} else {
 			rows = mat.length;
+			if (rows == 0) {
+				MyLog.waitThere("Warning matrix " + nome + " length=0");
+				return;
+			}
+
 			columns = mat[0].length;
 			// IJ.log("rows=" + rows + " columns= " + columns);
 
@@ -196,9 +219,15 @@ public class MyLog {
 		int rows = 0;
 		int columns = 0;
 		if (mat == null) {
-			IJ.log("Warning matrix " + nome + " = null");
+			MyLog.waitThere("Warning matrix " + nome + " = null");
+			return;
 		} else {
 			rows = mat.length;
+			if (rows == 0) {
+				MyLog.waitThere("Warning matrix " + nome + " length=0");
+				return;
+			}
+
 			columns = mat[0].length;
 			// IJ.log("rows=" + rows + " columns= " + columns);
 
