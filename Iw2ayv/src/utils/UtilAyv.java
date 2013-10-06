@@ -1889,29 +1889,6 @@ public class UtilAyv {
 			return true;
 	}
 
-	public static double[] findMaximumPosition(ImagePlus imp1) {
-
-		// ImageStatistics stat1 = imp1.getStatistics();
-		// double max1 = stat1.max;
-		ImageProcessor ip1 = imp1.getProcessor();
-		short[] pixels = (short[]) ip1.getPixels();
-		double max2 = Double.NEGATIVE_INFINITY;
-		int maxPos = -9999;
-		for (int i1 = 0; i1 < pixels.length; i1++) {
-			if (pixels[i1] > max2) {
-				max2 = pixels[i1];
-				maxPos = i1;
-			}
-		}
-		int colonna = maxPos / imp1.getWidth();
-		int riga = maxPos - (colonna * imp1.getWidth());
-		double[] out = new double[3];
-		out[0] = riga;
-		out[1] = colonna;
-		out[2] = max2;
-
-		return out;
-	}
 
 	public static boolean myTestEquals(double uno, double due, double delta) {
 		if (Math.abs(uno - due) <= delta)

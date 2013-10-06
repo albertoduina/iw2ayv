@@ -14,7 +14,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
 public class UtilAyvTest {
 
 	@Before
@@ -59,8 +58,6 @@ public class UtilAyvTest {
 		assertFalse(ok);
 	}
 
-	
-	
 	@Test
 	public final void testDecoderLimiti() {
 
@@ -378,16 +375,6 @@ public class UtilAyvTest {
 
 		UtilAyv.compareVectors(vetExpected, vet1, 1e-8, ""));
 
-	}
-
-	@Test
-	public final void testFindMaximumPosition() {
-		ImagePlus imp1 = UtilAyv.openImageNoDisplay(".\\Test4\\B003_testP2",
-				true);
-		double[] expected = { 185.0, 33.0, 2597.0 };
-		double[] out = UtilAyv.findMaximumPosition(imp1);
-		// MyLog.logVector(out, "out");
-		UtilAyv.compareVectors(expected, out, 1e-8, "");
 	}
 
 	@Test
