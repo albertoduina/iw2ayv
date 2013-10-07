@@ -24,6 +24,7 @@ import ij.text.TextWindow;
 import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -950,12 +951,6 @@ public class UtilAyv {
 				yIncr = yIncr + 10;
 			} else
 				redo = false;
-			if (bstep)
-				ButtonMessages.ModelessMsg("Segnale medio =" + stat.mean,
-						"CONTINUA");
-			// MyLog.waitHere("Roi x= " + xRoi + " yRoi= " + yRoi +
-			// " stat.Mean= "
-			// + stat.mean);
 		} while (redo);
 		return stat;
 	}
@@ -1412,22 +1407,23 @@ public class UtilAyv {
 			MyLog.logVector(vetResults, "vetResults");
 			MyLog.logVector(vetReference, "vetReference");
 			MyLog.logVector(vetName, "vetName");
+			MyLog.waitThere("verifyResults1 vector null");
 			MyLog.caller("verifyResults1 vector null");
 
 			return false;
 		}
 
 		if (vetResults.length != vetReference.length) {
-			MyLog.waitHere("verifyResults.vectors of different length");
 			MyLog.logVector(vetResults, "vetResults");
 			MyLog.logVector(vetReference, "vetReference");
+			MyLog.waitThere("verifyResults.vectors of different length");
 			return false;
 		}
 
 		for (int i1 = 0; i1 < vetResults.length; i1++) {
 
 			if (vetResults[i1] != vetReference[i1]) {
-				MyLog.waitHere(vetName[i1] + " ERRATO " + vetResults[i1]
+				MyLog.waitThere(vetName[i1] + " ERRATO " + vetResults[i1]
 						+ " anzichè " + vetReference[i1]);
 				testok = false;
 			}
@@ -1889,7 +1885,6 @@ public class UtilAyv {
 			return true;
 	}
 
-
 	public static boolean myTestEquals(double uno, double due, double delta) {
 		if (Math.abs(uno - due) <= delta)
 			return true;
@@ -2190,5 +2185,39 @@ public class UtilAyv {
 		}
 		return true;
 	}
+
+	public static void imageToFront(ImageWindow iw1) {
+		Window w2 = null;
+		int count = 0;
+		do {
+			count++;
+			if (iw1 != null) {
+				WindowManager.setCurrentWindow(iw1);
+				WindowManager.setWindow(iw1);
+				IJ.wait(100);
+			}
+			w2 = WindowManager.getActiveWindow();
+			if (count > 1)
+				MyLog.waitThere("WINDOW w2= " + w2);
+		} while (w2 != iw1);
+	}
+
+	public static void imageToFront(ImagePlus imp1) {
+		ImageWindow iw1 = imp1.getWindow();
+		Window w2 = null;
+		int count = 0;
+		do {
+			count++;
+			if (iw1 != null) {
+				WindowManager.setCurrentWindow(iw1);
+				WindowManager.setWindow(iw1);
+				IJ.wait(100);
+			}
+			w2 = WindowManager.getActiveWindow();
+			if (count > 1)
+				MyLog.waitThere("WINDOW w2= " + w2);
+		} while (w2 != iw1);
+	}
+
 } // UtilAyv
 
