@@ -918,6 +918,7 @@ public class UtilAyv {
 
 		ImageStatistics stat = null;
 		boolean redo = false;
+		boolean debug = true;
 
 		int yIncr = 0;
 
@@ -938,10 +939,9 @@ public class UtilAyv {
 
 			if (!selftest) {
 				if (redo) {
-					ButtonMessages
-							.ModelessMsg(
-									"ATTENZIONE segnale medio fondo =0 SPOSTARE LA ROI E PREMERE CONTINUA",
-									"CONTINUA");
+					MyLog.waitHere(
+							"ATTENZIONE segnale medio fondo =0 spostare la ROI e premere OK",
+							debug);
 
 				}
 			}
@@ -967,18 +967,6 @@ public class UtilAyv {
 	 */
 	public static void backgroundEnhancement(int xRoi, int yRoi, int diaRoi,
 			ImagePlus imp1) {
-
-		// imp1.setRoi(new OvalRoi(xRoi, yRoi, diaRoi, diaRoi));
-		// ImageStatistics stat1 = imp1.getStatistics();
-		// ImageProcessor ip1 = imp1.getProcessor();
-		// IJ.log("xRoi= " + xRoi + " yRoi= " + yRoi + " diaRoi= " + diaRoi);
-		// IJ.log("mean= " + stat1.mean + " stddev= " + stat1.stdDev);
-		// int max = (int) stat1.mean * 4;
-		// ip1.resetMinAndMax();
-		// int min = 0;
-		// int max = 100;
-		// ip1.setMinAndMax(min, max);
-		// IJ.run("Enhance Contrast", "saturated=0.35");
 
 		UtilAyv.autoAdjust(imp1, imp1.getProcessor());
 		imp1.updateAndDraw();
@@ -2187,7 +2175,15 @@ public class UtilAyv {
 	}
 
 	public static void imageToFront(ImageWindow iw1) {
-		Window w2 = null;
+		
+		
+		Window w2 = WindowManager.getActiveWindow();
+		if (w2 == null || iw1==null)
+			return;
+
+		String nome1 = iw1.toString();
+		String nome2 = "noname";
+
 		int count = 0;
 		do {
 			count++;
@@ -2197,13 +2193,19 @@ public class UtilAyv {
 				IJ.wait(100);
 			}
 			w2 = WindowManager.getActiveWindow();
-			if (count > 1)
-				MyLog.waitThere("WINDOW w2= " + w2);
-		} while (w2 != iw1);
+			nome2 = w2.toString();
+			if (count > 1) {
+
+				MyLog.waitThere("count = " + count + "\n" + "WIN REQ #####"
+						+ nome1 + "###\n" + "FRONT WIN ###" + nome2 + "###");
+			}
+		} while (!nome1.equals(nome2));
 	}
 
 	public static void imageToFront(ImagePlus imp1) {
 		ImageWindow iw1 = imp1.getWindow();
+		String nome1 = iw1.toString();
+		String nome2= "noname";
 		Window w2 = null;
 		int count = 0;
 		do {
@@ -2214,9 +2216,14 @@ public class UtilAyv {
 				IJ.wait(100);
 			}
 			w2 = WindowManager.getActiveWindow();
-			if (count > 1)
-				MyLog.waitThere("WINDOW w2= " + w2);
-		} while (w2 != iw1);
+			nome2 = w2.toString();
+
+			if (count > 1) {
+
+				MyLog.waitThere("count = " + count + "\n" + "WIN REQ #####"
+						+ nome1 + "###\n" + "FRONT WIN ###" + nome2 + "###");
+			}
+		} while (!nome1.equals(nome2));
 	}
 
 } // UtilAyv
