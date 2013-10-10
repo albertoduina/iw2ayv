@@ -2210,9 +2210,9 @@ public class UtilAyv {
 		}
 
 		int height = imp1.getHeight();
-		int xCenterCircle = (int) circleData[0];
-		int yCenterCircle = (int) circleData[1];
-		int diamCircle = (int) circleData[2];
+		int xCenterCircle = (int) circleData[2];
+		int yCenterCircle = (int) circleData[3];
+		int diamCircle = (int) circleData[9];
 
 		if (demo) {
 			UtilAyv.showImageMaximized(imp2);
