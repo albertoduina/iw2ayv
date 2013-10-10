@@ -169,7 +169,7 @@ public class MyConst {
 	public static final int P10_MROI_7X7_PIXEL = 7;
 	public static final int P10_CHECK_PIXEL_MULTIPLICATOR = 5;
 	public static final int P10_DIAM_ROI_BACKGROUND = 10;
-	public static final int P10_X_ROI_BACKGROUND = 230;
+	public static final int P10_X_ROI_BACKGROUND = 20;
 	public static final int P10_Y_ROI_BACKGROUND = 10;
 	public static final int P10_ROI_LIMIT = 10;
 
@@ -189,12 +189,7 @@ public class MyConst {
 	public static final int P11_MROI_7X7_PIXEL = 7;
 	public static final int P11_CHECK_PIXEL_MULTIPLICATOR = 5;
 	public static final int P11_DIAM_ROI_BACKGROUND = 10;
-	// ========================================================================
-	// TODO ATTENZIONE: P11_X_ROI_BACKGROUND ANDREBBE CAMBIATA, UTILIZZANDO IN
-	// QUALCHE MODO WIDTH, QUESTO PER RENDERE ANALIZZABILI ANCHE IMMAGINI DI
-	// DIFFERENTE MATRICE
-	public static final int P11_X_ROI_BACKGROUND = 230;
-	// ========================================================================
+	public static final int P11_X_ROI_BACKGROUND = 20;
 	public static final int P11_Y_ROI_BACKGROUND = 10;
 	public static String[] P11_vetName = { "zero", "SIGNAL", "BACKNOISE",
 			"SNRATIO", "FWHM", "NUM_CLASS1", "NUM_CLASS2", "NUM_CLASS3",

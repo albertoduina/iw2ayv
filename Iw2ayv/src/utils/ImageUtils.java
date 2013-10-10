@@ -1,7 +1,11 @@
 package utils;
 
+import java.awt.Window;
+
 import ij.IJ;
 import ij.ImagePlus;
+import ij.WindowManager;
+import ij.gui.ImageWindow;
 import ij.gui.NewImage;
 import ij.io.FileSaver;
 import ij.process.ImageProcessor;
@@ -53,7 +57,6 @@ public class ImageUtils {
 			new FileSaver(impSimulata).saveAsZip(filePath);
 		return classiSimulata;
 	}
-
 
 	/**
 	 * Genera l'immagine simulata a 11+1 livelli
@@ -203,5 +206,63 @@ public class ImageUtils {
 		return (vetClassi);
 
 	} // classi
+
+	public static void imageToFront(ImageWindow iw1) {
+
+		Window w2 = WindowManager.getActiveWindow();
+		if (w2 == null || iw1 == null)
+			return;
+
+		String nome1 = iw1.toString();
+		String nome2 = "noname";
+
+		int count = 0;
+		do {
+			count++;
+			if (iw1 != null) {
+				WindowManager.setCurrentWindow(iw1);
+				WindowManager.setWindow(iw1);
+				IJ.wait(100);
+			}
+			w2 = WindowManager.getActiveWindow();
+			nome2 = w2.toString();
+			if (count > 1) {
+
+				MyLog.waitThere("count = " + count + "\n" + "WIN REQ #####"
+						+ nome1 + "###\n" + "FRONT WIN ###" + nome2 + "###");
+			}
+		} while (!nome1.equals(nome2));
+	}
+
+	public static void imageToFront(ImagePlus imp1) {
+		ImageWindow iw1 = null;
+		if (imp1.isVisible()) {
+			iw1 = imp1.getWindow();
+		} else {
+			MyLog.waitThere("ImagePlus non visualizzata, impossibile portarla to front");
+			return;
+		}
+
+		String nome1 = iw1.toString();
+		String nome2 = "noname";
+		Window w2 = null;
+		int count = 0;
+		do {
+			count++;
+			if (iw1 != null) {
+				WindowManager.setCurrentWindow(iw1);
+				WindowManager.setWindow(iw1);
+				IJ.wait(100);
+			}
+			w2 = WindowManager.getActiveWindow();
+			nome2 = w2.toString();
+
+			if (count > 1) {
+
+				MyLog.waitThere("count = " + count + "\n" + "WIN REQ #####"
+						+ nome1 + "###\n" + "FRONT WIN ###" + nome2 + "###");
+			}
+		} while (!nome1.equals(nome2));
+	}
 
 }

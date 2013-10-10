@@ -6,6 +6,7 @@ import ij.ImageStack;
 import ij.WindowManager;
 import ij.gui.ImageWindow;
 import ij.gui.OvalRoi;
+import ij.gui.Overlay;
 import ij.gui.PointRoi;
 import ij.gui.Roi;
 import ij.gui.WaitForUserDialog;
@@ -2174,56 +2175,122 @@ public class UtilAyv {
 		return true;
 	}
 
-	public static void imageToFront(ImageWindow iw1) {
-		
-		
-		Window w2 = WindowManager.getActiveWindow();
-		if (w2 == null || iw1==null)
-			return;
 
-		String nome1 = iw1.toString();
-		String nome2 = "noname";
+	/**
+	 * Ricerca posizione del fondo
+	 * 
+	 * @param imp1
+	 * @param diamBkg
+	 * @param guard
+	 * @param info1
+	 * @param autoCalled
+	 * @param step
+	 * @param demo
+	 * @param test
+	 * @param fast
+	 * @param irraggiungibile
+	 * @return
+	 */
+	public static double[] positionSearch15(ImagePlus imp1, double[] circleData,
+			double xBkg, double yBkg, double diamBkg, int guard, int mode, String info1,
+			boolean circle, boolean autoCalled, boolean step, boolean demo,
+			boolean test, boolean fast, boolean irraggiungibile) {
 
-		int count = 0;
+		boolean debug = true;
+
+		Overlay over2 = new Overlay();
+		over2.setStrokeColor(Color.red);
+		imp1.deleteRoi();
+
+		ImagePlus imp2 = imp1.duplicate();
+
+		imp2.setOverlay(over2);
+		if (demo) {
+			IJ.setMinAndMax(imp2, 10, 50);
+		}
+
+		int height = imp1.getHeight();
+		int xCenterCircle = (int) circleData[0];
+		int yCenterCircle = (int) circleData[1];
+		int diamCircle = (int) circleData[2];
+
+		if (demo) {
+			UtilAyv.showImageMaximized(imp2);
+			ImageUtils.imageToFront(imp2);
+			imp2.setRoi(new OvalRoi(xCenterCircle - diamCircle / 2,
+					yCenterCircle - diamCircle / 2, diamCircle, diamCircle));
+			imp2.getRoi().setStrokeColor(Color.red);
+			over2.addElement(imp2.getRoi());
+			MyLog.waitHere("Ricerca della posizione per calcolo background",
+					debug);
+		}
+
+		int a = 0;
+		if (irraggiungibile) {
+			MyLog.waitHere("impostato irraggiungibile");
+
+			a = 1;
+		}
+		double px = 0;
+		double py = 0;
+		int incr = 0;
+		boolean pieno = false;
+		double xcentBkg = 0;
+		double ycentBkg = 0;
+
 		do {
-			count++;
-			if (iw1 != null) {
-				WindowManager.setCurrentWindow(iw1);
-				WindowManager.setWindow(iw1);
-				IJ.wait(100);
+			if (mode == 1) {
+				px = xBkg;
+				py = yBkg + incr;
+			} else if (mode == 2) {
+				px = xBkg + incr;
+				py = yBkg + incr;
+			} else if (mode == 3) {
+				px = xBkg - incr;
+				py = yBkg - incr;
 			}
-			w2 = WindowManager.getActiveWindow();
-			nome2 = w2.toString();
-			if (count > 1) {
+			xcentBkg = px + diamBkg / 2;
+			ycentBkg = py + diamBkg / 2;
 
-				MyLog.waitThere("count = " + count + "\n" + "WIN REQ #####"
-						+ nome1 + "###\n" + "FRONT WIN ###" + nome2 + "###");
-			}
-		} while (!nome1.equals(nome2));
+			pieno = verifyBackgroundRoiMean(imp2, (int) xcentBkg, (int) ycentBkg,(int) diamBkg,
+					circle, test, demo);
+			if (circle)
+				imp2.setRoi(new OvalRoi(px, py, diamBkg, diamBkg));
+			else
+				imp2.setRoi((int)px,(int) py,(int) diamBkg,(int) diamBkg);
+			imp2.getRoi().setStrokeColor(Color.yellow);
+			over2.addElement(imp2.getRoi());
+			IJ.wait(10);
+			incr++;
+		} while ((pieno || a > 0) && (ycentBkg + diamBkg < height));
+
+		if (demo) {
+			MyLog.waitHere("Evidenziata la posizione per il calcolo del fondo",
+					debug);
+		}
+		imp2.close();
+		double[] out1 = new double[3];
+		out1[0] = xcentBkg;
+		out1[1] = ycentBkg;
+		out1[2] = diamBkg;
+
+		return out1;
 	}
 
-	public static void imageToFront(ImagePlus imp1) {
-		ImageWindow iw1 = imp1.getWindow();
-		String nome1 = iw1.toString();
-		String nome2= "noname";
-		Window w2 = null;
-		int count = 0;
-		do {
-			count++;
-			if (iw1 != null) {
-				WindowManager.setCurrentWindow(iw1);
-				WindowManager.setWindow(iw1);
-				IJ.wait(100);
-			}
-			w2 = WindowManager.getActiveWindow();
-			nome2 = w2.toString();
+	public static boolean verifyBackgroundRoiMean(ImagePlus imp1, int xRoi,
+			int yRoi, int diamRoi, boolean circle, boolean test, boolean demo) {
 
-			if (count > 1) {
-
-				MyLog.waitThere("count = " + count + "\n" + "WIN REQ #####"
-						+ nome1 + "###\n" + "FRONT WIN ###" + nome2 + "###");
-			}
-		} while (!nome1.equals(nome2));
+		if (circle)
+			imp1.setRoi(new OvalRoi(xRoi - diamRoi / 2, yRoi - diamRoi / 2,
+					diamRoi, diamRoi));
+		else
+			imp1.setRoi(xRoi - diamRoi / 2, yRoi - diamRoi / 2, diamRoi,
+					diamRoi);
+		ImageStatistics stat1 = imp1.getStatistics();
+		double mean1 = stat1.mean;
+		if (mean1 > 0)
+			return false;
+		return true;
 	}
 
 } // UtilAyv
