@@ -2175,7 +2175,6 @@ public class UtilAyv {
 		return true;
 	}
 
-
 	/**
 	 * Ricerca posizione del fondo
 	 * 
@@ -2191,10 +2190,11 @@ public class UtilAyv {
 	 * @param irraggiungibile
 	 * @return
 	 */
-	public static double[] positionSearch15(ImagePlus imp1, double[] circleData,
-			double xBkg, double yBkg, double diamBkg, int guard, int mode, String info1,
-			boolean circle, boolean autoCalled, boolean step, boolean demo,
-			boolean test, boolean fast, boolean irraggiungibile) {
+	public static double[] positionSearch15(ImagePlus imp1,
+			double[] circleData, double xBkg, double yBkg, double diamBkg,
+			int guard, int mode, String info1, boolean circle,
+			boolean autoCalled, boolean step, boolean demo, boolean test,
+			boolean fast, boolean irraggiungibile) {
 
 		boolean debug = true;
 
@@ -2210,23 +2210,29 @@ public class UtilAyv {
 		}
 
 		int height = imp1.getHeight();
-		int xCenterCircle = (int) circleData[2];
-		int yCenterCircle = (int) circleData[3];
-		int diamCircle = (int) circleData[9];
+		int xCenterCircle = 0;
+		int yCenterCircle = 0;
+		int diamCircle = 0;
 
-		if (demo) {
-			UtilAyv.showImageMaximized(imp2);
-			ImageUtils.imageToFront(imp2);
-			imp2.setRoi(new OvalRoi(xCenterCircle - diamCircle / 2,
-					yCenterCircle - diamCircle / 2, diamCircle, diamCircle));
-			imp2.getRoi().setStrokeColor(Color.red);
-			over2.addElement(imp2.getRoi());
-			MyLog.waitHere("Ricerca della posizione per calcolo background",
-					debug);
+		if (circleData != null) {
+			xCenterCircle = (int) circleData[2];
+			yCenterCircle = (int) circleData[3];
+			diamCircle = (int) circleData[9];
+
+			if (demo) {
+				UtilAyv.showImageMaximized(imp2);
+				ImageUtils.imageToFront(imp2);
+				imp2.setRoi(new OvalRoi(xCenterCircle - diamCircle / 2,
+						yCenterCircle - diamCircle / 2, diamCircle, diamCircle));
+				imp2.getRoi().setStrokeColor(Color.red);
+				over2.addElement(imp2.getRoi());
+				MyLog.waitHere(
+						"Ricerca della posizione per calcolo background", debug);
+			}
 		}
 
 		int a = 0;
-		if (irraggiungibile) {
+		if (irraggiungibile && demo) {
 			MyLog.waitHere("impostato irraggiungibile");
 
 			a = 1;
@@ -2252,15 +2258,25 @@ public class UtilAyv {
 			xcentBkg = px + diamBkg / 2;
 			ycentBkg = py + diamBkg / 2;
 
-			pieno = verifyBackgroundRoiMean(imp2, (int) xcentBkg, (int) ycentBkg,(int) diamBkg,
-					circle, test, demo);
-			if (circle)
-				imp2.setRoi(new OvalRoi(px, py, diamBkg, diamBkg));
-			else
-				imp2.setRoi((int)px,(int) py,(int) diamBkg,(int) diamBkg);
-			imp2.getRoi().setStrokeColor(Color.yellow);
-			over2.addElement(imp2.getRoi());
-			IJ.wait(10);
+			double critic_0 = 9999;
+			if (circleData != null) {
+			critic_0 = UtilAyv.criticalDistanceCalculation(
+					(int) xcentBkg, (int) ycentBkg, (int) diamBkg / 2,
+					xCenterCircle, yCenterCircle, diamCircle / 2);
+			}
+
+			if (critic_0 >= guard) {
+				pieno = verifyBackgroundRoiMean(imp2, (int) xcentBkg,
+						(int) ycentBkg, (int) diamBkg, circle, test, demo);
+				if (circle)
+					imp2.setRoi(new OvalRoi(px, py, diamBkg, diamBkg));
+				else
+					imp2.setRoi((int) px, (int) py, (int) diamBkg,
+							(int) diamBkg);
+				imp2.getRoi().setStrokeColor(Color.yellow);
+				over2.addElement(imp2.getRoi());
+				IJ.wait(5);
+			}
 			incr++;
 		} while ((pieno || a > 0) && (ycentBkg + diamBkg < height));
 
@@ -2275,6 +2291,32 @@ public class UtilAyv {
 		out1[2] = diamBkg;
 
 		return out1;
+	}
+
+	/**
+	 * Calcolo delle distanza minima tra due circonferenze esterne
+	 * 
+	 * @param x1
+	 *            coordinata x cerchio 1
+	 * @param y1
+	 *            coordinata y cerchio 1
+	 * @param r1
+	 *            raggio cerchio 1
+	 * @param x2
+	 *            coordinata x cerchio 2
+	 * @param y2
+	 *            coordinata y cerchio 2
+	 * @param r2
+	 *            raggio cerchio 2
+	 * @return distanza minima tra i cechi
+	 */
+	public static int criticalDistanceCalculation(int x1, int y1, int r1,
+			int x2, int y2, int r2) {
+
+		double dCentri = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1)
+				* (y2 - y1));
+		double critical = dCentri - (r1 + r2);
+		return (int) Math.round(critical);
 	}
 
 	public static boolean verifyBackgroundRoiMean(ImagePlus imp1, int xRoi,
