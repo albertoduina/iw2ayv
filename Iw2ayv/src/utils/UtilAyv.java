@@ -2260,9 +2260,9 @@ public class UtilAyv {
 
 			double critic_0 = 9999;
 			if (circleData != null) {
-			critic_0 = UtilAyv.criticalDistanceCalculation(
-					(int) xcentBkg, (int) ycentBkg, (int) diamBkg / 2,
-					xCenterCircle, yCenterCircle, diamCircle / 2);
+				critic_0 = UtilAyv.criticalDistanceCalculation((int) xcentBkg,
+						(int) ycentBkg, (int) diamBkg / 2, xCenterCircle,
+						yCenterCircle, diamCircle / 2);
 			}
 
 			if (critic_0 >= guard) {
@@ -2333,6 +2333,38 @@ public class UtilAyv {
 		if (mean1 > 0)
 			return false;
 		return true;
+	}
+
+	public static int[] reverseVector(int[] vetIn) {
+		int[] vetOut = new int[vetIn.length];
+		for (int i1 = 0; i1 < vetIn.length; i1++) {
+			vetOut[i1] = vetIn[vetIn.length - i1 - 1];
+		}
+		return vetOut;
+	}
+
+	public static float[] reverseVector(float[] vetIn) {
+		float[] vetOut = new float[vetIn.length];
+		for (int i1 = 0; i1 < vetIn.length; i1++) {
+			vetOut[i1] = vetIn[vetIn.length - i1 - 1];
+		}
+		return vetOut;
+	}
+
+	public static double[] reverseVector(double[] vetIn) {
+		double[] vetOut = new double[vetIn.length];
+		for (int i1 = 0; i1 < vetIn.length; i1++) {
+			vetOut[i1] = vetIn[vetIn.length - i1 - 1];
+		}
+		return vetOut;
+	}
+
+	public static String[] reverseVector(String[] vetIn) {
+		String[] vetOut = new String[vetIn.length];
+		for (int i1 = 0; i1 < vetIn.length; i1++) {
+			vetOut[i1] = vetIn[vetIn.length - i1 - 1];
+		}
+		return vetOut;
 	}
 
 } // UtilAyv
