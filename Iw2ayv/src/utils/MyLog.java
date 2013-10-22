@@ -537,6 +537,10 @@ public class MyLog {
 
 	public static void waitThere(String str) {
 		new WaitForUserDialog("file="
+				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
+				+ " line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()+"\n"+
+				"file="
 				+ Thread.currentThread().getStackTrace()[3].getFileName() + " "
 				+ " line="
 				+ Thread.currentThread().getStackTrace()[3].getLineNumber()
@@ -548,8 +552,12 @@ public class MyLog {
 			IJ.beep();
 
 			new WaitForUserDialog("file="
-					+ Thread.currentThread().getStackTrace()[3].getFileName()
-					+ " " + " line="
+					+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
+					+ " line="
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()+"\n"+
+					"file="
+					+ Thread.currentThread().getStackTrace()[3].getFileName() + " "
+					+ " line="
 					+ Thread.currentThread().getStackTrace()[3].getLineNumber()
 					+ "\n \n" + str).show();
 		} else {

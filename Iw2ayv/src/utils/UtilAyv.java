@@ -374,6 +374,12 @@ public class UtilAyv {
 		return msd;
 	} // coord2D
 
+	
+	
+	public static void setMyPrecision() {
+		Analyzer.setPrecision(9);
+	}
+
 	/**
 	 * impostazione di Analyzer SetMeasurements
 	 * 
@@ -734,7 +740,7 @@ public class UtilAyv {
 		String directory = openDial.getDirectory();
 		String name = openDial.getFileName();
 		if (name == null) {
-			IJ.log("imageSelection==null");
+			MyLog.waitThere("imageSelection==null");
 			return null;
 
 		}
@@ -753,7 +759,7 @@ public class UtilAyv {
 
 		ImagePlus imp = new Opener().openImage(path);
 		if (imp == null) {
-			IJ.error("Immagine " + path + " inesistente");
+			MyLog.waitThere("Immagine " + path +" inesistente o non visualizzabile");
 			return null;
 		}
 		// IJ.log("OpenImageEnlarged");
@@ -773,7 +779,7 @@ public class UtilAyv {
 		Opener opener = new Opener();
 		ImagePlus imp = opener.openImage(path);
 		if (imp == null) {
-			IJ.error("Immagine " + path + " inesistente");
+			MyLog.waitThere("Immagine " + path + " inesistente o non visualizzabile");
 			return null;
 		}
 		// IJ.log("OpenImageNormal");
@@ -794,7 +800,7 @@ public class UtilAyv {
 		ImagePlus imp = opener.openImage(path);
 		if (imp == null) {
 			if (verbose)
-				IJ.error("Immagine " + path + " inesistente");
+				MyLog.waitThere("Immagine " + path + " inesistente o non visualizzabile");
 			return null;
 		}
 		return imp;

@@ -223,6 +223,7 @@ public class ImageUtils {
 
 	public static void imageToFront(ImageWindow iw1) {
 
+		boolean list = false;
 		Window w2 = WindowManager.getActiveWindow();
 		if (w2 == null || iw1 == null)
 			return;
@@ -230,11 +231,11 @@ public class ImageUtils {
 		String nome1 = iw1.toString();
 		String nome2 = "noname";
 
-		String[] vNome1 = new String[10];
 		String[] vNome2 = new String[10];
 
-		int count = 0;
+		int count = -1;
 		do {
+			count++;
 			if (iw1 != null) {
 				WindowManager.setCurrentWindow(iw1);
 				WindowManager.setWindow(iw1);
@@ -242,29 +243,24 @@ public class ImageUtils {
 			}
 			w2 = WindowManager.getActiveWindow();
 			nome2 = w2.toString();
-			vNome1[count] = nome1;
 			vNome2[count] = nome2;
-			String sNome1 = "";
-			String sNome2 = "";
-
-			count++;
-			if (count > 1) {
-
-				for (int i1 = 0; i1 < count; i1++) {
-					sNome1 += vNome1[i1];
-					sNome1 += "###";
-
-					sNome2 += vNome2[i1];
-					sNome2 += "###";
-				}
-				MyLog.waitThere("count = " + count + "\n" + "WIN REQ #####"
-						+ sNome1 + "###\n" + "FRONT WIN ###" + sNome2 + "###");
-			}
-
 		} while (!nome1.equals(nome2));
+
+		String sNome2 = "";
+		if (count > 0) {
+			for (int i1 = 0; i1 < count; i1++) {
+
+				sNome2 += vNome2[i1];
+				sNome2 += "+";
+			}
+			if (list)
+				MyLog.waitThere("conteggio = " + count + "\n" + "RICHIESTA ["
+						+ nome1 + "]\n" + "IMMAGINE FRONTE= [" + sNome2 + "]");
+		}
 	}
 
 	public static void imageToFront(ImagePlus imp1) {
+		boolean list = false;
 		ImageWindow iw1 = null;
 		if (imp1.isVisible()) {
 			iw1 = imp1.getWindow();
@@ -276,7 +272,8 @@ public class ImageUtils {
 		String nome1 = iw1.toString();
 		String nome2 = "noname";
 		Window w2 = null;
-		int count = 0;
+		String[] vNome2 = new String[10];
+		int count = -1;
 		do {
 			count++;
 			if (iw1 != null) {
@@ -286,13 +283,20 @@ public class ImageUtils {
 			}
 			w2 = WindowManager.getActiveWindow();
 			nome2 = w2.toString();
-
-			if (count > 1) {
-
-				MyLog.waitThere("count = " + count + "\n" + "WIN REQ #####"
-						+ nome1 + "###\n" + "FRONT WIN ###" + nome2 + "###");
-			}
+			vNome2[count] = nome2;
 		} while (!nome1.equals(nome2));
+		String sNome2 = "";
+		if (count > 0) {
+			for (int i1 = 0; i1 < count; i1++) {
+
+				sNome2 += vNome2[i1];
+				sNome2 += "x";
+			}
+			if (list)
+				MyLog.waitThere("conteggio = " + count + "\n" + "RICHIESTA ["
+						+ nome1 + "]\n" + "IMMAGINE FRONTE= [" + sNome2 + "]");
+		}
+
 	}
 
 	/***
@@ -867,8 +871,7 @@ public class ImageUtils {
 		over1.addElement(imp1.getRoi());
 		// MyLog.waitHere("Vedi punti");
 	}
-	
-	
+
 	/**
 	 * Copied from http://billauer.co.il/peakdet.htm Peak Detection using MATLAB
 	 * Author: Eli Billauer
@@ -942,7 +945,6 @@ public class ImageUtils {
 
 		return matout;
 	}
-
 
 	/***
 	 * Copied from http://billauer.co.il/peakdet.htm Peak Detection using MATLAB
@@ -1064,7 +1066,5 @@ public class ImageUtils {
 		init1 = false;
 		return;
 	}
-
-	
 
 }

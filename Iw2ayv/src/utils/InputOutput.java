@@ -180,7 +180,7 @@ public class InputOutput {
 					.getResourceAsStream("/" + fileName);
 			FileOutputStream fos = new FileOutputStream(outFile);
 			while (is.available() > 0) {
-	//			MyLog.waitHere("SCRIVO "+fileName);
+				// MyLog.waitHere("SCRIVO "+fileName);
 				fos.write(is.read());
 			}
 			fos.close();
@@ -598,7 +598,7 @@ public class InputOutput {
 				MyLog.waitHere("readFile6: file " + fileName
 						+ " not visible or null");
 				return null;
-			}
+			} 
 			InputStream is = getClass().getResourceAsStream("/" + fileName);
 			// IJ.log("readFile6.is =" + is);
 
@@ -664,11 +664,15 @@ public class InputOutput {
 		ArrayList<Object> row1 = new ArrayList<Object>();
 		String delimiter = ";";
 		try {
-			URL url1 = this.getClass().getResource("/" + fileName);
+//			URL url1 = this.getClass().getResource( fileName);
+			URL url1 = this.getClass().getClassLoader().getResource(fileName);
+//			MyLog.waitHere("url1= "+url1);
+			
+//			URL url1 = this.getClass().getResource("/" + fileName);
 			if (url1 == null) {
 				IJ.log("readFile7: file " + fileName + " not visible or null");
 				return null;
-			}
+			} 
 			InputStream is = getClass().getResourceAsStream("/" + fileName);
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 			while (br.ready()) {
@@ -1154,7 +1158,6 @@ public class InputOutput {
 		return (table);
 	}
 
-	
 	/***
 	 * Trasforma un arrayList in una matrice double
 	 * 
@@ -1191,8 +1194,8 @@ public class InputOutput {
 				table[i1][j1] = Double.NaN;
 			}
 		}
-		
-		for (int i1 = 0; i1 <matrixTable.get(i1).size(); i1++) {
+
+		for (int i1 = 0; i1 < matrixTable.get(i1).size(); i1++) {
 			ArrayList<Double> arrayList = matrixTable.get(i1);
 			row1 = arrayList;
 			for (int j1 = 0; j1 < matrixTable.size(); j1++) {

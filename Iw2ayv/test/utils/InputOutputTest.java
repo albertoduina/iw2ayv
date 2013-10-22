@@ -34,8 +34,6 @@ public class InputOutputTest {
 
 	}
 
-	
-	
 	@Test
 	public final void testReadDoubleMatrixFromFile() {
 		String matPath = "./data/mat02.txt";
@@ -295,9 +293,11 @@ public class InputOutputTest {
 
 		// String CODE_FILE = "./data/limiti.csv"; // nota bene che è locale in
 		// /data di iw2ayv, non in ControlliMensili !!!
-		String CODE_FILE = "./data/codiciNew.csv"; // nota bene che è locale in
-													// /data di iw2ayv, non in
-													// ControlliMensili !!!
+		// String CODE_FILE = ".\\data\\codiciNew.csv"; // nota bene che è
+		// locale in
+		String CODE_FILE = "limiti.csv"; // nota bene che è locale in
+											// /data di iw2ayv, non in
+											// ControlliMensili !!!
 		// String[][] expected = InputOutput
 		// .readStringMatrixFromFile("./data/iw2ayvRead.txt");
 		String[][] tabella1 = new InputOutput().readFile6(CODE_FILE);
@@ -309,11 +309,12 @@ public class InputOutputTest {
 	@Test
 	public final void testReadFile7() {
 
-		// String CODE_FILE = "./data/limiti.csv"; // nota bene che è locale in
+		String CODE_FILE = "limiti.csv"; // nota bene che è locale in
 		// /data di iw2ayv, non in ControlliMensili !!!
-		String CODE_FILE = "./data/codiciNew.csv"; // nota bene che è locale in
-													// /data di iw2ayv, non in
-													// ControlliMensili !!!
+		// String CODE_FILE = "./data/codiciNew.csv"; // nota bene che è locale
+		// in
+		// /data di iw2ayv, non in
+		// ControlliMensili !!!
 		// String[][] expected = InputOutput
 		// .readStringMatrixFromFile("./data/iw2ayvRead.txt");
 		String[][] tabella1 = new InputOutput().readFile7(CODE_FILE);
