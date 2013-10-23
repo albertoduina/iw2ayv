@@ -593,14 +593,14 @@ public class InputOutput {
 		String delimiter = ";";
 
 		try {
-			URL url1 = this.getClass().getResource("/" + fileName);
+			URL url1 = this.getClass().getClassLoader().getResource(fileName);
 			if (url1 == null) {
 				MyLog.waitHere("readFile6: file " + fileName
 						+ " not visible or null");
 				return null;
 			} 
-			InputStream is = getClass().getResourceAsStream("/" + fileName);
-			// IJ.log("readFile6.is =" + is);
+			InputStream is = new InputOutput().getClass().getClassLoader()
+					.getResourceAsStream(fileName);
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
@@ -664,16 +664,13 @@ public class InputOutput {
 		ArrayList<Object> row1 = new ArrayList<Object>();
 		String delimiter = ";";
 		try {
-//			URL url1 = this.getClass().getResource( fileName);
 			URL url1 = this.getClass().getClassLoader().getResource(fileName);
-//			MyLog.waitHere("url1= "+url1);
-			
-//			URL url1 = this.getClass().getResource("/" + fileName);
 			if (url1 == null) {
 				IJ.log("readFile7: file " + fileName + " not visible or null");
 				return null;
 			} 
-			InputStream is = getClass().getResourceAsStream("/" + fileName);
+			InputStream is = new InputOutput().getClass().getClassLoader()
+					.getResourceAsStream(fileName);
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 			while (br.ready()) {
 				String line = br.readLine();
