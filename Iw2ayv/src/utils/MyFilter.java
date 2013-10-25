@@ -1,13 +1,6 @@
 package utils;
 
-import ij.IJ;
 import ij.ImagePlus;
-import ij.gui.Line;
-import ij.gui.Plot;
-import ij.gui.PolygonRoi;
-import ij.gui.Roi;
-import ij.gui.WaitForUserDialog;
-import ij.process.FloatPolygon;
 import ij.process.ImageProcessor;
 
 public class MyFilter {

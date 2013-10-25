@@ -946,7 +946,7 @@ public class ImageUtils {
 		return matout;
 	}
 
-	/***
+	/**
 	 * Copied from http://billauer.co.il/peakdet.htm Peak Detection using MATLAB
 	 * Author: Eli Billauer Riceve in input un profilo di una linea, costituito
 	 * da una matrice con i valori x, y , z di ogni punto. Restituisce le
@@ -968,8 +968,8 @@ public class ImageUtils {
 		ArrayList<Double> maxtabz = new ArrayList<Double>();
 		ArrayList<Double> mintabx = new ArrayList<Double>();
 		ArrayList<Double> mintaby = new ArrayList<Double>();
-		ArrayList<Double> mintabz = new ArrayList<Double>();
-
+		ArrayList<Double> mintabz = new ArrayList<Double>();	
+//		MyLog.waitHere("profile.length= "+profile.length+"  profile[0].length= "+profile[0].length);
 		double[] vetx = new double[profile[0].length];
 		double[] vety = new double[profile[0].length];
 		double[] vetz = new double[profile[0].length];
@@ -977,19 +977,19 @@ public class ImageUtils {
 			vetx[i1] = profile[0][i1];
 			vety[i1] = profile[1][i1];
 			vetz[i1] = profile[2][i1];
+//			IJ.log(""+vetx[i1]+";"+vety[i1]+";"+vetz[i1]);
 		}
-
 		double maxposx = -1.0;
 		double minposx = -1.0;
 		double maxposy = -1.0;
 		double minposy = -1.0;
 		boolean lookformax = true;
-		double mean1 = 0;
-		double sum1 = 0;
-		for (int i1 = 0; i1 < vetz.length; i1++) {
-			sum1 += vetz[i1];
-		}
-		mean1 = sum1 / vetz.length;
+		// double mean1 = 0;
+		// double sum1 = 0;
+		// for (int i1 = 0; i1 < vetz.length; i1++) {
+		// sum1 += vetz[i1];
+		// }
+		// mean1 = sum1 / vetz.length;
 		// MyLog.waitHere("mean1= " + mean1);
 
 		for (int i1 = 0; i1 < vetz.length; i1++) {
@@ -1003,7 +1003,7 @@ public class ImageUtils {
 				min = valz;
 				minposx = vetx[i1];
 				minposy = vety[i1];
-			}
+			}		
 			stateChange(lookformax);
 			// -------------------------------
 			// aggiungo 0.5 alle posizioni trovate
@@ -1013,7 +1013,7 @@ public class ImageUtils {
 			maxposy += .5;
 
 			if (lookformax) {
-				if (valz < max - delta) {
+				if (valz < (max - delta)) {
 					maxtabx.add((Double) maxposx);
 					maxtaby.add((Double) maxposy);
 					maxtabz.add((Double) max);
@@ -1023,7 +1023,7 @@ public class ImageUtils {
 					lookformax = false;
 				}
 			} else {
-				if (valz > min + delta) {
+				if (valz > (min + delta)) {
 					// if (valy > min + delta + mean1 * 10) {
 					mintabx.add((Double) minposx);
 					mintaby.add((Double) minposy);
@@ -1034,15 +1034,14 @@ public class ImageUtils {
 					lookformax = true;
 				}
 			}
-
 		}
-		// MyLog.logArrayList(mintabx, "############## mintabx #############");
-		// MyLog.logArrayList(mintaby, "############## mintaby #############");
-		// MyLog.logArrayList(mintabz, "############## mintabz #############");
-		// MyLog.logArrayList(maxtabx, "############## maxtabx #############");
-		// MyLog.logArrayList(maxtaby, "############## maxtaby #############");
-		// MyLog.logArrayList(maxtabz, "############## maxtabz #############");
-
+//		MyLog.logArrayList(mintabx, "############## mintabx #############");
+//		MyLog.logArrayList(mintaby, "############## mintaby #############");
+//		MyLog.logArrayList(mintabz, "############## mintabz #############");
+//		MyLog.logArrayList(maxtabx, "############## maxtabx #############");
+//		MyLog.logArrayList(maxtaby, "############## maxtaby #############");
+//		MyLog.logArrayList(maxtabz, "############## maxtabz #############");
+		
 		matout.add(mintabx);
 		matout.add(mintaby);
 		matout.add(mintabz);

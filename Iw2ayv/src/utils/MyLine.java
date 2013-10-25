@@ -24,8 +24,8 @@ public class MyLine {
 			return null;
 		}
 		double[] profiZ = line.getPixels();
-		// MyLog.logVector(profiZ, "profiZ");
-		// MyLog.waitHere();
+		MyLog.logVector(profiZ, "profiZ");
+		MyLog.waitHere();
 
 		FloatPolygon fp1 = line.getInterpolatedPolygon();
 		int len = fp1.npoints - 1;
@@ -44,6 +44,8 @@ public class MyLine {
 		out1[0] = profiX;
 		out1[1] = profiY;
 		out1[2] = profiZ;
+		MyLog.logMatrix(out1, "out1");
+		MyLog.waitHere();
 		return out1;
 	}
 

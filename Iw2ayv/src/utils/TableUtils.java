@@ -58,7 +58,8 @@ public class TableUtils {
 			IJ.log("dumpTable.strTabella." + title + ".length() == 0");
 			return;
 		}
-		IJ.log("----- \t" + title +" " + strTabella.length+"x"+strTabella[0].length+"\t --------");
+		IJ.log("----- \t" + title + " " + strTabella.length + "x"
+				+ strTabella[0].length + "\t --------");
 		String str = "";
 		for (int j1 = 0; j1 < strTabella.length; j1++) {
 			for (int j2 = 0; j2 < strTabella[0].length; j2++) {
@@ -149,6 +150,30 @@ public class TableUtils {
 			}
 		}
 		return outTable;
+	}
+
+	public static double[][] rotateTable(double[][] inTable) {
+		int dim1 = inTable.length;
+		int dim2 = inTable[0].length;
+//		IJ.log("inTable= [" + inTable.length + "][" + inTable[0].length + "]");
+		int count = 0;
+		double aux1 = 0;
+		double[][] outTable = new double[dim2][dim1];
+//		IJ.log("outTable= [" + outTable.length + "][" + outTable[0].length
+//				+ "]");
+//		IJ.log("dim1= "+dim1);
+//		IJ.log("dim2= "+dim2);
+		for (int i1 = 0; i1 < dim1; i1++) {
+			count = 0;
+			for (int i2 = 0; i2 < dim2; i2++) {
+				aux1 = inTable[i1][i2];
+				outTable[count][i1] = aux1;
+//				IJ.log("outTable[" + i1 + "][" + count + "]= " + aux1);
+				count++;
+			}
+		}
+		return outTable;
+
 	}
 
 }

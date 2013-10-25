@@ -310,7 +310,6 @@ public class AboutBox {
 		ImageWindow.centerNextImage();
 
 		new ImagePlus("TITOLO10", ip).show();
-		MyLog.waitHere();
 
 		IJ.wait(2000);
 		close();

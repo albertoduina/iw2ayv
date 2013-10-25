@@ -13,8 +13,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
-
 public class ImageUtilsTest {
 
 	@Before
@@ -36,10 +34,10 @@ public class ImageUtilsTest {
 		double height = 220;
 
 		double[] out = ImageUtils.crossingFrame(x0, y0, x1, y1, width, height);
-		MyLog.logVector(out, "out");
+		String[] dummy = { "aa", "bb", "cc", "dd" };
 
 		double[] vetResults1 = { 149.75812158632155, 0.0, 0.0, 156.135540975489 };
-		boolean ok = UtilAyv.verifyResults1(vetResults1, out, null);
+		boolean ok = UtilAyv.verifyResults1(vetResults1, out, dummy);
 		assertTrue(ok);
 
 		x0 = 25.78;
@@ -48,15 +46,14 @@ public class ImageUtilsTest {
 		y1 = 132.34;
 
 		out = ImageUtils.crossingFrame(x0, y0, x1, y1, width, height);
-		MyLog.logVector(out, "out");
+		// MyLog.logVector(out, "out");
 
 		double[] vetResults2 = { 2.0627437110885412E-6, 220.0, 220.0,
 				92.49454491113413 };
-		ok = UtilAyv.verifyResults1(vetResults2, out, null);
+		ok = UtilAyv.verifyResults1(vetResults2, out, dummy);
 		assertTrue(ok);
-
 	}
-	
+
 	@Test
 	public final void testFromPointsToEquLineExplicit() {
 
@@ -119,27 +116,30 @@ public class ImageUtilsTest {
 		// ATTENZIONE NECESSITA DI MODIFICHE DOVUTE AL FATTO CHE HO CAMBIATO LA
 		// STRUTTURA DELLA MATRICE
 
-		double[][] profile1 = InputOutput
+		double[][] profile2 = InputOutput
 				.readDoubleMatrixFromFile((new InputOutput()
-						.findResource("/BADProfile.txt")));
+						.findResource("profile3d.txt")));		
+		double [][] profile1 = TableUtils.rotateTable(profile2);
+//		double[] vetx = new double[profile1.length];
+//		double[] vety = new double[profile1.length];
+//		double[] vetz = new double[profile1.length];
+//		for (int j = 0; j < profile1.length; j++) {
+//			vetx[j] = profile1[j][0];
+//			vety[j] = profile1[j][1];
+//			vetz[j] = profile1[j][2];
+//		}
+//		Plot plot2 = MyPlot.basePlot(vetx, vety, "P R O F I L O", Color.blue);
+//		plot2.show();
+//		new WaitForUserDialog("Do something, then click OK.").show();
+//		IJ.wait(200);
+
 		double delta = 100.0;
-	
-		ArrayList<ArrayList<Double>> matOut = ImageUtils.peakDet2(profile1, delta);
+		ArrayList<ArrayList<Double>> matOut = ImageUtils.peakDet2(profile1,
+				delta);
+		MyLog.logArrayListTable(matOut, "matOut");
+//		MyLog.waitHere();
+
 		double[][] out = new InputOutput().fromArrayListToDoubleTable(matOut);
-
-		double[] vetx = new double[profile1.length];
-		double[] vety = new double[profile1.length];
-
-		for (int j = 0; j < profile1.length; j++)
-			vetx[j] = profile1[j][0];
-		for (int j = 0; j < profile1.length; j++)
-			vety[j] = profile1[j][1];
-
-		// Plot plot2 = MyPlot.basePlot(vetx, vety, "P R O F I L O",
-		// Color.blue);
-		// plot2.show();
-		// new WaitForUserDialog("Do something, then click OK.").show();
-		// IJ.wait(200);
 
 		double expected = 66.796875;
 		assertEquals(expected, out[0][0], 1e-12);
@@ -163,25 +163,22 @@ public class ImageUtilsTest {
 
 		double[][] profile1 = InputOutput
 				.readDoubleMatrixFromFile((new InputOutput()
-						.findResource("/BADProfile.txt")));
-		double delta = 100.0;
-		ArrayList<ArrayList<Double>> matOut = ImageUtils.peakDet2(profile1, delta);
-		double[][] out = new InputOutput().fromArrayListToDoubleTable(matOut);
-
+						.findResource("BADProfile.txt")));
 		double[] vetx = new double[profile1.length];
 		double[] vety = new double[profile1.length];
-
 		for (int j = 0; j < profile1.length; j++)
 			vetx[j] = profile1[j][0];
 		for (int j = 0; j < profile1.length; j++)
 			vety[j] = profile1[j][1];
-
 		// Plot plot2 = MyPlot.basePlot(vetx, vety, "P R O F I L O",
 		// Color.blue);
 		// plot2.show();
 		// new WaitForUserDialog("Do something, then click OK.").show();
 		// IJ.wait(200);
-
+		double delta = 100.0;
+		ArrayList<ArrayList<Double>> matOut = ImageUtils.peakDet(profile1,
+				delta);
+		double[][] out = new InputOutput().fromArrayListToDoubleTable(matOut);
 		double expected = 66.796875;
 		assertEquals(expected, out[0][0], 1e-12);
 		expected = 14.09287783266325;
@@ -206,7 +203,8 @@ public class ImageUtilsTest {
 				.readDoubleMatrixFromFile((new InputOutput()
 						.findResource("/profi3.txt")));
 		double delta = 100.0;
-		ArrayList<ArrayList<Double>> matOut = ImageUtils.peakDet2(profile1, delta);
+		ArrayList<ArrayList<Double>> matOut = ImageUtils.peakDet2(profile1,
+				delta);
 		double[][] out = new InputOutput().fromArrayListToDoubleTable(matOut);
 
 		double[] vetx = new double[profile1.length];
@@ -238,6 +236,5 @@ public class ImageUtilsTest {
 		expected = 199.34767076939997;
 		assertEquals(expected, out[3][1], 1e-12);
 	}
-
 
 }
