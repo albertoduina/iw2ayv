@@ -10,7 +10,7 @@ public class TableLimiti {
 	public static String[][] loadTable(String path) {
 
 		ArrayList<ArrayList<String>> tableArray = new InputOutput()
-				.readFile3(path);
+				.readFile3LIKE(path);
 		String[][] tableCode = new InputOutput()
 				.fromArrayListToStringTable(tableArray);
 
@@ -18,8 +18,8 @@ public class TableLimiti {
 	}
 
 	public static String[][] loadTableCSV(String path) {
-
-		String[][] tableCode = new InputOutput().readFile6(path);
+		boolean absolute= false;
+		String[][] tableCode = new InputOutput().readFile6LIKE(path, absolute);
 		
 		return tableCode;
 	}

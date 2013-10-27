@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
+
 import utils.AboutBox;
 
 
@@ -31,6 +32,30 @@ public class AboutBoxTest {
 		
 //		new AboutBox().about("Messaggio", this.getClass());	
 		new AboutBox().about("Messaggio", MyVersionUtils.getVersion());	
+	}
+
+	
+	@Test
+	public void testAboutBox1() {
+		
+//		new AboutBox().about("Messaggio", this.getClass());
+		String[] vetMsg = {"Prima riga", "Seconda riga", "Terza riga", "Quarta riga", "Quinta riga", "Sesta riga", "Settima riga", "Ottava riga"};
+		new AboutBox().about(vetMsg, MyVersionUtils.getVersion());	
+	}
+
+	
+
+	@Test
+	public void testAboutBox2() {
+		
+		new AboutBox().about2("Riga unica");	
+	}
+
+	@Test
+	public void testAboutBox5() {
+		
+		MyCircleDetector mcd = new MyCircleDetector();
+		new AboutBox().about5("Messaggio", mcd.getClass());
 	}
 	
 	@Test

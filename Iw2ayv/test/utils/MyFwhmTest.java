@@ -44,8 +44,9 @@ public class MyFwhmTest {
 
 		double[] outFwhm = MyFwhm.analyzeProfile(profi1, dimPixel, title,
 				invert, step);
-		double[] expected = { 30.980876270156863, 65.0 };
-		// MyLog.logVector(outFwhm, "outFwhm");
+		double[] expected = { 31.26031740520021,  66.0 };
+//		 MyLog.logVector(outFwhm, "outFwhm");
+//		 MyLog.waitHere();
 		assertTrue(UtilAyv.compareVectors(outFwhm, expected, 1e-12,
 				"errore comparazione"));
 	}
@@ -90,7 +91,7 @@ public class MyFwhmTest {
 		double dimPixel = 1;
 		double fwhm = MyFwhm.calcFwhm(out2, profi2, dimPixel, "title",
 				printPlot);
-		MyLog.waitHere();
+		IJ.wait(100);
 		// IJ.log("fwhm=" + fwhm);
 		double expected = 31.36813725490196;
 		assertEquals(expected, fwhm, 1e-12);
@@ -147,6 +148,6 @@ public class MyFwhmTest {
 				printPlot) * 1.00;
 		MyFwhm.minimalPlot(profi2, upDwPoints, "P L O T", "base", "altezza",
 				fwhm, true);
-		MyLog.waitHere();
+		IJ.wait(100);
 	}
 }

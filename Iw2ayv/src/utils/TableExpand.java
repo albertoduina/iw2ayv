@@ -20,14 +20,15 @@ public class TableExpand {
 
 	public static String[][] loadTable(String path) {
 		ArrayList<ArrayList<String>> tableArray = new InputOutput()
-				.readFile3(path);
+				.readFile3LIKE(path);
 		String[][] tableExpand = new InputOutput()
 				.fromArrayListToStringTable(tableArray);
 		return tableExpand;
 	}
 
 	public static String[][] loadTableCSV(String path) {
-		String[][] tableExpand = new InputOutput().readFile6(path);
+		boolean absolute=false;
+		String[][] tableExpand = new InputOutput().readFile6LIKE(path, absolute);
 		return tableExpand;
 	}
 

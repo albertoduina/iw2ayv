@@ -61,7 +61,8 @@ public class UtilAyvTest {
 	@Test
 	public final void testDecoderLimiti() {
 
-		String[][] limiti = new InputOutput().readFile6("LIMITI.csv");
+		boolean absolute=false;
+		String[][] limiti = new InputOutput().readFile6LIKE("LIMITI.csv", absolute);
 		MyLog.logMatrix(limiti, "limiti");
 		MyLog.waitHere();
 		String[] result = UtilAyv.decoderLimiti(limiti, "P10MAX");
@@ -79,24 +80,14 @@ public class UtilAyvTest {
 		ImagePlus imp1 = new Opener().openImage(path1);
 		IJ.run(imp1, "Measure", "");
 		IJ.error("MESSAGGIO");
-		IJ.wait(200);
+		IJ.wait(50);
 		UtilAyv.afterWork();
 		imagesOpened = WindowManager.getWindowCount();
 		nonImagesOpened = WindowManager.getNonImageWindows().length;
-		assert (imagesOpened == 0);
-		assert (nonImagesOpened == 0);
+		assertTrue (imagesOpened == 0);
+		assertTrue (nonImagesOpened == 0);
 	}
 
-	@Test
-	public final void testBackgroundEnhancement() {
-		String[] list1 = InputOutput
-				.readStringArrayFromFile("./data/list1.txt");
-		ImagePlus imp1 = new Opener().openImage(list1[0]);
-		imp1.show();
-
-		UtilAyv.backgroundEnhancement(0, 0, 10, imp1);
-		IJ.wait(300);
-	}
 
 	@Test
 	public final void testGetPos() {

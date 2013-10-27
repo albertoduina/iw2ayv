@@ -1,5 +1,6 @@
 package utils;
 
+import static org.junit.Assert.assertTrue;
 import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
@@ -27,12 +28,10 @@ public class MyFilterTest {
 		String path1 = "./data/C001_testP10";
 		ImagePlus imp1 = UtilAyv.openImageMaximized(path1);
 		double[] position1 = MyFilter.maxPosition3x3(imp1);
-
 		imp1.setRoi((int) Math.round(position1[0] - 1),
 				(int) Math.round(position1[1] - 1), 3, 3);
-
-		MyLog.logVector(position1, "position1");
-		// MyLog.waitHere();
+		double[] expected = {200.0,  76.0,  664.6666666666666 };		
+		assertTrue(UtilAyv.compareVectors(position1, expected, 1e-11, ""));
 	}
 
 	@Test
@@ -41,12 +40,10 @@ public class MyFilterTest {
 		String path1 = "./data/C001_testP10";
 		ImagePlus imp1 = UtilAyv.openImageMaximized(path1);
 		double[] position1 = MyFilter.maxPosition3x3(imp1);
-
 		imp1.setRoi((int) Math.round(position1[0] - 1),
 				(int) Math.round(position1[1] - 1), 3, 3);
-
-		MyLog.logVector(position1, "position1");
-		// MyLog.waitHere();
+		double[] expected = {200.0,  76.0,  664.6666666666666 };		
+		assertTrue(UtilAyv.compareVectors(position1, expected, 1e-11, ""));
 	}
 
 	@Test
@@ -55,12 +52,10 @@ public class MyFilterTest {
 		String path1 = "./data/C001_testP10";
 		ImagePlus imp1 = UtilAyv.openImageMaximized(path1);
 		double[] position1 = MyFilter.maxPosition5x5(imp1);
-
 		imp1.setRoi((int) Math.round(position1[0] - 2),
 				(int) Math.round(position1[1] - 2), 5, 5);
-
-		MyLog.logVector(position1, "position1");
-		// MyLog.waitHere();
+		double[] expected = {199.0,  77.0,  757.0 };		
+		assertTrue(UtilAyv.compareVectors(position1, expected, 1e-11, ""));
 	}
 
 	@Test
@@ -72,9 +67,8 @@ public class MyFilterTest {
 
 		imp1.setRoi((int) Math.round(position1[0] - 3),
 				(int) Math.round(position1[1] - 3), 7, 7);
-
-		MyLog.logVector(position1, "position1");
-		// MyLog.waitHere();
+		double[] expected = {198.0,  77.0,  769.0204081632653};		
+		assertTrue(UtilAyv.compareVectors(position1, expected, 1e-11, ""));
 	}
 
 	@Test
@@ -86,23 +80,21 @@ public class MyFilterTest {
 
 		imp1.setRoi((int) Math.round(position1[0] - 4),
 				(int) Math.round(position1[1] - 4), 7, 7);
-
-		MyLog.logVector(position1, "position1");
-		MyLog.waitHere();
+		double[] expected = {197.0,  78.0,  758.8395061728395};		
+		assertTrue(UtilAyv.compareVectors(position1, expected, 1e-11, ""));
 	}
 
 	@Test
 	public final void testMaxPosition11x11() {
 
 		String path1 = "./data/C001_testP10";
-		ImagePlus imp1 = UtilAyv.openImageMaximized(path1);
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, true);
 		double[] position1 = MyFilter.maxPosition11x11(imp1);
-
 		imp1.setRoi((int) Math.round(position1[0] - 4),
 				(int) Math.round(position1[1] - 4), 7, 7);
-
-		MyLog.logVector(position1, "position1");
-		// MyLog.waitHere();
+		double[] expected = { 196.0, 78.0, 743.3719008264463 };
+		assertTrue(UtilAyv
+				.compareVectors(position1, expected, 1e-12, ""));
 	}
 
 }

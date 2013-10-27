@@ -15,6 +15,7 @@ import ij.gui.Overlay;
 import ij.gui.PointRoi;
 import ij.gui.Roi;
 import ij.io.FileSaver;
+import ij.measure.Calibration;
 import ij.measure.Measurements;
 import ij.process.ImageProcessor;
 import ij.process.ImageStatistics;
@@ -86,7 +87,7 @@ public class ImageUtils {
 	 * @return immagine simulata a 11+1 livelli
 	 */
 
-	private static ImagePlus simulata12Classi(int sqX, int sqY, int sqR,
+	static ImagePlus simulata12Classi(int sqX, int sqY, int sqR,
 			ImagePlus imp1) {
 
 		if (imp1 == null) {
@@ -860,8 +861,8 @@ public class ImageUtils {
 		float[] yPoints = new float[peaks1[0].length];
 
 		for (int i1 = 0; i1 < peaks1[0].length; i1++) {
-			xPoints[i1] = (float) peaks1[3][i1];
-			yPoints[i1] = (float) peaks1[4][i1];
+			xPoints[i1] = (float) peaks1[1][i1];
+			yPoints[i1] = (float) peaks1[2][i1];
 		}
 
 		// MyLog.logVector(xPoints, "xPoints");
@@ -938,8 +939,8 @@ public class ImageUtils {
 		// MyLog.logArrayList(mintaby, "############## mintaby #############");
 		// MyLog.logArrayList(maxtabx, "############## maxtabx #############");
 		// MyLog.logArrayList(maxtaby, "############## maxtaby #############");
-		matout.add(mintabx);
-		matout.add(mintaby);
+		// matout.add(mintabx);
+		// matout.add(mintaby);
 		matout.add(maxtabx);
 		matout.add(maxtaby);
 
@@ -968,8 +969,8 @@ public class ImageUtils {
 		ArrayList<Double> maxtabz = new ArrayList<Double>();
 		ArrayList<Double> mintabx = new ArrayList<Double>();
 		ArrayList<Double> mintaby = new ArrayList<Double>();
-		ArrayList<Double> mintabz = new ArrayList<Double>();	
-//		MyLog.waitHere("profile.length= "+profile.length+"  profile[0].length= "+profile[0].length);
+		ArrayList<Double> mintabz = new ArrayList<Double>();
+		// MyLog.waitHere("profile.length= "+profile.length+"  profile[0].length= "+profile[0].length);
 		double[] vetx = new double[profile[0].length];
 		double[] vety = new double[profile[0].length];
 		double[] vetz = new double[profile[0].length];
@@ -977,7 +978,7 @@ public class ImageUtils {
 			vetx[i1] = profile[0][i1];
 			vety[i1] = profile[1][i1];
 			vetz[i1] = profile[2][i1];
-//			IJ.log(""+vetx[i1]+";"+vety[i1]+";"+vetz[i1]);
+			// IJ.log(""+vetx[i1]+";"+vety[i1]+";"+vetz[i1]);
 		}
 		double maxposx = -1.0;
 		double minposx = -1.0;
@@ -1003,7 +1004,7 @@ public class ImageUtils {
 				min = valz;
 				minposx = vetx[i1];
 				minposy = vety[i1];
-			}		
+			}
 			stateChange(lookformax);
 			// -------------------------------
 			// aggiungo 0.5 alle posizioni trovate
@@ -1035,16 +1036,21 @@ public class ImageUtils {
 				}
 			}
 		}
-//		MyLog.logArrayList(mintabx, "############## mintabx #############");
-//		MyLog.logArrayList(mintaby, "############## mintaby #############");
-//		MyLog.logArrayList(mintabz, "############## mintabz #############");
-//		MyLog.logArrayList(maxtabx, "############## maxtabx #############");
-//		MyLog.logArrayList(maxtaby, "############## maxtaby #############");
-//		MyLog.logArrayList(maxtabz, "############## maxtabz #############");
-		
-		matout.add(mintabx);
-		matout.add(mintaby);
-		matout.add(mintabz);
+		// MyLog.logArrayList(mintabx, "############## mintabx #############");
+		// MyLog.logArrayList(mintaby, "############## mintaby #############");
+		// MyLog.logArrayList(mintabz, "############## mintabz #############");
+		// MyLog.logArrayList(maxtabx, "############## maxtabx #############");
+		// MyLog.logArrayList(maxtaby, "############## maxtaby #############");
+		// MyLog.logArrayList(maxtabz, "############## maxtabz #############");
+
+		// tolgo i minimi, che non mi ionteressano del resto, altrimenti posso
+		// trovarmi un numero diverso di
+		// massimi e minimi ed avere guai nel creare la struttura dati per la
+		// restituzione dei risultati
+
+		// matout.add(mintabx);
+		// matout.add(mintaby);
+		// matout.add(mintabz);
 
 		matout.add(maxtabx);
 		matout.add(maxtaby);
@@ -1064,6 +1070,229 @@ public class ImageUtils {
 			pulse = true;
 		init1 = false;
 		return;
+	}
+
+	public static void autoAdjust(ImagePlus imp) {
+		double min, max;
+
+		ImageProcessor ip = imp.getProcessor();
+		Calibration cal = imp.getCalibration();
+		imp.setCalibration(null);
+		ImageStatistics stats = imp.getStatistics();
+		imp.setCalibration(cal);
+		int[] histogram = stats.histogram;
+		int threshold = stats.pixelCount / 5000;
+		int i = -1;
+		boolean found = false;
+		do {
+			i++;
+			found = histogram[i] > threshold;
+		} while (!found && i < 255);
+		int hmin = i;
+		i = 256;
+		do {
+			i--;
+			found = histogram[i] > threshold;
+		} while (!found && i > 0);
+		int hmax = i;
+		if (hmax > hmin) {
+			imp.killRoi();
+			min = stats.histMin + hmin * stats.binSize;
+			max = stats.histMin + hmax * stats.binSize;
+			ip.setMinAndMax(min, max);
+		}
+		Roi roi = imp.getRoi();
+		if (roi != null) {
+			ImageProcessor mask = roi.getMask();
+			if (mask != null)
+				ip.reset(mask);
+		}
+	}
+
+	/**
+	 * esegue l'autoAdjust del contrasto immagine
+	 * 
+	 * Author Terry Wu, Ph.D., University of Minnesota, <JavaPlugins@yahoo.com>
+	 * (from ij.plugin.frame. ContrastAdjuster by Wayne Rasband
+	 * <wayne@codon.nih.gov>)*** modified version *** Alberto Duina - Spedali
+	 * Civili di Brescia - Servizio di Fisica Sanitaria 2006
+	 * 
+	 * 
+	 * @param imp
+	 *            ImagePlus da regolare
+	 * @param ip
+	 *            ImageProcessor dell'immagine
+	 * 
+	 */
+	public static void autoAdjust(ImagePlus imp, ImageProcessor ip) {
+		double min, max;
+
+		Calibration cal = imp.getCalibration();
+		imp.setCalibration(null);
+		ImageStatistics stats = imp.getStatistics();
+		imp.setCalibration(cal);
+		int[] histogram = stats.histogram;
+		int threshold = stats.pixelCount / 5000;
+		int i = -1;
+		boolean found = false;
+		do {
+			i++;
+			found = histogram[i] > threshold;
+		} while (!found && i < 255);
+		int hmin = i;
+		i = 256;
+		do {
+			i--;
+			found = histogram[i] > threshold;
+		} while (!found && i > 0);
+		int hmax = i;
+		if (hmax > hmin) {
+			imp.killRoi();
+			min = stats.histMin + hmin * stats.binSize;
+			max = stats.histMin + hmax * stats.binSize;
+			ip.setMinAndMax(min, max);
+		}
+		Roi roi = imp.getRoi();
+		if (roi != null) {
+			ImageProcessor mask = roi.getMask();
+			if (mask != null)
+				ip.reset(mask);
+		}
+	}
+
+	/**
+	 * esegue posizionamento e calcolo roi circolare sul fondo
+	 * 
+	 * @param xRoi
+	 *            coordinata x roi
+	 * @param yRoi
+	 *            coordinata y roi
+	 * @param imp
+	 *            puntatore ImagePlus alla immagine
+	 * @param bstep
+	 *            funzionamento passo passo
+	 * @return dati statistici
+	 */
+	public static ImageStatistics backCalc(int xRoi, int yRoi, int diaRoi,
+			ImagePlus imp, boolean bstep, boolean circular, boolean selftest) {
+
+		ImageStatistics stat = null;
+		boolean redo = false;
+		do {
+			if (imp.isVisible())
+				imp.getWindow().toFront();
+			if (circular)
+				imp.setRoi(new OvalRoi(xRoi, yRoi, diaRoi, diaRoi));
+			else
+				imp.setRoi(xRoi, yRoi, diaRoi, diaRoi);
+
+			if (!selftest) {
+				if (redo) {
+					ButtonMessages
+							.ModelessMsg(
+									"ATTENZIONE segnale medio fondo =0 SPOSTARE LA ROI E PREMERE CONTINUA",
+									"CONTINUA");
+
+				} else {
+					ButtonMessages.ModelessMsg("Posizionare ROI fondo",
+							"CONTINUA");
+				}
+			}
+			stat = imp.getStatistics();
+			if (stat.mean == 0)
+				redo = true;
+			else
+				redo = false;
+			if (bstep)
+				ButtonMessages.ModelessMsg("Segnale medio =" + stat.mean,
+						"CONTINUA");
+		} while (redo);
+		return stat;
+	} // backCalc
+
+	/**
+	 * esegue posizionamento e calcolo roi circolare sul fondo
+	 * 
+	 * @param xRoi
+	 *            coordinata x roi
+	 * @param yRoi
+	 *            coordinata y roi
+	 * @param imp
+	 *            puntatore ImagePlus alla immagine
+	 * @param bstep
+	 *            funzionamento passo passo
+	 * @return dati statistici
+	 */
+	public static ImageStatistics backCalc2(int xRoi, int yRoi, int diaRoi,
+			ImagePlus imp, boolean bstep, boolean circular, boolean selftest) {
+
+		ImageStatistics stat = null;
+		boolean redo = false;
+		boolean debug = true;
+
+		int yIncr = 0;
+
+		do {
+			if (imp.isVisible())
+				imp.getWindow().toFront();
+			if (circular) {
+				// imp.setRoi(new OvalRoi(xRoi - diaRoi / 2, yRoi - diaRoi / 2,
+				// diaRoi, diaRoi));
+				imp.setRoi(new OvalRoi(xRoi, yRoi + yIncr, diaRoi, diaRoi));
+				// imp.updateAndDraw();
+			} else {
+				// imp.setRoi(xRoi - diaRoi / 2, yRoi - diaRoi / 2, diaRoi,
+				// diaRoi);
+				imp.setRoi(xRoi, yRoi + yIncr, diaRoi, diaRoi);
+				// imp.updateAndDraw();
+			}
+
+			if (!selftest) {
+				if (redo) {
+					MyLog.waitHere(
+							"ATTENZIONE segnale medio fondo =0 spostare la ROI e premere OK",
+							debug);
+
+				}
+			}
+			stat = imp.getStatistics();
+			if (stat.mean == 0) {
+				redo = true;
+				yIncr = yIncr + 10;
+			} else
+				redo = false;
+		} while (redo);
+		return stat;
+	}
+
+	/**
+	 * evidenzia il fondo, richiede una roi sul fondo
+	 * 
+	 * @param xRoi
+	 *            coordinata x centro
+	 * @param yRoi
+	 *            coordinata y centro
+	 * @param imp
+	 *            puntatore ImagePlus alla immagine
+	 */
+	public static void backgroundEnhancement(int xRoi, int yRoi, int diaRoi,
+			ImagePlus imp1) {
+
+		ImageUtils.autoAdjust(imp1, imp1.getProcessor());
+		imp1.updateAndDraw();
+		imp1.getWindow().toFront();
+	} // backgroundEnhancement
+
+	/**
+	 * messaggio mancanza test2.jar
+	 * 
+	 */
+	public static void noTest2() {
+
+		ButtonMessages
+				.ModelessMsg(
+						"Per questa funzione bisogna installare test2.jar (albertoduina@virgilio.it)",
+						"CONTINUA");
 	}
 
 }

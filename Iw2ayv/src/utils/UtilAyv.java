@@ -117,93 +117,7 @@ public class UtilAyv {
 		return str;
 	}
 
-	/**
-	 * esegue l'autoAdjust del contrasto immagine
-	 * 
-	 * Author Terry Wu, Ph.D., University of Minnesota, <JavaPlugins@yahoo.com>
-	 * (from ij.plugin.frame. ContrastAdjuster by Wayne Rasband
-	 * <wayne@codon.nih.gov>)*** modified version *** Alberto Duina - Spedali
-	 * Civili di Brescia - Servizio di Fisica Sanitaria 2006
-	 * 
-	 * 
-	 * @param imp
-	 *            ImagePlus da regolare
-	 * @param ip
-	 *            ImageProcessor dell'immagine
-	 * 
-	 */
-	public static void autoAdjust(ImagePlus imp, ImageProcessor ip) {
-		double min, max;
 
-		Calibration cal = imp.getCalibration();
-		imp.setCalibration(null);
-		ImageStatistics stats = imp.getStatistics();
-		imp.setCalibration(cal);
-		int[] histogram = stats.histogram;
-		int threshold = stats.pixelCount / 5000;
-		int i = -1;
-		boolean found = false;
-		do {
-			i++;
-			found = histogram[i] > threshold;
-		} while (!found && i < 255);
-		int hmin = i;
-		i = 256;
-		do {
-			i--;
-			found = histogram[i] > threshold;
-		} while (!found && i > 0);
-		int hmax = i;
-		if (hmax > hmin) {
-			imp.killRoi();
-			min = stats.histMin + hmin * stats.binSize;
-			max = stats.histMin + hmax * stats.binSize;
-			ip.setMinAndMax(min, max);
-		}
-		Roi roi = imp.getRoi();
-		if (roi != null) {
-			ImageProcessor mask = roi.getMask();
-			if (mask != null)
-				ip.reset(mask);
-		}
-	}
-
-	public static void autoAdjust(ImagePlus imp) {
-		double min, max;
-
-		ImageProcessor ip = imp.getProcessor();
-		Calibration cal = imp.getCalibration();
-		imp.setCalibration(null);
-		ImageStatistics stats = imp.getStatistics();
-		imp.setCalibration(cal);
-		int[] histogram = stats.histogram;
-		int threshold = stats.pixelCount / 5000;
-		int i = -1;
-		boolean found = false;
-		do {
-			i++;
-			found = histogram[i] > threshold;
-		} while (!found && i < 255);
-		int hmin = i;
-		i = 256;
-		do {
-			i--;
-			found = histogram[i] > threshold;
-		} while (!found && i > 0);
-		int hmax = i;
-		if (hmax > hmin) {
-			imp.killRoi();
-			min = stats.histMin + hmin * stats.binSize;
-			max = stats.histMin + hmax * stats.binSize;
-			ip.setMinAndMax(min, max);
-		}
-		Roi roi = imp.getRoi();
-		if (roi != null) {
-			ImageProcessor mask = roi.getMask();
-			if (mask != null)
-				ip.reset(mask);
-		}
-	}
 
 	/**
 	 * genera l'immagine differenza pixel-by-pixel
@@ -374,8 +288,6 @@ public class UtilAyv {
 		return msd;
 	} // coord2D
 
-	
-	
 	public static void setMyPrecision() {
 		Analyzer.setPrecision(9);
 	}
@@ -759,7 +671,8 @@ public class UtilAyv {
 
 		ImagePlus imp = new Opener().openImage(path);
 		if (imp == null) {
-			MyLog.waitThere("Immagine " + path +" inesistente o non visualizzabile");
+			MyLog.waitThere("Immagine " + path
+					+ " inesistente o non visualizzabile");
 			return null;
 		}
 		// IJ.log("OpenImageEnlarged");
@@ -779,7 +692,8 @@ public class UtilAyv {
 		Opener opener = new Opener();
 		ImagePlus imp = opener.openImage(path);
 		if (imp == null) {
-			MyLog.waitThere("Immagine " + path + " inesistente o non visualizzabile");
+			MyLog.waitThere("Immagine " + path
+					+ " inesistente o non visualizzabile");
 			return null;
 		}
 		// IJ.log("OpenImageNormal");
@@ -800,7 +714,8 @@ public class UtilAyv {
 		ImagePlus imp = opener.openImage(path);
 		if (imp == null) {
 			if (verbose)
-				MyLog.waitThere("Immagine " + path + " inesistente o non visualizzabile");
+				MyLog.waitThere("Immagine " + path
+						+ " inesistente o non visualizzabile");
 			return null;
 		}
 		return imp;
@@ -857,140 +772,6 @@ public class UtilAyv {
 		return win;
 	}
 
-	/**
-	 * esegue posizionamento e calcolo roi circolare sul fondo
-	 * 
-	 * @param xRoi
-	 *            coordinata x roi
-	 * @param yRoi
-	 *            coordinata y roi
-	 * @param imp
-	 *            puntatore ImagePlus alla immagine
-	 * @param bstep
-	 *            funzionamento passo passo
-	 * @return dati statistici
-	 */
-	public static ImageStatistics backCalc(int xRoi, int yRoi, int diaRoi,
-			ImagePlus imp, boolean bstep, boolean circular, boolean selftest) {
-
-		ImageStatistics stat = null;
-		boolean redo = false;
-		do {
-			if (imp.isVisible())
-				imp.getWindow().toFront();
-			if (circular)
-				imp.setRoi(new OvalRoi(xRoi, yRoi, diaRoi, diaRoi));
-			else
-				imp.setRoi(xRoi, yRoi, diaRoi, diaRoi);
-
-			if (!selftest) {
-				if (redo) {
-					ButtonMessages
-							.ModelessMsg(
-									"ATTENZIONE segnale medio fondo =0 SPOSTARE LA ROI E PREMERE CONTINUA",
-									"CONTINUA");
-
-				} else {
-					ButtonMessages.ModelessMsg("Posizionare ROI fondo",
-							"CONTINUA");
-				}
-			}
-			stat = imp.getStatistics();
-			if (stat.mean == 0)
-				redo = true;
-			else
-				redo = false;
-			if (bstep)
-				ButtonMessages.ModelessMsg("Segnale medio =" + stat.mean,
-						"CONTINUA");
-		} while (redo);
-		return stat;
-	} // backCalc
-
-	/**
-	 * esegue posizionamento e calcolo roi circolare sul fondo
-	 * 
-	 * @param xRoi
-	 *            coordinata x roi
-	 * @param yRoi
-	 *            coordinata y roi
-	 * @param imp
-	 *            puntatore ImagePlus alla immagine
-	 * @param bstep
-	 *            funzionamento passo passo
-	 * @return dati statistici
-	 */
-	public static ImageStatistics backCalc2(int xRoi, int yRoi, int diaRoi,
-			ImagePlus imp, boolean bstep, boolean circular, boolean selftest) {
-
-		ImageStatistics stat = null;
-		boolean redo = false;
-		boolean debug = true;
-
-		int yIncr = 0;
-
-		do {
-			if (imp.isVisible())
-				imp.getWindow().toFront();
-			if (circular) {
-				// imp.setRoi(new OvalRoi(xRoi - diaRoi / 2, yRoi - diaRoi / 2,
-				// diaRoi, diaRoi));
-				imp.setRoi(new OvalRoi(xRoi, yRoi + yIncr, diaRoi, diaRoi));
-				// imp.updateAndDraw();
-			} else {
-				// imp.setRoi(xRoi - diaRoi / 2, yRoi - diaRoi / 2, diaRoi,
-				// diaRoi);
-				imp.setRoi(xRoi, yRoi + yIncr, diaRoi, diaRoi);
-				// imp.updateAndDraw();
-			}
-
-			if (!selftest) {
-				if (redo) {
-					MyLog.waitHere(
-							"ATTENZIONE segnale medio fondo =0 spostare la ROI e premere OK",
-							debug);
-
-				}
-			}
-			stat = imp.getStatistics();
-			if (stat.mean == 0) {
-				redo = true;
-				yIncr = yIncr + 10;
-			} else
-				redo = false;
-		} while (redo);
-		return stat;
-	}
-
-	/**
-	 * evidenzia il fondo, richiede una roi sul fondo
-	 * 
-	 * @param xRoi
-	 *            coordinata x centro
-	 * @param yRoi
-	 *            coordinata y centro
-	 * @param imp
-	 *            puntatore ImagePlus alla immagine
-	 */
-	public static void backgroundEnhancement(int xRoi, int yRoi, int diaRoi,
-			ImagePlus imp1) {
-
-		UtilAyv.autoAdjust(imp1, imp1.getProcessor());
-		imp1.updateAndDraw();
-		imp1.getWindow().toFront();
-	} // backgroundEnhancement
-
-	/**
-	 * messaggio mancanza test2.jar
-	 * 
-	 */
-	public static void noTest2() {
-
-		ButtonMessages
-				.ModelessMsg(
-						"Per questa funzione bisogna installare test2.jar (albertoduina@virgilio.it)",
-						"CONTINUA");
-	}
 
 	/**
 	 * menu selezione siemens/ge
@@ -2372,6 +2153,18 @@ public class UtilAyv {
 		}
 		return vetOut;
 	}
+	/**
+	 * messaggio mancanza test2.jar
+	 * 
+	 */
+	public static void noTest2() {
+
+		ButtonMessages
+				.ModelessMsg(
+						"Per questa funzione bisogna installare test2.jar (albertoduina@virgilio.it)",
+						"CONTINUA");
+	}
+
 
 } // UtilAyv
 

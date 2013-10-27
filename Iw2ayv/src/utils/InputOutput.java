@@ -38,8 +38,9 @@ public class InputOutput {
 	// absolute
 	//
 
-	public String findResource(String name) {
-		URL url1 = this.getClass().getClassLoader().getResource(name);
+	public static String findResource(String name) {
+		URL url1 = new InputOutput().getClass().getClassLoader()
+				.getResource(name);
 		if (url1 == null)
 			return null;
 		else
@@ -197,7 +198,69 @@ public class InputOutput {
 		return fileName;
 	}
 
-	// //###############################################################################
+	// ###############################################################################
+	/**
+	 * legge e carica in memoria il file VERSIONE BASE. Legge anche i file
+	 * contenuti in un file JAR
+	 * 
+	 * @param fileName
+	 *            path del file
+	 * @return
+	 */
+	public ArrayList<String> readFileGeneric(String fileName, boolean absolute) {
+		ArrayList<String> matrixTable = new ArrayList<String>();
+		try {
+			BufferedReader br = null;
+			String path = null;
+			if (absolute)
+				path = fileName;
+			else
+				path = findResource(fileName);
+			br = new BufferedReader(new FileReader(path));
+			while (br.ready()) {
+				String line = br.readLine();
+				// MyLog.waitHere("line= "+line);
+				matrixTable.add(line);
+			}
+			br.close();
+		} catch (Exception e) {
+			MyLog.waitThere("readFilegeneric error <" + fileName + "> " + e.getMessage());
+			return null;
+		}
+		return matrixTable;
+	}
+
+	/***
+	 * legge e carica in memoria il file. Legge anche i file contenuti in un
+	 * file JAR
+	 * 
+	 * @param fileName
+	 *            nome del file
+	 * @return tabella col contenuto del file
+	 */
+	public ArrayList<ArrayList<String>> readFile3LIKE(String fileName) {
+		boolean absolute = false;
+		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
+		ArrayList<String> arr1 = readFileGeneric(fileName, absolute);
+		String[] line = ArrayUtils.arrayListToArrayString(arr1);
+		for (int i1 = 0; i1 < line.length; i1++) {
+			String riga = line[i1];
+			if (riga.trim().length() == 0)
+				continue;
+			if (!isComment(riga)) {
+				ArrayList<String> row = new ArrayList<String>();
+				String result = InputOutput.stripAllComments(riga);
+				String[] splitted = result.split("\\s+");
+				for (int i2 = 0; i2 < splitted.length; i2++) {
+					row.add(splitted[i2]);
+				}
+				matrixTable.add(row);
+			}
+		}
+		return matrixTable;
+	}
+
+	// ###############################################################################
 
 	/**
 	 * legge e carica in memoria il file. Legge anche i file contenuti in un
@@ -210,7 +273,7 @@ public class InputOutput {
 	 * @return tabella col contenuto del file
 	 */
 
-	public ArrayList<ArrayList<String>> readFile3(String fileName) {
+	public ArrayList<ArrayList<String>> readFile3BBB(String fileName) {
 		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
 		// IJ.log("readFile3 in esecuzione");
 		try {
@@ -252,6 +315,32 @@ public class InputOutput {
 
 	}
 
+	public ArrayList<ArrayList<String>> readFile5LIKE(String fileName,
+			boolean absolute) {
+		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
+		ArrayList<String> arr1 = readFileGeneric(fileName, absolute);
+		String[] line = ArrayUtils.arrayListToArrayString(arr1);
+		for (int i1 = 0; i1 < line.length; i1++) {
+			String riga = line[i1];
+			if (riga.trim().length() == 0)
+				continue;
+			if (!isComment(riga)) {
+				ArrayList<String> row1 = new ArrayList<String>();
+				String result = InputOutput.stripAllComments(riga);
+				String[] splitted = splitStringGeneric(result, "#");
+				for (int i2 = 0; i2 < splitted.length; i2++) {
+					row1.add(splitted[i2]);
+				}
+				ArrayList<String> row2 = new ArrayList<String>();
+				for (int i2 = 1; i2 < splitted.length; i2 += 2) {
+					row2.add(row1.get(i2));
+				}
+				matrixTable.add(row2);
+			}
+		}
+		return matrixTable;
+	}
+
 	// //###############################################################################
 
 	/**
@@ -264,7 +353,7 @@ public class InputOutput {
 	 * @return tabella col contenuto del file
 	 */
 
-	public ArrayList<ArrayList<String>> readFile5(String fileName,
+	public ArrayList<ArrayList<String>> readFile5BBB(String fileName,
 			boolean absolute) {
 		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
 
@@ -315,6 +404,43 @@ public class InputOutput {
 		return matrixTable;
 	}
 
+	public String[][] readFile6LIKE(String fileName, boolean absolute) {
+		
+		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
+		ArrayList<String> row1 = new ArrayList<String>();
+		ArrayList<String> arr1 = readFileGeneric(fileName, absolute);
+		String[] line = ArrayUtils.arrayListToArrayString(arr1);
+		for (int i1 = 0; i1 < line.length; i1++) {
+			String riga = line[i1];
+			if (riga.trim().length() == 0)
+				continue;
+			if (!isComment(riga)) {
+				String substr = riga.substring(0, 2);
+				if (line.equals("") || substr.equals("//")
+						|| substr.equals("/*")) {
+					continue;
+				}
+				ArrayList<String> row = new ArrayList<String>();
+				String result = InputOutput.stripAllComments(riga);
+				String[] splitted = splitStringGeneric(result, ";");
+				for (int i2 = 0; i2 < splitted.length; i2++) {
+					row.add(splitted[i2]);
+				}
+				matrixTable.add(row);
+			}
+		}
+		String[][] table = new String[matrixTable.size()][matrixTable.get(0)
+				.size()];
+		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
+			ArrayList<String> arrayList = matrixTable.get(i1);
+			row1 = arrayList;
+			for (int j1 = 0; j1 < matrixTable.get(0).size(); j1++) {
+				table[i1][j1] = (String) row1.get(j1);
+			}
+		}
+		return (table);
+	}
+
 	// //###############################################################################
 
 	/***
@@ -324,7 +450,7 @@ public class InputOutput {
 	 * @param fileName
 	 * @return
 	 */
-	public String[][] readFile6(String fileName) {
+	public String[][] readFile6BBB(String fileName) {
 
 		// MyLog.waitHere("entro in readFile6 con fileName= " + fileName);
 

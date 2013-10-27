@@ -21,7 +21,7 @@ public class TableCode {
 	public static String[][] loadTable(String path) {
 
 		ArrayList<ArrayList<String>> tableArray = new InputOutput()
-				.readFile3(path);
+				.readFile3LIKE(path);
 		String[][] tableCode = new InputOutput()
 				.fromArrayListToStringTable(tableArray);
 
@@ -30,6 +30,7 @@ public class TableCode {
 
 	public static String[][] loadTableCSV(String path) {
 
+		boolean absolute=false;
 		String[][] tableCode = new InputOutput().readFile7(path);
 		return tableCode;
 	}

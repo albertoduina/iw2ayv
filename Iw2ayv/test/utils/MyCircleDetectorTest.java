@@ -1,6 +1,7 @@
 package utils;
 
 import static org.junit.Assert.assertTrue;
+import ij.IJ;
 import ij.ImagePlus;
 import ij.io.Opener;
 import ij.process.ImageProcessor;
@@ -27,8 +28,9 @@ public class MyCircleDetectorTest {
 		ImagePlus impMini = MyStackUtils.imageFromMosaic(imp1, 12);
 		boolean step = false;
 		int[] dati = MyCircleDetector.circleDetector(impMini, step);
-		MyLog.logVector(dati, "dati");
-		int[] expected = { 12, 13, 40 };
+//		MyLog.logVector(dati, "dati");
+//		MyLog.waitHere();
+		int[] expected = {14,  13,  39 };
 		assertTrue(UtilAyv
 				.compareVectors(dati, expected, "errore comparazione"));
 	}
@@ -40,10 +42,15 @@ public class MyCircleDetectorTest {
 		ImagePlus imp1 = new Opener().openImage(path1);
 		ImagePlus impMini = MyStackUtils.imageFromMosaicWithOffset(imp1, 5, 0,
 				0);
-		boolean step = true;
+		boolean step = false;
 		int[] dati = MyCircleDetector.circleDetector(impMini, step);
-		MyLog.logVector(dati, "dati");
-		MyLog.waitHere();
+//		MyLog.logVector(dati, "dati");
+//		MyLog.waitHere();		
+//		IJ.wait(200);
+		int[] expected = {14,  14,  39 };
+		assertTrue(UtilAyv
+				.compareVectors(dati, expected, "errore comparazione"));
+
 
 		// int[] expected = { 12, 13, 40 };
 		// assertTrue(UtilAyv
@@ -60,7 +67,8 @@ public class MyCircleDetectorTest {
 		UtilAyv.showImageMaximized(impMini);
 		ImagePlus imp2 = MyCircleDetector.applyThreshold(impMini);
 		UtilAyv.showImageMaximized(imp2);
-		MyLog.waitHere();
+		IJ.wait(200);
+//		MyLog.waitHere();
 	}
 
 
@@ -78,7 +86,8 @@ public class MyCircleDetectorTest {
 		UtilAyv.showImageMaximized(imp2);
 		ImagePlus imp3 =  MyCircleDetector.circleOutline(imp2);
 		UtilAyv.showImageMaximized(imp3);
-		MyLog.waitHere();
+		IJ.wait(200);
+//		MyLog.waitHere();
 	}
 
 

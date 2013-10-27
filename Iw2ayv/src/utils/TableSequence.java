@@ -80,7 +80,7 @@ public class TableSequence {
 
 		// IJ.log("TableSequence.loadTable riceve=" + path);
 		ArrayList<ArrayList<String>> tableArray = new InputOutput()
-				.readFile5(path, true);
+				.readFile5LIKE(path, true);
 		String[][] sequenceTable = new InputOutput()
 				.fromArrayListToStringTable(tableArray);
 
