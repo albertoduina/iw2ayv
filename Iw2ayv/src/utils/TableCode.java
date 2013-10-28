@@ -31,7 +31,9 @@ public class TableCode {
 	public static String[][] loadTableCSV(String path) {
 
 		boolean absolute=false;
-		String[][] tableCode = new InputOutput().readFile7(path);
+		String[][] tableCode1 = new InputOutput().readFile6LIKE(path, absolute);
+		String[][] tableCode = InputOutput.removeColumn(tableCode1, 1);
+		
 		return tableCode;
 	}
 

@@ -133,25 +133,9 @@ public class InputOutputTest {
 		assertTrue(UtilAyv.compareVectors(expected, out, ""));
 	}
 
+
 	@Test
 	public final void testReadFile3() {
-		String CODE_FILE = "codici3.txt";
-		String[][] expected = InputOutput.readStringMatrixFromFileNew(
-				"codici3Read.txt", "\\s");
-		
-		ArrayList<ArrayList<String>> tabella1 = new InputOutput()
-				.readFile3BBB(CODE_FILE);
-
-		String[][] tableCode = new InputOutput()
-				.fromArrayListToStringTable(tabella1);
-
-		// MyLog.logMatrix(expected, "expected");
-		// MyLog.logMatrix(tableCode, "tableCode");
-		assertTrue(TableUtils.compareTable(expected, tableCode));
-	}
-
-	@Test
-	public final void testReadFile3LIKE() {
 		String CODE_FILE = "codici3.txt";
 		String[][] expected = InputOutput.readStringMatrixFromFileNew(
 				"codici3Read.txt", "\\s");
@@ -165,20 +149,9 @@ public class InputOutputTest {
 		assertTrue(TableUtils.compareTable(expected, tableCode));
 	}
 
-	@Test
-	public final void testReadFile5() {
-		String CODE_FILE = "iw2ayv.txt";
-		String[][] expected = InputOutput.readStringMatrixFromFileNew(
-				"iw2ayvRead.txt", ",");
-		ArrayList<ArrayList<String>> tabella1 = new InputOutput().readFile5BBB(
-				CODE_FILE, false);
-		String[][] tableCode = new InputOutput()
-				.fromArrayListToStringTable(tabella1);
-		assertTrue(TableUtils.compareTable(expected, tableCode));
-	}
 
 	@Test
-	public final void testReadFile5LIKE() {
+	public final void testReadFile5() {
 		String CODE_FILE = "iw2ayv.txt";
 		String[][] expected = InputOutput.readStringMatrixFromFileNew(
 				"iw2ayvRead.txt", ",");
@@ -294,13 +267,14 @@ public class InputOutputTest {
 
 	}
 
-	@Test
-	public final void testAbsoluteToRelative() {
-		String inStr = "C:\\2_eclipse_2\\eclipse\\workspace_fmri2\\ControlliMensili\\bin\\test3\\BTMA_01testP6";
-		String outStr = InputOutput.absoluteToRelative(inStr);
-		String expected = "/test3/BTMA_01testP6";
-		assertTrue(outStr.equals(expected));
-	}
+	// @Test
+	// public final void testAbsoluteToRelative() {
+	// String inStr =
+	// "C:\\2_eclipse_2\\eclipse\\workspace_fmri2\\ControlliMensili\\bin\\test3\\BTMA_01testP6";
+	// String outStr = InputOutput.absoluteToRelative(inStr);
+	// String expected = "/test3/BTMA_01testP6";
+	// assertTrue(outStr.equals(expected));
+	// }
 
 	@Test
 	public final void testFindResource() {
@@ -310,22 +284,9 @@ public class InputOutputTest {
 		assertTrue(outStr.equals(expected));
 	}
 
+
 	@Test
 	public final void testReadFile6() {
-
-		String CODE_FILE = "limiti.csv"; // nota bene che è locale in
-											// /data di iw2ayv, non in
-											// ControlliMensili !!!
-		String[][] expected = InputOutput.readStringMatrixFromFileNew(
-				"limiti.txt", ";");
-		String[][] tabella1 = new InputOutput().readFile6BBB(CODE_FILE);
-		// MyLog.logMatrix(tabella1, "tabella1");
-		// MyLog.logMatrix(expected, "expected");
-		assertTrue(TableUtils.compareTable(expected, tabella1));
-	}
-
-	@Test
-	public final void testReadFile6LIKE() {
 
 		String CODE_FILE = "limiti.csv"; // nota bene che è locale in
 											// /data di iw2ayv, non in
@@ -335,23 +296,7 @@ public class InputOutputTest {
 		boolean absolute = false;
 		String[][] tabella1 = new InputOutput().readFile6LIKE(CODE_FILE,
 				absolute);
-//		MyLog.logMatrix(tabella1, "tabella1");
-//		MyLog.logMatrix(expected, "expected");
-//		MyLog.waitHere();
-		assertTrue(TableUtils.compareTable(expected, tabella1));
-	}
-
-	@Test
-	public final void testReadFile7() {
-
-		String CODE_FILE = "limiti.csv"; // nota bene che è locale in
-		// /data di iw2ayv, non in ControlliMensili !!!
-		String[][] expected = InputOutput.readStringMatrixFromFileNew(
-				"limiti2.txt", ";");
-		String[][] tabella1 = new InputOutput().readFile7(CODE_FILE);
-		// MyLog.logMatrix(tabella1, "tabella1");
-		// MyLog.logMatrix(expected, "expected");
-		assertTrue(TableUtils.compareTable(expected, tabella1));
+		 assertTrue(TableUtils.compareTable(expected, tabella1));
 	}
 
 	@Test

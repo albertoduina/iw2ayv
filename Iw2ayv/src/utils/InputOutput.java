@@ -38,6 +38,13 @@ public class InputOutput {
 	// absolute
 	//
 
+	/**
+	 * Trova un file risorsa, partendo dal nome del file.
+	 * 
+	 * @param name
+	 *            nome del file
+	 * @return path del file
+	 */
 	public static String findResource(String name) {
 		URL url1 = new InputOutput().getClass().getClassLoader()
 				.getResource(name);
@@ -47,7 +54,7 @@ public class InputOutput {
 			return url1.getPath();
 	}
 
-	public static String absoluteToRelative(String absolutePath) {
+	public static String absoluteToRelativeBBB(String absolutePath) {
 		int start = absolutePath.indexOf("bin");
 		String relativePath = absolutePath.substring(start + 3);
 		String outPath = UtilAyv.reverseSlash(relativePath);
@@ -208,6 +215,7 @@ public class InputOutput {
 	 * @return
 	 */
 	public ArrayList<String> readFileGeneric(String fileName, boolean absolute) {
+
 		ArrayList<String> matrixTable = new ArrayList<String>();
 		try {
 			BufferedReader br = null;
@@ -216,6 +224,7 @@ public class InputOutput {
 				path = fileName;
 			else
 				path = findResource(fileName);
+			// MyLog.waitHere("path= " + path);
 			br = new BufferedReader(new FileReader(path));
 			while (br.ready()) {
 				String line = br.readLine();
@@ -224,7 +233,8 @@ public class InputOutput {
 			}
 			br.close();
 		} catch (Exception e) {
-			MyLog.waitThere("readFilegeneric error <" + fileName + "> " + e.getMessage());
+			MyLog.waitThere("readFilegeneric error <" + fileName + "> "
+					+ e.getMessage());
 			return null;
 		}
 		return matrixTable;
@@ -260,60 +270,6 @@ public class InputOutput {
 		return matrixTable;
 	}
 
-	// ###############################################################################
-
-	/**
-	 * legge e carica in memoria il file. Legge anche i file contenuti in un
-	 * file JAR
-	 * 
-	 * @param fileName
-	 *            path del file
-	 * @param tokenXriga
-	 *            numero di token per ogni riga
-	 * @return tabella col contenuto del file
-	 */
-
-	public ArrayList<ArrayList<String>> readFile3BBB(String fileName) {
-		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
-		// IJ.log("readFile3 in esecuzione");
-		try {
-			URL url1 = this.getClass().getClassLoader().getResource(fileName);
-			if (url1 == null) {
-				MyLog.waitHere("readFile3: file " + fileName
-						+ " not visible or null");
-				return null;
-			}
-			InputStream is = new InputOutput().getClass().getClassLoader()
-					.getResourceAsStream(fileName);
-			BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-			while (br.ready()) {
-				String line = br.readLine();
-				if (line == null)
-					continue;
-				// only > java 6.0
-				// if (line.isEmpty())
-				// continue;
-				if (line.trim().length() == 0)
-					continue;
-				if (!isComment(line)) {
-					ArrayList<String> row = new ArrayList<String>();
-					String result = InputOutput.stripAllComments(line);
-					String[] splitted = result.split("\\s+");
-					for (int i1 = 0; i1 < splitted.length; i1++) {
-						row.add(splitted[i1]);
-					}
-					matrixTable.add(row);
-				}
-			}
-			br.close();
-		} catch (Exception e) {
-			IJ.log("readFile3 error <" + fileName + "> " + e.getMessage());
-			return null;
-		}
-		return matrixTable;
-
-	}
 
 	public ArrayList<ArrayList<String>> readFile5LIKE(String fileName,
 			boolean absolute) {
@@ -343,69 +299,9 @@ public class InputOutput {
 
 	// //###############################################################################
 
-	/**
-	 * legge e carica in memoria il file da disco.
-	 * 
-	 * @param fileName
-	 *            path del file
-	 * @param tokenXriga
-	 *            numero di token per ogni riga
-	 * @return tabella col contenuto del file
-	 */
-
-	public ArrayList<ArrayList<String>> readFile5BBB(String fileName,
-			boolean absolute) {
-		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
-
-		URL url1 = null;
-		BufferedReader br = null;
-		try {
-			if (!absolute) {
-				url1 = this.getClass().getClassLoader().getResource(fileName);
-				if (url1 == null) {
-					MyLog.waitHere("readFile5: file " + fileName
-							+ " not visible or null");
-					return null;
-				}
-				InputStream is = new InputOutput().getClass().getClassLoader()
-						.getResourceAsStream(fileName);
-				br = new BufferedReader(new InputStreamReader(is));
-			} else
-				br = new BufferedReader(new FileReader(fileName));
-			while (br.ready()) {
-				String line = br.readLine();
-				if (line == null)
-					continue;
-				// only > java 6.0
-				// if (line.isEmpty())
-				// continue;
-				if (line.trim().length() == 0)
-					continue;
-				if (!isComment(line)) {
-					ArrayList<String> row1 = new ArrayList<String>();
-					String result = InputOutput.stripAllComments(line);
-					// String[] splitted = result.split("#");
-					String[] splitted = splitStringGeneric(result, "#");
-					for (int i1 = 0; i1 < splitted.length; i1++) {
-						row1.add(splitted[i1]);
-					}
-					ArrayList<String> row2 = new ArrayList<String>();
-					for (int i1 = 1; i1 < splitted.length; i1 = i1 + 2) {
-						row2.add(row1.get(i1));
-					}
-					matrixTable.add(row2);
-				}
-			}
-			br.close();
-		} catch (Exception e) {
-			IJ.log("readFile5 error>" + e.getMessage());
-			return null;
-		}
-		return matrixTable;
-	}
 
 	public String[][] readFile6LIKE(String fileName, boolean absolute) {
-		
+
 		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
 		ArrayList<String> row1 = new ArrayList<String>();
 		ArrayList<String> arr1 = readFileGeneric(fileName, absolute);
@@ -443,133 +339,27 @@ public class InputOutput {
 
 	// //###############################################################################
 
-	/***
-	 * Serve al leggere i file csv (valori delimitati da ;) legge anche
-	 * eventuali token vuoti
-	 * 
-	 * @param fileName
-	 * @return
-	 */
-	public String[][] readFile6BBB(String fileName) {
+	// //###############################################################################
+	
+	
+	public static String[][] removeColumn(String[][] in, int salta) {
+		int len1 = in.length;
+		int len2 = in[0].length;
 
-		// MyLog.waitHere("entro in readFile6 con fileName= " + fileName);
-
-		ArrayList<ArrayList<Object>> matrixTable = new ArrayList<ArrayList<Object>>();
-		ArrayList<Object> row1 = new ArrayList<Object>();
-		// String delimiter = ";";
-
-		try {
-			URL url1 = this.getClass().getClassLoader().getResource(fileName);
-			if (url1 == null) {
-				MyLog.waitHere("readFile6: file " + fileName
-						+ " not visible or null");
-				return null;
-			}
-			InputStream is = new InputOutput().getClass().getClassLoader()
-					.getResourceAsStream(fileName);
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-			while (br.ready()) {
-				String line = br.readLine();
-				// a questo punto vedo se i primi due caratteri sono quelli di
-				// un commento, in questo caso non lo carico nella matrice
-				if (line.length() < 2)
-					continue;
-				String substr = line.substring(0, 2);
-				if (line.equals("") || substr.equals("//")
-						|| substr.equals("/*")) {
-					continue;
+		String[][] out = new String[len1][len2 - 1];
+		int count = 0;
+		for (int i1 = 0; i1 < len1; i1++) {
+			count = 0;
+			for (int i2 = 0; i2 < len2; i2++) {
+				if (i2 != salta) {
+					out[i1][count++] = in[i1][i2];
 				}
-				ArrayList<Object> row = new ArrayList<Object>();
-				String result = InputOutput.stripAllComments(line);
-				// String[] splitted = result.split(delimiter, -1);
-				String[] splitted = splitStringGeneric(result, ";");
-				for (int i1 = 0; i1 < splitted.length; i1++) {
-					row.add(splitted[i1]);
-				}
-				matrixTable.add(row);
-			}
-			br.close();
-		} catch (Exception e) {
-			IJ.error(e.getMessage());
-		}
-		String[][] table = new String[matrixTable.size()][matrixTable.get(0)
-				.size()];
-		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
-			ArrayList<Object> arrayList = matrixTable.get(i1);
-			row1 = arrayList;
-			for (int j1 = 0; j1 < matrixTable.get(0).size(); j1++) {
-				table[i1][j1] = (String) row1.get(j1);
 			}
 		}
-		return (table);
+		return out;
 	}
 
-	// //###############################################################################
-
-	/***
-	 * Serve al leggere i file csv (valori delimitati da ;) legge anche
-	 * eventuali token vuoti.
-	 * 
-	 * La seconda colonna contiene il commento e viene saltata
-	 * 
-	 * @param fileName
-	 * @return
-	 */
-	public String[][] readFile7(String fileName) {
-
-		ArrayList<ArrayList<Object>> matrixTable = new ArrayList<ArrayList<Object>>();
-		ArrayList<Object> row1 = new ArrayList<Object>();
-		// String delimiter = ";";
-		try {
-			URL url1 = this.getClass().getClassLoader().getResource(fileName);
-			if (url1 == null) {
-				IJ.log("readFile7: file " + fileName + " not visible or null");
-				return null;
-			}
-			InputStream is = new InputOutput().getClass().getClassLoader()
-					.getResourceAsStream(fileName);
-			BufferedReader br = new BufferedReader(new InputStreamReader(is));
-			while (br.ready()) {
-				String line = br.readLine();
-				// a questo punto vedo se i primi due caratteri sono quelli di
-				// un commento, in questo caso non lo carico nella matrice
-				if (line.length() < 2)
-					continue;
-				String substr = line.substring(0, 2);
-				if (line.equals("") || substr.equals("//")
-						|| substr.equals("/*")) {
-					continue;
-				}
-				ArrayList<Object> row = new ArrayList<Object>();
-				String result = InputOutput.stripAllComments(line);
-				// String[] splitted = result.split(delimiter, -1);
-				String[] splitted = splitStringGeneric(result, ";");
-				for (int i1 = 0; i1 < splitted.length; i1++) {
-					if (i1 == 1)
-						continue;
-					row.add(splitted[i1].trim());
-				}
-				matrixTable.add(row);
-			}
-			br.close();
-		} catch (Exception e) {
-			IJ.error(e.getMessage());
-		}
-		String[][] table = new String[matrixTable.size()][matrixTable.get(0)
-				.size()];
-		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
-			ArrayList<Object> arrayList = matrixTable.get(i1);
-			row1 = arrayList;
-			for (int j1 = 0; j1 < matrixTable.get(0).size(); j1++) {
-				table[i1][j1] = (String) row1.get(j1);
-			}
-		}
-		return (table);
-	}
-
-	// //###############################################################################
+	
 
 	/***
 	 * Legge i dati da un file e li resitituisce in un array double
