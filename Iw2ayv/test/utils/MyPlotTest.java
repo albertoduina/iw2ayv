@@ -6,19 +6,29 @@ import ij.gui.WaitForUserDialog;
 
 import java.awt.Color;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import utils.MyLog;
 
 public class MyPlotTest {
 
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
 	@Test
 	public final void testMyPlotTest() {
 
 		double[] profile1 = InputOutput
 				.readDoubleArrayFromFile((new InputOutput()
-						.findResource("/002.txt")));
-		MyLog.logVector(profile1, "profile1");
+						.findResource("002.txt")));
+	//	MyLog.logVector(profile1, "profile1");
 
 		String title = "P R O V A";
 		Color color = Color.red;
@@ -27,7 +37,7 @@ public class MyPlotTest {
 		plot.show();
 
 		// new WaitForUserDialog("premere OK.").show();
-		IJ.wait(1000);
+		IJ.wait(100);
 
 	}
 

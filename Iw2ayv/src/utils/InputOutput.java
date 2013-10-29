@@ -61,15 +61,18 @@ public class InputOutput {
 		return outPath;
 	}
 
+	/**
+	 * ricerca dei file csv, se il file esiste lo lascia stare, altrimenti lo
+	 * estrae dal file jar. NOTA BENE: non ho trovato come farne la prova in
+	 * junit
+	 * 
+	 * @param fileName
+	 * @return
+	 */
 	public boolean findCSV(String fileName) {
-
-		// ricerca del path in cui andare a scrivere
-		// URL url3 =
-		// this.getClass().getResource("/contMensili/Sequenze_.class");
 
 		URL url3 = this.getClass().getClassLoader()
 				.getResource("contMensili/Sequenze_.class");
-		// File file3 = new File(url3.getPath());
 		String myString = url3.toString();
 		int start = myString.indexOf("plugins");
 		int end = myString.lastIndexOf("!");
@@ -270,7 +273,6 @@ public class InputOutput {
 		return matrixTable;
 	}
 
-
 	public ArrayList<ArrayList<String>> readFile5LIKE(String fileName,
 			boolean absolute) {
 		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
@@ -296,9 +298,6 @@ public class InputOutput {
 		}
 		return matrixTable;
 	}
-
-	// //###############################################################################
-
 
 	public String[][] readFile6LIKE(String fileName, boolean absolute) {
 
@@ -337,11 +336,15 @@ public class InputOutput {
 		return (table);
 	}
 
-	// //###############################################################################
-
-	// //###############################################################################
-	
-	
+	/**
+	 * Rimozione di una colonna da una matrice stringa. Utilizzata per eliminare
+	 * commenti e/o informazioni non desiderate dai file di risorsa
+	 * 
+	 * @param in
+	 * @param salta
+	 *            numero della colonna (parte da 0)
+	 * @return
+	 */
 	public static String[][] removeColumn(String[][] in, int salta) {
 		int len1 = in.length;
 		int len2 = in[0].length;
@@ -358,8 +361,6 @@ public class InputOutput {
 		}
 		return out;
 	}
-
-	
 
 	/***
 	 * Legge i dati da un file e li resitituisce in un array double
@@ -471,18 +472,6 @@ public class InputOutput {
 		}
 		return vetResult;
 	}
-
-	// public static ArrayList<Double> readDoubleArrayListFromString(String
-	// strIn) {
-	// ArrayList<Double> arrList = new ArrayList<Double>();
-	// StringTokenizer parser = new StringTokenizer(strIn," \t\\,\\;");
-	// int total = parser.countTokens();
-	// for (int i1 = 0; i1 < total; i1++) {
-	// String next = parser.nextToken();
-	// arrList.add(ReadDicom.readDouble(next));
-	// }
-	// return arrList;
-	// }
 
 	/***
 	 * Legge i dati da una stringa e li restituisce in un ArrayList
@@ -611,21 +600,6 @@ public class InputOutput {
 		}
 		return vetResult;
 	}
-
-	// public static ArrayList<Integer> readIntegerArrayListFromString(String
-	// strIn) {
-	// ArrayList<Integer> arrList = new ArrayList<Integer>();
-	// StringTokenizer parser = new StringTokenizer(strIn, " \t\\,\\;");
-	// // nota bene: per il tab c'è un solo slash
-	// int total = parser.countTokens();
-	// for (int i1 = 0; i1 < total; i1++) {
-	// String next = parser.nextToken().trim();
-	// Integer aux1 = Integer.parseInt(next);
-	// int aux2 = aux1.intValue();
-	// arrList.add(aux2);
-	// }
-	// return arrList;
-	// }
 
 	/***
 	 * Legge i dati da un file e li restituisce come string matrix
@@ -1134,6 +1108,14 @@ public class InputOutput {
 		}
 	}
 
+	/**
+	 * Estrae le immagini di test da un file jar
+	 * 
+	 * @param source
+	 * @param list
+	 * @param destination
+	 * @return
+	 */
 	public String findListTestImages(String source, String[] list,
 			String destination) {
 		if (list == null) {
@@ -1152,6 +1134,14 @@ public class InputOutput {
 		return (home1);
 	}
 
+	/**
+	 * estrae le immagini di test da un file jar
+	 * 
+	 * @param source
+	 * @param list
+	 * @param destination
+	 * @return
+	 */
 	public String[] findListTestImages2(String source, String[] list,
 			String destination) {
 		if (list == null) {
@@ -1176,6 +1166,12 @@ public class InputOutput {
 		return (path);
 	}
 
+	/**
+	 * verifica se la riga è un commento (inizia con //)
+	 * 
+	 * @param riga
+	 * @return
+	 */
 	public static boolean isComment(String riga) {
 		if (riga.length() < 2) {
 			return false;
@@ -1188,6 +1184,12 @@ public class InputOutput {
 		}
 	}
 
+	/**
+	 * toglie i commenti da una stringa (quelli \*....*\)
+	 * 
+	 * @param riga
+	 * @return
+	 */
 	public static String stripComment(String riga) {
 		int beginComment = 0;
 		int endComment = 0;
@@ -1211,6 +1213,12 @@ public class InputOutput {
 		return noComment;
 	}
 
+	/**
+	 * toglie i commenti da una stringa (quelli// messo non all'inizio)
+	 * 
+	 * @param riga
+	 * @return
+	 */
 	public static String stripSlashComment(String riga) {
 		int beginComment = 0;
 		beginComment = riga.indexOf("//");
@@ -1222,6 +1230,12 @@ public class InputOutput {
 		return noComment;
 	}
 
+	/**
+	 * toglie i commenti da una stringa (tutti)
+	 * 
+	 * @param riga
+	 * @return
+	 */
 	public static String stripAllComments(String riga) {
 		String pass1 = stripSlashComment(riga);
 		String pass2 = "";
@@ -1278,7 +1292,7 @@ public class InputOutput {
 		}
 	}
 
-	public static void debugListFiles(String dir) {
+	public static void debugListFiles222(String dir) {
 		File fdir = new File(dir);
 		String[] list = fdir.list();
 		for (int i1 = 0; i1 < list.length; i1++) {

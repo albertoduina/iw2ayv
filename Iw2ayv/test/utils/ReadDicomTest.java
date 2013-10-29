@@ -3,6 +3,7 @@ package utils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import ij.IJ;
 import ij.ImagePlus;
 import ij.io.Opener;
 
@@ -42,18 +43,11 @@ public class ReadDicomTest {
 		}
 
 		String coil = ReadDicom.getAllCoils(imp);
-		MyLog.waitHere("Coil= " + coil);
+//		IJ.log("Coil= " + coil);
 
 		boolean ok = coil.contains("ne1,2");
-		ok = coil.toLowerCase().contains("nE1,2".toLowerCase());
-	
-		if (ok)
-			MyLog.waitHere("trovato URRAH");
-		else
-			MyLog.waitHere("fallito");
-
-		// String parameter = ReadDicom.readDicomParameter(imp, "0008,0005");
-		// assertEquals("ISO_IR 100", parameter);
+		ok = coil.toLowerCase().contains("nE1,2".toLowerCase());	
+		assertTrue("non trovato nome coil", ok);
 	}
 
 	@Test

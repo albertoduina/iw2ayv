@@ -17,7 +17,7 @@ import org.junit.Test;
 public class MyLineTest {
 	@Before
 	public void setUp() throws Exception {
-		new ImageJ(ImageJ.NORMAL);
+//		new ImageJ(ImageJ.NORMAL);
 	}
 
 	

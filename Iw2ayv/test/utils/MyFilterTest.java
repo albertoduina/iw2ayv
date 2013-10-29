@@ -16,7 +16,7 @@ import org.junit.Test;
 public class MyFilterTest {
 	@Before
 	public void setUp() throws Exception {
-		new ImageJ(ImageJ.NORMAL);
+//		new ImageJ(ImageJ.NORMAL);
 	}
 
 	@After

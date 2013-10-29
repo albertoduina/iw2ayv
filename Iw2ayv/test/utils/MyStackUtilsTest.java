@@ -29,8 +29,11 @@ public class MyStackUtilsTest {
 
 	@Test
 	public final void testImageFromStack() {
+		
+		
+		String path = InputOutput.findResource("list1.txt");
 		String[] list1 = InputOutput
-				.readStringArrayFromFile("./data/list1.txt");
+				.readStringArrayFromFile(path);
 		ImagePlus imp1 = MyStackUtils.imagesToStack16(list1);
 		int len = imp1.getImageStackSize();
 		assertEquals(16, len);
@@ -38,8 +41,6 @@ public class MyStackUtilsTest {
 		ImagePlus imp2 = MyStackUtils.imageFromStack(imp1, 8);
 		ImagePlus imp3 = new Opener().openImage(list1[7]);
 		String sliceInfo2 = (String) imp2.getProperty("Info");
-		IJ.log(sliceInfo2);
-
 		String sliceInfo3 = (String) imp3.getProperty("Info");
 		assertEquals(sliceInfo2, sliceInfo3);
 	}
@@ -51,7 +52,7 @@ public class MyStackUtilsTest {
 		ImagePlus imp1 = MyStackUtils.imagesToStack16(list1);
 		int len = imp1.getImageStackSize();
 		imp1.show();
-		IJ.wait(200);
+		IJ.wait(50);
 		assertEquals(16, len);
 	}
 
@@ -63,7 +64,7 @@ public class MyStackUtilsTest {
 		int len = imp1.getImageStackSize();
 		assertEquals(16, len);
 		imp1.show();
-		IJ.wait(200);
+		IJ.wait(50);
 		int depth = imp1.getBitDepth();
 		// IJ.log("stack bitDepth= " + depth);
 		assertEquals(32, depth);
@@ -78,7 +79,7 @@ public class MyStackUtilsTest {
 		for (int i1 = 0; i1 < 36; i1++) {
 			ImagePlus imp2 = MyStackUtils.imageFromMosaic(imp1, i1);
 			imp2.show();
-			IJ.wait(1000);
+			IJ.wait(20);
 		}
 
 	}
@@ -93,7 +94,7 @@ public class MyStackUtilsTest {
 			ImagePlus imp2 = MyStackUtils.imageFromMosaicWithOffset(imp1, i1,
 					5, 5);
 			imp2.show();
-			IJ.wait(1000);
+			IJ.wait(20);
 		}
 
 	}
@@ -110,6 +111,7 @@ public class MyStackUtilsTest {
 
 		list1[0] = ".\\Test4\\01diff";
 		imp2 = MyStackUtils.imagesToStack16(list1);
+		IJ.log("**** TEST CON IMMAGINI DOFFERENTI ****");
 		boolean result2 = MyStackUtils.compareStacks(imp1, imp2);
 		assertFalse("Stacks must differ!", result2);
 	}

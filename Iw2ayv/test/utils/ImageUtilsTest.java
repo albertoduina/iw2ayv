@@ -25,8 +25,7 @@ public class ImageUtilsTest {
 
 	@Before
 	public void setUp() throws Exception {
-		new ImageJ(ImageJ.NORMAL);
-
+//		new ImageJ(ImageJ.NORMAL);
 	}
 
 	@After

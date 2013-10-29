@@ -27,6 +27,22 @@ public class InputOutputTest {
 	}
 
 	@Test
+	public final void testRemoveColumn() {
+		String[][] input = { { "A1", "A2", "A3", "A4" },
+				{ "B1", "B2", "B3", "B4" }, { "C1", "C2", "C3", "C4" },
+				{ "D1", "D2", "D3", "D4" }, };
+
+		String[][] out = InputOutput.removeColumn(input, 2);
+		String[][] expected = { { "A1", "A2", "A4" }, { "B1", "B2", "B4" },
+				{ "C1", "C2", "C4" }, { "D1", "D2", "D4" }, };
+
+		// MyLog.logMatrix(out, "out");
+		// MyLog.waitHere();
+		assertTrue(UtilAyv.compareMatrix(out, expected, "errore comparazione"));
+
+	}
+
+	@Test
 	public final void testReadDoubleMatrixFromFile() {
 		String matPath = "./data/mat02.txt";
 		double[][] expected = {
@@ -133,7 +149,6 @@ public class InputOutputTest {
 		assertTrue(UtilAyv.compareVectors(expected, out, ""));
 	}
 
-
 	@Test
 	public final void testReadFile3() {
 		String CODE_FILE = "codici3.txt";
@@ -149,12 +164,11 @@ public class InputOutputTest {
 		assertTrue(TableUtils.compareTable(expected, tableCode));
 	}
 
-
 	@Test
 	public final void testReadFile5() {
 		String CODE_FILE = "iw2ayv.txt";
 		String[][] expected = InputOutput.readStringMatrixFromFileNew(
-				"iw2ayvRead.txt", ",");
+				"iw2ayvRead.txt", ";");
 		ArrayList<ArrayList<String>> tabella1 = new InputOutput()
 				.readFile5LIKE(CODE_FILE, false);
 		String[][] tableCode = new InputOutput()
@@ -284,19 +298,15 @@ public class InputOutputTest {
 		assertTrue(outStr.equals(expected));
 	}
 
-
 	@Test
 	public final void testReadFile6() {
 
-		String CODE_FILE = "limiti.csv"; // nota bene che è locale in
-											// /data di iw2ayv, non in
-											// ControlliMensili !!!
-		String[][] expected = InputOutput.readStringMatrixFromFileNew(
-				"limiti.txt", ";");
 		boolean absolute = false;
-		String[][] tabella1 = new InputOutput().readFile6LIKE(CODE_FILE,
+		String[][] expected = new InputOutput().readFile6LIKE("limiti.txt",
 				absolute);
-		 assertTrue(TableUtils.compareTable(expected, tabella1));
+		String[][] tabella1 = new InputOutput().readFile6LIKE("limiti.csv",
+				absolute);
+		assertTrue(TableUtils.compareTable(expected, tabella1));
 	}
 
 	@Test

@@ -1,4 +1,4 @@
-0, C:\Dati\cdqaera020811\Study_1_20110802\Series_32_BUSA_se_15b130_ass\32_1329_BC_BUSA_, BUSA_, BC, 2, 32, 1, 1, 094240210000, 20, x, x, 1
-1, C:\Dati\cdqaera020811\Study_1_20110802\Series_33_BUSA_se_15b130_ass\33_1330_BC_BUSA_, BUSA_, BC, 2, 33, 2, 1, 094700212500, 20, x, x, 1
-2, C:\Dati\cdqaera020811\Study_1_20110802\Series_34_BUSS_se_15b130_sag\34_1331_BC_BUSS_, BUSS_, BC, 2, 34, 1, 1, 095120300000, 20, x, x, 1
-3, C:\Dati\cdqaera020811\Study_1_20110802\Series_35_BUSS_se_15b130_sag\35_1332_BC_BUSS_, BUSS_, BC, 2, 35, 2, 1, 095540300000, 20, x, x, 1
+0; C:\Dati\cdqaera020811\Study_1_20110802\Series_32_BUSA_se_15b130_ass\32_1329_BC_BUSA_; BUSA_; BC; 2; 32; 1; 1; 094240210000; 20; x; x; 1
+1; C:\Dati\cdqaera020811\Study_1_20110802\Series_33_BUSA_se_15b130_ass\33_1330_BC_BUSA_; BUSA_; BC; 2; 33; 2; 1; 094700212500; 20; x; x; 1
+2; C:\Dati\cdqaera020811\Study_1_20110802\Series_34_BUSS_se_15b130_sag\34_1331_BC_BUSS_; BUSS_; BC; 2; 34; 1; 1; 095120300000; 20; x; x; 1
+3; C:\Dati\cdqaera020811\Study_1_20110802\Series_35_BUSS_se_15b130_sag\35_1332_BC_BUSS_; BUSS_; BC; 2; 35; 2; 1; 095540300000; 20; x; x; 1

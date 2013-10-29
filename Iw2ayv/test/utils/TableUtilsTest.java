@@ -38,9 +38,12 @@ public class TableUtilsTest {
 		double[][] inTable = { { 1.0, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9 },
 				{ 2.0, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9 },
 				{ 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9 } };
-		MyLog.logMatrix(inTable, "inTable");
 		double[][] rotated = TableUtils.rotateTable(inTable);
-		MyLog.logMatrix(rotated, "rotated");
-		MyLog.waitHere();
+		double[][] expected = { { 1.0, 2.0, 3.0 }, { 1.2, 2.1, 3.1 },
+				{ 1.3, 2.2, 3.2 }, { 1.4, 2.3, 3.3 }, { 1.5, 2.4, 3.4 },
+				{ 1.6, 2.5, 3.5 }, { 1.7, 2.6, 3.6 }, { 1.8, 2.7, 3.7 },
+				{ 1.9, 2.8, 3.8 } };
+		boolean ok = TableUtils.compareTable(rotated, expected);
+		assertTrue("matLimiti diverse", ok);
 	}
 }

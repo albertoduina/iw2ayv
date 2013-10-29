@@ -19,15 +19,13 @@ public class TableLimitiTest {
 
 	@Test
 	public final void testLoadtable() {
-		String EXPAND_FILE = "limiti.txt";
-		String[][] matLimiti = TableExpand.loadTable(EXPAND_FILE);
-		MyLog.logMatrix(matLimiti, "matLimiti");
+		String EXPAND_FILE1 = "limiti.txt";
+		String[][] matLimiti1 = TableLimiti.loadTable(EXPAND_FILE1);
+		String EXPAND_FILE2 = "limiti.csv";
+		String[][] matLimiti2 = TableLimiti.loadTable(EXPAND_FILE2);
+		boolean ok= TableUtils.compareTable(matLimiti1, matLimiti2);
+		assertTrue("matLimiti diverse", ok);
 	}
 
-	@Test
-	public final void testLoadtableCSV() {
-		String EXPAND_FILE = "limiti.csv";
-		String[][] matLimiti = TableExpand.loadTableCSV(EXPAND_FILE);
-		MyLog.logMatrix(matLimiti, "matLimiti");
-	}
+	
 }

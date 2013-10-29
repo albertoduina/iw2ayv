@@ -75,10 +75,10 @@ public class MyOvalProfile {
 			xValues[i1] = Math.toDegrees(theta);
 			// i1++;
 		}
-		MyLog.logVector(xCoordinate, "xCoordinate");
-		MyLog.logVector(yCoordinate, "yCoordinate");
-		MyLog.logVector(xValues, "xValues");
-		MyLog.logVector(profile, "profile");
+//		MyLog.logVector(xCoordinate, "xCoordinate");
+//		MyLog.logVector(yCoordinate, "yCoordinate");
+//		MyLog.logVector(xValues, "xValues");
+//		MyLog.logVector(profile, "profile");
 		return profile;
 	}
 

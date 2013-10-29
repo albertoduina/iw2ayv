@@ -19,23 +19,21 @@ public class TableCode {
 	public static int PLUGIN = 6;
 
 	public static String[][] loadTable(String path) {
-
-		ArrayList<ArrayList<String>> tableArray = new InputOutput()
-				.readFile3LIKE(path);
-		String[][] tableCode = new InputOutput()
-				.fromArrayListToStringTable(tableArray);
-
-		return tableCode;
-	}
-
-	public static String[][] loadTableCSV(String path) {
-
 		boolean absolute=false;
-		String[][] tableCode1 = new InputOutput().readFile6LIKE(path, absolute);
+		String[][] tableCode1 = new InputOutput()
+				.readFile6LIKE(path, absolute);
 		String[][] tableCode = InputOutput.removeColumn(tableCode1, 1);
-		
 		return tableCode;
 	}
+
+//	public static String[][] loadTableCSV(String path) {
+//
+//		boolean absolute=false;
+//		String[][] tableCode1 = new InputOutput().readFile6LIKE(path, absolute);
+//		String[][] tableCode = InputOutput.removeColumn(tableCode1, 1);
+//		
+//		return tableCode;
+//	}
 
 	public static String getCode(String[][] tableCode, int riga) {
 		if (tableCode == null)

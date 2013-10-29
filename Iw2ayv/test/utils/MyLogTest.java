@@ -1,10 +1,20 @@
 package utils;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import utils.MyLog;
 
 public class MyLogTest {
+	
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
 
 	@Test
 	public final void testLogVectorDouble() {

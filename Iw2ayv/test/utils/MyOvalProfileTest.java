@@ -12,11 +12,21 @@ import ij.process.ImageProcessor;
 
 import java.awt.Color;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import utils.MyLog;
 
 public class MyOvalProfileTest {
+
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
 
 	@Test
 	public final void testMyOvalProfileTest() {
@@ -47,8 +57,8 @@ public class MyOvalProfileTest {
 		Plot plot = MyPlot.basePlot(profile1, title, color);
 		plot.show();
 
-		new WaitForUserDialog("premere OK.").show();
-		// IJ.wait(1000);
+	
+		 IJ.wait(100);
 
 	}
 

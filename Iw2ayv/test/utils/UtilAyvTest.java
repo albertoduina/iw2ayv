@@ -61,13 +61,14 @@ public class UtilAyvTest {
 	@Test
 	public final void testDecoderLimiti() {
 
-		boolean absolute=false;
-		String[][] limiti = new InputOutput().readFile6LIKE("LIMITI.csv", absolute);
-		MyLog.logMatrix(limiti, "limiti");
-		MyLog.waitHere();
+		boolean absolute = false;
+		String[][] limiti = new InputOutput().readFile6LIKE("LIMITI2.csv",
+				absolute);
 		String[] result = UtilAyv.decoderLimiti(limiti, "P10MAX");
-		MyLog.logVector(result, "result");
-
+		String[] expected = { "P10MAX", "2000", "1000", "800", "512", "1000",
+				"1000", "1000", "1000", "1000", "1000", "1000" };
+		boolean ok = UtilAyv.compareVectors(result, expected, "");
+		assertTrue("result diverso da expected", ok);
 	}
 
 	@Test
@@ -81,13 +82,15 @@ public class UtilAyvTest {
 		IJ.run(imp1, "Measure", "");
 		IJ.error("MESSAGGIO");
 		IJ.wait(50);
-		UtilAyv.afterWork();
+		WindowManager.closeAllWindows();
+//		MyLog.waitHere();
+//		
+//		UtilAyv.afterWork();
 		imagesOpened = WindowManager.getWindowCount();
 		nonImagesOpened = WindowManager.getNonImageWindows().length;
-		assertTrue (imagesOpened == 0);
-		assertTrue (nonImagesOpened == 0);
+		assertTrue(imagesOpened == 0);
+		assertTrue(nonImagesOpened == 0);
 	}
-
 
 	@Test
 	public final void testGetPos() {
@@ -342,6 +345,7 @@ public class UtilAyvTest {
 		ImagePlus imp1 = MyStackUtils.imagesToStack16(list1);
 		ImagePlus imp2 = MyStackUtils.imagesToStack16(list1);
 
+		IJ.log("**** Stacks must differ ****");
 		boolean result = MyStackUtils.compareStacks(imp1, imp2);
 		assertTrue("Stacks differ", result);
 
@@ -355,15 +359,15 @@ public class UtilAyvTest {
 	public final void testVetFromMatrix() {
 		String matPath = "./data/mat02.txt";
 		double[][] mat1 = InputOutput.readDoubleMatrixFromFile(matPath);
-		double[] vetExpected = InputOutput
-				.readDoubleArrayFromFile("./data/vet11.txt");
-		MyLog.logVector(vetExpected, "vetExpected");
+	//	MyLog.logMatrix(mat1, "mat1");
+		double[] vetExpected = { 40.0, 30.22222222222222, 27.857142857142858,
+				28.37837837837838 };
 
 		int index = 2;
 		double[] vet1 = UtilAyv.vetFromMatrix(mat1, index);
-		MyLog.logVector(vet1, "vet1");
+	//	MyLog.logVector(vet1, "vet1");
+		
 		assertTrue("testVetFromMatrix.vectors are different",
-
 		UtilAyv.compareVectors(vetExpected, vet1, 1e-8, ""));
 
 	}
@@ -371,32 +375,33 @@ public class UtilAyvTest {
 	@Test
 	public final void testTruncateDecimals() {
 		double in1 = 23.123456789;
-
 		double out = UtilAyv.truncateDoubleDecimals(in1, 3);
-		MyLog.waitHere("" + out);
+		double expected = 23.123;
+		assertTrue(out == expected);
 	}
 
 	@Test
 	public final void testRoundDecimals() {
 		double in1 = 23.123556789;
-
 		double out = UtilAyv.roundDoubleDecimals(in1, 2);
-		MyLog.waitHere("" + out);
+		double expected = 23.12;
+		assertTrue(out == expected);
 	}
 
 	@Test
 	public final void testToFloat0() {
 		double in1 = 23.123556789;
 		float out = UtilAyv.toFloat(in1);
-		MyLog.waitHere("" + out);
+		float expected = 23.123556f;
+		assertTrue(out == expected);
 	}
 
 	@Test
 	public final void testToFloat1() {
 		double[] in1 = { 23.123556789, 11.1111111, 17.7776543 };
 		float[] out = UtilAyv.toFloat(in1);
-		MyLog.logVector(out, "out");
-		MyLog.waitHere();
+		float[] expected = { 23.123556f, 11.111111f, 17.777655f };
+		assertTrue(UtilAyv.compareVectors(out, expected, 1e-8f, ""));
 	}
 
 	@Test
@@ -405,8 +410,10 @@ public class UtilAyvTest {
 				{ 22.123556789, 12.1111111, 172.7776543, 3 },
 				{ 24.123556789, 14.1111111, 174.7776543, 5 } };
 		float[][] out = UtilAyv.toFloat(in1);
-		MyLog.logMatrix(out, "out");
-		MyLog.waitHere();
+		float[][] expected = { { 23.123556f, 11.111111f, 17.777655f, 4.0f },
+				{ 22.123556f, 12.111111f, 172.77765f, 3.0f },
+				{ 24.123556f, 14.111111f, 174.77765f, 5.0f } };
+		assertTrue(UtilAyv.compareMatrix(out, expected, ""));
 	}
 
 }

@@ -18,15 +18,15 @@ public class TableExpand {
 
 	public static int PLUGIN = 5;
 
-	public static String[][] loadTable(String path) {
-		ArrayList<ArrayList<String>> tableArray = new InputOutput()
-				.readFile3LIKE(path);
-		String[][] tableExpand = new InputOutput()
-				.fromArrayListToStringTable(tableArray);
-		return tableExpand;
-	}
+//	public static String[][] loadTable(String path) {
+//		ArrayList<ArrayList<String>> tableArray = new InputOutput()
+//				.readFile3LIKE(path);
+//		String[][] tableExpand = new InputOutput()
+//				.fromArrayListToStringTable(tableArray);
+//		return tableExpand;
+//	}
 
-	public static String[][] loadTableCSV(String path) {
+	public static String[][] loadTable(String path) {
 		boolean absolute=false;
 		String[][] tableExpand = new InputOutput().readFile6LIKE(path, absolute);
 		return tableExpand;

@@ -1,26 +1,15 @@
 package utils;
 
-import java.util.ArrayList;
 
 public class TableLimiti {
 
 	public static int NOME = 0;
 
 
+
 	public static String[][] loadTable(String path) {
-
-		ArrayList<ArrayList<String>> tableArray = new InputOutput()
-				.readFile3LIKE(path);
-		String[][] tableCode = new InputOutput()
-				.fromArrayListToStringTable(tableArray);
-
-		return tableCode;
-	}
-
-	public static String[][] loadTableCSV(String path) {
 		boolean absolute= false;
-		String[][] tableCode = new InputOutput().readFile6LIKE(path, absolute);
-		
+		String[][] tableCode = new InputOutput().readFile6LIKE(path, absolute);	
 		return tableCode;
 	}
 

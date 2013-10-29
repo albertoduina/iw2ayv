@@ -17,17 +17,16 @@ public class TableExpandTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
-	public final void testLoadtable() {
-		String EXPAND_FILE = "expand.txt";
-		String[][] strExpand = TableExpand.loadTable(EXPAND_FILE);
-		MyLog.logMatrix(strExpand, "strExpand");
-	}
 
 	@Test
-	public final void testLoadtableCSV() {
-		String EXPAND_FILE = "expand.csv";
-		String[][] strExpand = TableExpand.loadTableCSV(EXPAND_FILE);
-		MyLog.logMatrix(strExpand, "strExpand");
+	public final void testLoadtable() {
+		String fileName1 = "expand.csv";
+		String[][] out1 = TableExpand.loadTable(fileName1);
+		String fileName2 = "expand.txt";
+		String[][] out2 = TableExpand.loadTable(fileName2);
+	boolean ok= TableUtils.compareTable(out1, out2);
+	assertTrue("expandCode diverse", ok);
 	}
+
 }
+

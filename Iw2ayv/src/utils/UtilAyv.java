@@ -1760,6 +1760,9 @@ public class UtilAyv {
 			MyLog.waitHere("tableLimiti == null");
 		if (vetName == null || vetName == "")
 			MyLog.waitHere("vetName == none");
+//		MyLog.logMatrix(tableLimiti, "tableLimiti");
+//		IJ.log("ricerca= "+vetName);
+//		MyLog.waitHere();
 		for (int i1 = 0; i1 < tableLimiti.length; i1++) {
 			if (tableLimiti[i1][0].equals(vetName)) {
 				result = tableLimiti[i1];
