@@ -11,6 +11,9 @@ public class MyConst {
 	public static final String LIMITS_FILE = "limiti.csv";
 	public static final String EXPAND_FILE = "expand.csv";
 	public static final String DEFAULT_PATH = "C:/Dati/";
+	public static final String[] CODE_GROUP = {"codiciNew.csv", "codiciEsine.csv", "codiciManerbio.csv", "codiciDesenzano.csv", "codiciRovato.csv","codiciCAXXO.csv"};
+//	public static final String[] CODE_GROUP = {"codiciNewORIGINALE.csv"};
+	
 
 	public static final int HMEAN = 2;
 	public static final int HSTD_DEV = 4;

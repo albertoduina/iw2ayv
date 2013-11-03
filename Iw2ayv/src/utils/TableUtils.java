@@ -331,5 +331,34 @@ public class TableUtils {
 		return outTable;
 	}
 
+	public static String[][] sumMultipleTable(String[][] tableCodeTotal,
+			String[][] tableCodeAdded) {
+
+
+		int len1=0;
+		if (tableCodeTotal==null) len1=0; else len1=  tableCodeTotal.length;
+		int height= len1+tableCodeAdded.length;
+		int width= tableCodeAdded[0].length;
+		
+		
+		String[][] outTable = new String[height][width];
+		for (int i1 = 0; i1 < len1; i1++) {
+			for (int i2 = 0; i2 < width; i2++) {
+//				MyLog.waitHere("i1= "+i1+"i2= "+i2);
+				outTable[i1][i2] = tableCodeTotal[i1][i2];
+			}
+		}
+		for (int i1 = 0; i1 < tableCodeAdded.length; i1++) {
+			for (int i2 = 0; i2 < width; i2++) {
+				outTable[len1+i1][i2] = tableCodeAdded[i1][i2];
+			}
+		}
+		return outTable;
+	}
+
+	
+	
+	
+
 
 }

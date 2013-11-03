@@ -34,5 +34,21 @@ public class TableCodeTest {
 	assertTrue("tableCode diverse", ok);
 	}
 	
+	@Test
+	public void testLoadMultipleTable() {
+
+	String fileName1 = "codiciNew.txt";	
+	String[][] out1 = TableCode.loadTable(fileName1);
+	String fileName2 = "codiciNew.csv";	
+	
+	String[] list1 = {"codiciNew.csv", "codiciManerbio.csv", "codiciEsine.csv", "codiciRovato.csv"};
+	String[][] out2 = TableCode.loadMultipleTable(list1);
+	MyLog.logMatrix(out2, "out2");
+	MyLog.waitHere();
+	
+	
+	}
+	
+
 
 }

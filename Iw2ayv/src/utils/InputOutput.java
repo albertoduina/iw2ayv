@@ -48,10 +48,33 @@ public class InputOutput {
 	public static String findResource(String name) {
 		URL url1 = new InputOutput().getClass().getClassLoader()
 				.getResource(name);
+		String path = "";
 		if (url1 == null)
 			return null;
 		else
-			return url1.getPath();
+			path = url1.getPath();
+		return path;
+	}
+
+	/**
+	 * Trova un file risorsa, partendo dal nome del file contenente wildcards.
+	 * Per fare questo occorre conoscere il nome di ALMENO una delle risorse. A
+	 * questo punto si manipola il path trovato, in modo da poter trovare i nomi
+	 * completi delle altre risorse.
+	 * 
+	 * @param name
+	 *            nome del file
+	 * @return path del file
+	 */
+	public static String findUnknownResource(String knownName, String wildcardName) {
+		URL url1 = new InputOutput().getClass().getClassLoader()
+				.getResource(knownName);
+		String path = url1.getPath();
+		
+		
+		
+		
+		return path;
 	}
 
 	public static String absoluteToRelativeBBB(String absolutePath) {
@@ -222,22 +245,24 @@ public class InputOutput {
 		ArrayList<String> matrixTable = new ArrayList<String>();
 		try {
 			BufferedReader br = null;
-			String path = null;
-			if (absolute)
+			String path = "";
+			if (absolute) {
 				path = fileName;
-			else
+				br = new BufferedReader(new FileReader(path));
+			} else {
 				path = findResource(fileName);
-			// MyLog.waitHere("path= " + path);
-			br = new BufferedReader(new FileReader(path));
+				InputStream is = new InputOutput().getClass().getClassLoader()
+						.getResourceAsStream(fileName);
+				br = new BufferedReader(new InputStreamReader(is));
+			}
 			while (br.ready()) {
 				String line = br.readLine();
-				// MyLog.waitHere("line= "+line);
 				matrixTable.add(line);
 			}
 			br.close();
 		} catch (Exception e) {
-			MyLog.waitThere("readFilegeneric error <" + fileName + "> "
-					+ e.getMessage());
+//			MyLog.waitThere("readFilegeneric error <" + fileName + "> "
+//					+ e.getMessage());
 			return null;
 		}
 		return matrixTable;
@@ -304,6 +329,7 @@ public class InputOutput {
 		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
 		ArrayList<String> row1 = new ArrayList<String>();
 		ArrayList<String> arr1 = readFileGeneric(fileName, absolute);
+		if (arr1==null) return null;
 		String[] line = ArrayUtils.arrayListToArrayString(arr1);
 		for (int i1 = 0; i1 < line.length; i1++) {
 			String riga = line[i1];
@@ -363,7 +389,7 @@ public class InputOutput {
 	}
 
 	/***
-	 * Legge i dati da un file e li resitituisce in un array double
+	 * Legge i dati da un file e li restituisce in un array double
 	 * 
 	 * @param fileName
 	 * @return
@@ -371,9 +397,11 @@ public class InputOutput {
 
 	public static double[] readDoubleArrayFromFile(String fileName) {
 		ArrayList<Double> vetList = new ArrayList<Double>();
+
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(fileName));
 			String str = "";
+
 			while ((str = in.readLine()) != null) {
 				vetList.add(ReadDicom.readDouble(str));
 			}
