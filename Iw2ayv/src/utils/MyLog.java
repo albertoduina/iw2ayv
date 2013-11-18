@@ -512,19 +512,21 @@ public class MyLog {
 		}
 	}
 
-	public static void waitHere(String str, boolean debug, String uno,
+	public static int waitHere(String str, boolean debug, String uno,
 			String due) {
+		int resp=0;
 		if (debug) {
 			IJ.beep();
-			ButtonMessages.ModelessMsg(("file="
+			resp = ButtonMessages.ModelessMsg(("file="
 					+ Thread.currentThread().getStackTrace()[2].getFileName()
 					+ " " + " line="
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "\n \n" + str), uno, due);
 		} else {
 			IJ.beep();
-			ButtonMessages.ModelessMsg(str, uno, due);
+			resp= ButtonMessages.ModelessMsg(str, uno, due);
 		}
+		return resp;
 	}
 
 	public static void waitHere() {

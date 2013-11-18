@@ -54,8 +54,8 @@ public class TableCode {
 			tableCode = InputOutput.removeColumn(tableCode1, 1);
 			sumTableCode = TableUtils.sumMultipleTable(sumTableCode, tableCode);
 		}
-		MyLog.logMatrix(sumTableCode, "sumTableCode");
-		MyLog.waitHere();
+//		MyLog.logMatrix(sumTableCode, "sumTableCode");
+//		MyLog.waitHere();
 		return sumTableCode;
 	}
 
