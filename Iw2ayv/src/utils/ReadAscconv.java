@@ -7,6 +7,20 @@ import java.io.IOException;
 import ij.IJ;
 import ij.ImagePlus;
 
+/***
+ * Questa routine deriva da un vecchio lavoro, sviluppato in fortran,
+ * indipendentemente dalle informazioni presenti su internet. Unico tool
+ * utilizzato ai temi era l'HexWorkshop. Ora i miei "findings" sono stati
+ * trovati anche da altri. Su internet ho trovato, per matlab una routine
+ * facente parte del Dicom Toolbox, di Dirk-Jan Kroon
+ * "www.mathworks.com/matlabcentral/fileexchange/27941-dicom-toolbox/content/SiemensInfo.m"
+ * in essa viene fatta una ricerca all'interno del Siemens Private Tag
+ * 0029,1020. Questo Tag, purtroppo per non è conosciuto da ImageJ per cui non è
+ * possibile estrarlo automaticamente nè dall'header nè dalle Info. Pertanto la
+ * strada è quella di leggere dal file stream
+ * 
+ */
+
 public class ReadAscconv {
 
 	public int location;
@@ -24,12 +38,12 @@ public class ReadAscconv {
 			int size = bis.available();
 			String header = getString(bis, size - 20);
 			fromIndex = 1;
-			index1 = header.indexOf("### ASCCONV BEGIN", fromIndex);
+			index1 = header.indexOf("### ASCCONV BEGIN ###", fromIndex);
 			// if (index1 > 0) {
 			// MyLog.waitHere("trovato begin in "+index1);
 			// }
 
-			index2 = header.indexOf("ASCCONV END ###", index1 + 1);
+			index2 = header.indexOf("### ASCCONV END ###", index1 + 1);
 
 			// if (index1 > 0) {
 			// MyLog.waitHere("trovato end in "+index2);
@@ -38,10 +52,10 @@ public class ReadAscconv {
 			// IJ.log("indexBegin= " + index1 + "  indexEnd= " + index2);
 
 			while ((index1 > 0) && (index2 > 0)) {
-				blob = header.substring(index1, index2 + 19);
+				blob = header.substring(index1 + 21, index2);
 				fromIndex = index2;
-				index1 = header.indexOf("### ASCCONV BEGIN", fromIndex);
-				index2 = header.indexOf("ASCCONV END ###", fromIndex + 1);
+				index1 = header.indexOf("### ASCCONV BEGIN ###", fromIndex);
+				index2 = header.indexOf("### ASCCONV END ###", fromIndex + 1);
 			}
 
 		} catch (IOException e) {
@@ -58,6 +72,62 @@ public class ReadAscconv {
 		}
 		// IJ.log(blob);
 		return blob;
+	}
+
+	public String[] parseParameters(String blob) {
+		String[] primoPasso = blob.split("\n");
+		return primoPasso;
+	}
+
+	public String[][] separateParameters(String[] primoPasso) {
+		String[][] secondoPasso = new String[2][primoPasso.length];
+		for (int i1 = 0; i1 < primoPasso.length; i1++) {
+			String aux1 = primoPasso[i1];
+			if (aux1.trim().length() == 0) {
+				secondoPasso[0][i1] = "";
+				secondoPasso[1][i1] = "";
+				continue;
+			}
+			String[] aux2 = aux1.split("=");
+			secondoPasso[0][i1] = aux2[0];
+			secondoPasso[1][i1] = aux2[1];
+		}
+		return secondoPasso;
+	}
+
+	public String[][] searchPartialName(String[][] allParameters, String partial) {
+		int count = 0;
+		for (int i1 = 0; i1 < allParameters[0].length; i1++) {
+			if (allParameters[0][i1].contains(partial))
+				count++;
+		}
+		String[][] out = new String[2][count];
+		count=0;
+		for (int i1 = 0; i1 < allParameters[0].length; i1++) {
+			if (allParameters[0][i1].contains(partial)){
+				out[0][count]=allParameters[0][i1];
+				out[1][count]=allParameters[1][i1];
+				count++;
+			}		
+		}
+		return out;
+	}
+	
+	public String[] searchPartialName(String[] allParameters, String partial) {
+		int count = 0;
+		for (int i1 = 0; i1 < allParameters.length; i1++) {
+			if (allParameters[i1].contains(partial))
+				count++;
+		}
+		String[] out = new String[count];
+		count=0;
+		for (int i1 = 0; i1 < allParameters.length; i1++) {
+			if (allParameters[i1].contains(partial)){
+				out[count]=allParameters[i1];
+				count++;
+			}		
+		}
+		return out;
 	}
 
 	public String getString(BufferedInputStream bo, int len) throws IOException {

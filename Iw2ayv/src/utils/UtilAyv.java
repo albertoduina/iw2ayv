@@ -117,8 +117,6 @@ public class UtilAyv {
 		return str;
 	}
 
-
-
 	/**
 	 * genera l'immagine differenza pixel-by-pixel
 	 * 
@@ -771,7 +769,6 @@ public class UtilAyv {
 		// win.maximize();
 		return win;
 	}
-
 
 	/**
 	 * menu selezione siemens/ge
@@ -1521,6 +1518,11 @@ public class UtilAyv {
 		BufferedInputStream bis = null;
 		String blob = "";
 		String out = "";
+		if (path1 == null || path1.equals("")) {
+			out = "_";
+			return out;
+		}
+
 		try {
 			fis = new FileInputStream(path1);
 			bis = new BufferedInputStream(fis);
@@ -1760,9 +1762,9 @@ public class UtilAyv {
 			MyLog.waitHere("tableLimiti == null");
 		if (vetName == null || vetName == "")
 			MyLog.waitHere("vetName == none");
-//		MyLog.logMatrix(tableLimiti, "tableLimiti");
-//		IJ.log("ricerca= "+vetName);
-//		MyLog.waitHere();
+		// MyLog.logMatrix(tableLimiti, "tableLimiti");
+		// IJ.log("ricerca= "+vetName);
+		// MyLog.waitHere();
 		for (int i1 = 0; i1 < tableLimiti.length; i1++) {
 			if (tableLimiti[i1][0].equals(vetName)) {
 				result = tableLimiti[i1];
@@ -2156,6 +2158,7 @@ public class UtilAyv {
 		}
 		return vetOut;
 	}
+
 	/**
 	 * messaggio mancanza test2.jar
 	 * 
@@ -2167,7 +2170,6 @@ public class UtilAyv {
 						"Per questa funzione bisogna installare test2.jar (albertoduina@virgilio.it)",
 						"CONTINUA");
 	}
-
 
 } // UtilAyv
 

@@ -55,6 +55,17 @@ public class MyLog {
 			}
 			IJ.log(logRiga);
 		}
+	}	
+	
+	public static void logArrayListVertical(ArrayList<String> arrList) {
+		if (arrList == null) {
+			IJ.log("Warning vector = null");
+		} else {
+			IJ.log("----------- [ " + arrList.size() + " ] -----------");
+			for (int j1 = 0; j1 < arrList.size(); j1++) {
+				IJ.log(arrList.get(j1));
+			}
+		}
 	}
 
 	public static void logArrayListTable(

@@ -90,7 +90,7 @@ public class MyConst {
 	public static final int P3_DIAM_ROI_BACKGROUND = 20;
 	public static final int P3_ROI_LIMIT = 10;
 	public static String[] P3_vetName = { "SEGNALE", "RUMORE", "SNR", "GHOST1",
-			"GHOST2", "GHOST3", "GHOST4", "UNIF.INT.%" };
+			"GHOST2", "GHOST3", "GHOST4", "UNIF.INT.%", "BKG" };
 
 	// ------------ p12rmn -----------------------
 	public static final int P12_DIAM_PHANTOM = 174;

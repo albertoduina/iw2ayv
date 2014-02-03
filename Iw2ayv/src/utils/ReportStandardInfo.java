@@ -266,6 +266,65 @@ public class ReportStandardInfo {
 		return (simpleHeader);
 	}
 
+	public static String[] getMiniStandardInfo(String path, ImagePlus imp1, boolean called) {
+
+		if (imp1 == null) {
+			IJ.log("getSimpleStandardInfo.imp1 == null");
+			return null;
+		}
+			// or: the code is in the dicomSeriesDescription
+		String	aux3 = ReadDicom.readDicomParameter(imp1,
+					MyConst.DICOM_SERIES_DESCRIPTION);
+
+		String	codice = UtilAyv.getFiveLetters(aux3).trim();
+	
+		String stationName = ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_STATION_NAME);
+		String patName = ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_PATIENT_NAME);
+		String frequency = ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_IMAGING_FREQUENCY);
+
+		String[] mesi = { "gen", "feb", "mar", "apr", "mag", "giu", "lug",
+				"ago", "set", "ott", "nov", "dic" };
+		String acqDate2 = readDate(imp1);
+		String strDay = acqDate2.substring(6).trim();
+		String strMonth = mesi[ReadDicom.readInt(acqDate2.substring(4, 6)
+				.trim()) - 1];
+		String strYear = acqDate2.substring(0, 4).trim();
+		String acqDate = strDay + "-" + strMonth + "-" + strYear;
+		// elaboration date
+		String strDay2 = "";
+		Calendar cal = Calendar.getInstance();
+		if (cal.get(Calendar.DAY_OF_MONTH) < 10)
+			strDay2 = "0" + cal.get(Calendar.DAY_OF_MONTH);
+		else
+			strDay2 = "" + cal.get(Calendar.DAY_OF_MONTH);
+
+		String strMonth2 = mesi[cal.get(Calendar.MONTH)];
+		String strYear2 = "" + (cal.get(Calendar.YEAR));
+		String elabDate = strDay2 + "-" + strMonth2 + "-" + strYear2;
+		String coil = ReadDicom.getFirstCoil(imp1);
+		if (coil.equals("MISSING")) {
+			coil = new UtilAyv().kludge(path);
+		}
+
+		// ModelessMsg("codice="+codice, "continua");
+		simpleHeader[0] = codice;
+		simpleHeader[1] = stationName;
+		simpleHeader[2] = patName;
+		simpleHeader[3] = acqDate;
+		simpleHeader[4] = elabDate;
+		simpleHeader[5] = coil;
+		simpleHeader[6] = frequency;
+			return (simpleHeader);
+	}
+
+	
+	
+	
+	
+	
 	/**
 	 * scrive le informazioni raccolte da getStandardInfo2 o getStandardInfo3
 	 * nella ResultsTable
@@ -305,6 +364,19 @@ public class ReportStandardInfo {
 			rt.addLabel(t1, info1[i1]);
 		}
 		rt.incrementCounter();
+		return (rt);
+	}
+	
+	
+	public static ResultsTable putMiniStandardInfoRT(String[] info1) {
+
+		ResultsTable rt = ResultsTable.getResultsTable();
+		rt.reset();
+		String t1 = "TESTO";
+		for (int i1 = 0; i1 < info1.length; i1++) {
+			rt.incrementCounter();
+			rt.addValue(t1, info1[i1]);
+		}
 		return (rt);
 	}
 
