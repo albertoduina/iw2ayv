@@ -11,9 +11,10 @@ public class MyConst {
 	public static final String LIMITS_FILE = "limiti.csv";
 	public static final String EXPAND_FILE = "expand.csv";
 	public static final String DEFAULT_PATH = "C:/Dati/";
-	public static final String[] CODE_GROUP = {"codiciNew.csv", "codiciEsine.csv", "codiciManerbio.csv", "codiciDesenzano.csv", "codiciRovato.csv","codiciCAXXO.csv"};
-//	public static final String[] CODE_GROUP = {"codiciNewORIGINALE.csv"};
-	
+	public static final String[] CODE_GROUP = { "codiciNew.csv",
+			"codiciEsine.csv", "codiciManerbio.csv", "codiciDesenzano.csv",
+			"codiciRovato.csv", "codiciCAXXO.csv" };
+	// public static final String[] CODE_GROUP = {"codiciNewORIGINALE.csv"};
 
 	public static final int HMEAN = 2;
 	public static final int HSTD_DEV = 4;
@@ -34,6 +35,8 @@ public class MyConst {
 	public static final String DICOM_PATIENT_NAME = "0010,0010";
 
 	public static final String DICOM_SLICE_THICKNESS = "0018,0050";
+
+	public static final String DICOM_INVERSION_TIME = "0018,0082";
 	public static final String DICOM_ECHO_TIME = "0018,0081";
 	public static final String DICOM_IMAGING_FREQUENCY = "0018,0084";
 	public static final String DICOM_SPACING_BETWEEN_SLICES = "0018,0088";
@@ -78,6 +81,21 @@ public class MyConst {
 	// ------------ Sequenze ------------------
 	public static final String PREFERENCES_1 = "prefer.string1";
 
+	// ------------ p20rmn -----------------------
+	// ULC = UpperLeftCorner
+	public static final String P20_X_ROI_TESTSIEMENS =  "97;148;42;94;144;196;39;91;142;193;88;139;128";
+	public static final String P20_Y_ROI_TESTSIEMENS = "39;41;87;91;92;96;139;143;145;147;194;197;128";
+	public static final String P20_X_ROI_TESTGE = "93;143;39;90;141;193;38;88;141;191;88;139;128";
+	public static final String P20_Y_ROI_TESTGE = "24;25;73;74;76;77;124;125;127;128;176;178;128";
+	public static final int P20_DIAM_ROI = 20;
+	public static final int P20_N_GELS = 12;
+	public static final String P20_DEFAULT = "0.2; 0.2; 0.2; 0.2; 0.2; 0.2; 0.2; 0.2; 0.2; 0.2; 0.2; 0.2; 0.2";
+	public static final int P20_MAX_IMAGES = 24;
+	
+	public static  final int P20_ARRAY_DIMENSIONS = 4;
+	public static final double P20_DIM_PIXEL_FOV_220 = 0.859375;
+
+	
 	// ------------ p3rmn -----------------------
 	public static final int P3_DIAM_PHANTOM = 174;
 	public static final int P3_X_ROI_TESTSIEMENS = 40;
