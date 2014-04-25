@@ -87,8 +87,7 @@ public class ImageUtils {
 	 * @return immagine simulata a 11+1 livelli
 	 */
 
-	static ImagePlus simulata12Classi(int sqX, int sqY, int sqR,
-			ImagePlus imp1) {
+	static ImagePlus simulata12Classi(int sqX, int sqY, int sqR, ImagePlus imp1) {
 
 		if (imp1 == null) {
 			MyLog.waitHere("Simula12 imp1 == null");
@@ -1176,9 +1175,12 @@ public class ImageUtils {
 	public static ImageStatistics backCalc(int xRoi, int yRoi, int diaRoi,
 			ImagePlus imp, boolean bstep, boolean circular, boolean selftest) {
 
+
 		ImageStatistics stat = null;
 		boolean redo = false;
+		int i1=0;
 		do {
+			i1++;
 			if (imp.isVisible())
 				imp.getWindow().toFront();
 			if (circular)
@@ -1194,8 +1196,8 @@ public class ImageUtils {
 									"CONTINUA");
 
 				} else {
-					ButtonMessages.ModelessMsg("Posizionare ROI fondo",
-							"CONTINUA");
+					ButtonMessages.ModelessMsg("Posizionare ROI fondo e premere CONTINUA",
+							"CONTINUA "+ i1);
 				}
 			}
 			stat = imp.getStatistics();

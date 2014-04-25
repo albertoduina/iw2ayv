@@ -351,19 +351,26 @@ public class ReportStandardInfo {
 		return (rt);
 	}
 
-	@SuppressWarnings("deprecation")
+
+	/***
+	 * Questa versione aggiornata non utilizza più setHeading, ora deprecata
+	 * @param info1
+	 * @return
+	 */
+	//	@SuppressWarnings("deprecation")
 	public static ResultsTable putSimpleStandardInfoRT(String[] info1) {
 
-		ResultsTable rt = ResultsTable.getResultsTable();
+//		ResultsTable rt = ResultsTable.getResultsTable();
+		ResultsTable rt = new ResultsTable();
 		rt.reset();
-		String t1 = "TESTO          ";
-		rt.setHeading(2, t1);
-		rt.setHeading(2, "VALORE");
-		for (int i1 = 0; i1 < info1.length; i1++) {
-			rt.incrementCounter();
-			rt.addLabel(t1, info1[i1]);
-		}
+		
 		rt.incrementCounter();
+		String t1 = "TESTO";
+		
+		for (int i1 = 0; i1 < info1.length; i1++) {
+			rt.addLabel(t1, info1[i1]);
+			rt.incrementCounter();
+		}
 		return (rt);
 	}
 	

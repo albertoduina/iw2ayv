@@ -66,14 +66,12 @@ public class InputOutput {
 	 *            nome del file
 	 * @return path del file
 	 */
-	public static String findUnknownResource(String knownName, String wildcardName) {
+	public static String findUnknownResource(String knownName,
+			String wildcardName) {
 		URL url1 = new InputOutput().getClass().getClassLoader()
 				.getResource(knownName);
 		String path = url1.getPath();
-		
-		
-		
-		
+
 		return path;
 	}
 
@@ -153,6 +151,7 @@ public class InputOutput {
 	public static void deleteMultipleFiles(File dir, final String ext) {
 
 		File[] toBeDeleted = dir.listFiles(new FileFilter() {
+
 			public boolean accept(File theFile) {
 				if (theFile.isFile()) {
 					return theFile.getName().endsWith("." + ext);
@@ -261,8 +260,8 @@ public class InputOutput {
 			}
 			br.close();
 		} catch (Exception e) {
-//			MyLog.waitThere("readFilegeneric error <" + fileName + "> "
-//					+ e.getMessage());
+			// MyLog.waitThere("readFilegeneric error <" + fileName + "> "
+			// + e.getMessage());
 			return null;
 		}
 		return matrixTable;
@@ -329,7 +328,8 @@ public class InputOutput {
 		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
 		ArrayList<String> row1 = new ArrayList<String>();
 		ArrayList<String> arr1 = readFileGeneric(fileName, absolute);
-		if (arr1==null) return null;
+		if (arr1 == null)
+			return null;
 		String[] line = ArrayUtils.arrayListToArrayString(arr1);
 		for (int i1 = 0; i1 < line.length; i1++) {
 			String riga = line[i1];

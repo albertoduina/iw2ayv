@@ -406,7 +406,6 @@ public class UtilAyv {
 		}
 		return data;
 	}
-		
 
 	/***
 	 * mette
@@ -1197,8 +1196,8 @@ public class UtilAyv {
 		for (int i1 = 0; i1 < vetResults.length; i1++) {
 
 			if (vetResults[i1] != vetReference[i1]) {
-				MyLog.waitThere(vetName[i1] + " ERRATO " + vetResults[i1]
-						+ " anzichè " + vetReference[i1]);
+				IJ.log(vetName[i1] + " ERRATO " + vetResults[i1] + " anzichè "
+						+ vetReference[i1]);
 				testok = false;
 			}
 		}
@@ -1349,6 +1348,31 @@ public class UtilAyv {
 		lr.writeTable(fileDir + MyConst.SEQUENZE_FILE, iw2ayvTable);
 	}
 
+//	/**
+//	 * 
+//	 * @param vetRiga
+//	 * @param fileDir
+//	 * @param iw2ayvTable
+//	 */
+//	public static void saveResults(int[] vetRiga, String fileDir,
+//			String[][] iw2ayvTable) {
+//
+//		// IJ.run("Excel...", "select...=[" + fileDir + MyConst.XLS_FILE + "]");
+//
+//		try {
+//			mySaveAs(fileDir + MyConst.TXT_FILE);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//		TableSequence lr = new TableSequence();
+//		for (int i1 = 0; i1 < vetRiga.length; i1++) {
+//			lr.putDone(iw2ayvTable, vetRiga[i1]);
+//		}
+//		lr.writeTable(fileDir + MyConst.SEQUENZE_FILE, iw2ayvTable);
+//	}
+
 	/**
 	 * 
 	 * @param vetRiga
@@ -1356,12 +1380,12 @@ public class UtilAyv {
 	 * @param iw2ayvTable
 	 */
 	public static void saveResults(int[] vetRiga, String fileDir,
-			String[][] iw2ayvTable) {
+			String[][] iw2ayvTable, ResultsTable rt) {
 
 		// IJ.run("Excel...", "select...=[" + fileDir + MyConst.XLS_FILE + "]");
 
 		try {
-			mySaveAs(fileDir + MyConst.TXT_FILE);
+			mySaveAs(fileDir + MyConst.TXT_FILE, rt);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1380,11 +1404,11 @@ public class UtilAyv {
 	 * @param fileDir
 	 * @param iw2ayvTable
 	 */
-	public static void saveResults3(int[] vetRiga, String fileDir,
+	public static void saveResults33(int[] vetRiga, String fileDir,
 			String[][] iw2ayvTable) {
 
 		try {
-			mySaveAs(fileDir + MyConst.TXT_FILE);
+			mySaveAs2(fileDir + MyConst.TXT_FILE);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1403,11 +1427,38 @@ public class UtilAyv {
 	 * ".csv". Displays a file save dialog if 'path' is empty or null. Does
 	 * nothing if the table is empty.
 	 */
-	public static void mySaveAs(String path) throws IOException {
+	public static void mySaveAs2(String path) throws IOException {
 
 		ResultsTable rt = ResultsTable.getResultsTable();
-		if (rt.getCounter() == 0)
+		if (rt.getCounter() == 0) {
+			MyLog.waitThere("NO_SAVE table empty!");
 			return;
+		}
+		PrintWriter pw = null;
+		boolean append = true;
+		FileOutputStream fos = new FileOutputStream(path, append);
+		BufferedOutputStream bos = new BufferedOutputStream(fos);
+		pw = new PrintWriter(bos);
+		String headings = rt.getColumnHeadings();
+		pw.println("## " + headings);
+		for (int i = 0; i < rt.getCounter(); i++)
+			pw.println(rt.getRowAsString(i));
+		pw.close();
+	}
+
+	/**
+	 * Saves this ResultsTable as a tab or comma delimited text file. The table
+	 * is saved as a CSV (comma-separated values) file if 'path' ends with
+	 * ".csv". Displays a file save dialog if 'path' is empty or null. Does
+	 * nothing if the table is empty.
+	 */
+	public static void mySaveAs(String path, ResultsTable rt)
+			throws IOException {
+
+		if (rt.getCounter() == 0) {
+			MyLog.waitHere("NO_SAVE table empty!");
+			return;
+		}
 		PrintWriter pw = null;
 		boolean append = true;
 		FileOutputStream fos = new FileOutputStream(path, append);
@@ -1456,12 +1507,39 @@ public class UtilAyv {
 		int startColumn = 2;
 
 		int standardInfoLength = ReportStandardInfo.getStandardInfoLength();
+		MyLog.waitHere("standardInfoLength= " + standardInfoLength);
+		MyLog.waitHere("rt1= " + rt1);
+		MyLog.waitHere("rt1.getCounter()= " + rt1.getCounter());
 		double[] results = new double[rt1.getCounter() - standardInfoLength];
 		for (int i1 = 0; i1 < rt1.getCounter() - standardInfoLength; i1++) {
 			int row = i1 + standardInfoLength;
 			results[i1] = rt1.getValueAsDouble(startColumn, row);
-			// IJ.log("" + i1 + " " + results[i1]);
-			// new WaitForUserDialog("Do something, then click OK.").show();
+			IJ.log("" + i1 + " " + results[i1]);
+			new WaitForUserDialog("Do something, then click OK.").show();
+		}
+		return results;
+	}
+
+	/**
+	 * Vectorize the ResutlsTable
+	 * 
+	 * @param rt1
+	 *            results table
+	 * @return
+	 */
+	public static double[] vectorizeResultsMultiple(ResultsTable rt1,
+			int columns) {
+
+		int startColumn = 2;
+
+		int standardInfoLength = ReportStandardInfo.getStandardInfoLength();
+		double[] results = new double[(rt1.getCounter() - standardInfoLength)
+				* columns];
+		for (int i1 = 0; i1 < rt1.getCounter() - standardInfoLength; i1 += columns) {
+			int row = i1 + standardInfoLength;
+			for (int i2 = 0; i2 < columns; i2++) {
+				results[i1 + i2] = rt1.getValueAsDouble(startColumn + i2, row);
+			}
 		}
 		return results;
 	}
