@@ -100,7 +100,8 @@
 		<manifest file="MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}" />
 			<attribute name="Main-Class" value="${package}.utils" />
-			<attribute name="Implementation-Version" value="${version.num}-b${build.number}" />
+			<!--attribute name="Implementation-Version" value="${version.num}-b${build.number}" /-->
+			<attribute name="Implementation-Version" value= "b${build.number}" />
 		</manifest>
 		<copy file="./MANIFEST.MF" todir="${data}" />
 		<copy file="./MANIFEST.MF" todir="${binUtils}" />

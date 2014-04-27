@@ -1348,30 +1348,30 @@ public class UtilAyv {
 		lr.writeTable(fileDir + MyConst.SEQUENZE_FILE, iw2ayvTable);
 	}
 
-//	/**
-//	 * 
-//	 * @param vetRiga
-//	 * @param fileDir
-//	 * @param iw2ayvTable
-//	 */
-//	public static void saveResults(int[] vetRiga, String fileDir,
-//			String[][] iw2ayvTable) {
-//
-//		// IJ.run("Excel...", "select...=[" + fileDir + MyConst.XLS_FILE + "]");
-//
-//		try {
-//			mySaveAs(fileDir + MyConst.TXT_FILE);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//		TableSequence lr = new TableSequence();
-//		for (int i1 = 0; i1 < vetRiga.length; i1++) {
-//			lr.putDone(iw2ayvTable, vetRiga[i1]);
-//		}
-//		lr.writeTable(fileDir + MyConst.SEQUENZE_FILE, iw2ayvTable);
-//	}
+	// /**
+	// *
+	// * @param vetRiga
+	// * @param fileDir
+	// * @param iw2ayvTable
+	// */
+	// public static void saveResults(int[] vetRiga, String fileDir,
+	// String[][] iw2ayvTable) {
+	//
+	// // IJ.run("Excel...", "select...=[" + fileDir + MyConst.XLS_FILE + "]");
+	//
+	// try {
+	// mySaveAs(fileDir + MyConst.TXT_FILE);
+	// } catch (IOException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	//
+	// TableSequence lr = new TableSequence();
+	// for (int i1 = 0; i1 < vetRiga.length; i1++) {
+	// lr.putDone(iw2ayvTable, vetRiga[i1]);
+	// }
+	// lr.writeTable(fileDir + MyConst.SEQUENZE_FILE, iw2ayvTable);
+	// }
 
 	/**
 	 * 
@@ -1504,18 +1504,14 @@ public class UtilAyv {
 	 */
 	public static double[] vectorizeResults(ResultsTable rt1) {
 
-		int startColumn = 2;
+		int startColumn = 0;
 
 		int standardInfoLength = ReportStandardInfo.getStandardInfoLength();
-		MyLog.waitHere("standardInfoLength= " + standardInfoLength);
-		MyLog.waitHere("rt1= " + rt1);
-		MyLog.waitHere("rt1.getCounter()= " + rt1.getCounter());
 		double[] results = new double[rt1.getCounter() - standardInfoLength];
 		for (int i1 = 0; i1 < rt1.getCounter() - standardInfoLength; i1++) {
 			int row = i1 + standardInfoLength;
 			results[i1] = rt1.getValueAsDouble(startColumn, row);
-			IJ.log("" + i1 + " " + results[i1]);
-			new WaitForUserDialog("Do something, then click OK.").show();
+			// IJ.log("" + i1 + " " + results[i1]);
 		}
 		return results;
 	}
@@ -1530,17 +1526,20 @@ public class UtilAyv {
 	public static double[] vectorizeResultsMultiple(ResultsTable rt1,
 			int columns) {
 
-		int startColumn = 2;
+		int startColumn = 0;
 
 		int standardInfoLength = ReportStandardInfo.getStandardInfoLength();
-		double[] results = new double[(rt1.getCounter() - standardInfoLength)
-				* columns];
-		for (int i1 = 0; i1 < rt1.getCounter() - standardInfoLength; i1 += columns) {
+		int len = rt1.getCounter() - standardInfoLength;
+		double[] results = new double[len * columns];
+		int count = 0;
+		for (int i1 = 0; i1 < len; i1++) {
 			int row = i1 + standardInfoLength;
 			for (int i2 = 0; i2 < columns; i2++) {
-				results[i1 + i2] = rt1.getValueAsDouble(startColumn + i2, row);
+				results[count] = rt1.getValueAsDouble(startColumn + i2, row);
+				count++;
 			}
 		}
+
 		return results;
 	}
 
