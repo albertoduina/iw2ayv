@@ -38,25 +38,26 @@ public class ReadAscconv {
 			int size = bis.available();
 			String header = getString(bis, size - 20);
 			fromIndex = 1;
-			index1 = header.indexOf("### ASCCONV BEGIN ###", fromIndex);
-			// if (index1 > 0) {
-			// MyLog.waitHere("trovato begin in "+index1);
-			// }
+			index1 = header.indexOf("### ASCCONV BEGIN ", fromIndex);
+//			if (index1 > 0) {
+//				MyLog.waitHere("trovato begin in " + index1);
+//			}
 
 			index2 = header.indexOf("### ASCCONV END ###", index1 + 1);
 
-			// if (index1 > 0) {
-			// MyLog.waitHere("trovato end in "+index2);
-			// }
+//			if (index1 > 0) {
+//				MyLog.waitHere("trovato end in " + index2);
+//			}
 
-			// IJ.log("indexBegin= " + index1 + "  indexEnd= " + index2);
+//			IJ.log("indexBegin= " + index1 + "  indexEnd= " + index2);
 
 			while ((index1 > 0) && (index2 > 0)) {
 				blob = header.substring(index1 + 21, index2);
 				fromIndex = index2;
-				index1 = header.indexOf("### ASCCONV BEGIN ###", fromIndex);
+				index1 = header.indexOf("### ASCCONV BEGIN ", fromIndex);
 				index2 = header.indexOf("### ASCCONV END ###", fromIndex + 1);
 			}
+//			MyLog.waitHere("blob= " + blob);
 
 		} catch (IOException e) {
 			return null;
@@ -102,17 +103,17 @@ public class ReadAscconv {
 				count++;
 		}
 		String[][] out = new String[2][count];
-		count=0;
+		count = 0;
 		for (int i1 = 0; i1 < allParameters[0].length; i1++) {
-			if (allParameters[0][i1].contains(partial)){
-				out[0][count]=allParameters[0][i1];
-				out[1][count]=allParameters[1][i1];
+			if (allParameters[0][i1].contains(partial)) {
+				out[0][count] = allParameters[0][i1];
+				out[1][count] = allParameters[1][i1];
 				count++;
-			}		
+			}
 		}
 		return out;
 	}
-	
+
 	public String[] searchPartialName(String[] allParameters, String partial) {
 		int count = 0;
 		for (int i1 = 0; i1 < allParameters.length; i1++) {
@@ -120,12 +121,12 @@ public class ReadAscconv {
 				count++;
 		}
 		String[] out = new String[count];
-		count=0;
+		count = 0;
 		for (int i1 = 0; i1 < allParameters.length; i1++) {
-			if (allParameters[i1].contains(partial)){
-				out[count]=allParameters[i1];
+			if (allParameters[i1].contains(partial)) {
+				out[count] = allParameters[i1];
 				count++;
-			}		
+			}
 		}
 		return out;
 	}

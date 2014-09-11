@@ -222,7 +222,9 @@ public class SimplexBasedRegressor {
 	 */
 	public double calculateResidualT2(double t2, double so) {
 		// if (t2<0.00001 || t2>100) return Double.MAX_VALUE;
-		if (t2 < 0.00001 || t2 > 3000)
+//		if (t2 < 0.00001 || t2 > 3000)
+			if (t2 < 0.00001 || t2 > 300)
+
 			return Double.MAX_VALUE; // inserito il 300 poichè i nostri gel
 		// hanno T2 superiori a 100 msec
 		double residual = 0d;

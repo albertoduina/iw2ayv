@@ -46,6 +46,9 @@ public class MyConst {
 	public static final String DICOM_ACQUISITION_NUMBER = "0020,0012";
 	public static final String DICOM_IMAGE_NUMBER = "0020,0013";
 	public static final String DICOM_IMAGE_POSITION = "0020,0032";
+	
+	public static final String DICOM_IMAGES_IN_MOSAIC = "0019,100A";
+
 
 	public static final String DICOM_ROWS = "0028,0010";
 	public static final String DICOM_COLUMNS = "0028,0011";
@@ -83,10 +86,10 @@ public class MyConst {
 
 	// ------------ p20rmn -----------------------
 	// ULC = UpperLeftCorner
-	public static final String P20_X_ROI_TESTSIEMENS = "97;148;42;94;144;196;39;91;142;193;88;139;0";
-	public static final String P20_Y_ROI_TESTSIEMENS = "39;41;87;91;92;96;139;143;145;147;194;197;0";
-	public static final String P20_X_ROI_TESTGE = "93;143;39;90;141;193;38;88;141;191;88;139;0";
-	public static final String P20_Y_ROI_TESTGE = "24;25;73;74;76;77;124;125;127;128;176;178;0";
+	public static final String P20_X_ROI_TESTSIEMENS = "97;148;42;94;144;196;39;91;142;193;88;139;235";
+	public static final String P20_Y_ROI_TESTSIEMENS = "39;41;87;91;92;96;139;143;145;147;194;197;235";
+	public static final String P20_X_ROI_TESTGE = "93;143;39;90;141;193;38;88;141;191;88;139;235";
+	public static final String P20_Y_ROI_TESTGE = "24;25;73;74;76;77;124;125;127;128;176;178;235";
 	public static final int P20_DIAM_ROI = 20;
 	public static final int P20_N_GELS = 12;
 	public static final String P20_DEFAULT = "0.2; 0.2; 0.2; 0.2; 0.2; 0.2; 0.2; 0.2; 0.2; 0.2; 0.2; 0.2; 0.2";

@@ -1528,7 +1528,11 @@ public class UtilAyv {
 
 		int startColumn = 0;
 
+		// rt1.show("Results");
+
 		int standardInfoLength = ReportStandardInfo.getStandardInfoLength();
+		// MyLog.waitHere("standardInfoLength = " + standardInfoLength);
+
 		int len = rt1.getCounter() - standardInfoLength;
 		double[] results = new double[len * columns];
 		int count = 0;
