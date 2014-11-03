@@ -1,5 +1,7 @@
 package utils;
 
+import ij.ImageJ;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +12,8 @@ public class MyLogTest {
 	
 	@Before
 	public void setUp() throws Exception {
+	//		new ImageJ(ImageJ.NORMAL);
+
 	}
 
 	@After
@@ -40,6 +44,38 @@ public class MyLogTest {
 		String[] vect1 = { "2", "pippo", "pluto", "7.234", "paperino", };
 		MyLog.logVector(vect1, "vect1");
 	}
+
+
+	@Test
+	public final void testWaitHere() {
+		MyLog.waitHere();
+	}
+	
+	@Test
+	public final void testWaitHereMessage() {
+		MyLog.waitHere("questo è il messaggio");
+	}
+	
+	@Test
+	public final void testWaitHereTimeout() {
+		MyLog.waitHere("questo è il messaggio", false, 2000);
+	}
+	@Test
+	public final void testWaitHereNOTimeout() {
+		MyLog.waitHere("questo è il messaggio", false, 0);
+	}
+	@Test
+	public final void testWaitHereDebugTimeout() {
+		MyLog.waitHere("questo è il messaggio", true, 2000);
+	}
+	@Test
+	public final void testWaitHereDebugNOTimeout() {
+		MyLog.waitHere("questo è il messaggio", true, 0);
+	}
+//	@Test
+//	public final void testWaitHere1Timeout() {
+//		MyLog.waitHere1("questo è il messaggio", false, 0);
+//	}
 
 	
 }

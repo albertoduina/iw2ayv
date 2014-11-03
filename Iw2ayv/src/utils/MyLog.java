@@ -12,6 +12,7 @@ import ij.process.ImageProcessor;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -27,6 +28,9 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class MyLog {
 
@@ -55,8 +59,8 @@ public class MyLog {
 			}
 			IJ.log(logRiga);
 		}
-	}	
-	
+	}
+
 	public static void logArrayListVertical(ArrayList<String> arrList) {
 		if (arrList == null) {
 			IJ.log("Warning vector = null");
@@ -523,9 +527,8 @@ public class MyLog {
 		}
 	}
 
-	public static int waitHere(String str, boolean debug, String uno,
-			String due) {
-		int resp=0;
+	public static int waitHere(String str, boolean debug, String uno, String due) {
+		int resp = 0;
 		if (debug) {
 			IJ.beep();
 			resp = ButtonMessages.ModelessMsg(("file="
@@ -535,7 +538,7 @@ public class MyLog {
 					+ "\n \n" + str), uno, due);
 		} else {
 			IJ.beep();
-			resp= ButtonMessages.ModelessMsg(str, uno, due);
+			resp = ButtonMessages.ModelessMsg(str, uno, due);
 		}
 		return resp;
 	}
@@ -548,12 +551,44 @@ public class MyLog {
 				.show();
 	}
 
+	// public static void waitHere1(String str, boolean debug, final int milli)
+	// {
+	// if (milli != 0) {
+	//
+	// String where = "file="
+	// + Thread.currentThread().getStackTrace()[2].getFileName()
+	// + " " + " line="
+	// + Thread.currentThread().getStackTrace()[2].getLineNumber();
+	//
+	// JFrame f = new JFrame();
+	// JTextArea myarea = new JTextArea("\n       " + where
+	// + "           \n" + "\n       " + str + "  \n");
+	// final JDialog dialog = new JDialog(f, "Auto cancel msg", true);
+	// dialog.setLocation(500, 500);
+	// dialog.add(myarea);
+	// dialog.pack();
+	// ScheduledExecutorService s = Executors
+	// .newSingleThreadScheduledExecutor();
+	//
+	// s.schedule(new Runnable() {
+	// public void run() {
+	// dialog.setVisible(false);
+	// dialog.dispose();
+	// }
+	// }, milli, TimeUnit.MILLISECONDS);
+	// dialog.setVisible(true);
+	// } else {
+	// waitThere(str, debug);
+	//
+	// }
+	// }
+
 	public static void waitThere(String str) {
 		new WaitForUserDialog("file="
 				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
 				+ " line="
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()+"\n"+
-				"file="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "\n" + "file="
 				+ Thread.currentThread().getStackTrace()[3].getFileName() + " "
 				+ " line="
 				+ Thread.currentThread().getStackTrace()[3].getLineNumber()
@@ -565,12 +600,12 @@ public class MyLog {
 			IJ.beep();
 
 			new WaitForUserDialog("file="
-					+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
-					+ " line="
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()+"\n"+
-					"file="
-					+ Thread.currentThread().getStackTrace()[3].getFileName() + " "
-					+ " line="
+					+ Thread.currentThread().getStackTrace()[2].getFileName()
+					+ " " + " line="
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "\n" + "file="
+					+ Thread.currentThread().getStackTrace()[3].getFileName()
+					+ " " + " line="
 					+ Thread.currentThread().getStackTrace()[3].getLineNumber()
 					+ "\n \n" + str).show();
 		} else {
@@ -660,29 +695,46 @@ public class MyLog {
 		appendLog(path, "---- INIZIO ---------");
 	}
 
-	public static void waitHere(String str, int milliseconds, boolean debug) {
+	/***
+	 * Il programma mostra un WaitForUserDialog ma, passato il timeout, chiude
+	 * il dialogo, proprio come fosse stato premuto ok
+	 * 
+	 * @param str
+	 *            messtaggio
+	 * @param debug
+	 *            switch di attivazione
+	 * @param timeout
+	 *            millisecondi per il timeout
+	 */
 
-		String stri1 = "file="
-				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
-				+ " line="
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber();
+	public static void waitHere(String str, boolean debug, int timeout) {
 
-		ScheduledExecutorService s = Executors
-				.newSingleThreadScheduledExecutor();
+		String where = "";
+		if (debug)
+			where = " \nfile="
+					+ Thread.currentThread().getStackTrace()[2].getFileName()
+					+ " " + " line="
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ " \n \n";
 
-		final ModelessDialog wfud = new ModelessDialog("\n" + stri1 + "\n\n\n"
-				+ str);
+		if (timeout > 0) {
+			final WaitForUserDialog wfud = new WaitForUserDialog(where + str);
 
-		// JFrame f = new JFrame();
-		//
-		// final JDialog jd1 = new JDialog(f, "Messaggio"+stri1, true);
-		s.schedule(new Runnable() {
-			@Override
-			public void run() {
-				wfud.dispose();
-			}
-		}, milliseconds, TimeUnit.SECONDS);
-		wfud.setVisible(true);
+			ScheduledExecutorService s = Executors
+					.newSingleThreadScheduledExecutor();
+			s.schedule(new Runnable() {
+				public void run() {
+					wfud.close();
+					wfud.dispose();
+				}
+			}, timeout, TimeUnit.MILLISECONDS);
+			wfud.setBackground(Color.yellow);
+			wfud.show();
+		} else {
+			final WaitForUserDialog wfud = new WaitForUserDialog(where + str);
+
+			wfud.show();
+		}
 	}
 
 	public static void logDebug(int riga, String prg, String fileDir) {

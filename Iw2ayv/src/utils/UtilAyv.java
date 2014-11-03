@@ -1176,7 +1176,7 @@ public class UtilAyv {
 			double[] vetReference, String[] vetName) {
 		boolean testok = true;
 
-		if (vetResults == null || vetReference == null || vetName == null) {
+		if (vetResults == null || vetReference == null) {
 			MyLog.logVector(vetResults, "vetResults");
 			MyLog.logVector(vetReference, "vetReference");
 			MyLog.logVector(vetName, "vetName");
@@ -1191,6 +1191,10 @@ public class UtilAyv {
 			MyLog.logVector(vetReference, "vetReference");
 			MyLog.waitThere("verifyResults.vectors of different length");
 			return false;
+		}
+
+		if (vetName == null) {
+			vetName = new String[vetResults.length];
 		}
 
 		for (int i1 = 0; i1 < vetResults.length; i1++) {
