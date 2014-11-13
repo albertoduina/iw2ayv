@@ -1199,7 +1199,7 @@ public class UtilAyv {
 
 		for (int i1 = 0; i1 < vetResults.length; i1++) {
 
-			if (vetResults[i1] != vetReference[i1]) {
+			if (Double.compare(vetResults[i1], vetReference[i1]) != 0) {
 				IJ.log(vetName[i1] + " ERRATO " + vetResults[i1] + " anzichè "
 						+ vetReference[i1]);
 				testok = false;
@@ -1265,6 +1265,31 @@ public class UtilAyv {
 			}
 		}
 		return testok;
+	}
+
+	public static boolean verifyResults3(final int[][] arr1, final int[][] arr2) {
+
+		if (arr1 == null) {
+			MyLog.waitHere("arr1==null");
+			return false;
+		}
+
+		if (arr2 == null) {
+			MyLog.waitHere("arr2==null");
+			return false;
+		}
+
+		if (arr1.length != arr2.length) {
+			MyLog.waitHere("different length");
+			return false;
+		}
+
+		for (int i1 = 0; i1 < arr1.length; i1++) {
+			if (!Arrays.equals(arr1[i1], arr2[i1])) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -1497,6 +1522,30 @@ public class UtilAyv {
 		UtilAyv.resetResultsTable();
 		InputOutput.deleteDir(new File(MyConst.TEST_DIRECTORY));
 		UtilAyv.cleanUp();
+	}
+
+	/**
+	 * Vectorize the ResutlsTable
+	 * 
+	 * @param rt1
+	 *            results table
+	 * @return
+	 */
+	public static int[][] vectorizeResults2(ResultsTable rt1) {
+
+		int startColumn = 0;
+		String uno = rt1.getColumnHeading(startColumn);
+		String due = rt1.getColumnHeading(startColumn + 1);
+
+		int standardInfoLength = ReportStandardInfo.getStandardInfoLength();
+		int[][] results = new int[rt1.getCounter() - standardInfoLength][2];
+		for (int i1 = 0; i1 < rt1.getCounter() - standardInfoLength; i1++) {
+			int row = i1 + standardInfoLength;
+			results[i1][0] = (int) rt1.getValue(uno, row);
+			results[i1][1] = (int) rt1.getValue(due, row);
+			// IJ.log("" + i1 + " " + results[i1]);
+		}
+		return results;
 	}
 
 	/**
@@ -1900,6 +1949,7 @@ public class UtilAyv {
 		String[] serie = new String[vetRiga.length];
 		String[] acq = new String[vetRiga.length];
 		String[] ima = new String[vetRiga.length];
+		String[] manufacturer = new String[vetRiga.length];
 		ImagePlus imp1;
 		String stampa = "#";
 		for (int i1 = 0; i1 < vetRiga.length; i1++) {
@@ -1917,6 +1967,8 @@ public class UtilAyv {
 					MyConst.DICOM_ACQUISITION_NUMBER);
 			ima[i1] = ReadDicom.readDicomParameter(imp1,
 					MyConst.DICOM_IMAGE_NUMBER);
+			manufacturer[i1] = ReadDicom.readDicomParameter(imp1,
+					MyConst.DICOM_MANUFACTURER);
 		}
 
 		// Sicuramente le immagini da analizzare dovranno tutte essere acquisite
@@ -1973,7 +2025,8 @@ public class UtilAyv {
 						+ stampa, debug);
 				return false;
 			}
-			if (!ima[0].equals("1") || !ima[1].equals("1")) {
+			if ((!ima[0].equals("1") || !ima[1].equals("1"))
+					&& (manufacturer[0].equals("SIEMENS"))) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
 						+ "non soddisfatta la condizione ima1= 1 && ima2= 1 \n"
 						+ "" + stampa, debug);
