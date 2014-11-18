@@ -1274,7 +1274,7 @@ public class ImageUtils {
 	 *            coordinata x centro
 	 * @param yRoi
 	 *            coordinata y centro
-	 * @param imp
+	 * @param imp1
 	 *            puntatore ImagePlus alla immagine
 	 */
 	public static void backgroundEnhancement(int xRoi, int yRoi, int diaRoi,
