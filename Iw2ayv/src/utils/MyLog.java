@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -34,6 +35,22 @@ import javax.swing.JTextField;
 
 public class MyLog {
 
+	public static void logArrayListInteger(List<int[]> tmp, String title) {
+		if (tmp == null) {
+			IJ.log("Warning vector " + title + " = null");
+		} else {
+			IJ.log("----------- " + title + "  [ " + tmp.size()
+					+ " ] -----------");
+			String logRiga = "";
+			for (int j1 = 0; j1 < tmp.size(); j1++) {
+				logRiga += tmp.get(j1) + ",  ";
+			}
+			IJ.log(logRiga);
+		}
+	}
+
+	
+	
 	public static void logArrayList(ArrayList<Double> arrList, String title) {
 		if (arrList == null) {
 			IJ.log("Warning vector " + title + " = null");
@@ -47,6 +64,7 @@ public class MyLog {
 			IJ.log(logRiga);
 		}
 	}
+
 
 	public static void logArrayList(ArrayList<String> arrList) {
 		if (arrList == null) {

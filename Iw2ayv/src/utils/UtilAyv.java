@@ -737,6 +737,10 @@ public class UtilAyv {
 	public static ImageWindow showImageMaximized(ImagePlus imp) {
 
 		double mag1 = 0;
+		if (imp == null) {
+			MyLog.waitHere("imp==null");
+			return null;
+		}
 		ImageWindow win = imp.getWindow();
 		if (win != null) {
 			MyLog.waitThere("immagine già visualizzata !");
@@ -755,6 +759,7 @@ public class UtilAyv {
 		win = imp.getWindow();
 		win.setBounds(win.getMaximumBounds());
 		win.maximize();
+		win.toFront();
 		// double mag2 = win.getCanvas().getMagnification();
 		// IJ.log("mag2= " + mag2);
 		// IJ.wait(10);
@@ -2296,6 +2301,20 @@ public class UtilAyv {
 			vetOut[i1] = vetIn[vetIn.length - i1 - 1];
 		}
 		return vetOut;
+	}
+
+	public static void minsort(int[] vet1) {
+
+		for (int i1 = 0; i1 < vet1.length; i1++) {
+			for (int i2 = i1 + 1; i2 < vet1.length; i2++) {
+				if (vet1[i2] < vet1[i1]) {
+					int aux1 = vet1[i1];
+					vet1[i1] = vet1[i2];
+					vet1[i2] = aux1;
+				}
+			}
+		}
+
 	}
 
 	/**
