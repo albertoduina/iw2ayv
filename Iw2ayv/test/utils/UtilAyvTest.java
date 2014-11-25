@@ -83,9 +83,9 @@ public class UtilAyvTest {
 		IJ.error("MESSAGGIO");
 		IJ.wait(50);
 		WindowManager.closeAllWindows();
-//		MyLog.waitHere();
-//		
-//		UtilAyv.afterWork();
+		// MyLog.waitHere();
+		//
+		// UtilAyv.afterWork();
 		imagesOpened = WindowManager.getWindowCount();
 		nonImagesOpened = WindowManager.getNonImageWindows().length;
 		assertTrue(imagesOpened == 0);
@@ -359,16 +359,16 @@ public class UtilAyvTest {
 	public final void testVetFromMatrix() {
 		String matPath = "./data/mat02.txt";
 		double[][] mat1 = InputOutput.readDoubleMatrixFromFile(matPath);
-	//	MyLog.logMatrix(mat1, "mat1");
+		// MyLog.logMatrix(mat1, "mat1");
 		double[] vetExpected = { 40.0, 30.22222222222222, 27.857142857142858,
 				28.37837837837838 };
 
 		int index = 2;
 		double[] vet1 = UtilAyv.vetFromMatrix(mat1, index);
-	//	MyLog.logVector(vet1, "vet1");
-		
+		// MyLog.logVector(vet1, "vet1");
+
 		assertTrue("testVetFromMatrix.vectors are different",
-		UtilAyv.compareVectors(vetExpected, vet1, 1e-8, ""));
+				UtilAyv.compareVectors(vetExpected, vet1, 1e-8, ""));
 
 	}
 
@@ -414,6 +414,27 @@ public class UtilAyvTest {
 				{ 22.123556f, 12.111111f, 172.77765f, 3.0f },
 				{ 24.123556f, 14.111111f, 174.77765f, 5.0f } };
 		assertTrue(UtilAyv.compareMatrix(out, expected, ""));
+	}
+
+	@Test
+	public final void testMinsort1() {
+		int[] vet1 = { 11, 3, 8, 7, 5, 1, 12, 4, 7, 3, 2 };
+		MyLog.logVector(vet1, "vet1 PRIMA");
+		UtilAyv.minsort(vet1);
+		MyLog.logVector(vet1, "vet1 DOPO");
+		MyLog.waitHere();
+	}
+
+	@Test
+	public final void testMinsort2() {
+		int[] vet1 = { 11, 3, 8, 7, 5, 1, 12, 4, 7, 3, 2 };
+		int[] vet2 = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+		MyLog.logVector(vet1, "vet1 PRIMA");
+		MyLog.logVector(vet2, "vet2 PRIMA");
+		UtilAyv.minsort(vet1, vet2);
+		MyLog.logVector(vet1, "vet1 DOPO");
+		MyLog.logVector(vet2, "vet2 DOPO");
+		MyLog.waitHere();
 	}
 
 }

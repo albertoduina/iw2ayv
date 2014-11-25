@@ -727,7 +727,7 @@ public class ImageUtils {
 		// angolo dell'immagine: in tal caso avrò che is between mi darà il
 		// crossing sia per il lato orizzontale che per il lato verticale, per
 		// cui mi troverò con 3 crossing. Nel caso ancora più particolare di una
-		// diagonale del quadrato mi troverò con quattro cfrossing, anzichè due.
+		// diagonale del quadrato mi troverò con quattro crossing, anzichè due.
 		// ed io devo passare ad imageJ le coordinate di solo due punti.
 
 		// lato superiore

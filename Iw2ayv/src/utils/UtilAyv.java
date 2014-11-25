@@ -738,7 +738,7 @@ public class UtilAyv {
 
 		double mag1 = 0;
 		if (imp == null) {
-			MyLog.waitHere("imp==null");
+			MyLog.waitThere("imp==null");
 			return null;
 		}
 		ImageWindow win = imp.getWindow();
@@ -2303,6 +2303,11 @@ public class UtilAyv {
 		return vetOut;
 	}
 
+	/***
+	 * Ordina vet1 con l'algoritmo minsort
+	 * 
+	 * @param vet1
+	 */
 	public static void minsort(int[] vet1) {
 
 		for (int i1 = 0; i1 < vet1.length; i1++) {
@@ -2314,7 +2319,46 @@ public class UtilAyv {
 				}
 			}
 		}
+	}
 
+	/***
+	 * Ordina vet1 con l'algoritmo minsort, e sposta gli elementi di vet2 in
+	 * sincronia (non saprei come spiegarmi in altro modo)
+	 * 
+	 * @param vet1
+	 */
+	public static void minsort(int[] vet1, int[] vet2) {
+
+		int aux1 = 0;
+		for (int i1 = 0; i1 < vet1.length; i1++) {
+			for (int i2 = i1 + 1; i2 < vet1.length; i2++) {
+				if (vet1[i2] < vet1[i1]) {
+					aux1 = vet1[i1];
+					vet1[i1] = vet1[i2];
+					vet1[i2] = aux1;
+					aux1 = vet2[i1];
+					vet2[i1] = vet2[i2];
+					vet2[i2] = aux1;
+				}
+			}
+		}
+	}
+
+	public static void minsort(double[] vet1, double[] vet2) {
+
+		double aux1 = 0;
+		for (int i1 = 0; i1 < vet1.length; i1++) {
+			for (int i2 = i1 + 1; i2 < vet1.length; i2++) {
+				if (vet1[i2] < vet1[i1]) {
+					aux1 = vet1[i1];
+					vet1[i1] = vet1[i2];
+					vet1[i2] = aux1;
+					aux1 = vet2[i1];
+					vet2[i1] = vet2[i2];
+					vet2[i2] = aux1;
+				}
+			}
+		}
 	}
 
 	/**
