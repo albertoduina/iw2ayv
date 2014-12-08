@@ -539,81 +539,6 @@ public class ImageUtils {
 		return clips;
 	}
 
-	/**
-	 * Trasformazione delle coordinate dei punti in equazione esplicita della
-	 * retta
-	 * 
-	 * @param x0
-	 *            coordinata X inizio
-	 * @param y0
-	 *            coordinata Y inizio
-	 * @param x1
-	 *            coordinata X fine
-	 * @param y1
-	 *            coordinata Y fine
-	 * @return vettore con parametri equazione
-	 */
-	public static double[] fromPointsToEquLineExplicit(double x0, double y0,
-			double x1, double y1) {
-		// la formula esplicita è y = mx + b
-		// in cui m è detta anche slope (pendenza) e b intercept (intercetta)
-		// non può rappresentare rette verticali
-		double[] out = new double[2];
-
-		double m = (y1 - y0) / (x1 - x0);
-
-		double b = y0 - m * x0;
-
-		out[0] = m;
-		out[1] = b;
-		return out;
-	}
-
-	/**
-	 * Trasformazione delle coordinate dei punti in equazione implicita della
-	 * retta
-	 * 
-	 * @param x0
-	 *            coordinata X inizio
-	 * @param y0
-	 *            coordinata Y inizio
-	 * @param x1
-	 *            coordinata X fine
-	 * @param y1
-	 *            coordinata Y fine
-	 * @return vettore con parametri equazione
-	 */
-	public static double[] fromPointsToEquLineImplicit(double x0, double y0,
-			double x1, double y1) {
-		// la formula implicita è ax + by + c = 0
-		double[] out = new double[3];
-
-		double a = y0 - y1;
-		double b = x1 - x0;
-		double c = x0 * y1 - x1 * y0;
-
-		out[0] = a;
-		out[1] = b;
-		out[2] = c;
-
-		return out;
-	}
-
-	public static double[] fromPointsToEquCirconferenceImplicit(double cx,
-			double cy, double radius) {
-		// la formula implicita è x^2 + y^2 + ax + by + c = 0
-		double[] out = new double[3];
-
-		double a = -2 * cx;
-		double b = -2 * cy;
-		double c = cx * cx + cy * cy - radius * radius;
-
-		out[0] = a;
-		out[1] = b;
-		out[2] = c;
-
-		return out;
-	}
 
 	/**
 	 * Determinazione dei crossing points tra un raggio, di cui si conoscono
@@ -694,7 +619,7 @@ public class ImageUtils {
 	public static double[] crossingFrame(double x0, double y0, double x1,
 			double y1, double width, double height) {
 
-		double[] out1 = fromPointsToEquLineImplicit(x0, y0, x1, y1);
+		double[] out1 = MyGeometry.fromPointsToEquLineImplicit(x0, y0, x1, y1);
 
 		// in out1 ottengo i valori di a,b,c da sostituire nella equazione
 		// implicita della retta, nella forma ax+by+c=0
