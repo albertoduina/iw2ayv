@@ -2344,6 +2344,26 @@ public class UtilAyv {
 		}
 	}
 
+	public static void minsort(double[] vet1, double[] vet2, double[] vet3) {
+
+		double aux1 = 0;
+		for (int i1 = 0; i1 < vet1.length; i1++) {
+			for (int i2 = i1 + 1; i2 < vet1.length; i2++) {
+				if (vet1[i2] < vet1[i1]) {
+					aux1 = vet1[i1];
+					vet1[i1] = vet1[i2];
+					vet1[i2] = aux1;
+					aux1 = vet2[i1];
+					vet2[i1] = vet2[i2];
+					vet2[i2] = aux1;
+					aux1 = vet3[i1];
+					vet3[i1] = vet3[i2];
+					vet3[i2] = aux1;
+
+				}
+			}
+		}
+	}
 	public static void minsort(double[] vet1, double[] vet2) {
 
 		double aux1 = 0;

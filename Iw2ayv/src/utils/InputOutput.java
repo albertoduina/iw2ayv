@@ -549,7 +549,7 @@ public class InputOutput {
 		for (int row = 0; row < rows; row++) {
 			ArrayList<String> stringRiga = vetList.get(row);
 			for (int col = 0; col < columns; col++) {
-				vetResult[row][col] = ReadDicom.readDouble(stringRiga.get(col));
+				vetResult[row][col] = ReadDicom.readDouble(stringRiga.get(col))	;
 			}
 		}
 		return vetResult;

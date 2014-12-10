@@ -1,0 +1,13 @@
+// Contiene le regole utilizzate da Sequenze per compilare il file
+// ayv.txt che verrà poi usato per chiamare il plug-in adatto
+// ad elaborare una determinata immagine
+//CODICE__________COMMENTO________________DA PASSARE_TOTALI_____PLUGIN
+// MACCHINE SIEMENS SYMPHONY + AVANTO
+// BODY	
+BUSA_	/* Uniformità Assiale Body________*/	2	2	xxx			p3rmn_ 										
+BUSA_	/* Uniformità Assiale Body________*/	2	2	xxx			p3rmn_ 
+BUSS_	/* Uniformità Sagittale Body______*/	2	2	xxx			p3rmn_ 
+
+                 
+S78S_	/* SpinEcho SPINE S7-8____________*/	4	4	C:SP7-8		p5rmn_ 
+ 
