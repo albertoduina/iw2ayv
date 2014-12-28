@@ -260,8 +260,8 @@ public class InputOutput {
 			}
 			br.close();
 		} catch (Exception e) {
-			// MyLog.waitThere("readFilegeneric error <" + fileName + "> "
-			// + e.getMessage());
+			 MyLog.waitThere("readFilegeneric error <" + fileName + "> "
+			 + e.getMessage());
 			return null;
 		}
 		return matrixTable;

@@ -44,20 +44,19 @@ public class MyConst {
 	public static final String DICOM_SPACING_BETWEEN_SLICES = "0018,0088";
 	public static final String DICOM_PHASE_ENCODING_STEPS = "0018,0089";
 
+	public static final String DICOM_IMAGES_IN_MOSAIC = "0019,100A";
+	
 	public static final String DICOM_SERIES_NUMBER = "0020,0011";
 	public static final String DICOM_ACQUISITION_NUMBER = "0020,0012";
 	public static final String DICOM_IMAGE_NUMBER = "0020,0013";
 	public static final String DICOM_IMAGE_POSITION = "0020,0032";
+	public static final String DICOM_SLICE_LOCATION = "0020,1041";
 	
-	public static final String DICOM_IMAGES_IN_MOSAIC = "0019,100A";
-
-
 	public static final String DICOM_ROWS = "0028,0010";
 	public static final String DICOM_COLUMNS = "0028,0011";
 	public static final String DICOM_PIXEL_SPACING = "0028,0030";
 	public static final String DICOM_PIXEL_REPRESENTATION = "0028,0103";
 	
-
 	public static final String DICOM_COIL = "0051,100F";
 
 	public static final double PLUS_20_PERC = 1.2;

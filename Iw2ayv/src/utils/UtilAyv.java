@@ -1351,7 +1351,9 @@ public class UtilAyv {
 		ButtonMessages.ModelessMsg(messageLabel, buttonLabel);
 		if (imp1.getRoi() == null)
 			return null;
+
 		Polygon p1 = imp1.getRoi().getPolygon();
+
 		IJ.setTool(oldTool);
 		return p1;
 	}
@@ -1742,6 +1744,16 @@ public class UtilAyv {
 		if (number instanceof Float && ((Float) number).isNaN())
 			return true;
 		return false;
+	}
+
+	/**
+	 * From http://rosettacode.org/wiki/Determine_if_a_string_is_numeric
+	 * 
+	 * @param inputData
+	 * @return boolean
+	 */
+	public static boolean isNumeric(String inputData) {
+		return inputData.matches("[-+]?\\d+(\\.\\d+)?");
 	}
 
 	/**
@@ -2364,6 +2376,7 @@ public class UtilAyv {
 			}
 		}
 	}
+
 	public static void minsort(double[] vet1, double[] vet2) {
 
 		double aux1 = 0;
@@ -2393,6 +2406,32 @@ public class UtilAyv {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Effettua lo shift circolare degli elementi di un array
+	 * 
+	 * @param array
+	 * @param stepSize
+	 * @return
+	 */
+	public static int[] shiftArray(int[] array, int stepSize) {
+		if (stepSize == 0)
+			return array;
+		int shiftStep = (Math.abs(stepSize) > array.length ? stepSize
+				% array.length : stepSize);
+		MyLog.waitHere("shiftStep= " + shiftStep);
+		int[] array2 = new int[array.length];
+		boolean safe = false;
+		for (int i1 = 0; i1 < array.length; i1++) {
+			safe = (i1 + 1) - shiftStep >= 0;
+			if (safe) {
+				array2[i1] = array[i1 - shiftStep];
+			} else {
+				array2[i1] = array[array.length - shiftStep + i1];
+			}
+		}
+		return array2;
 	}
 
 	/**
