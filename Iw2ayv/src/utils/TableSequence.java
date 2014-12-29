@@ -50,26 +50,28 @@ public class TableSequence {
 	public static int COIL = 3;
 
 	public static int IMA_PASS = 4;
+	
+	public static int IMA_GROUP = 5;
 
-	public static int SERIE = 5;
+	public static int SERIE = 6;
 
-	public static int ACQ = 6;
+	public static int ACQ = 7;
 
-	public static int IMA = 7;
+	public static int IMA = 8;
 
-	public static int TIME = 8;
+	public static int TIME = 9;
 
-	public static int ECHO = 9;
+	public static int ECHO = 10;
 
-	public static int POSIZ = 10;
+	public static int POSIZ = 11;
 
-	public static int DIREZ = 11;
+	public static int DIREZ = 12;
 
-	public static int PROFOND = 12;
+	public static int PROFOND = 13;
 
-	public static int DONE = 13;
+	public static int DONE = 14;
 
-	public static int COLUMNS = 14;
+	public static int COLUMNS = 15;
 
 	/***
 	 * Carica la tabella in memoria leggendo il file su disco
@@ -161,6 +163,12 @@ public class TableSequence {
 		if (strTabella == null)
 			return null;
 		return strTabella[riga][IMA_PASS];
+	}
+	
+	public static String getImaGroup(String[][] strTabella, int riga) {
+		if (strTabella == null)
+			return null;
+		return strTabella[riga][IMA_GROUP];
 	}
 
 	public static String getNumSerie(String[][] strTabella, int riga) {
@@ -303,7 +311,8 @@ public class TableSequence {
 							+ strTabella[j1][PATH] + "#COD#"
 							+ strTabella[j1][CODE] + "#COIL#"
 							+ strTabella[j1][COIL] + "#PASS#"
-							+ strTabella[j1][IMA_PASS] + "#SER#"
+							+ strTabella[j1][IMA_PASS] + "#GROUP#"
+							+ strTabella[j1][IMA_GROUP] + "#SER#"
 							+ strTabella[j1][SERIE] + "#ACQ#"
 							+ strTabella[j1][ACQ] + "#IMA#"
 							+ strTabella[j1][IMA] + "#TIME#"

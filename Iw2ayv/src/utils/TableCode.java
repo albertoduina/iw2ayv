@@ -22,14 +22,16 @@ public class TableCode {
 	public static int IMA_PASS = 1;
 
 	public static int IMA_TOTAL = 2;
+	
+	public static int IMA_GROUP = 3;
 
-	public static int COIL = 3;
+	public static int COIL = 4;
 
-	public static int DIREZ = 4;
+	public static int DIREZ = 5;
 
-	public static int PROFOND = 5;
+	public static int PROFOND = 6;
 
-	public static int PLUGIN = 6;
+	public static int PLUGIN = 7;
 
 	public static String[][] loadTable(String path) {
 		boolean absolute = false;
@@ -135,6 +137,12 @@ public class TableCode {
 		return (tableCode[riga][IMA_TOTAL]);
 	}
 
+	public static String getImaGroup(String[][] tableCode, int riga) {
+		if (tableCode == null)
+			return null;
+		return (tableCode[riga][IMA_GROUP]);
+	}
+	
 	public static String getCoil(String[][] tableCode, int riga) {
 		if (tableCode == null)
 			return null;

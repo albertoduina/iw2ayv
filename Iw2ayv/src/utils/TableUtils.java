@@ -4,6 +4,28 @@ import ij.IJ;
 
 public class TableUtils {
 
+	public static void dumpTable2(String[][] strTabella) {
+
+		if (strTabella == null) {
+			IJ.log("dumpTable.strTabella == Null");
+			return;
+		}
+		if (strTabella.length == 0) {
+			IJ.log("dumpTable.strTabella.length() == 0");
+			return;
+		}
+		IJ.log("---------------------------");
+		String str = "";
+		for (int j1 = 0; j1 < strTabella.length; j1++) {
+			for (int j2 = 0; j2 < strTabella[0].length; j2++) {
+				str = str + strTabella[j1][j2] + " ";
+			}
+			IJ.log("" + j1 + " " + str);
+			str = "";
+		}
+		IJ.log("---------------------------");
+	}
+
 	public static void dumpTable(String[][] strTabella) {
 
 		if (strTabella == null) {
@@ -96,7 +118,7 @@ public class TableUtils {
 	 * @param dblTabella2
 	 * @return
 	 */
-	
+
 	public static boolean compareTable(double[][] dblTabella1,
 			double[][] dblTabella2) {
 
@@ -121,7 +143,7 @@ public class TableUtils {
 
 		for (int j1 = 0; j1 < dblTabella1.length; j1++) {
 			for (int j2 = 0; j2 < dblTabella1[0].length; j2++) {
-				if (!(dblTabella1[j1][j2]==(dblTabella2[j1][j2]))) {
+				if (!(dblTabella1[j1][j2] == (dblTabella2[j1][j2]))) {
 					IJ.error("compareTable different elements at row=" + j1
 							+ " column=" + j2);
 					return false;
@@ -130,7 +152,7 @@ public class TableUtils {
 		}
 		// se non abbiamo già dato un return false vuol dire che sono identiche
 		return true;
-	} 
+	}
 
 	public static boolean compareTable(float[][] fltTabella1,
 			float[][] fltTabella2) {
@@ -156,7 +178,7 @@ public class TableUtils {
 
 		for (int j1 = 0; j1 < fltTabella1.length; j1++) {
 			for (int j2 = 0; j2 < fltTabella1[0].length; j2++) {
-				if (!(fltTabella1[j1][j2]==(fltTabella2[j1][j2]))) {
+				if (!(fltTabella1[j1][j2] == (fltTabella2[j1][j2]))) {
 					IJ.error("compareTable different elements at row=" + j1
 							+ " column=" + j2);
 					return false;
@@ -165,11 +187,9 @@ public class TableUtils {
 		}
 		// se non abbiamo già dato un return false vuol dire che sono identiche
 		return true;
-	} 
+	}
 
-	
-	public static boolean compareTable(int[][] intTabella1,
-			int[][] intTabella2) {
+	public static boolean compareTable(int[][] intTabella1, int[][] intTabella2) {
 
 		if (intTabella1 == null) {
 			IJ.error("compareTable table1= null");
@@ -192,7 +212,7 @@ public class TableUtils {
 
 		for (int j1 = 0; j1 < intTabella1.length; j1++) {
 			for (int j2 = 0; j2 < intTabella1[0].length; j2++) {
-				if (!(intTabella1[j1][j2]==(intTabella2[j1][j2]))) {
+				if (!(intTabella1[j1][j2] == (intTabella2[j1][j2]))) {
 					IJ.error("compareTable different elements at row=" + j1
 							+ " column=" + j2);
 					return false;
@@ -201,10 +221,8 @@ public class TableUtils {
 		}
 		// se non abbiamo già dato un return false vuol dire che sono identiche
 		return true;
-	} 
-	
-	
-	
+	}
+
 	public static boolean compareTable(String[][] strTabella1,
 			String[][] strTabella2) {
 
@@ -238,7 +256,7 @@ public class TableUtils {
 		}
 		// se non abbiamo già dato un return false vuol dire che sono identiche
 		return true;
-	} 
+	}
 
 	/**
 	 * Table duplication
@@ -277,7 +295,7 @@ public class TableUtils {
 		}
 		return outTable;
 	}
-	
+
 	public static float[][] rotateTable(float[][] inTable) {
 		int dim1 = inTable.length;
 		int dim2 = inTable[0].length;
@@ -295,7 +313,6 @@ public class TableUtils {
 		return outTable;
 	}
 
-	
 	public static int[][] rotateTable(int[][] inTable) {
 		int dim1 = inTable.length;
 		int dim2 = inTable[0].length;
@@ -313,7 +330,6 @@ public class TableUtils {
 		return outTable;
 	}
 
-	
 	public static String[][] rotateTable(String[][] inTable) {
 		int dim1 = inTable.length;
 		int dim2 = inTable[0].length;
@@ -334,31 +350,27 @@ public class TableUtils {
 	public static String[][] sumMultipleTable(String[][] tableCodeTotal,
 			String[][] tableCodeAdded) {
 
+		int len1 = 0;
+		if (tableCodeTotal == null)
+			len1 = 0;
+		else
+			len1 = tableCodeTotal.length;
+		int height = len1 + tableCodeAdded.length;
+		int width = tableCodeAdded[0].length;
 
-		int len1=0;
-		if (tableCodeTotal==null) len1=0; else len1=  tableCodeTotal.length;
-		int height= len1+tableCodeAdded.length;
-		int width= tableCodeAdded[0].length;
-		
-		
 		String[][] outTable = new String[height][width];
 		for (int i1 = 0; i1 < len1; i1++) {
 			for (int i2 = 0; i2 < width; i2++) {
-//				MyLog.waitHere("i1= "+i1+"i2= "+i2);
+				// MyLog.waitHere("i1= "+i1+"i2= "+i2);
 				outTable[i1][i2] = tableCodeTotal[i1][i2];
 			}
 		}
 		for (int i1 = 0; i1 < tableCodeAdded.length; i1++) {
 			for (int i2 = 0; i2 < width; i2++) {
-				outTable[len1+i1][i2] = tableCodeAdded[i1][i2];
+				outTable[len1 + i1][i2] = tableCodeAdded[i1][i2];
 			}
 		}
 		return outTable;
 	}
-
-	
-	
-	
-
 
 }
