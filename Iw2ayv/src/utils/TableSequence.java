@@ -60,9 +60,9 @@ public class TableSequence {
 	public static int TIME = 8;
 
 	public static int ECHO = 9;
-	
+
 	public static int POSIZ = 10;
-	
+
 	public static int DIREZ = 11;
 
 	public static int PROFOND = 12;
@@ -192,13 +192,12 @@ public class TableSequence {
 			return null;
 		return strTabella[riga][ECHO];
 	}
-	
+
 	public static String getPosiz(String[][] strTabella, int riga) {
 		if (strTabella == null)
 			return null;
 		return strTabella[riga][POSIZ];
 	}
-	
 
 	public static String getDirez(String[][] strTabella, int riga) {
 		if (strTabella == null)
@@ -224,15 +223,12 @@ public class TableSequence {
 		return strTabella.length;
 	}
 
-	
 	public static String getKey(String[][] strTabella, int riga, int key) {
 		if (strTabella == null)
 			return null;
 		return strTabella[riga][key];
 	}
 
-	
-	
 	public void putDone(String[][] strTabella, int riga) {
 		int fatto = Integer.parseInt(strTabella[riga][DONE]);
 		fatto++;
@@ -294,8 +290,9 @@ public class TableSequence {
 			MyLog.waitHere("scriviTabella strTabella null");
 			return false;
 		}
-		if (strTabella[ROW].length != 13) {
-			MyLog.waitHere("scriviTabella Error on strTabella length");
+		if (strTabella[ROW].length != COLUMNS) {
+			MyLog.waitHere("scriviTabella Error on strTabella length "
+					+ strTabella[ROW].length + " invece di " + COLUMNS);
 			return false;
 		}
 		try {
@@ -311,8 +308,8 @@ public class TableSequence {
 							+ strTabella[j1][ACQ] + "#IMA#"
 							+ strTabella[j1][IMA] + "#TIME#"
 							+ strTabella[j1][TIME] + "#ECHO#"
-							+ strTabella[j1][ECHO] + "#DIREZ#"
-							+ strTabella[j1][POSIZ] + "#POSIZ#"
+							+ strTabella[j1][ECHO] + "#POSIZ#"
+							+ strTabella[j1][POSIZ] + "#DIREZ#"
 							+ strTabella[j1][DIREZ] + "#PROFOND#"
 							+ strTabella[j1][PROFOND] + "#DONE#"
 							+ strTabella[j1][DONE] + "#\n";

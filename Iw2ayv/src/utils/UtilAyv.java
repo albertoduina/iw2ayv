@@ -23,6 +23,7 @@ import ij.process.ImageStatistics;
 import ij.text.TextWindow;
 
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Window;
@@ -1700,6 +1701,15 @@ public class UtilAyv {
 		if (out.length() == 0)
 			out = "_";
 		return out;
+	}
+
+	public static void logResizer() {
+		Frame lw = WindowManager.getFrame("Log");
+		if (lw == null)
+			return;
+		lw.setSize(300, 400);
+		lw.setLocation(100, 200);
+		return;
 	}
 
 	public static void myWait() {

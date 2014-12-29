@@ -99,6 +99,14 @@ public class UtilAyvTest {
 	}
 
 	@Test
+	public final void testLogResizer() {
+		IJ.log("Messaggio di test");
+		MyLog.waitHere();
+		UtilAyv.logResizer();
+		MyLog.waitHere();
+	}
+
+	@Test
 	public final void testConvertToDouble() {
 		String str = "1234.5678";
 		double result = UtilAyv.convertToDouble(str);
@@ -436,15 +444,15 @@ public class UtilAyvTest {
 		MyLog.logVector(vet2, "vet2 DOPO");
 		MyLog.waitHere();
 	}
-	
+
 	@Test
 	public final void testShiftArray() {
 		int[] vet1 = { 11, 3, 8, 7, 5, 1, 12, 4, 7, 3, 2 };
 		MyLog.logVector(vet1, "vet1");
 		int[] out1 = UtilAyv.shiftArray(vet1, -27);
-		int[] expected = {  1, 12, 4, 7, 3, 2 ,11, 3, 8, 7, 5};
+		int[] expected = { 1, 12, 4, 7, 3, 2, 11, 3, 8, 7, 5 };
 		MyLog.logVector(out1, "out1");
 		MyLog.waitHere();
-		
+
 	}
 }
