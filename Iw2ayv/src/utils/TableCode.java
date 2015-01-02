@@ -22,7 +22,7 @@ public class TableCode {
 	public static int IMA_PASS = 1;
 
 	public static int IMA_TOTAL = 2;
-	
+
 	public static int IMA_GROUP = 3;
 
 	public static int COIL = 4;
@@ -37,6 +37,9 @@ public class TableCode {
 		boolean absolute = false;
 		String[][] tableCode1 = new InputOutput().readFile6LIKE(path, absolute);
 		String[][] tableCode = InputOutput.removeColumn(tableCode1, 1);
+		MyLog.logMatrix(tableCode, "tableCode");
+		MyLog.waitHere();
+
 		return tableCode;
 	}
 
@@ -56,8 +59,8 @@ public class TableCode {
 			tableCode = InputOutput.removeColumn(tableCode1, 1);
 			sumTableCode = TableUtils.sumMultipleTable(sumTableCode, tableCode);
 		}
-//		MyLog.logMatrix(sumTableCode, "sumTableCode");
-//		MyLog.waitHere();
+		// MyLog.logMatrix(sumTableCode, "sumTableCode");
+		// MyLog.waitHere();
 		return sumTableCode;
 	}
 
@@ -142,7 +145,7 @@ public class TableCode {
 			return null;
 		return (tableCode[riga][IMA_GROUP]);
 	}
-	
+
 	public static String getCoil(String[][] tableCode, int riga) {
 		if (tableCode == null)
 			return null;
