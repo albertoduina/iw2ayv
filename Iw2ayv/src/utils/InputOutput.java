@@ -260,8 +260,8 @@ public class InputOutput {
 			}
 			br.close();
 		} catch (Exception e) {
-			 MyLog.waitThere("readFilegeneric error <" + fileName + "> "
-			 + e.getMessage());
+			MyLog.waitThere("readFilegeneric error <" + fileName + "> "
+					+ e.getMessage());
 			return null;
 		}
 		return matrixTable;
@@ -383,6 +383,20 @@ public class InputOutput {
 				if (i2 != salta) {
 					out[i1][count++] = in[i1][i2];
 				}
+			}
+		}
+		return out;
+	}
+
+	public static String[][] substCharInMatrix(String[][] in, String replace,
+			String withthis) {
+		int len1 = in.length;
+		int len2 = in[0].length;
+
+		String[][] out = new String[len1][len2];
+		for (int i1 = 0; i1 < len1; i1++) {
+			for (int i2 = 0; i2 < len2; i2++) {
+				out[i1][i2] = in[i1][i2].replaceAll(replace, withthis);
 			}
 		}
 		return out;
@@ -549,7 +563,7 @@ public class InputOutput {
 		for (int row = 0; row < rows; row++) {
 			ArrayList<String> stringRiga = vetList.get(row);
 			for (int col = 0; col < columns; col++) {
-				vetResult[row][col] = ReadDicom.readDouble(stringRiga.get(col))	;
+				vetResult[row][col] = ReadDicom.readDouble(stringRiga.get(col));
 			}
 		}
 		return vetResult;

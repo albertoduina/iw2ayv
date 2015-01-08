@@ -48,6 +48,7 @@ public class TableCode {
 		String path = "";
 		String path2 = "";
 		String[][] tableCode1 = null;
+		String[][] tableCode2 = null;
 		String[][] tableCode = null;
 		String[][] sumTableCode = null;
 		for (int i1 = 0; i1 < pathComplete.length; i1++) {
@@ -56,7 +57,9 @@ public class TableCode {
 			if (path2 == null)
 				continue;
 			tableCode1 = new InputOutput().readFile6LIKE(path, absolute);
-			tableCode = InputOutput.removeColumn(tableCode1, 1);
+			tableCode2 = InputOutput.substCharInMatrix(tableCode1, "§", ";");
+			tableCode = InputOutput.removeColumn(tableCode2, 1);
+
 			sumTableCode = TableUtils.sumMultipleTable(sumTableCode, tableCode);
 		}
 		// MyLog.logMatrix(sumTableCode, "sumTableCode");

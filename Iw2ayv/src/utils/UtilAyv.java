@@ -2089,8 +2089,16 @@ public class UtilAyv {
 
 				return false;
 			}
-			if (!(ima[0].equals("1") && ima[1].equals("2")
-					&& ima[2].equals("1") && ima[3].equals("2"))) {
+			if (!(ima[0].equals("1")
+					&& ima[1].equals("2")
+					&& ima[2].equals("1")
+					&& ima[3].equals("2")
+					|| !(ima[0].equals("1") && ima[1].equals("4")
+							&& ima[2].equals("3") && ima[3].equals("6"))
+					|| !(ima[0].equals("2") && ima[1].equals("5")
+							&& ima[2].equals("1") && ima[3].equals("4")) || !(ima[0]
+					.equals("3") && ima[1].equals("6") && ima[2].equals("2") && ima[3]
+						.equals("5")))) {
 				MyLog.waitThere(
 						"Problema sui dati ricevuti in AUTOMATICO: \n"
 								+ "non soddisfatta la condizione ima1= 1, ima2= 2, ima3= 1, ima4=2 \n"
@@ -2130,6 +2138,7 @@ public class UtilAyv {
 			break;
 
 		}
+
 		return true;
 	}
 
