@@ -84,6 +84,9 @@ public class MyConst {
 	public static final int LEVEL_2 = 200;
 	public static final int LEVEL_1 = 5;
 	public static final String NEWLINE = System.getProperty("line.separator");
+	public static final int TEMPO_VISUALIZZ = 40;
+	
+	
 	// ------------ Sequenze ------------------
 	public static final String PREFERENCES_1 = "prefer.string1";
 
