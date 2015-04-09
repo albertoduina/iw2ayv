@@ -1,6 +1,8 @@
 package utils;
 
 
+import ij.text.TextWindow;
+
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -16,6 +18,11 @@ public class MyFileLogger {
 			fh.setFormatter(new SimpleFormatter());
 			logger = Logger.getLogger("MyFileLogger");
 			logger.addHandler(fh);
+			
+			
+			
+			
+			
 		}
 		catch (IOException e){
 			e.printStackTrace();

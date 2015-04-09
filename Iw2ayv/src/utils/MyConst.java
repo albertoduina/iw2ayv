@@ -1,5 +1,11 @@
 package utils;
 
+/***
+ * Questa classe definisce ed imposta le costanti utilizzate da ContMensili
+ * 
+ * @author alberto
+ *
+ */
 public class MyConst {
 	// ------------- commons ------------------------
 	public static final String TEST_DIRECTORY = "/test2/";
@@ -38,8 +44,10 @@ public class MyConst {
 
 	public static final String DICOM_SLICE_THICKNESS = "0018,0050";
 
-	public static final String DICOM_INVERSION_TIME = "0018,0082";
+	public static final String DICOM_REPETITION_TIME = "0018,0080";
 	public static final String DICOM_ECHO_TIME = "0018,0081";
+	public static final String DICOM_INVERSION_TIME = "0018,0082";
+	
 	public static final String DICOM_IMAGING_FREQUENCY = "0018,0084";
 	public static final String DICOM_SPACING_BETWEEN_SLICES = "0018,0088";
 	public static final String DICOM_PHASE_ENCODING_STEPS = "0018,0089";
@@ -84,7 +92,7 @@ public class MyConst {
 	public static final int LEVEL_2 = 200;
 	public static final int LEVEL_1 = 5;
 	public static final String NEWLINE = System.getProperty("line.separator");
-	public static final int TEMPO_VISUALIZZ = 40;
+	public static final int TEMPO_VISUALIZZ = 20;
 	
 	
 	// ------------ Sequenze ------------------

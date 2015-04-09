@@ -56,6 +56,14 @@ public class ArrayUtils {
 		return outIntArr;
 	}
 
+	public static double[] rotateArrayLeft(double[] inArray) {
+		double[] outArray = new double[inArray.length];
+		for (int i1 = 0; i1 < inArray.length-1; i1++) {
+			outArray[i1] = inArray[i1+1];
+		}
+		outArray[inArray.length-1]=inArray[0];
+		return outArray;
+	}
 
 	
 	
