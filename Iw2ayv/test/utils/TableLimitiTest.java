@@ -23,6 +23,7 @@ public class TableLimitiTest {
 		String[][] matLimiti1 = TableLimiti.loadTable(EXPAND_FILE1);
 		String EXPAND_FILE2 = "limiti.csv";
 		String[][] matLimiti2 = TableLimiti.loadTable(EXPAND_FILE2);
+
 		boolean ok= TableUtils.compareTable(matLimiti1, matLimiti2);
 		assertTrue("matLimiti diverse", ok);
 	}

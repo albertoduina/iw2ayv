@@ -30,6 +30,7 @@ public class TableCodeTest {
 	String[][] out1 = TableCode.loadTable(fileName1);
 	String fileName2 = "codiciNew.csv";	
 	String[][] out2 = TableCode.loadTable(fileName2);
+
 	boolean ok= TableUtils.compareTable(out1, out2);
 	assertTrue("tableCode diverse", ok);
 	}

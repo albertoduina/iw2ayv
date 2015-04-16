@@ -24,6 +24,7 @@ public class TableExpandTest {
 		String[][] out1 = TableExpand.loadTable(fileName1);
 		String fileName2 = "expand.txt";
 		String[][] out2 = TableExpand.loadTable(fileName2);
+
 	boolean ok= TableUtils.compareTable(out1, out2);
 	assertTrue("expandCode diverse", ok);
 	}

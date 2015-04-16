@@ -161,6 +161,7 @@ public class InputOutputTest {
 		// MyLog.logMatrix(expected, "expected");
 		// MyLog.logMatrix(tableCode, "tableCode");
 		// MyLog.waitHere();
+
 		assertTrue(TableUtils.compareTable(expected, tableCode));
 	}
 
@@ -173,6 +174,7 @@ public class InputOutputTest {
 				.readFile5LIKE(CODE_FILE, false);
 		String[][] tableCode = new InputOutput()
 				.fromArrayListToStringTable(tabella1);
+
 		assertTrue(TableUtils.compareTable(expected, tableCode));
 	}
 
@@ -306,6 +308,7 @@ public class InputOutputTest {
 				absolute);
 		String[][] tabella1 = new InputOutput().readFile6LIKE("limiti.csv",
 				absolute);
+
 		assertTrue(TableUtils.compareTable(expected, tabella1));
 	}
 

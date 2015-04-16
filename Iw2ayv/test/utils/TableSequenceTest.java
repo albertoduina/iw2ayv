@@ -68,6 +68,7 @@ public class TableSequenceTest {
 				.readFile6LIKE("iw2ayvRead.txt", absolute);
 		String CODE_FILE = "./data/iw2ayv.txt";
 		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
+
 		boolean res = TableUtils.compareTable(expected, strTabella);
 		assertTrue(res);
 	}
@@ -175,6 +176,7 @@ public class TableSequenceTest {
 				{ "aa22", "bb22", "cc22" } };
 		String[][] strTabella2 = { { "aa11", "bb11", "cc11" },
 				{ "aa22", "bb22", "cc22" } };
+
 		boolean res = TableUtils.compareTable(strTabella1, strTabella2);
 		assertTrue(res);
 	}
@@ -184,6 +186,7 @@ public class TableSequenceTest {
 		String[][] strTabella2 = { { "aa11", "bb11", "cc11" },
 				{ "aa22", "bb22", "cc22" } };
 		IJ.log("**** table must be null ****");
+
 		boolean res = TableUtils.compareTable(null, strTabella2);
 		assertFalse(res);
 	}
@@ -195,6 +198,7 @@ public class TableSequenceTest {
 		String[][] strTabella2 = { { "aa11", "bb11", "cc11" },
 				{ "aa22", "bb22", "cc22" }, { "aa33", "bb33", "cc33" } };
 		IJ.log("**** tables length must differ ****");
+
 		boolean res = TableUtils.compareTable(strTabella1, strTabella2);
 		assertFalse(res);
 	}
@@ -206,6 +210,7 @@ public class TableSequenceTest {
 		String[][] strTabella2 = { { "aa12", "bb11", "cc11" },
 				{ "aa22", "bb22", "cc22" } };
 		IJ.log("**** tables must differ ****");
+
 		boolean res = TableUtils.compareTable(strTabella1, strTabella2);
 		assertFalse(res);
 	}

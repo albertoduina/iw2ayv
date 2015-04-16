@@ -227,20 +227,20 @@ public class TableUtils {
 			String[][] strTabella2) {
 
 		if (strTabella1 == null) {
-			IJ.error("compareTable table1= null");
+			MyLog.waitHere("compareTable table1= null");;
 			return false;
 		}
 		if (strTabella2 == null) {
-			IJ.error("compareTable table2= null");
+			MyLog.waitHere("compareTable table2= null");
 			return false;
 		}
 		if (strTabella1.length != strTabella2.length) {
-			IJ.error("compareTable different length 1=" + strTabella1.length
+			MyLog.waitHere("compareTable different length 1=" + strTabella1.length
 					+ " 2=" + strTabella2.length);
 			return false;
 		}
 		if (strTabella1[0].length != strTabella2[0].length) {
-			IJ.error("compareTable different width 1=" + strTabella1[0].length
+			MyLog.waitHere("compareTable different width 1=" + strTabella1[0].length
 					+ " 2=" + strTabella2[0].length);
 			return false;
 		}
@@ -248,7 +248,7 @@ public class TableUtils {
 		for (int j1 = 0; j1 < strTabella1.length; j1++) {
 			for (int j2 = 0; j2 < strTabella1[0].length; j2++) {
 				if (!(strTabella1[j1][j2].equals(strTabella2[j1][j2]))) {
-					IJ.error("compareTable different elements at row=" + j1
+					MyLog.waitHere("compareTable different elements at row=" + j1
 							+ " column=" + j2);
 					return false;
 				}
