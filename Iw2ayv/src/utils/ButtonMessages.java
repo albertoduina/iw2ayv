@@ -5,7 +5,6 @@ import ij.IJ;
 
 import java.awt.Frame;
 
-
 /***
  * Button messages class
  * 
@@ -99,6 +98,24 @@ public class ButtonMessages {
 		f.dispose();
 		return iRetcode;
 	}
+	
+	
+	public static int ModelessMsg(String sMsg, String sUno, String sDue, int preset, int timeout) {
+		int iRetcode;
+		Frame f = new Frame();
+		ModelessDialog query = new ModelessDialog(sMsg, sUno, sDue);
+		if (preset > 0) {
+			query.setJbuttonAutomatico(2);
+			query.setTimeout(100);
+		}
+
+		query.setVisible(true);
+		query.setAlwaysOnTop(true);
+		iRetcode = query.answer();
+		f.dispose();
+		return iRetcode;
+	}
+
 
 	public static int ModelessMsg(String sMsg, String sUno) {
 		int iRetcode;
@@ -111,20 +128,43 @@ public class ButtonMessages {
 		return iRetcode;
 	}
 
-//	private ModelessDialog ModelessMsg(String sMsg) {
-//		ModelessDialog query = new ModelessDialog(sMsg);
-//		query.setVisible(true);
-//		query.setAlwaysOnTop(true);
-//		return query;
+	public static int ModelessMsg(String sMsg, String sUno, int preset,
+			int timeout) {
+		int iRetcode;
+		Frame f = new Frame();
+		ModelessDialog query = new ModelessDialog(sMsg, sUno);
+		if (preset > 0) {
+			query.setJbuttonAutomatico(2);
+			query.setTimeout(100);
+		}
+		query.setVisible(true);
+		query.setAlwaysOnTop(true);
+		iRetcode = query.answer();
+		f.dispose();
+		return iRetcode;
+	}
+	
+//	public static int ModelessMsg(String string, String string2,
+//			String string3, int preset, int timeout) {
+//		// TODO Auto-generated method stub
+//		return 0;
 //	}
-//
-//	private Frame ModelessMsg0(String sMsg) {
-//		Frame f = new Frame();
-//		ModelessDialog query = new ModelessDialog(sMsg);
-//		query.setVisible(true);
-//		query.setAlwaysOnTop(true);
-//		return f;
-//	}
+
+
+	// private ModelessDialog ModelessMsg(String sMsg) {
+	// ModelessDialog query = new ModelessDialog(sMsg);
+	// query.setVisible(true);
+	// query.setAlwaysOnTop(true);
+	// return query;
+	// }
+	//
+	// private Frame ModelessMsg0(String sMsg) {
+	// Frame f = new Frame();
+	// ModelessDialog query = new ModelessDialog(sMsg);
+	// query.setVisible(true);
+	// query.setAlwaysOnTop(true);
+	// return f;
+	// }
 
 	/**
 	 * messaggio modale, overloaded con numero pulsanti variabile da 5 a 1
@@ -172,5 +212,6 @@ public class ButtonMessages {
 		f.dispose();
 		return iRetcode;
 	}
+
 
 }
