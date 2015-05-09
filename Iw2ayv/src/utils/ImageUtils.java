@@ -221,6 +221,11 @@ public class ImageUtils {
 
 	} // classi
 
+	/***
+	 * Porta l'immagine in primo piano
+	 * 
+	 * @param iw1
+	 */
 	public static void imageToFront(ImageWindow iw1) {
 
 		boolean list = false;
@@ -259,6 +264,11 @@ public class ImageUtils {
 		}
 	}
 
+	/***
+	 * Porta l'immagine in primo piano
+	 * 
+	 * @param imp1
+	 */
 	public static void imageToFront(ImagePlus imp1) {
 		boolean list = false;
 		ImageWindow iw1 = null;
@@ -539,7 +549,6 @@ public class ImageUtils {
 		return clips;
 	}
 
-
 	/**
 	 * Determinazione dei crossing points tra un raggio, di cui si conoscono
 	 * solo due punti e la circonferenza. *
@@ -785,8 +794,8 @@ public class ImageUtils {
 		float[] yPoints = new float[peaks1[0].length];
 
 		for (int i1 = 0; i1 < peaks1[0].length; i1++) {
-			xPoints[i1] = (float) peaks1[1][i1];
-			yPoints[i1] = (float) peaks1[2][i1];
+			xPoints[i1] = (float) peaks1[0][i1];
+			yPoints[i1] = (float) peaks1[1][i1];
 		}
 
 		// MyLog.logVector(xPoints, "xPoints");
@@ -794,7 +803,6 @@ public class ImageUtils {
 		imp1.setRoi(new PointRoi(xPoints, yPoints, xPoints.length));
 		imp1.getRoi().setStrokeColor(Color.green);
 		over1.addElement(imp1.getRoi());
-		// MyLog.waitHere("Vedi punti");
 	}
 
 	/**
@@ -875,7 +883,7 @@ public class ImageUtils {
 	 * Copied from http://billauer.co.il/peakdet.htm Peak Detection using MATLAB
 	 * Author: Eli Billauer Riceve in input un profilo di una linea, costituito
 	 * da una matrice con i valori x, y , z di ogni punto. Restituisce le
-	 * coordinate x, y, x degli eventuali minimi e maximi
+	 * coordinate x, y, z degli eventuali minimi e maximi
 	 * 
 	 * @param profile
 	 * @param delta
@@ -883,6 +891,11 @@ public class ImageUtils {
 	 */
 	public static ArrayList<ArrayList<Double>> peakDet2(double[][] profile,
 			double delta) {
+
+//		for (int i1 = 0; i1 < profile[0].length; i1++) {
+//			IJ.log(""+profile[0][i1]+ "; "+profile[1][i1]+ "; "+profile[2][i1]);		
+//		}
+//		MyLog.waitHere();
 
 		double max = Double.MIN_VALUE;
 		double min = Double.MAX_VALUE;
@@ -894,7 +907,6 @@ public class ImageUtils {
 		ArrayList<Double> mintabx = new ArrayList<Double>();
 		ArrayList<Double> mintaby = new ArrayList<Double>();
 		ArrayList<Double> mintabz = new ArrayList<Double>();
-		// MyLog.waitHere("profile.length= "+profile.length+"  profile[0].length= "+profile[0].length);
 		double[] vetx = new double[profile[0].length];
 		double[] vety = new double[profile[0].length];
 		double[] vetz = new double[profile[0].length];
@@ -902,72 +914,64 @@ public class ImageUtils {
 			vetx[i1] = profile[0][i1];
 			vety[i1] = profile[1][i1];
 			vetz[i1] = profile[2][i1];
-			// IJ.log(""+vetx[i1]+";"+vety[i1]+";"+vetz[i1]);
 		}
 		double maxposx = -1.0;
 		double minposx = -1.0;
 		double maxposy = -1.0;
 		double minposy = -1.0;
 		boolean lookformax = true;
-		// double mean1 = 0;
-		// double sum1 = 0;
-		// for (int i1 = 0; i1 < vetz.length; i1++) {
-		// sum1 += vetz[i1];
-		// }
-		// mean1 = sum1 / vetz.length;
-		// MyLog.waitHere("mean1= " + mean1);
 
 		for (int i1 = 0; i1 < vetz.length; i1++) {
-			double valz = vetz[i1];
-			if (valz > max) {
-				max = valz;
+			if (vetz[i1] > max) {
+				max = vetz[i1];
 				maxposx = vetx[i1];
 				maxposy = vety[i1];
 			}
-			if (valz < min) {
-				min = valz;
+			if (vetz[i1] < min) {
+				min = vetz[i1];
 				minposx = vetx[i1];
 				minposy = vety[i1];
 			}
+			
 			stateChange(lookformax);
-			// -------------------------------
-			// aggiungo 0.5 alle posizioni trovate
-			// -------------------------------
-
-			maxposx += .5;
-			maxposy += .5;
-
+	
 			if (lookformax) {
-				if (valz < (max - delta)) {
+				if (vetz[i1] < (max - delta)) {
+					min = vetz[i1];
+					minposx = vetx[i1];
+					minposy = vety[i1];
 					maxtabx.add((Double) maxposx);
 					maxtaby.add((Double) maxposy);
 					maxtabz.add((Double) max);
-					min = valz;
-					minposx = vetx[i1];
-					minposy = vety[i1];
-					lookformax = false;
+					lookformax = false;					
 				}
 			} else {
-				if (valz > (min + delta)) {
+				if (vetz[i1] > (min + delta)) {
 					// if (valy > min + delta + mean1 * 10) {
+					max = vetz[i1];
+					// -------------------------------
+					// aggiungo 0.5 alle posizioni trovate
+					// -------------------------------
+					maxposx += .5;
+					maxposy += .5;					
+					maxposx = vetx[i1];
+					maxposy = vety[i1];
 					mintabx.add((Double) minposx);
 					mintaby.add((Double) minposy);
 					mintabz.add((Double) min);
-					max = valz;
-					maxposx = vetx[i1];
-					maxposy = vety[i1];
 					lookformax = true;
+	
 				}
 			}
 		}
-		// MyLog.logArrayList(mintabx, "############## mintabx #############");
-		// MyLog.logArrayList(mintaby, "############## mintaby #############");
-		// MyLog.logArrayList(mintabz, "############## mintabz #############");
-		// MyLog.logArrayList(maxtabx, "############## maxtabx #############");
-		// MyLog.logArrayList(maxtaby, "############## maxtaby #############");
-		// MyLog.logArrayList(maxtabz, "############## maxtabz #############");
+//		MyLog.logArrayList(mintabx, "############## mintabx #############");
+//		MyLog.logArrayList(mintaby, "############## mintaby #############");
+//		MyLog.logArrayList(mintabz, "############## mintabz #############");
+//		MyLog.logArrayList(maxtabx, "############## maxtabx #############");
+//		MyLog.logArrayList(maxtaby, "############## maxtaby #############");
+//		MyLog.logArrayList(maxtabz, "############## maxtabz #############");
 
-		// tolgo i minimi, che non mi ionteressano del resto, altrimenti posso
+		// tolgo i minimi, che non mi interessano del resto, altrimenti posso
 		// trovarmi un numero diverso di
 		// massimi e minimi ed avere guai nel creare la struttura dati per la
 		// restituzione dei risultati
@@ -1100,10 +1104,9 @@ public class ImageUtils {
 	public static ImageStatistics backCalc(int xRoi, int yRoi, int diaRoi,
 			ImagePlus imp, boolean bstep, boolean circular, boolean selftest) {
 
-
 		ImageStatistics stat = null;
 		boolean redo = false;
-		int i1=0;
+		int i1 = 0;
 		do {
 			i1++;
 			if (imp.isVisible())
@@ -1121,8 +1124,9 @@ public class ImageUtils {
 									"CONTINUA");
 
 				} else {
-					ButtonMessages.ModelessMsg("Posizionare ROI fondo e premere CONTINUA",
-							"CONTINUA "+ i1);
+					ButtonMessages.ModelessMsg(
+							"Posizionare ROI fondo e premere CONTINUA",
+							"CONTINUA " + i1);
 				}
 			}
 			stat = imp.getStatistics();

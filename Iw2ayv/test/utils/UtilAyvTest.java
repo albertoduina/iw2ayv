@@ -25,6 +25,27 @@ public class UtilAyvTest {
 	}
 
 	@Test
+	public final void testUserSelectionManual() {
+
+		String version = "versione 0.0";
+		String type = "TYPE";
+		int risultato = 0;
+		String autoStr = "PROVA";
+		risultato = UtilAyv.userSelectionManual(version, type, autoStr);
+		MyLog.waitHere("risultato = " + risultato);
+		autoStr = "AUTOM";
+		risultato = UtilAyv.userSelectionManual(version, type, autoStr);
+		MyLog.waitHere("risultato = " + risultato);
+		autoStr = "XXX";
+		risultato = UtilAyv.userSelectionManual(version, type, autoStr);
+		MyLog.waitHere("risultato = " + risultato);
+		autoStr = "CHIUDI";
+		risultato = UtilAyv.userSelectionManual(version, type, autoStr);
+		MyLog.waitHere("risultato = " + risultato);
+
+	}
+
+	@Test
 	public final void testCheckLimits() {
 
 		double testSignal = 100.0;
@@ -91,6 +112,13 @@ public class UtilAyvTest {
 		assertTrue(imagesOpened == 0);
 		assertTrue(nonImagesOpened == 0);
 	}
+
+	// @Test
+	// public final void testSetPrecision() {
+	// double out = UtilAyv.setPrecision(98.55555555557, 3);
+	// MyLog.waitHere("out= " + out);
+	//
+	// }
 
 	@Test
 	public final void testGetPos() {
@@ -254,6 +282,31 @@ public class UtilAyvTest {
 		String[] vect2 = { "pippo", "pluto1", "", " ", ";:.@@@@" };
 		boolean result = UtilAyv.compareVectors(vect1, vect2, "");
 		assertFalse("Input vectors differents, the test must fail", result);
+	}
+
+	@Test
+	public final void testCompareDoubleWithTolerance1() {
+		double num1 = 234.555555555555556;
+		double num2 = 234.555555555555558;
+		double tolerance = 0.000000000000001;
+		boolean result = UtilAyv.compareDoublesWithTolerance(num1, num2,
+				tolerance);
+		MyLog.waitHere("result= " + result);
+	}
+
+	@Test
+	public final void testCompareDoubleWithTolerance2() {
+		/*
+		 * durante i test ho notato che il test fallisce (o meglio non ottengo
+		 * la stampa del valore introdotto) se utilizzo più di 13 digits,
+		 * dovrebbero invece essere dai 14 ai 17 BOH??????
+		 */
+		double num1 = 234.5555555555556D;
+		double num2 = 234.5555555555558D;
+		int digits = 12;
+		boolean result = UtilAyv
+				.compareDoublesWithTolerance(num1, num2, digits);
+		MyLog.waitHere("result= " + result);
 	}
 
 	@Test

@@ -38,7 +38,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 /*
@@ -798,7 +800,7 @@ public class UtilAyv {
 	 *            stringa con la dicitura
 	 * @return tasto selezionato
 	 */
-	public static int userSelectionManual(String version, String type) {
+	public static int userSelectionManual1(String version, String type) {
 
 		int userSelection1 = ButtonMessages.ModelessMsg(version + type
 				+ "\n \n"
@@ -825,6 +827,41 @@ public class UtilAyv {
 				"AUTOM", "PASSO", "PROVA", "ABOUT", "CHIUDI", preset);
 
 		return (userSelection1);
+	}
+
+	/**
+	 * menu selezione manuale
+	 * 
+	 * @param version
+	 *            stringa con la versione
+	 * @param type
+	 *            stringa con la dicitura
+	 * @return tasto selezionato
+	 */
+	public static int userSelectionManual(String version, String type) {
+
+		String question = version + type + "\n \n"
+				+ "Scegliere modo funzionamento AUTOM o un PASSO alla volta";
+		String[] vetPulsanti = { "AUTOM", "PASSO", "PROVA", "ABOUT", "CHIUDI" };
+		boolean modal = false;
+		String autoStr = null;
+		AutoDialog ad1 = new AutoDialog(question, vetPulsanti, autoStr, modal);
+		int risposta = vetPulsanti.length - ad1.answer();
+
+		return (risposta);
+	}
+
+	public static int userSelectionManual(String version, String type,
+			String autoStr) {
+
+		String question = version + type + "\n \n"
+				+ "Scegliere modo funzionamento AUTOM o un PASSO alla volta";
+		String[] vetPulsanti = { "AUTOM", "PASSO", "PROVA", "ABOUT", "CHIUDI" };
+		boolean modal = false;
+		AutoDialog ad1 = new AutoDialog(question, vetPulsanti, autoStr, modal);
+		int risposta = vetPulsanti.length - ad1.answer();
+
+		return (risposta);
 	}
 
 	/**
@@ -1097,6 +1134,71 @@ public class UtilAyv {
 		}
 		return true;
 	}
+
+	public static boolean compareDoublesWithTolerance(double aa, double bb,
+			double tolerance) {
+		if (Double.compare(aa, bb) == 0)
+			return true;
+		return Math.abs(aa - bb) < tolerance;
+	}
+
+	public static boolean compareDoublesWithTolerance(double aa, double bb,
+			int digits) {
+		
+//		IJ.log ("aa= "+aa+" bb="+bb+" digits=" +digits);	
+		
+		double uno = roundDoubleDecimals(aa, digits);
+		double due = roundDoubleDecimals(bb, digits);
+		double tre= Math.abs(roundDoubleDecimals(aa, digits) - roundDoubleDecimals(bb, digits));
+//		IJ.log ("uno= "+uno+" due="+due+" tre=" +tre);	
+//		MyLog.waitHere();
+			
+			
+		return tre == 0;
+	}
+
+	// public static double setPrecision2(double num, int precision) {
+	// double prec= Math.pow(10, precision);
+	// MyLog.waitHere("prec= "+prec);
+	// int intPart = (int) num;
+	// MyLog.waitHere("intPart= "+intPart);
+	// double fractionalPart = num-intPart;
+	// MyLog.waitHere("fractionalPart= "+fractionalPart);
+	// fractionalPart *= prec;
+	// MyLog.waitHere("fractionalPart= "+fractionalPart);
+	// long fractPart = (long) fractionalPart;
+	// MyLog.waitHere("fractlPart= "+fractPart);
+	// double out= (double) intPart+(double) (fractPart)/prec;
+	// return out;
+	// }
+
+//	/****
+//	 * Parrebbe una soluzione elegante di regolazione numero dei digits con
+//	 * arrotondamento
+//	 * 
+//	 * @param num
+//	 *            double di cui regolare la precisione
+//	 * @param precision
+//	 *            numero dei digits
+//	 * @return
+//	 */
+//	public static double setPrecision(double num, int precision) {
+//
+//		Locale loc = Locale.US;
+//		NumberFormat nf = NumberFormat.getInstance(loc);
+//		nf.setMaximumFractionDigits(precision);
+//		String myString = nf.format(num);
+//		MyLog.waitHere("myString= "+myString);
+//		double out = Double.valueOf(myString);
+//		return out;
+//	}
+
+	// public static boolean compareDoublesWithTolerance(double aa, double bb,
+	// int digits) {
+	// double aa = Double.
+	//
+	// return false;
+	// }
 
 	public static String howmanyMemory() {
 		long used3 = IJ.currentMemory();

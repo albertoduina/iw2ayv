@@ -9,9 +9,11 @@ import ij.WindowManager;
 import ij.gui.ImageWindow;
 import ij.gui.Overlay;
 import ij.gui.Plot;
+import ij.gui.PlotWindow;
 import ij.gui.PointRoi;
 import ij.gui.WaitForUserDialog;
 import ij.io.Opener;
+import ij.util.Tools;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -25,7 +27,7 @@ public class ImageUtilsTest {
 
 	@Before
 	public void setUp() throws Exception {
-//		new ImageJ(ImageJ.NORMAL);
+		// new ImageJ(ImageJ.NORMAL);
 	}
 
 	@After
@@ -48,7 +50,6 @@ public class ImageUtilsTest {
 				190.4101181234791, 180.60684969160562 };
 		assertTrue(UtilAyv.compareVectors(crossings, expected, 1e-11, ""));
 	}
-
 
 	@Test
 	public final void testFitCircle() {
@@ -174,8 +175,6 @@ public class ImageUtilsTest {
 		assertTrue(ok);
 	}
 
-
-
 	@Test
 	public final void testLiangBarsky() {
 
@@ -203,31 +202,48 @@ public class ImageUtilsTest {
 		// ATTENZIONE NECESSITA DI MODIFICHE DOVUTE AL FATTO CHE HO CAMBIATO LA
 		// STRUTTURA DELLA MATRICE
 
+		// double[][] profile2 = InputOutput
+		// .readDoubleMatrixFromFile((new InputOutput()
+		// .findResource("profile3d.txt")));
+
 		double[][] profile2 = InputOutput
 				.readDoubleMatrixFromFile((new InputOutput()
-						.findResource("profile3d.txt")));
+						.findResource("profile4d.txt")));
+
+		MyLog.waitHere("profile2.length= " + profile2.length
+				+ " profile2[0].length= " + profile2[0].length);
+
 		double[][] profile1 = TableUtils.rotateTable(profile2);
-		// double[] vetx = new double[profile1.length];
-		// double[] vety = new double[profile1.length];
-		// double[] vetz = new double[profile1.length];
-		// for (int j = 0; j < profile1.length; j++) {
-		// vetx[j] = profile1[j][0];
-		// vety[j] = profile1[j][1];
-		// vetz[j] = profile1[j][2];
-		// }
-		// Plot plot2 = MyPlot.basePlot(vetx, vety, "P R O F I L O",
-		// Color.blue);
-		// plot2.show();
-		// new WaitForUserDialog("Do something, then click OK.").show();
-		// IJ.wait(200);
+
+		MyLog.waitHere("profile1.length= " + profile1.length
+				+ " profile1[0].length= " + profile1[0].length);
+
+		double[] vetx = new double[profile1[0].length];
+		double[] vety = new double[profile1[0].length];
+		double[] vetz = new double[profile1[0].length];
+		for (int j = 0; j < profile1[0].length; j++) {
+			vetx[j] = profile1[0][j];
+			vety[j] = profile1[1][j];
+			vetz[j] = profile1[2][j];
+		}
+
+		MyLog.logVector(vetx, "vetx");
+		MyLog.logVector(vety, "vety");
+		MyLog.logVector(vetz, "vetz");
+		Plot plot2 = MyPlot.basePlot(vetx, vetz, "P R O F I L O", Color.blue);
+		plot2.show();
+
+		MyLog.waitHere("Prima di peakDet2");
 
 		double delta = 100.0;
 		ArrayList<ArrayList<Double>> matOut = ImageUtils.peakDet2(profile1,
 				delta);
 		double[][] out = new InputOutput().fromArrayListToDoubleTable(matOut);
 
-		// MyLog.logMatrix(out, "out");
-		// MyLog.waitHere();
+		// ImageUtils.plotPoints(imp12, over12, peaks5);
+
+		MyLog.logMatrix(out, "out");
+		MyLog.waitHere();
 
 		double[][] expected = { { 197.18881225585938, 73.15223693847656 },
 				{ 62.81118392944336, 184.84776306152344 }, { 555.0, 2069.0 } };
@@ -271,6 +287,151 @@ public class ImageUtilsTest {
 		assertTrue(UtilAyv.compareMatrix(out, expected, ""));
 
 		// assertEquals(expected, out[3][1], 1e-12);
+	}
+
+	@Test
+	public final void testPeakDet3() {
+
+		// ATTENZIONE NECESSITA DI MODIFICHE DOVUTE AL FATTO CHE HO CAMBIATO LA
+		// STRUTTURA DELLA MATRICE
+
+		// double[][] profile2 = InputOutput
+		// .readDoubleMatrixFromFile((new InputOutput()
+		// .findResource("profile3d.txt")));
+
+		double[][] profile2 = InputOutput
+				.readDoubleMatrixFromFile((new InputOutput()
+						.findResource("LogP10error.txt")));
+
+		MyLog.waitHere("profile2.length= " + profile2.length
+				+ " profile2[0].length= " + profile2[0].length);
+
+		double[][] profile1 = TableUtils.rotateTable(profile2);
+
+		MyLog.waitHere("profile1.length= " + profile1.length
+				+ " profile1[0].length= " + profile1[0].length);
+
+		double[] vetx = new double[profile1[0].length];
+		double[] vety = new double[profile1[0].length];
+		double[] vetz = new double[profile1[0].length];
+		for (int j = 0; j < profile1[0].length; j++) {
+			vetx[j] = profile1[0][j];
+			vety[j] = profile1[1][j];
+			vetz[j] = profile1[2][j];
+		}
+
+		MyLog.logVector(vetx, "vetx");
+		MyLog.logVector(vety, "vety");
+		MyLog.logVector(vetz, "vetz");
+		Plot plot2 = MyPlot.basePlot(vetx, vetz, "P R O F I L O", Color.blue);
+		plot2.show();
+
+		MyLog.waitHere("Prima di peakDet2");
+
+		double delta = 1000.0;
+		ArrayList<ArrayList<Double>> matOut = ImageUtils.peakDet2(profile1,
+				delta);
+		double[][] out = new InputOutput().fromArrayListToDoubleTable(matOut);
+
+		// ImageUtils.plotPoints(imp12, over12, peaks5);
+
+		MyLog.logMatrix(out, "out");
+		MyLog.waitHere();
+
+		double[][] expected = { { 197.18881225585938, 73.15223693847656 },
+				{ 62.81118392944336, 184.84776306152344 }, { 555.0, 2069.0 } };
+
+		assertTrue(UtilAyv.compareMatrix(out, expected, ""));
+
+	}
+
+	@Test
+	public final void testPeakDet4() {
+
+		// ATTENZIONE NECESSITA DI MODIFICHE DOVUTE AL FATTO CHE HO CAMBIATO LA
+		// STRUTTURA DELLA MATRICE
+
+		// double[][] profile2 = InputOutput
+		// .readDoubleMatrixFromFile((new InputOutput()
+		// .findResource("profile3d.txt")));
+
+		double[][] profile2 = InputOutput
+				.readDoubleMatrixFromFile((new InputOutput()
+						.findResource("profile6d.txt")));
+
+		MyLog.waitHere("profile2.length= " + profile2.length
+				+ " profile2[0].length= " + profile2[0].length);
+
+		double[][] profile1 = TableUtils.rotateTable(profile2);
+
+		MyLog.waitHere("profile1.length= " + profile1.length
+				+ " profile1[0].length= " + profile1[0].length);
+
+		double[] vetx = new double[profile1[0].length];
+		double[] vety = new double[profile1[0].length];
+		double[] vetz = new double[profile1[0].length];
+		for (int j = 0; j < profile1[0].length; j++) {
+			vetx[j] = profile1[0][j];
+			vety[j] = profile1[1][j];
+			vetz[j] = profile1[2][j];
+		}
+
+		MyLog.logVector(vetx, "vetx");
+		MyLog.logVector(vety, "vety");
+		MyLog.logVector(vetz, "vetz");
+		Plot plot2 = MyPlot.basePlot(vetx, vetz, "P R O F I L O", Color.blue);
+		plot2.show();
+
+		MyLog.waitHere("Prima di peakDet2");
+		ArrayList<ArrayList<Double>> matOut = null;
+		double[][] peaks1 = null;
+
+		double[] minmax = Tools.getMinMax(vetz);
+
+		double limit = minmax[1] / 10;
+		if (limit < 100)
+			limit = 100;
+
+		do {
+			matOut = ImageUtils.peakDet2(profile1, limit);
+			peaks1 = new InputOutput().fromArrayListToDoubleTable(matOut);
+			if (peaks1 == null) {
+				// MyLog.waitHere("peaks1 == null");
+				return;
+			}
+
+			if (peaks1.length == 0) {
+				// MyLog.waitHere("peaks1.length == 0");
+				return;
+			}
+			if (peaks1[0].length == 0) {
+				// MyLog.waitHere("peaks1[0].length == 0");
+				return;
+			}
+			if (peaks1[0].length > 2)
+				limit = limit + limit * 0.1;
+		} while (peaks1[0].length > 2);
+
+		double[] xPoints = new double[peaks1[0].length];
+		double[] yPoints = new double[peaks1[0].length];
+		double[] zPoints = new double[peaks1[0].length];
+		for (int i1 = 0; i1 < peaks1[0].length; i1++) {
+			xPoints[i1] = peaks1[0][i1];
+			yPoints[i1] = peaks1[1][i1];
+			zPoints[i1] = peaks1[2][i1];
+		}
+
+		MyLog.logVector(xPoints, "xPoints");
+		MyLog.logVector(yPoints, "yPoints");
+		MyLog.logVector(zPoints, "zPoints");
+		IJ.log("limit= " + limit);
+
+		Plot plot3 = MyPlot.basePlot2(profile1, "profile1", Color.GREEN);
+		plot3.draw();
+		plot3.setColor(Color.red);
+		plot3.addPoints(xPoints, zPoints, PlotWindow.CIRCLE);
+		plot3.show();
+		MyLog.waitHere();
 	}
 
 }

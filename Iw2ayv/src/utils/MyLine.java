@@ -11,7 +11,9 @@ import ij.process.FloatPolygon;
 
 public class MyLine {
 	/**
-	 * Restituisce le coordinate x ed y dei punti appartenenti alla linea
+	 * Restituisce le coordinate x, y e z dei punti appartenenti alla linea, in
+	 * cui x ed y sono le coordinate del pixel (relative all'immagine di
+	 * partenza) e z è il valore di segnale
 	 * 
 	 * @param imp1
 	 * @return
@@ -38,7 +40,6 @@ public class MyLine {
 		out1[2] = profiZ;
 		return out1;
 	}
-
 
 	public static double[][] decomposer3(ImagePlus imp1) {
 
