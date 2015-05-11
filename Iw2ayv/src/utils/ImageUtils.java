@@ -800,7 +800,47 @@ public class ImageUtils {
 
 		// MyLog.logVector(xPoints, "xPoints");
 		// MyLog.logVector(yPoints, "yPoints");
-		imp1.setRoi(new PointRoi(xPoints, yPoints, xPoints.length));
+		PointRoi pr1 = new PointRoi(xPoints, yPoints, xPoints.length);
+		pr1.setPointType(2);
+		pr1.setSize(4);
+
+		imp1.setRoi(pr1);
+		imp1.getRoi().setStrokeColor(Color.green);
+		over1.addElement(imp1.getRoi());
+	}
+
+	/**
+	 * Disegna una serie di punti nell'overlay di una immagine
+	 * 
+	 * @param imp1
+	 * @param over1
+	 * @param peaks1
+	 */
+	public static void plotPoints(ImagePlus imp1, Overlay over1,
+			double[][] peaks1, boolean vertical) {
+
+		float[] xPoints = new float[peaks1[0].length];
+		float[] yPoints = new float[peaks1[0].length];
+
+		if (vertical) {
+			for (int i1 = 0; i1 < peaks1[0].length; i1++) {
+				xPoints[i1] = (float) peaks1[1][i1];
+				yPoints[i1] = (float) peaks1[0][i1];
+			}
+		} else {
+			for (int i1 = 0; i1 < peaks1[0].length; i1++) {
+				xPoints[i1] = (float) peaks1[0][i1];
+				yPoints[i1] = (float) peaks1[1][i1];
+			}
+		}
+
+		// MyLog.logVector(xPoints, "xPoints");
+		// MyLog.logVector(yPoints, "yPoints");
+		PointRoi pr1 = new PointRoi(xPoints, yPoints, xPoints.length);
+		pr1.setPointType(2);
+		pr1.setSize(4);
+
+		imp1.setRoi(pr1);
 		imp1.getRoi().setStrokeColor(Color.green);
 		over1.addElement(imp1.getRoi());
 	}
@@ -892,10 +932,10 @@ public class ImageUtils {
 	public static ArrayList<ArrayList<Double>> peakDet2(double[][] profile,
 			double delta) {
 
-//		for (int i1 = 0; i1 < profile[0].length; i1++) {
-//			IJ.log(""+profile[0][i1]+ "; "+profile[1][i1]+ "; "+profile[2][i1]);		
-//		}
-//		MyLog.waitHere();
+		// for (int i1 = 0; i1 < profile[0].length; i1++) {
+		// IJ.log(""+profile[0][i1]+ "; "+profile[1][i1]+ "; "+profile[2][i1]);
+		// }
+		// MyLog.waitHere();
 
 		double max = Double.MIN_VALUE;
 		double min = Double.MAX_VALUE;
@@ -932,9 +972,9 @@ public class ImageUtils {
 				minposx = vetx[i1];
 				minposy = vety[i1];
 			}
-			
+
 			stateChange(lookformax);
-	
+
 			if (lookformax) {
 				if (vetz[i1] < (max - delta)) {
 					min = vetz[i1];
@@ -943,7 +983,7 @@ public class ImageUtils {
 					maxtabx.add((Double) maxposx);
 					maxtaby.add((Double) maxposy);
 					maxtabz.add((Double) max);
-					lookformax = false;					
+					lookformax = false;
 				}
 			} else {
 				if (vetz[i1] > (min + delta)) {
@@ -953,23 +993,23 @@ public class ImageUtils {
 					// aggiungo 0.5 alle posizioni trovate
 					// -------------------------------
 					maxposx += .5;
-					maxposy += .5;					
+					maxposy += .5;
 					maxposx = vetx[i1];
 					maxposy = vety[i1];
 					mintabx.add((Double) minposx);
 					mintaby.add((Double) minposy);
 					mintabz.add((Double) min);
 					lookformax = true;
-	
+
 				}
 			}
 		}
-//		MyLog.logArrayList(mintabx, "############## mintabx #############");
-//		MyLog.logArrayList(mintaby, "############## mintaby #############");
-//		MyLog.logArrayList(mintabz, "############## mintabz #############");
-//		MyLog.logArrayList(maxtabx, "############## maxtabx #############");
-//		MyLog.logArrayList(maxtaby, "############## maxtaby #############");
-//		MyLog.logArrayList(maxtabz, "############## maxtabz #############");
+		// MyLog.logArrayList(mintabx, "############## mintabx #############");
+		// MyLog.logArrayList(mintaby, "############## mintaby #############");
+		// MyLog.logArrayList(mintabz, "############## mintabz #############");
+		// MyLog.logArrayList(maxtabx, "############## maxtabx #############");
+		// MyLog.logArrayList(maxtaby, "############## maxtaby #############");
+		// MyLog.logArrayList(maxtabz, "############## maxtabz #############");
 
 		// tolgo i minimi, che non mi interessano del resto, altrimenti posso
 		// trovarmi un numero diverso di

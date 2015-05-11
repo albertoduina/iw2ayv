@@ -63,13 +63,16 @@ public class MyPlot {
 	 * @param color
 	 * @return
 	 */
-	public static Plot basePlot2(double[][] profile, String title, Color color) {
+	public static Plot basePlot2(double[][] profile, String title, Color color, boolean vertical) {
 
 		double[] profilex = new double[profile[0].length];
 		double[] profileZ = new double[profile[0].length];
 
 		for (int i1 = 0; i1 < profile[0].length; i1++) {
-			profilex[i1] = profile[0][i1];
+			if (vertical) 
+				profilex[i1] = profile[1][i1];
+			else
+				profilex[i1] = profile[0][i1];
 			profileZ[i1] = profile[2][i1];
 		}
 

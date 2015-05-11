@@ -846,7 +846,7 @@ public class UtilAyv {
 		boolean modal = false;
 		String autoStr = null;
 		AutoDialog ad1 = new AutoDialog(question, vetPulsanti, autoStr, modal);
-		int risposta = vetPulsanti.length - ad1.answer();
+		int risposta = vetPulsanti.length - ad1.answer()+1;
 
 		return (risposta);
 	}

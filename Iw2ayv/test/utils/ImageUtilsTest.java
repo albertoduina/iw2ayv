@@ -426,7 +426,7 @@ public class ImageUtilsTest {
 		MyLog.logVector(zPoints, "zPoints");
 		IJ.log("limit= " + limit);
 
-		Plot plot3 = MyPlot.basePlot2(profile1, "profile1", Color.GREEN);
+		Plot plot3 = MyPlot.basePlot2(profile1, "profile1", Color.GREEN, false);
 		plot3.draw();
 		plot3.setColor(Color.red);
 		plot3.addPoints(xPoints, zPoints, PlotWindow.CIRCLE);
