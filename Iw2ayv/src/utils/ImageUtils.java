@@ -226,7 +226,7 @@ public class ImageUtils {
 	 * 
 	 * @param iw1
 	 */
-	public static void imageToFront(ImageWindow iw1) {
+	public static void imageToFront22222(ImageWindow iw1) {
 
 		boolean list = false;
 		Window w2 = WindowManager.getActiveWindow();
@@ -269,7 +269,7 @@ public class ImageUtils {
 	 * 
 	 * @param imp1
 	 */
-	public static void imageToFront(ImagePlus imp1) {
+	public static void imageToFront2222(ImagePlus imp1) {
 		boolean list = false;
 		ImageWindow iw1 = null;
 		if (imp1.isVisible()) {
@@ -307,6 +307,25 @@ public class ImageUtils {
 						+ nome1 + "]\n" + "IMMAGINE FRONTE= [" + sNome2 + "]");
 		}
 
+		MyLog.waitHere("nome1= " + nome1 + " nome2= " + nome2);
+
+	}
+
+	public static void imageToFront(ImagePlus imp1) {
+
+		ImageWindow iw1 = null;
+		if (imp1.isVisible()) {
+			iw1 = imp1.getWindow();
+		} else {
+			MyLog.waitThere("ImagePlus non visualizzata, impossibile portarla to front");
+			return;
+		}
+		String nome1 = iw1.toString();
+		IJ.selectWindow(nome1);
+
+//		Window w2 = WindowManager.getActiveWindow();
+//		String nome2 = w2.toString();
+//		MyLog.waitHere("active= " + nome2);
 	}
 
 	/***
@@ -809,41 +828,44 @@ public class ImageUtils {
 		over1.addElement(imp1.getRoi());
 	}
 
-	/**
-	 * Disegna una serie di punti nell'overlay di una immagine
-	 * 
-	 * @param imp1
-	 * @param over1
-	 * @param peaks1
-	 */
-	public static void plotPoints(ImagePlus imp1, Overlay over1,
-			double[][] peaks1, boolean vertical) {
-
-		float[] xPoints = new float[peaks1[0].length];
-		float[] yPoints = new float[peaks1[0].length];
-
-		if (vertical) {
-			for (int i1 = 0; i1 < peaks1[0].length; i1++) {
-				xPoints[i1] = (float) peaks1[1][i1];
-				yPoints[i1] = (float) peaks1[0][i1];
-			}
-		} else {
-			for (int i1 = 0; i1 < peaks1[0].length; i1++) {
-				xPoints[i1] = (float) peaks1[0][i1];
-				yPoints[i1] = (float) peaks1[1][i1];
-			}
-		}
-
-		// MyLog.logVector(xPoints, "xPoints");
-		// MyLog.logVector(yPoints, "yPoints");
-		PointRoi pr1 = new PointRoi(xPoints, yPoints, xPoints.length);
-		pr1.setPointType(2);
-		pr1.setSize(4);
-
-		imp1.setRoi(pr1);
-		imp1.getRoi().setStrokeColor(Color.green);
-		over1.addElement(imp1.getRoi());
-	}
+	// /**
+	// * Disegna una serie di punti nell'overlay di una immagine
+	// *
+	// * @param imp1
+	// * @param over1
+	// * @param peaks1
+	// */
+	// public static void plotPoints(ImagePlus imp1, Overlay over1,
+	// double[][] peaks1, boolean vertical) {
+	//
+	// MyLog.waitHere("vertical= " + vertical);
+	//
+	// float[] xPoints = new float[peaks1[0].length];
+	// float[] yPoints = new float[peaks1[0].length];
+	//
+	// if (vertical) {
+	// MyLog.waitHere("verticale");
+	// for (int i1 = 0; i1 < peaks1[0].length; i1++) {
+	// xPoints[i1] = (float) peaks1[1][i1];
+	// yPoints[i1] = (float) peaks1[2][i1];
+	// }
+	// } else {
+	// for (int i1 = 0; i1 < peaks1[0].length; i1++) {
+	// xPoints[i1] = (float) peaks1[0][i1];
+	// yPoints[i1] = (float) peaks1[1][i1];
+	// }
+	// }
+	//
+	// // MyLog.logVector(xPoints, "xPoints");
+	// // MyLog.logVector(yPoints, "yPoints");
+	// PointRoi pr1 = new PointRoi(xPoints, yPoints, xPoints.length);
+	// pr1.setPointType(2);
+	// pr1.setSize(4);
+	//
+	// imp1.setRoi(pr1);
+	// imp1.getRoi().setStrokeColor(Color.green);
+	// over1.addElement(imp1.getRoi());
+	// }
 
 	/**
 	 * Copied from http://billauer.co.il/peakdet.htm Peak Detection using MATLAB

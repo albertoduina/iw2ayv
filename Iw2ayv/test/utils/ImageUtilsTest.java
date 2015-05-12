@@ -84,7 +84,7 @@ public class ImageUtilsTest {
 		UtilAyv.openImageMaximized(".\\Test4\\02");
 		UtilAyv.openImageMaximized(".\\Test4\\03");
 
-		ImageUtils.imageToFront(iw1);
+		ImageUtils.imageToFront(iw1.getImagePlus());
 		ImageWindow iw2 = (ImageWindow) WindowManager.getActiveWindow();
 		assertTrue(iw1 == iw2);
 	}
