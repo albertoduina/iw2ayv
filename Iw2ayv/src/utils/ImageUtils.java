@@ -221,96 +221,114 @@ public class ImageUtils {
 
 	} // classi
 
-	/***
-	 * Porta l'immagine in primo piano
-	 * 
-	 * @param iw1
-	 */
-	public static void imageToFront22222(ImageWindow iw1) {
+	// /***
+	// * Porta l'immagine in primo piano
+	// *
+	// * @param iw1
+	// */
+	// public static void imageToFront22222(ImageWindow iw1) {
+	//
+	// boolean list = false;
+	// Window w2 = WindowManager.getActiveWindow();
+	// if (w2 == null || iw1 == null)
+	// return;
+	//
+	// String nome1 = iw1.toString();
+	// String nome2 = "noname";
+	//
+	// String[] vNome2 = new String[10];
+	//
+	// int count = -1;
+	// do {
+	// count++;
+	// if (iw1 != null) {
+	// WindowManager.setCurrentWindow(iw1);
+	// WindowManager.setWindow(iw1);
+	// IJ.wait(100);
+	// }
+	// w2 = WindowManager.getActiveWindow();
+	// nome2 = w2.toString();
+	// vNome2[count] = nome2;
+	// } while (!nome1.equals(nome2));
+	//
+	// String sNome2 = "";
+	// if (count > 0) {
+	// for (int i1 = 0; i1 < count; i1++) {
+	//
+	// sNome2 += vNome2[i1];
+	// sNome2 += "+";
+	// }
+	// if (list)
+	// MyLog.waitThere("conteggio = " + count + "\n" + "RICHIESTA ["
+	// + nome1 + "]\n" + "IMMAGINE FRONTE= [" + sNome2 + "]");
+	// }
+	// }
+	//
+	// /***
+	// * Porta l'immagine in primo piano
+	// *
+	// * @param imp1
+	// */
+	// public static void imageToFront2222(ImagePlus imp1) {
+	// boolean list = false;
+	// ImageWindow iw1 = null;
+	// if (imp1.isVisible()) {
+	// iw1 = imp1.getWindow();
+	// } else {
+	// MyLog.waitThere("ImagePlus non visualizzata, impossibile portarla to front");
+	// return;
+	// }
+	//
+	// String nome1 = iw1.toString();
+	// String nome2 = "noname";
+	// Window w2 = null;
+	// String[] vNome2 = new String[10];
+	// int count = -1;
+	// do {
+	// count++;
+	// if (iw1 != null) {
+	// WindowManager.setCurrentWindow(iw1);
+	// WindowManager.setWindow(iw1);
+	// IJ.wait(100);
+	// }
+	// w2 = WindowManager.getActiveWindow();
+	// nome2 = w2.toString();
+	// vNome2[count] = nome2;
+	// } while (!nome1.equals(nome2));
+	// String sNome2 = "";
+	// if (count > 0) {
+	// for (int i1 = 0; i1 < count; i1++) {
+	//
+	// sNome2 += vNome2[i1];
+	// sNome2 += "x";
+	// }
+	// if (list)
+	// MyLog.waitThere("conteggio = " + count + "\n" + "RICHIESTA ["
+	// + nome1 + "]\n" + "IMMAGINE FRONTE= [" + sNome2 + "]");
+	// }
+	//
+	// MyLog.waitHere("nome1= " + nome1 + " nome2= " + nome2);
+	//
+	// }
 
-		boolean list = false;
-		Window w2 = WindowManager.getActiveWindow();
-		if (w2 == null || iw1 == null)
+	public static void imageToFront(ImageWindow iw1) {
+
+		if (iw1 == null)
 			return;
-
-		String nome1 = iw1.toString();
-		String nome2 = "noname";
-
-		String[] vNome2 = new String[10];
-
-		int count = -1;
-		do {
-			count++;
-			if (iw1 != null) {
-				WindowManager.setCurrentWindow(iw1);
-				WindowManager.setWindow(iw1);
-				IJ.wait(100);
-			}
-			w2 = WindowManager.getActiveWindow();
-			nome2 = w2.toString();
-			vNome2[count] = nome2;
-		} while (!nome1.equals(nome2));
-
-		String sNome2 = "";
-		if (count > 0) {
-			for (int i1 = 0; i1 < count; i1++) {
-
-				sNome2 += vNome2[i1];
-				sNome2 += "+";
-			}
-			if (list)
-				MyLog.waitThere("conteggio = " + count + "\n" + "RICHIESTA ["
-						+ nome1 + "]\n" + "IMMAGINE FRONTE= [" + sNome2 + "]");
-		}
+		ImagePlus imp1 = iw1.getImagePlus();
+		if (imp1 == null)
+			return;
+		imageToFront(imp1);
 	}
 
 	/***
-	 * Porta l'immagine in primo piano
+	 * Porta l'immagine in primo piano Pare che questa routine funzioni molto
+	 * meglio delle precedenti. Se, anzichè la ImagePlus si conosce la
+	 * ImageWindow, si può utilizzare iw1.getImagePlus() per ottenere la image
+	 * plus "on the fly"
 	 * 
 	 * @param imp1
 	 */
-	public static void imageToFront2222(ImagePlus imp1) {
-		boolean list = false;
-		ImageWindow iw1 = null;
-		if (imp1.isVisible()) {
-			iw1 = imp1.getWindow();
-		} else {
-			MyLog.waitThere("ImagePlus non visualizzata, impossibile portarla to front");
-			return;
-		}
-
-		String nome1 = iw1.toString();
-		String nome2 = "noname";
-		Window w2 = null;
-		String[] vNome2 = new String[10];
-		int count = -1;
-		do {
-			count++;
-			if (iw1 != null) {
-				WindowManager.setCurrentWindow(iw1);
-				WindowManager.setWindow(iw1);
-				IJ.wait(100);
-			}
-			w2 = WindowManager.getActiveWindow();
-			nome2 = w2.toString();
-			vNome2[count] = nome2;
-		} while (!nome1.equals(nome2));
-		String sNome2 = "";
-		if (count > 0) {
-			for (int i1 = 0; i1 < count; i1++) {
-
-				sNome2 += vNome2[i1];
-				sNome2 += "x";
-			}
-			if (list)
-				MyLog.waitThere("conteggio = " + count + "\n" + "RICHIESTA ["
-						+ nome1 + "]\n" + "IMMAGINE FRONTE= [" + sNome2 + "]");
-		}
-
-		MyLog.waitHere("nome1= " + nome1 + " nome2= " + nome2);
-
-	}
-
 	public static void imageToFront(ImagePlus imp1) {
 
 		ImageWindow iw1 = null;
@@ -323,9 +341,9 @@ public class ImageUtils {
 		String nome1 = iw1.toString();
 		IJ.selectWindow(nome1);
 
-//		Window w2 = WindowManager.getActiveWindow();
-//		String nome2 = w2.toString();
-//		MyLog.waitHere("active= " + nome2);
+		// Window w2 = WindowManager.getActiveWindow();
+		// String nome2 = w2.toString();
+		// MyLog.waitHere("active= " + nome2);
 	}
 
 	/***

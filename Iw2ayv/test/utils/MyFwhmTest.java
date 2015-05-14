@@ -89,24 +89,14 @@ public class MyFwhmTest {
 		int[] out2 = MyFwhm.halfPointSearch(profi2);
 		boolean printPlot = true;
 		double dimPixel = 1;
-		double fwhm = MyFwhm.calcFwhm(out2, profi2, dimPixel, "title",
+		double[] fwhm = MyFwhm.calcFwhm(out2, profi2, dimPixel, "title",
 				printPlot);
 		IJ.wait(100);
 		// IJ.log("fwhm=" + fwhm);
 		double expected = 31.36813725490196;
-		assertEquals(expected, fwhm, 1e-12);
+		assertEquals(expected, fwhm[0], 1e-12);
 	}
 
-	@Test
-	public final void testPeakPosition() {
-
-		double[] profi1 = InputOutput
-				.readDoubleArrayFromFile("./data/vet12.txt");
-		double[] profi2 = MyFwhm.invertProfile(profi1);
-		double position = MyFwhm.peakPosition(profi2);
-		double expected = 65.0;
-		assertEquals(expected, position, 1e-12);
-	}
 
 	@Test
 	public final void testYLinearInterpolation() {
@@ -144,10 +134,10 @@ public class MyFwhmTest {
 		boolean printPlot = false;
 		String title = "";
 		double dimPixel = 1.;
-		double fwhm = MyFwhm.calcFwhm(upDwPoints, profi2, dimPixel, title,
-				printPlot) * 1.00;
+		double[] fwhm = MyFwhm.calcFwhm(upDwPoints, profi2, dimPixel, title,
+				printPlot);
 		MyFwhm.minimalPlot(profi2, upDwPoints, "P L O T", "base", "altezza",
-				fwhm, true);
+				fwhm[0], true);
 		IJ.wait(100);
 	}
 }

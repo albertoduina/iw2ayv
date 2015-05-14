@@ -31,8 +31,9 @@ public class MyFwhm {
 		double[] profi3 = smooth3(profi2, 10);
 		int[] vetHalfPoint = halfPointSearch(profi2);
 		boolean printPlot = step;
-		double fwhm = calcFwhm(vetHalfPoint, profi2, dimPixel, title, printPlot);
-		double peak = peakPosition(profi2);
+		double[] out = calcFwhm(vetHalfPoint, profi2, dimPixel, title, printPlot);
+		double fwhm=out[0];
+		double peak = out[1];
 		double[] outFwhm = new double[2];
 		outFwhm[0] = fwhm;
 		outFwhm[1] = peak;
@@ -49,12 +50,13 @@ public class MyFwhm {
 	 *            profilo di cui calcolare l'FWHM
 	 * @return FWHM calcolata in pixels
 	 */
-	public static double calcFwhm(int[] vetUpDwPoints, double[] profile,
+	public static double[] calcFwhm(int[] vetUpDwPoints, double[] profile,
 			double dimPixel, String title, boolean printPlot) {
 
 		double[] a = Tools.getMinMax(profile);
 		double min = a[0];
 		double max = a[1];
+		double peak=0;
 
 		// interpolazione lineare sinistra
 		double px0 = vetUpDwPoints[0];
@@ -82,11 +84,19 @@ public class MyFwhm {
 
 		// px2 = px0 + (px1 - px0) / (py1 - py0) * (py2 - py0);
 		double fwhm = (dx - sx) * dimPixel; // NOTA BENE è in pixels
+		
+		
+		for (int i1 = 0; i1 < profile.length; i1++) {
+			if (profile[i1] == min)
+				peak = i1;
+		}
+
+		double[] out = { fwhm, peak };
 
 		if (printPlot)
 			createPlot(profile, title, vetUpDwPoints, fwhm);
 
-		return (fwhm);
+		return (out);
 	}
 
 	/***
@@ -97,17 +107,17 @@ public class MyFwhm {
 	 *            profilo
 	 * @return posizione x del picco (in pixel)
 	 */
-	public static double peakPosition(double[] profile) {
-
-		double[] a = Tools.getMinMax(profile);
-		double max = a[1];
-		double peakX = Double.NaN;
-		for (int i1 = 0; i1 < profile.length; i1++) {
-			if (profile[i1] == max)
-				peakX = i1;
-		}
-		return (peakX);
-	}
+//	public static double peakPosition(double[] profile) {
+//
+//		double[] a = Tools.getMinMax(profile);
+//		double max = a[1];
+//		double peakX = Double.NaN;
+//		for (int i1 = 0; i1 < profile.length; i1++) {
+//			if (profile[i1] == max)
+//				peakX = i1;
+//		}
+//		return (peakX);
+//	}
 
 	public static void minimalPlot(double[] profi1, int[] upDwPoints,
 			String title, String text1, String text2, double value,

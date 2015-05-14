@@ -17,12 +17,7 @@ public class MyFileLogger {
 			FileHandler fh = new FileHandler("MyFileLog.txt", append);
 			fh.setFormatter(new SimpleFormatter());
 			logger = Logger.getLogger("MyFileLogger");
-			logger.addHandler(fh);
-			
-			
-			
-			
-			
+			logger.addHandler(fh);	
 		}
 		catch (IOException e){
 			e.printStackTrace();
