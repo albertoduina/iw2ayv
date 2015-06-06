@@ -18,8 +18,11 @@ public class MyHarris {
 	public ImagePlus execute(ImagePlus imp1) {
 		ImageProcessor ip1 = imp1.getProcessor();
 		HarrisCornerDetector.Parameters params = new HarrisCornerDetector.Parameters();
+//		params.alpha = 0.2;
+//		params.threshold = 15000;
+//		params.doCleanUp = true;
 		params.alpha = 0.2;
-		params.threshold = 15000;
+		params.threshold = 200000;
 		params.doCleanUp = true;
 		HarrisCornerDetector hcd = new HarrisCornerDetector(ip1, params);
 		hcd.findCorners();

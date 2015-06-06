@@ -58,6 +58,8 @@ public class MyConst {
 	public static final String DICOM_ACQUISITION_NUMBER = "0020,0012";
 	public static final String DICOM_IMAGE_NUMBER = "0020,0013";
 	public static final String DICOM_IMAGE_POSITION = "0020,0032";
+	public static final String DICOM_IMAGE_ORIENTATION = "0020,0037";
+	
 	public static final String DICOM_SLICE_LOCATION = "0020,1041";
 	
 	public static final String DICOM_ROWS = "0028,0010";

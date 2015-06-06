@@ -46,12 +46,14 @@ public class MyHarrisTest {
 		ip1 = imp1.getProcessor();
 		ip1.rotate(10.0);
 		UtilAyv.showImageMaximized(imp1);
-		imp2 = mh1.execute(imp1);
+		MyHarris mh2 = new MyHarris();
+		imp2 = mh2.execute(imp1);
 		UtilAyv.showImageMaximized(imp2);
+		MyHarris mh3 = new MyHarris();		
 		MyLog.waitHere("ruotato 10");
 		ip1.rotate(20.0);
 		imp1.updateAndDraw();
-		imp2 = mh1.execute(imp1);
+		imp2 = mh3.execute(imp1);
 		imp2.updateAndDraw();
 		UtilAyv.showImageMaximized(imp2);
 		MyLog.waitHere("ruotato 20");

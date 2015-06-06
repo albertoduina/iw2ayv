@@ -23,10 +23,12 @@ import ij.process.ShortProcessor;
 
 public class ImageUtils {
 
-	private static boolean previous = false;
-	private static boolean init1 = true;
+	private static boolean previous = false; // utilizzati per impulso
+	private static boolean init1 = true; // utilizzati per impulso
 	@SuppressWarnings("unused")
-	private static boolean pulse = false; // lasciare, serve anche se segnalato
+	// utilizzati per impulso
+	private static boolean pulse = false; // utilizzati per impulso, lasciare,
+											// serve anche se segnalato
 											// inutilizzato
 
 	/**
@@ -221,6 +223,18 @@ public class ImageUtils {
 
 	} // classi
 
+	public static void addOverlayRoi(ImagePlus imp1, Color color, double width) {
+		Roi roi1 = imp1.getRoi();
+		roi1.setStrokeColor(color);
+		roi1.setStrokeWidth(width);
+		Overlay over1 = imp1.getOverlay();
+		if (over1 == null) {
+			MyLog.waitThere("overlay null!!");
+			return;
+		}
+		over1.add(roi1);
+	}
+
 	// /***
 	// * Porta l'immagine in primo piano
 	// *
@@ -335,7 +349,7 @@ public class ImageUtils {
 		if (imp1.isVisible()) {
 			iw1 = imp1.getWindow();
 		} else {
-			MyLog.waitThere("ImagePlus non visualizzata, impossibile portarla to front");
+	//		MyLog.waitThere("ImagePlus non visualizzata, impossibile portarla to front");
 			return;
 		}
 		String nome1 = iw1.toString();
@@ -846,6 +860,63 @@ public class ImageUtils {
 		over1.addElement(imp1.getRoi());
 	}
 
+	public static void plotPoints(ImagePlus imp1, Overlay over1,
+			int[] xPoints1, int[] yPoints1) {
+
+		if (xPoints1 == null)
+			return;
+		
+		 MyLog.logVector(xPoints1, "xPoints1");
+		 MyLog.logVector(yPoints1, "yPoints1");
+
+
+		float[] xPoints = new float[xPoints1.length];
+		float[] yPoints = new float[yPoints1.length];
+
+		for (int i1 = 0; i1 < xPoints1.length; i1++) {
+			xPoints[i1] = (float) xPoints1[i1];
+			yPoints[i1] = (float) yPoints1[i1];
+		}
+		 MyLog.logVector(xPoints, "xPoints");
+		 MyLog.logVector(yPoints, "yPoints");
+		 MyLog.waitHere();
+
+		PointRoi pr1 = new PointRoi(xPoints, yPoints, xPoints.length);
+		pr1.setPointType(2);
+		pr1.setSize(4);
+
+		imp1.setRoi(pr1);
+		imp1.getRoi().setStrokeColor(Color.green);
+		over1.addElement(imp1.getRoi());
+		return;
+	}
+	
+	
+	public static void plotPoints(ImagePlus imp1, Overlay over1,
+			int xPoints1, int yPoints1) {
+
+		
+
+		float[] xPoints = new float[1];
+		float[] yPoints = new float[1];
+
+		xPoints[0] = (float) xPoints1;
+		yPoints[0] = (float) yPoints1;
+//		 MyLog.logVector(xPoints, "xPoints");
+//		 MyLog.logVector(yPoints, "yPoints");
+//		 MyLog.waitHere();
+
+		PointRoi pr1 = new PointRoi(xPoints, yPoints, xPoints.length);
+		pr1.setPointType(2);
+		pr1.setSize(4);
+
+		imp1.setRoi(pr1);
+		imp1.getRoi().setStrokeColor(Color.green);
+		over1.addElement(imp1.getRoi());
+		return;
+	}
+
+
 	// /**
 	// * Disegna una serie di punti nell'overlay di una immagine
 	// *
@@ -955,6 +1026,75 @@ public class ImageUtils {
 		// matout.add(mintaby);
 		matout.add(maxtabx);
 		matout.add(maxtaby);
+
+		return matout;
+	}
+
+	/***
+	 * per intercambiabilità con peakDet2 restituisco un ArrayList<ArrayList<>>
+	 * anche se mi propongo di trovare solo UN massimo e basta
+	 * 
+	 * @param profile
+	 * @param delta
+	 * @return
+	 */
+
+	public static ArrayList<ArrayList<Double>> peakDet1(double[][] profile,
+			double delta) {
+
+		ArrayList<ArrayList<Double>> matout = new ArrayList<ArrayList<Double>>();
+
+		ArrayList<Double> maxtabx = new ArrayList<Double>();
+		ArrayList<Double> maxtaby = new ArrayList<Double>();
+		ArrayList<Double> maxtabz = new ArrayList<Double>();
+		// ArrayList<Double> mintabx = new ArrayList<Double>();
+		// ArrayList<Double> mintaby = new ArrayList<Double>();
+		// ArrayList<Double> mintabz = new ArrayList<Double>();
+
+		double max = Double.MIN_VALUE;
+
+		double[] vetx = new double[profile[0].length];
+		double[] vety = new double[profile[0].length];
+		double[] vetz = new double[profile[0].length];
+		for (int i1 = 0; i1 < profile[0].length; i1++) {
+			vetx[i1] = profile[0][i1];
+			vety[i1] = profile[1][i1];
+			vetz[i1] = profile[2][i1];
+		}
+
+		// ora ho i due vettori. Si tratta di trovare il max di vetz e
+		// determinare i corrispondenti valore di vetx e vety
+
+		double maxposx = -1.0;
+		double maxposy = -1.0;
+		boolean validMax = false;
+
+		for (int i1 = 0; i1 < vetx.length; i1++) {
+			if (vetz[i1] < delta) {
+				validMax = true;
+			}
+			if (vetz[i1] > max && validMax) {
+				max = vetz[i1];
+				maxposx = vetx[i1];
+				maxposy = vety[i1];
+			}
+		}
+
+		// pongo delle condizioni al max trovato:
+		// 1) deve essere superiore a delta
+		// 2) il segnale, prima del max deve essere stato inferiore a delta
+		// almeno 1 pixel (vedi validMax)
+
+		if (max > delta) {
+			maxtabx.add((Double) maxposx);
+			maxtaby.add((Double) maxposy);
+			maxtabz.add((Double) max);
+		} else {
+		}
+
+		matout.add(maxtabx);
+		matout.add(maxtaby);
+		matout.add(maxtabz);
 
 		return matout;
 	}
