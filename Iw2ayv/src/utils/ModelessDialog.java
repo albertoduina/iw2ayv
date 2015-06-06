@@ -192,6 +192,7 @@ public class ModelessDialog extends Dialog implements ActionListener {
 		pack();
 	}
 
+	
 	public ModelessDialog(String question, String due, String uno) {
 		this(question, due, uno, false);
 	}
