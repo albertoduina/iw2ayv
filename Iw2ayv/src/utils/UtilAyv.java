@@ -846,7 +846,7 @@ public class UtilAyv {
 		boolean modal = false;
 		String autoStr = null;
 		AutoDialog ad1 = new AutoDialog(question, vetPulsanti, autoStr, modal);
-		int risposta = vetPulsanti.length - ad1.answer()+1;
+		int risposta = vetPulsanti.length - ad1.answer() + 1;
 
 		return (risposta);
 	}
@@ -1144,16 +1144,16 @@ public class UtilAyv {
 
 	public static boolean compareDoublesWithTolerance(double aa, double bb,
 			int digits) {
-		
-//		IJ.log ("aa= "+aa+" bb="+bb+" digits=" +digits);	
-		
+
+		// IJ.log ("aa= "+aa+" bb="+bb+" digits=" +digits);
+
 		double uno = roundDoubleDecimals(aa, digits);
 		double due = roundDoubleDecimals(bb, digits);
-		double tre= Math.abs(roundDoubleDecimals(aa, digits) - roundDoubleDecimals(bb, digits));
-//		IJ.log ("uno= "+uno+" due="+due+" tre=" +tre);	
-//		MyLog.waitHere();
-			
-			
+		double tre = Math.abs(roundDoubleDecimals(aa, digits)
+				- roundDoubleDecimals(bb, digits));
+		// IJ.log ("uno= "+uno+" due="+due+" tre=" +tre);
+		// MyLog.waitHere();
+
 		return tre == 0;
 	}
 
@@ -1172,26 +1172,26 @@ public class UtilAyv {
 	// return out;
 	// }
 
-//	/****
-//	 * Parrebbe una soluzione elegante di regolazione numero dei digits con
-//	 * arrotondamento
-//	 * 
-//	 * @param num
-//	 *            double di cui regolare la precisione
-//	 * @param precision
-//	 *            numero dei digits
-//	 * @return
-//	 */
-//	public static double setPrecision(double num, int precision) {
-//
-//		Locale loc = Locale.US;
-//		NumberFormat nf = NumberFormat.getInstance(loc);
-//		nf.setMaximumFractionDigits(precision);
-//		String myString = nf.format(num);
-//		MyLog.waitHere("myString= "+myString);
-//		double out = Double.valueOf(myString);
-//		return out;
-//	}
+	// /****
+	// * Parrebbe una soluzione elegante di regolazione numero dei digits con
+	// * arrotondamento
+	// *
+	// * @param num
+	// * double di cui regolare la precisione
+	// * @param precision
+	// * numero dei digits
+	// * @return
+	// */
+	// public static double setPrecision(double num, int precision) {
+	//
+	// Locale loc = Locale.US;
+	// NumberFormat nf = NumberFormat.getInstance(loc);
+	// nf.setMaximumFractionDigits(precision);
+	// String myString = nf.format(num);
+	// MyLog.waitHere("myString= "+myString);
+	// double out = Double.valueOf(myString);
+	// return out;
+	// }
 
 	// public static boolean compareDoublesWithTolerance(double aa, double bb,
 	// int digits) {
@@ -1294,9 +1294,11 @@ public class UtilAyv {
 			return false;
 		}
 
-		if (vetResults.length != vetReference.length) {
+		if (vetResults.length != vetReference.length
+				|| vetResults.length != vetName.length) {
 			MyLog.logVector(vetResults, "vetResults");
 			MyLog.logVector(vetReference, "vetReference");
+			MyLog.logVector(vetName, "vetName");
 			MyLog.waitThere("verifyResults.vectors of different length");
 			return false;
 		}
@@ -2261,7 +2263,7 @@ public class UtilAyv {
 	 */
 	public static double[] positionSearch15(ImagePlus imp1,
 			double[] circleData, double xBkg, double yBkg, double diamBkg,
-			int guard, int mode, String info1, boolean circle,
+			int guard, int select, String info1, boolean circle,
 			boolean autoCalled, boolean step, boolean demo, boolean test,
 			boolean fast, boolean irraggiungibile) {
 
@@ -2314,15 +2316,146 @@ public class UtilAyv {
 		double ycentBkg = 0;
 
 		do {
-			if (mode == 1) {
+			if (select == 1) {
 				px = xBkg;
 				py = yBkg + incr;
-			} else if (mode == 2) {
+			} else if (select == 2) {
 				px = xBkg + incr;
 				py = yBkg + incr;
-			} else if (mode == 3) {
+			} else if (select == 3) {
 				px = xBkg - incr;
 				py = yBkg - incr;
+			}
+			xcentBkg = px + diamBkg / 2;
+			ycentBkg = py + diamBkg / 2;
+
+			double critic_0 = 9999;
+			if (circleData != null) {
+				critic_0 = UtilAyv.criticalDistanceCalculation((int) xcentBkg,
+						(int) ycentBkg, (int) diamBkg / 2, xCenterCircle,
+						yCenterCircle, diamCircle / 2);
+			}
+
+			if (critic_0 >= guard) {
+				pieno = verifyBackgroundRoiMean(imp2, (int) xcentBkg,
+						(int) ycentBkg, (int) diamBkg, circle, test, demo);
+				if (circle)
+					imp2.setRoi(new OvalRoi(px, py, diamBkg, diamBkg));
+				else
+					imp2.setRoi((int) px, (int) py, (int) diamBkg,
+							(int) diamBkg);
+				imp2.getRoi().setStrokeColor(Color.yellow);
+				over2.addElement(imp2.getRoi());
+				IJ.wait(5);
+			}
+			incr++;
+		} while ((pieno || a > 0) && (ycentBkg + diamBkg < height));
+
+		if (demo) {
+			MyLog.waitHere("Evidenziata la posizione per il calcolo del fondo",
+					debug);
+		}
+		imp2.close();
+		double[] out1 = new double[3];
+		out1[0] = xcentBkg;
+		out1[1] = ycentBkg;
+		out1[2] = diamBkg;
+
+		return out1;
+	}
+
+	/**
+	 * Ricerca posizione del fondo
+	 * 
+	 * @param imp1
+	 * @param diamBkg
+	 * @param guard
+	 * @param info1
+	 * @param autoCalled
+	 * @param step
+	 * @param demo
+	 * @param test
+	 * @param fast
+	 * @param irraggiungibile
+	 * @return
+	 */
+	public static double[] positionSearch15(ImagePlus imp1,
+			double[] circleData, double xBkg, double yBkg, double diamBkg,
+			int guard, int select, String info1, boolean circle, int mode,
+			boolean irraggiungibile) {
+
+		boolean autoCalled = false;
+		boolean step = false;
+		boolean demo = false;
+		boolean test = false;
+		// boolean fast
+		boolean debug = true;
+		
+		switch (mode) {
+		case 1:
+			break;
+		}
+
+		Overlay over2 = new Overlay();
+		over2.setStrokeColor(Color.red);
+		imp1.deleteRoi();
+
+		ImagePlus imp2 = imp1.duplicate();
+
+		imp2.setOverlay(over2);
+		if (demo) {
+			IJ.setMinAndMax(imp2, 10, 50);
+		}
+
+		int height = imp1.getHeight();
+		int xCenterCircle = 0;
+		int yCenterCircle = 0;
+		int diamCircle = 0;
+
+		if (circleData != null) {
+			xCenterCircle = (int) circleData[2];
+			yCenterCircle = (int) circleData[3];
+			diamCircle = (int) circleData[9];
+
+			if (demo) {
+				UtilAyv.showImageMaximized(imp2);
+				ImageUtils.imageToFront(imp2);
+				imp2.setRoi(new OvalRoi(xCenterCircle - diamCircle / 2,
+						yCenterCircle - diamCircle / 2, diamCircle, diamCircle));
+				imp2.getRoi().setStrokeColor(Color.red);
+				over2.addElement(imp2.getRoi());
+				MyLog.waitHere(
+						"Ricerca della posizione per calcolo background", debug);
+			}
+		}
+
+		int a = 0;
+		if (irraggiungibile && demo) {
+			MyLog.waitHere("impostato irraggiungibile");
+
+			a = 1;
+		}
+		double px = 0;
+		double py = 0;
+		int incr = 0;
+		boolean pieno = false;
+		double xcentBkg = 0;
+		double ycentBkg = 0;
+
+		do {
+			switch (select) {
+			case 1:
+				px = xBkg;
+				py = yBkg + incr;
+				break;
+			case 2:
+				px = xBkg + incr;
+				py = yBkg + incr;
+				break;
+			case 3:
+				px = xBkg - incr;
+				py = yBkg - incr;
+				break;
 			}
 			xcentBkg = px + diamBkg / 2;
 			ycentBkg = py + diamBkg / 2;

@@ -76,6 +76,64 @@ public class ImageUtils {
 	}
 
 	/**
+	 * generazione di un immagine simulata, display e salvataggio
+	 * 
+	 * @param xCenterRoi
+	 *            coordinata x roi
+	 * @param yRoi
+	 *            coordinata y roi
+	 * @param diamRoi
+	 *            diametro roi
+	 * @param imp1
+	 *            puntatore ImagePlus alla immagine originale
+	 * @param step
+	 *            funzionamento passo passo
+	 * @param verbose
+	 * 
+	 * @param test
+	 *            modo autotest
+	 * @return numeriosità classi simulata
+	 */
+	public static int[][] generaSimulata12classi(int xCenterRoi,
+			int yCenterRoi, int latoRoi, ImagePlus imp1, String filePath,
+			int mode, int timeout) {
+
+		boolean debug = true;
+		if (imp1 == null) {
+			MyLog.waitHere("generaSimulata12classi imp1==null");
+			return (null);
+		}
+		boolean verbose = false;
+		boolean step = false;
+		boolean test = false;
+		if (mode == 0) {
+			test = false;
+		}
+
+		if (mode == 10) {
+			verbose = true;
+			test = true;
+		}
+
+		
+		
+		ImagePlus impSimulata = simulata12Classi(xCenterRoi, yCenterRoi,
+				latoRoi, imp1);
+		if (verbose) {
+			UtilAyv.showImageMaximized(impSimulata);
+			IJ.run("Enhance Contrast", "saturated=0.5");
+			MyLog.waitHere("Immagine Simulata", debug, timeout);
+		}
+		if (step)
+			MyLog.waitHere("Immagine Simulata", debug);
+		int[][] classiSimulata = numeroPixelsClassi(impSimulata);
+
+		if (!test)
+			new FileSaver(impSimulata).saveAsZip(filePath);
+		return classiSimulata;
+	}
+
+	/**
 	 * Genera l'immagine simulata a 11+1 livelli
 	 * 
 	 * @param imp1
@@ -349,7 +407,7 @@ public class ImageUtils {
 		if (imp1.isVisible()) {
 			iw1 = imp1.getWindow();
 		} else {
-	//		MyLog.waitThere("ImagePlus non visualizzata, impossibile portarla to front");
+			// MyLog.waitThere("ImagePlus non visualizzata, impossibile portarla to front");
 			return;
 		}
 		String nome1 = iw1.toString();
@@ -865,10 +923,9 @@ public class ImageUtils {
 
 		if (xPoints1 == null)
 			return;
-		
-		 MyLog.logVector(xPoints1, "xPoints1");
-		 MyLog.logVector(yPoints1, "yPoints1");
 
+		MyLog.logVector(xPoints1, "xPoints1");
+		MyLog.logVector(yPoints1, "yPoints1");
 
 		float[] xPoints = new float[xPoints1.length];
 		float[] yPoints = new float[yPoints1.length];
@@ -877,9 +934,9 @@ public class ImageUtils {
 			xPoints[i1] = (float) xPoints1[i1];
 			yPoints[i1] = (float) yPoints1[i1];
 		}
-		 MyLog.logVector(xPoints, "xPoints");
-		 MyLog.logVector(yPoints, "yPoints");
-		 MyLog.waitHere();
+		MyLog.logVector(xPoints, "xPoints");
+		MyLog.logVector(yPoints, "yPoints");
+		MyLog.waitHere();
 
 		PointRoi pr1 = new PointRoi(xPoints, yPoints, xPoints.length);
 		pr1.setPointType(2);
@@ -890,21 +947,18 @@ public class ImageUtils {
 		over1.addElement(imp1.getRoi());
 		return;
 	}
-	
-	
-	public static void plotPoints(ImagePlus imp1, Overlay over1,
-			int xPoints1, int yPoints1) {
 
-		
+	public static void plotPoints(ImagePlus imp1, Overlay over1, int xPoints1,
+			int yPoints1) {
 
 		float[] xPoints = new float[1];
 		float[] yPoints = new float[1];
 
 		xPoints[0] = (float) xPoints1;
 		yPoints[0] = (float) yPoints1;
-//		 MyLog.logVector(xPoints, "xPoints");
-//		 MyLog.logVector(yPoints, "yPoints");
-//		 MyLog.waitHere();
+		// MyLog.logVector(xPoints, "xPoints");
+		// MyLog.logVector(yPoints, "yPoints");
+		// MyLog.waitHere();
 
 		PointRoi pr1 = new PointRoi(xPoints, yPoints, xPoints.length);
 		pr1.setPointType(2);
@@ -916,6 +970,28 @@ public class ImageUtils {
 		return;
 	}
 
+	public static void plotPoints(ImagePlus imp1, Overlay over1, int xPoints1,
+			int yPoints1, Color color, double width) {
+
+		float[] xPoints = new float[1];
+		float[] yPoints = new float[1];
+
+		xPoints[0] = (float) xPoints1;
+		yPoints[0] = (float) yPoints1;
+		// MyLog.logVector(xPoints, "xPoints");
+		// MyLog.logVector(yPoints, "yPoints");
+		// MyLog.waitHere();
+
+		PointRoi pr1 = new PointRoi(xPoints, yPoints, xPoints.length);
+		pr1.setPointType(2);
+		pr1.setSize(4);
+
+		imp1.setRoi(pr1);
+		imp1.getRoi().setStrokeColor(color);
+		imp1.getRoi().setStrokeWidth(width);
+		over1.addElement(imp1.getRoi());
+		return;
+	}
 
 	// /**
 	// * Disegna una serie di punti nell'overlay di una immagine

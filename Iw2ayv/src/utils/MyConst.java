@@ -36,7 +36,7 @@ public class MyConst {
 	public static final String DICOM_ACQUISITION_TIME = "0008,0032";
 	public static final String DICOM_IMATIME = "0008,0033";
 	public static final String DICOM_MANUFACTURER = "0008,0070";
-	
+
 	public static final String DICOM_SERIES_DESCRIPTION = "0008,103E";
 	public static String DICOM_STATION_NAME = "0008,1010";
 
@@ -47,26 +47,26 @@ public class MyConst {
 	public static final String DICOM_REPETITION_TIME = "0018,0080";
 	public static final String DICOM_ECHO_TIME = "0018,0081";
 	public static final String DICOM_INVERSION_TIME = "0018,0082";
-	
+
 	public static final String DICOM_IMAGING_FREQUENCY = "0018,0084";
 	public static final String DICOM_SPACING_BETWEEN_SLICES = "0018,0088";
 	public static final String DICOM_PHASE_ENCODING_STEPS = "0018,0089";
 
 	public static final String DICOM_IMAGES_IN_MOSAIC = "0019,100A";
-	
+
 	public static final String DICOM_SERIES_NUMBER = "0020,0011";
 	public static final String DICOM_ACQUISITION_NUMBER = "0020,0012";
 	public static final String DICOM_IMAGE_NUMBER = "0020,0013";
 	public static final String DICOM_IMAGE_POSITION = "0020,0032";
 	public static final String DICOM_IMAGE_ORIENTATION = "0020,0037";
-	
+
 	public static final String DICOM_SLICE_LOCATION = "0020,1041";
-	
+
 	public static final String DICOM_ROWS = "0028,0010";
 	public static final String DICOM_COLUMNS = "0028,0011";
 	public static final String DICOM_PIXEL_SPACING = "0028,0030";
 	public static final String DICOM_PIXEL_REPRESENTATION = "0028,0103";
-	
+
 	public static final String DICOM_COIL = "0051,100F";
 
 	public static final double PLUS_20_PERC = 1.2;
@@ -95,8 +95,7 @@ public class MyConst {
 	public static final int LEVEL_1 = 5;
 	public static final String NEWLINE = System.getProperty("line.separator");
 	public static final int TEMPO_VISUALIZZ = 20;
-	
-	
+
 	// ------------ Sequenze ------------------
 	public static final String PREFERENCES_1 = "prefer.string1";
 
@@ -122,8 +121,16 @@ public class MyConst {
 			"mediaGel6", "devStandGel6", "mediaGel7", "devStandGel7",
 			"mediaGel8", "devStandGel8", "mediaGel9", "devStandGel9",
 			"mediaGel10", "devStandGel10", "mediaGel11", "devStandGel11",
-			"mediaGel2", "devStandGel2", "mediaFondo", "devStandFondo",
-	};
+			"mediaGel2", "devStandGel2" };
+	
+	// public static String[] P20_vetName = { "mediaGel1", "devStandGel1",
+	// "mediaGel2", "devStandGel2", "mediaGel3", "devStandGel3",
+	// "mediaGel4", "devStandGel4", "mediaGel5", "devStandGel5",
+	// "mediaGel6", "devStandGel6", "mediaGel7", "devStandGel7",
+	// "mediaGel8", "devStandGel8", "mediaGel9", "devStandGel9",
+	// "mediaGel10", "devStandGel10", "mediaGel11", "devStandGel11",
+	// "mediaGel2", "devStandGel2", "mediaFondo", "devStandFondo",
+	// };
 
 	// ------------ p3rmn -----------------------
 	public static final int P3_DIAM_PHANTOM = 174;
@@ -137,7 +144,8 @@ public class MyConst {
 	public static final int P3_DIAM_ROI_BACKGROUND = 20;
 	public static final int P3_ROI_LIMIT = 10;
 	public static String[] P3_vetName = { "SEGNALE", "RUMORE", "SNR", "GHOST1",
-			"GHOST2", "GHOST3", "GHOST4", "UNIF.INT.%", "BKG" };
+			"GHOST2", "GHOST3", "GHOST4", "UNIF.INT.%", "BKG", "NUM_CLASS1",
+			"NUM_CLASS2", "NUM_CLASS3", "NUM_CLASS4", "NUM_CLASS5" };
 
 	// ------------ p12rmn -----------------------
 	public static final int P12_DIAM_PHANTOM = 174;
@@ -151,7 +159,9 @@ public class MyConst {
 	public static final int P12_DIAM_ROI_BACKGROUND = 20;
 	public static final int P12_ROI_LIMIT = 10;
 	public static String[] P12_vetName = { "SEGNALE", "RUMORE", "SNR",
-			"GHOST1", "GHOST2", "GHOST3", "GHOST4", "UNIF.INT.%" };
+			"GHOST1", "GHOST2", "GHOST3", "GHOST4", "UNIF.INT.%", "BKG", "POS",
+			"NUM_CLASS1", "NUM_CLASS2", "NUM_CLASS3", "NUM_CLASS4",
+			"NUM_CLASS5" };
 
 	// ------------ p4rmn -----------------------
 	public static final double P4_X_START_REFLINE_TESTSIEMENS = 51.0;
@@ -182,8 +192,8 @@ public class MyConst {
 	public static final int P5_DIAM_ROI_BACKGROUND = 10;
 	public static final int P5_X_ROI_BACKGROUND = 230;
 	public static final int P5_Y_ROI_BACKGROUND = 10;
-	public static String[] P5_vetName = { "zero", "SIGNAL", "BACKNOISE",
-			"SNRATIO", "FWHM", "NUM_CLASS1", "NUM_CLASS2", "NUM_CLASS3",
+	public static String[] P5_vetName = { "simulata", "SIGNAL", "BACKNOISE",
+			"SNRATIO", "FWHM", "BKG", "NUM_CLASS1", "NUM_CLASS2", "NUM_CLASS3",
 			"NUM_CLASS4", "NUM_CLASS5", "NUM_CLASS6", "NUM_CLASS7",
 			"NUM_CLASS8", "NUM_CLASS9", "NUM_CLASS10", "NUM_CLASS11",
 			"NUM_CLASS12" };
@@ -223,11 +233,11 @@ public class MyConst {
 	public static final int P10_Y_ROI_BACKGROUND = 10;
 	public static final int P10_ROI_LIMIT = 10;
 
-	public static String[] P10_vetName = { "zero", "SIGNAL", "BACKNOISE",
-			"SNRATIO", "FWHM", "NUM_CLASS1", "NUM_CLASS2", "NUM_CLASS3",
-			"NUM_CLASS4", "NUM_CLASS5", "NUM_CLASS6", "NUM_CLASS7",
-			"NUM_CLASS8", "NUM_CLASS9", "NUM_CLASS10", "NUM_CLASS11",
-			"NUM_CLASS12" };
+	public static String[] P10_vetName = { "simul", "SIGNAL", "BACKNOISE",
+			"SNRATIO", "FWHM", "BKG", "POS", "NUM_CLASS1", "NUM_CLASS2",
+			"NUM_CLASS3", "NUM_CLASS4", "NUM_CLASS5", "NUM_CLASS6",
+			"NUM_CLASS7", "NUM_CLASS8", "NUM_CLASS9", "NUM_CLASS10",
+			"NUM_CLASS11", "NUM_CLASS12" };
 
 	// ------------ p11rmn -----------------------
 	public static final int P11_GRID_NUMBER = 20;
@@ -241,8 +251,8 @@ public class MyConst {
 	public static final int P11_DIAM_ROI_BACKGROUND = 10;
 	public static final int P11_X_ROI_BACKGROUND = 20;
 	public static final int P11_Y_ROI_BACKGROUND = 10;
-	public static String[] P11_vetName = { "zero", "SIGNAL", "BACKNOISE",
-			"SNRATIO", "FWHM", "NUM_CLASS1", "NUM_CLASS2", "NUM_CLASS3",
+	public static String[] P11_vetName = { "simulata", "SIGNAL", "BACKNOISE",
+			"SNRATIO", "FWHM", "BKG", "NUM_CLASS1", "NUM_CLASS2", "NUM_CLASS3",
 			"NUM_CLASS4", "NUM_CLASS5", "NUM_CLASS6", "NUM_CLASS7",
 			"NUM_CLASS8", "NUM_CLASS9", "NUM_CLASS10", "NUM_CLASS11",
 			"NUM_CLASS12" };

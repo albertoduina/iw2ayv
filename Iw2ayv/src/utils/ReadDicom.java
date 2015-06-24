@@ -334,6 +334,17 @@ public class ReadDicom {
 		return coil;
 	}
 
+	public static String getThisCoil(ImagePlus imp1, String coil) {
+
+		String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
+		int i1 = total.indexOf(coil);
+		if (i1 == -1) {
+			return null;
+		} else {
+			return coil;
+		}
+	}
+
 	public static String getAllCoils(ImagePlus imp1) {
 
 		String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);

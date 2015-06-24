@@ -93,7 +93,7 @@ public class ReportStandardInfo {
 				MyConst.DICOM_STATION_NAME);
 		String patName = ReadDicom.readDicomParameter(imp1,
 				MyConst.DICOM_PATIENT_NAME);
-		
+
 		String frequency = ReadDicom.readDicomParameter(imp1,
 				MyConst.DICOM_IMAGING_FREQUENCY);
 
@@ -134,7 +134,6 @@ public class ReportStandardInfo {
 
 		String elabDate = strDay + "-" + strMonth + "-" + strYear + "_"
 				+ version;
-		
 
 		// String coil1 = ReadDicom.readDicomParameter(imp1, DICOM_COIL);
 		String coil = ReadDicom.getFirstCoil(imp1);
@@ -245,10 +244,18 @@ public class ReportStandardInfo {
 				+ version;
 		// String coil = UtilAyv.getFirstCoil(ReadDicom.readDicomParameter(imp1,
 		// DICOM_COIL));
+	
+		
+		
+		aux3 = ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_SERIES_DESCRIPTION);
 
-		String coil = ReadDicom.getFirstCoil(imp1);
+		String reqCoil = getRequestedCoil(UtilAyv.getFiveLetters(aux3).trim(), tabCodici);
 
-		// IJ.log("coil=="+coil);
+
+		String coil = ReadDicom.getThisCoil(imp1, reqCoil);
+		if (coil==null) coil="";
+
 		if (coil.equals("MISSING")) {
 			coil = new UtilAyv().kludge(path);
 		}
@@ -266,18 +273,30 @@ public class ReportStandardInfo {
 		return (simpleHeader);
 	}
 
-	public static String[] getMiniStandardInfo(String path, ImagePlus imp1, boolean called) {
+	public static String getRequestedCoil(String searchThis,
+			String[][] tabCodici) {
+		String out1 = null;
+		for (int i1 = 0; i1 < tabCodici.length; i1++) {
+			if (TableCode.getCode(tabCodici, i1).equals(searchThis)) {
+				out1= TableCode.getCoil(tabCodici, i1);
+			}
+		}
+		return out1;
+	}
+
+	public static String[] getMiniStandardInfo(String path, ImagePlus imp1,
+			boolean called) {
 
 		if (imp1 == null) {
 			IJ.log("getSimpleStandardInfo.imp1 == null");
 			return null;
 		}
-			// or: the code is in the dicomSeriesDescription
-		String	aux3 = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_SERIES_DESCRIPTION);
+		// or: the code is in the dicomSeriesDescription
+		String aux3 = ReadDicom.readDicomParameter(imp1,
+				MyConst.DICOM_SERIES_DESCRIPTION);
 
-		String	codice = UtilAyv.getFiveLetters(aux3).trim();
-	
+		String codice = UtilAyv.getFiveLetters(aux3).trim();
+
 		String stationName = ReadDicom.readDicomParameter(imp1,
 				MyConst.DICOM_STATION_NAME);
 		String patName = ReadDicom.readDicomParameter(imp1,
@@ -317,14 +336,9 @@ public class ReportStandardInfo {
 		simpleHeader[4] = elabDate;
 		simpleHeader[5] = coil;
 		simpleHeader[6] = frequency;
-			return (simpleHeader);
+		return (simpleHeader);
 	}
 
-	
-	
-	
-	
-	
 	/**
 	 * scrive le informazioni raccolte da getStandardInfo2 o getStandardInfo3
 	 * nella ResultsTable
@@ -351,30 +365,29 @@ public class ReportStandardInfo {
 		return (rt);
 	}
 
-
 	/***
 	 * Questa versione aggiornata non utilizza più setHeading, ora deprecata
+	 * 
 	 * @param info1
 	 * @return
 	 */
-	//	@SuppressWarnings("deprecation")
+	// @SuppressWarnings("deprecation")
 	public static ResultsTable putSimpleStandardInfoRT(String[] info1) {
 
-//		ResultsTable rt = ResultsTable.getResultsTable();
+		// ResultsTable rt = ResultsTable.getResultsTable();
 		ResultsTable rt = new ResultsTable();
 		rt.reset();
-		
+
 		rt.incrementCounter();
 		String t1 = "TESTO";
-		
+
 		for (int i1 = 0; i1 < info1.length; i1++) {
 			rt.addLabel(t1, info1[i1]);
 			rt.incrementCounter();
 		}
 		return (rt);
 	}
-	
-	
+
 	public static ResultsTable putMiniStandardInfoRT(String[] info1) {
 
 		ResultsTable rt = ResultsTable.getResultsTable();
