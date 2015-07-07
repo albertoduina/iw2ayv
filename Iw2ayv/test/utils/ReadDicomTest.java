@@ -43,10 +43,10 @@ public class ReadDicomTest {
 		}
 
 		String coil = ReadDicom.getAllCoils(imp);
-//		IJ.log("Coil= " + coil);
+		// IJ.log("Coil= " + coil);
 
 		boolean ok = coil.contains("ne1,2");
-		ok = coil.toLowerCase().contains("nE1,2".toLowerCase());	
+		ok = coil.toLowerCase().contains("nE1,2".toLowerCase());
 		assertTrue("non trovato nome coil", ok);
 	}
 
@@ -98,4 +98,14 @@ public class ReadDicomTest {
 		assertTrue("non dicom", dic);
 	}
 
+	@Test
+	public final void testGetThisCoil() {
+		String path = ".\\Test4\\01";
+		ImagePlus imp1 = new Opener().openImage(path);
+		if (imp1 == null) {
+			fail("Manca immagine");
+		}
+		String coil = ReadDicom.getThisCoil(imp1, "PH");
+		MyLog.waitHere("coil= " + coil);
+	}
 }

@@ -244,21 +244,21 @@ public class ReportStandardInfo {
 				+ version;
 		// String coil = UtilAyv.getFirstCoil(ReadDicom.readDicomParameter(imp1,
 		// DICOM_COIL));
-	
-		
-		
+
 		aux3 = ReadDicom.readDicomParameter(imp1,
 				MyConst.DICOM_SERIES_DESCRIPTION);
 
-		String reqCoil = getRequestedCoil(UtilAyv.getFiveLetters(aux3).trim(), tabCodici);
-
+		String reqCoil = getRequestedCoil(UtilAyv.getFiveLetters(aux3).trim(),
+				tabCodici);
 
 		String coil = ReadDicom.getThisCoil(imp1, reqCoil);
-		if (coil==null) coil="";
+		if (coil == null)
+			coil = "";
 
 		if (coil.equals("MISSING")) {
 			coil = new UtilAyv().kludge(path);
 		}
+
 
 		// ModelessMsg("codice="+codice, "continua");
 		simpleHeader[0] = codice;
@@ -278,7 +278,7 @@ public class ReportStandardInfo {
 		String out1 = null;
 		for (int i1 = 0; i1 < tabCodici.length; i1++) {
 			if (TableCode.getCode(tabCodici, i1).equals(searchThis)) {
-				out1= TableCode.getCoil(tabCodici, i1);
+				out1 = TableCode.getCoil(tabCodici, i1);
 			}
 		}
 		return out1;

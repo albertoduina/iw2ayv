@@ -339,7 +339,7 @@ public class ReadDicom {
 		String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
 		int i1 = total.indexOf(coil);
 		if (i1 == -1) {
-			return null;
+			return total;
 		} else {
 			return coil;
 		}
