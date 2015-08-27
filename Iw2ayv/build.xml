@@ -78,7 +78,7 @@
 	<target name="compile" description="Compile everything.">
 		<echo message="Eseguo COMPILE" />
 		<!-- Build everything; add debug="on" to debug -->
-		<javac srcdir="${source}" destdir="${output}" optimize="on" target="1.5" encoding="iso8859-1" debug="on" classpath="${pathImageJ};${pathJfreechart};${pathJcommon}" />
+		<javac srcdir="${source}" destdir="${output}" optimize="on" target="1.6" source="1.6" encoding="iso8859-1" debug="on" classpath="${pathImageJ};${pathJfreechart};${pathJcommon}" />
 	</target>
 
 	<target name="moveSources" description="Move the sources.">
