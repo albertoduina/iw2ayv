@@ -75,13 +75,9 @@ public class UtilAyv {
 	public static int location;
 
 	public static void stopHere() {
-		IJ.log("file="
-				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
-				+ "line="
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ " class="
-				+ Thread.currentThread().getStackTrace()[2].getClassName()
-				+ " method="
+		IJ.log("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + "line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + " class="
+				+ Thread.currentThread().getStackTrace()[2].getClassName() + " method="
 				+ Thread.currentThread().getStackTrace()[2].getMethodName());
 		new WaitForUserDialog("Do something, then click OK.").show();
 	}
@@ -150,8 +146,7 @@ public class UtilAyv {
 		ip1 = imp1.getProcessor();
 		ip2 = imp2.getProcessor();
 		ImageProcessor ip3 = new FloatProcessor(width, height, pixels, null);
-		ImagePlus imp3 = new ImagePlus("Immagine differenza pixel-by-pixel",
-				ip3);
+		ImagePlus imp3 = new ImagePlus("Immagine differenza pixel-by-pixel", ip3);
 		ip3 = imp3.getProcessor();
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
@@ -213,8 +208,7 @@ public class UtilAyv {
 	 * @return msd[0] coordinata x rototraslata, msd[1] coordinata y
 	 *         rototraslata
 	 */
-	public static double[] coord2D(double ax, double ay, double bx, double by,
-			double cx, double cy, boolean debug1) {
+	public static double[] coord2D(double ax, double ay, double bx, double by, double cx, double cy, boolean debug1) {
 		double x1;
 		double y1;
 		double msd[];
@@ -224,10 +218,8 @@ public class UtilAyv {
 		if (debug1) {
 			IJ.log("-------- coord2D --------");
 
-			IJ.log("angolo= " + Math.toDegrees(alf1) + "  sin= "
-					+ Math.sin(alf1));
-			IJ.log("angolo= " + Math.toDegrees(alf1) + "  cos= "
-					+ Math.cos(alf1));
+			IJ.log("angolo= " + Math.toDegrees(alf1) + "  sin= " + Math.sin(alf1));
+			IJ.log("angolo= " + Math.toDegrees(alf1) + "  cos= " + Math.cos(alf1));
 		}
 		if (Math.sin(alf1) < 0) {
 			// piu30
@@ -242,30 +234,25 @@ public class UtilAyv {
 		msd[0] = x1;
 		msd[1] = y1;
 		if (debug1) {
-			IJ.log("coord2D output cx= " + cx + "  x1= " + x1 + "  cy= " + cy
-					+ "  y1= " + y1);
+			IJ.log("coord2D output cx= " + cx + "  x1= " + x1 + "  cy= " + cy + "  y1= " + y1);
 			IJ.log("--------------------------");
 
 		}
 		return msd;
 	} // coord2D
 
-	public static double[] coord2D2(double[] vetReference, double cx,
-			double cy, boolean debug1) {
+	public static double[] coord2D2(double[] vetReference, double cx, double cy, boolean debug1) {
 		double x1;
 		double y1;
 		double msd[];
 		double alf1;
 
-		alf1 = Math.atan((vetReference[1] - vetReference[3])
-				/ (vetReference[0] - vetReference[2]));
+		alf1 = Math.atan((vetReference[1] - vetReference[3]) / (vetReference[0] - vetReference[2]));
 		if (debug1) {
 			IJ.log("-------- coord2D2 --------");
 
-			IJ.log("angolo= " + Math.toDegrees(alf1) + "  sin= "
-					+ Math.sin(alf1));
-			IJ.log("angolo= " + Math.toDegrees(alf1) + "  cos= "
-					+ Math.cos(alf1));
+			IJ.log("angolo= " + Math.toDegrees(alf1) + "  sin= " + Math.sin(alf1));
+			IJ.log("angolo= " + Math.toDegrees(alf1) + "  cos= " + Math.cos(alf1));
 		}
 
 		if (Math.sin(alf1) < 0) {
@@ -281,8 +268,7 @@ public class UtilAyv {
 		msd[0] = x1;
 		msd[1] = y1;
 		if (debug1) {
-			IJ.log("coord2D output cx= " + cx + "  x1= " + x1 + "  cy= " + cy
-					+ "  y1= " + y1);
+			IJ.log("coord2D output cx= " + cx + "  x1= " + x1 + "  cy= " + cy + "  y1= " + y1);
 			IJ.log("--------------------------");
 		}
 
@@ -336,7 +322,7 @@ public class UtilAyv {
 
 	/**
 	 * chiude tutte le finestre e la ResultsTable, ovvia ad un malfunzionamento
-	 * di CloseAllWindows se viene selezionato RIFAI più volte
+	 * di CloseAllWindows se viene selezionato RIFAI piï¿½ volte
 	 */
 	public static void cleanUp() {
 
@@ -479,8 +465,7 @@ public class UtilAyv {
 		return (pixels);
 	} // truePixels
 
-	public static boolean compareImagesByDifference(ImagePlus imp1,
-			ImagePlus imp2) {
+	public static boolean compareImagesByDifference(ImagePlus imp1, ImagePlus imp2) {
 		ImageCalculator ical = new ImageCalculator();
 
 		ImagePlus imp3 = ical.run("Subtract create 32-bit", imp1, imp2);
@@ -494,8 +479,7 @@ public class UtilAyv {
 		return result;
 	}
 
-	public static boolean compareImagesByImageProcessors(ImagePlus imp1,
-			ImagePlus imp2) {
+	public static boolean compareImagesByImageProcessors(ImagePlus imp1, ImagePlus imp2) {
 		if (imp1.getBitDepth() != imp2.getBitDepth())
 			return false;
 		if (imp1.getBitDepth() == 32) {
@@ -518,8 +502,7 @@ public class UtilAyv {
 	}
 
 	public static boolean compareImagesByPixel(ImagePlus imp1, ImagePlus imp2) {
-		if (imp1.getWidth() != imp2.getWidth()
-				|| imp1.getHeight() != imp2.getHeight()) {
+		if (imp1.getWidth() != imp2.getWidth() || imp1.getHeight() != imp2.getHeight()) {
 			IJ.log("compareImagesByPixel.images of different dimensions");
 			return false;
 		}
@@ -535,8 +518,7 @@ public class UtilAyv {
 			byte[] pixels2 = (byte[]) ip2.getPixels();
 			for (int i1 = 0; i1 < pixels1.length; i1++) {
 				if (pixels1[i1] != pixels2[i1]) {
-					IJ.log("first difference found in pixel " + i1 + "/"
-							+ pixels1.length + " value= " + pixels1[i1]
+					IJ.log("first difference found in pixel " + i1 + "/" + pixels1.length + " value= " + pixels1[i1]
 							+ " instead of " + pixels2[i1]);
 					return false;
 				}
@@ -549,8 +531,7 @@ public class UtilAyv {
 			short[] pixels2 = (short[]) ip2.getPixels();
 			for (int i1 = 0; i1 < pixels1.length; i1++) {
 				if (pixels1[i1] != pixels2[i1]) {
-					IJ.log("first difference found in pixel " + i1 + "/"
-							+ pixels1.length + " value= " + pixels1[i1]
+					IJ.log("first difference found in pixel " + i1 + "/" + pixels1.length + " value= " + pixels1[i1]
 							+ " instead of " + pixels2[i1]);
 					return false;
 				}
@@ -564,8 +545,7 @@ public class UtilAyv {
 			float[] pixels2 = (float[]) ip2.getPixels();
 			for (int i1 = 0; i1 < pixels1.length; i1++) {
 				if (pixels1[i1] != pixels2[i1]) {
-					IJ.log("first difference found in pixel " + i1 + "/"
-							+ pixels1.length + " value= " + pixels1[i1]
+					IJ.log("first difference found in pixel " + i1 + "/" + pixels1.length + " value= " + pixels1[i1]
 							+ " instead of " + pixels2[i1]);
 					return false;
 				}
@@ -672,8 +652,7 @@ public class UtilAyv {
 
 		ImagePlus imp = new Opener().openImage(path);
 		if (imp == null) {
-			MyLog.waitThere("Immagine " + path
-					+ " inesistente o non visualizzabile");
+			MyLog.waitThere("Immagine " + path + " inesistente o non visualizzabile");
 			return null;
 		}
 		// IJ.log("OpenImageEnlarged");
@@ -693,8 +672,7 @@ public class UtilAyv {
 		Opener opener = new Opener();
 		ImagePlus imp = opener.openImage(path);
 		if (imp == null) {
-			MyLog.waitThere("Immagine " + path
-					+ " inesistente o non visualizzabile");
+			MyLog.waitThere("Immagine " + path + " inesistente o non visualizzabile");
 			return null;
 		}
 		// IJ.log("OpenImageNormal");
@@ -715,8 +693,7 @@ public class UtilAyv {
 		ImagePlus imp = opener.openImage(path);
 		if (imp == null) {
 			if (verbose)
-				MyLog.waitThere("Immagine " + path
-						+ " inesistente o non visualizzabile");
+				MyLog.waitThere("Immagine " + path + " inesistente o non visualizzabile");
 			return null;
 		}
 		return imp;
@@ -746,7 +723,7 @@ public class UtilAyv {
 		}
 		ImageWindow win = imp.getWindow();
 		if (win != null) {
-			MyLog.waitThere("immagine già visualizzata !");
+			MyLog.waitThere("immagine giï¿½ visualizzata !");
 		} else {
 			imp.show();
 			do {
@@ -785,8 +762,7 @@ public class UtilAyv {
 	 */
 	public static int siemensGe() {
 
-		int selection = ButtonMessages.ModalMsg("Seleziona immagine ",
-				"Siemens", "GE");
+		int selection = ButtonMessages.ModalMsg("Seleziona immagine ", "Siemens", "GE");
 		// N.B.: Siemens =2 !!!!
 		return selection;
 	}
@@ -802,10 +778,9 @@ public class UtilAyv {
 	 */
 	public static int userSelectionManual1(String version, String type) {
 
-		int userSelection1 = ButtonMessages.ModelessMsg(version + type
-				+ "\n \n"
-				+ "Scegliere modo funzionamento AUTOM o un PASSO alla volta",
-				"AUTOM", "PASSO", "PROVA", "ABOUT", "CHIUDI");
+		int userSelection1 = ButtonMessages.ModelessMsg(
+				version + type + "\n \n" + "Scegliere modo funzionamento AUTOM o un PASSO alla volta", "AUTOM", "PASSO",
+				"PROVA", "ABOUT", "CHIUDI");
 		return (userSelection1);
 	}
 
@@ -818,13 +793,11 @@ public class UtilAyv {
 	 *            stringa con la dicitura
 	 * @return tasto selezionato
 	 */
-	public static int userSelectionManual2(String version, String type,
-			int preset) {
+	public static int userSelectionManual2(String version, String type, int preset) {
 
-		int userSelection1 = ButtonMessages.ModelessMsg2(version + type
-				+ "\n \n"
-				+ "Scegliere modo funzionamento AUTOM o un PASSO alla volta",
-				"AUTOM", "PASSO", "PROVA", "ABOUT", "CHIUDI", preset);
+		int userSelection1 = ButtonMessages.ModelessMsg2(
+				version + type + "\n \n" + "Scegliere modo funzionamento AUTOM o un PASSO alla volta", "AUTOM", "PASSO",
+				"PROVA", "ABOUT", "CHIUDI", preset);
 
 		return (userSelection1);
 	}
@@ -840,8 +813,7 @@ public class UtilAyv {
 	 */
 	public static int userSelectionManual(String version, String type) {
 
-		String question = version + type + "\n \n"
-				+ "Scegliere modo funzionamento AUTOM o un PASSO alla volta";
+		String question = version + type + "\n \n" + "Scegliere modo funzionamento AUTOM o un PASSO alla volta";
 		String[] vetPulsanti = { "AUTOM", "PASSO", "PROVA", "ABOUT", "CHIUDI" };
 		boolean modal = false;
 		String autoStr = null;
@@ -851,11 +823,9 @@ public class UtilAyv {
 		return (risposta);
 	}
 
-	public static int userSelectionManual(String version, String type,
-			String autoStr) {
+	public static int userSelectionManual(String version, String type, String autoStr) {
 
-		String question = version + type + "\n \n"
-				+ "Scegliere modo funzionamento AUTOM o un PASSO alla volta";
+		String question = version + type + "\n \n" + "Scegliere modo funzionamento AUTOM o un PASSO alla volta";
 		String[] vetPulsanti = { "AUTOM", "PASSO", "PROVA", "ABOUT", "CHIUDI" };
 		boolean modal = false;
 		AutoDialog ad1 = new AutoDialog(question, vetPulsanti, autoStr, modal);
@@ -875,8 +845,7 @@ public class UtilAyv {
 	 */
 	public static int userSelectionAuto(String version, String type) {
 
-		int userSelection2 = ButtonMessages.ModelessMsg(version + type
-				+ "\n \n", "AUTOM", "PASSO", "ABOUT", "CHIUDI");
+		int userSelection2 = ButtonMessages.ModelessMsg(version + type + "\n \n", "AUTOM", "PASSO", "ABOUT", "CHIUDI");
 		return (userSelection2);
 	}
 
@@ -889,14 +858,12 @@ public class UtilAyv {
 	 *            stringa con la dicitura
 	 * @return tasto selezionato
 	 */
-	public static int userSelectionAuto(String version, String type,
-			String code, String coil, int riga, int length) {
+	public static int userSelectionAuto(String version, String type, String code, String coil, int riga, int length) {
 
-		int userSelection2 = ButtonMessages.ModelessMsg(version + type
-				+ MyConst.NEWLINE + MyConst.NEWLINE + " CONTROLLO " + riga
-				+ "/" + length + "    CODICE= " + code + "    COIL= " + coil
-				+ MyConst.NEWLINE + MyConst.NEWLINE, "AUTOM", "PASSO", "ABOUT",
-				"CHIUDI");
+		int userSelection2 = ButtonMessages.ModelessMsg(
+				version + type + MyConst.NEWLINE + MyConst.NEWLINE + " CONTROLLO " + riga + "/" + length
+						+ "    CODICE= " + code + "    COIL= " + coil + MyConst.NEWLINE + MyConst.NEWLINE,
+				"AUTOM", "PASSO", "ABOUT", "CHIUDI");
 		return (userSelection2);
 	}
 
@@ -918,8 +885,7 @@ public class UtilAyv {
 		return ip;
 	}
 
-	public static boolean compareVectors(double[] vect1, double[] vect2,
-			double precision, String msg) {
+	public static boolean compareVectors(double[] vect1, double[] vect2, double precision, String msg) {
 		if ((vect1 == null) || (vect2 == null)) {
 			if (msg.length() > 0) {
 				IJ.log(msg + " Warning vector = null");
@@ -941,8 +907,7 @@ public class UtilAyv {
 		return true;
 	}
 
-	public static boolean compareVectors(float[] vect1, float[] vect2,
-			float precision, String msg) {
+	public static boolean compareVectors(float[] vect1, float[] vect2, float precision, String msg) {
 		if ((vect1 == null) || (vect2 == null)) {
 			if (msg.length() > 0) {
 				IJ.log(msg + " Warning vector = null");
@@ -1006,8 +971,7 @@ public class UtilAyv {
 		return true;
 	}
 
-	public static boolean compareVectors(String[] vect1, String[] vect2,
-			String msg) {
+	public static boolean compareVectors(String[] vect1, String[] vect2, String msg) {
 		if ((vect1 == null) || (vect2 == null)) {
 			if (msg.length() > 0) {
 				IJ.log(msg + " Warning vector = null");
@@ -1023,8 +987,7 @@ public class UtilAyv {
 		for (int i1 = 0; i1 < vect1.length; i1++) {
 			if (!vect1[i1].equals(vect2[i1])) {
 				if (msg.length() > 0) {
-					IJ.log(msg + " At pos " + i1 + " " + vect1[i1] + " differ "
-							+ vect2[i1]);
+					IJ.log(msg + " At pos " + i1 + " " + vect1[i1] + " differ " + vect2[i1]);
 				}
 				return false;
 			}
@@ -1032,8 +995,7 @@ public class UtilAyv {
 		return true;
 	}
 
-	public static boolean compareMatrix(double[][] mat1, double[][] mat2,
-			String msg) {
+	public static boolean compareMatrix(double[][] mat1, double[][] mat2, String msg) {
 		if ((mat1 == null) || (mat2 == null)) {
 			if (msg.length() > 0) {
 				IJ.log(msg + " Warning matrix = null");
@@ -1048,7 +1010,8 @@ public class UtilAyv {
 		}
 		for (int i2 = 0; i2 < mat1[0].length; i2++) {
 			for (int i1 = 0; i1 < mat1.length; i1++) {
-				// IJ.log("compare mat1["+i1+"]["+i2+"]="+mat1[i1][i2]+"\tmat2["+i1+"]["+i2+"]="+mat2[i1][i2]);
+				// IJ.log("compare
+				// mat1["+i1+"]["+i2+"]="+mat1[i1][i2]+"\tmat2["+i1+"]["+i2+"]="+mat2[i1][i2]);
 				if (mat1[i1][i2] != mat2[i1][i2]) {
 					IJ.log("compareMatrix difference in " + i1 + "," + i2);
 					return false;
@@ -1058,8 +1021,7 @@ public class UtilAyv {
 		return true;
 	}
 
-	public static boolean compareMatrix(float[][] mat1, float[][] mat2,
-			String msg) {
+	public static boolean compareMatrix(float[][] mat1, float[][] mat2, String msg) {
 		if ((mat1 == null) || (mat2 == null)) {
 			if (msg.length() > 0) {
 				IJ.log(msg + " Warning matrix = null");
@@ -1074,7 +1036,8 @@ public class UtilAyv {
 		}
 		for (int i2 = 0; i2 < mat1[0].length; i2++) {
 			for (int i1 = 0; i1 < mat1.length; i1++) {
-				// IJ.log("compare mat1["+i1+"]["+i2+"]="+mat1[i1][i2]+"\tmat2["+i1+"]["+i2+"]="+mat2[i1][i2]);
+				// IJ.log("compare
+				// mat1["+i1+"]["+i2+"]="+mat1[i1][i2]+"\tmat2["+i1+"]["+i2+"]="+mat2[i1][i2]);
 				if (mat1[i1][i2] != mat2[i1][i2]) {
 					IJ.log("compareMatrix difference in " + i1 + "," + i2);
 					return false;
@@ -1099,7 +1062,8 @@ public class UtilAyv {
 		}
 		for (int i2 = 0; i2 < mat1[0].length; i2++) {
 			for (int i1 = 0; i1 < mat1.length; i1++) {
-				// IJ.log("compare mat1["+i1+"]["+i2+"]="+mat1[i1][i2]+"\tmat2["+i1+"]["+i2+"]="+mat2[i1][i2]);
+				// IJ.log("compare
+				// mat1["+i1+"]["+i2+"]="+mat1[i1][i2]+"\tmat2["+i1+"]["+i2+"]="+mat2[i1][i2]);
 				if (mat1[i1][i2] != mat2[i1][i2]) {
 					IJ.log("compareMatrix difference in " + i1 + "," + i2);
 					return false;
@@ -1109,8 +1073,7 @@ public class UtilAyv {
 		return true;
 	}
 
-	public static boolean compareMatrix(String[][] mat1, String[][] mat2,
-			String msg) {
+	public static boolean compareMatrix(String[][] mat1, String[][] mat2, String msg) {
 		if ((mat1 == null) || (mat2 == null)) {
 			if (msg.length() > 0) {
 				IJ.log(msg + " Warning matrix = null");
@@ -1125,7 +1088,8 @@ public class UtilAyv {
 		}
 		for (int i2 = 0; i2 < mat1[0].length; i2++) {
 			for (int i1 = 0; i1 < mat1.length; i1++) {
-				// IJ.log("compare mat1["+i1+"]["+i2+"]="+mat1[i1][i2]+"\tmat2["+i1+"]["+i2+"]="+mat2[i1][i2]);
+				// IJ.log("compare
+				// mat1["+i1+"]["+i2+"]="+mat1[i1][i2]+"\tmat2["+i1+"]["+i2+"]="+mat2[i1][i2]);
 				if (!mat1[i1][i2].equals(mat2[i1][i2])) {
 					IJ.log("compareMatrix difference in " + i1 + "," + i2);
 					return false;
@@ -1135,22 +1099,19 @@ public class UtilAyv {
 		return true;
 	}
 
-	public static boolean compareDoublesWithTolerance(double aa, double bb,
-			double tolerance) {
+	public static boolean compareDoublesWithTolerance(double aa, double bb, double tolerance) {
 		if (Double.compare(aa, bb) == 0)
 			return true;
 		return Math.abs(aa - bb) < tolerance;
 	}
 
-	public static boolean compareDoublesWithTolerance(double aa, double bb,
-			int digits) {
+	public static boolean compareDoublesWithTolerance(double aa, double bb, int digits) {
 
 		// IJ.log ("aa= "+aa+" bb="+bb+" digits=" +digits);
 
 		double uno = roundDoubleDecimals(aa, digits);
 		double due = roundDoubleDecimals(bb, digits);
-		double tre = Math.abs(roundDoubleDecimals(aa, digits)
-				- roundDoubleDecimals(bb, digits));
+		double tre = Math.abs(roundDoubleDecimals(aa, digits) - roundDoubleDecimals(bb, digits));
 		// IJ.log ("uno= "+uno+" due="+due+" tre=" +tre);
 		// MyLog.waitHere();
 
@@ -1280,8 +1241,7 @@ public class UtilAyv {
 	 * @param verbose
 	 * @return
 	 */
-	public static boolean verifyResults1(double[] vetResults,
-			double[] vetReference, String[] vetName) {
+	public static boolean verifyResults1(double[] vetResults, double[] vetReference, String[] vetName) {
 		boolean testok = true;
 
 		if (vetResults == null || vetReference == null) {
@@ -1294,8 +1254,7 @@ public class UtilAyv {
 			return false;
 		}
 
-		if (vetResults.length != vetReference.length
-				|| vetResults.length != vetName.length) {
+		if (vetResults.length != vetReference.length || vetResults.length != vetName.length) {
 			MyLog.logVector(vetResults, "vetResults");
 			MyLog.logVector(vetReference, "vetReference");
 			MyLog.logVector(vetName, "vetName");
@@ -1310,8 +1269,7 @@ public class UtilAyv {
 		for (int i1 = 0; i1 < vetResults.length; i1++) {
 
 			if (Double.compare(vetResults[i1], vetReference[i1]) != 0) {
-				IJ.log(vetName[i1] + " ERRATO " + vetResults[i1] + " anzichè "
-						+ vetReference[i1]);
+				IJ.log(vetName[i1] + " ERRATO " + vetResults[i1] + " anzichï¿½ " + vetReference[i1]);
 				testok = false;
 			}
 		}
@@ -1325,8 +1283,7 @@ public class UtilAyv {
 	 * @param verbose
 	 * @return
 	 */
-	public static boolean verifyResults1(double[] vetResults,
-			double[] vetReference) {
+	public static boolean verifyResults1(double[] vetResults, double[] vetReference) {
 		boolean testok = true;
 
 		if (vetResults == null || vetReference == null) {
@@ -1347,30 +1304,28 @@ public class UtilAyv {
 		for (int i1 = 0; i1 < vetResults.length; i1++) {
 
 			if (vetResults[i1] != vetReference[i1]) {
-				MyLog.waitHere("ERRATO " + vetResults[i1] + " anzichè "
-						+ vetReference[i1]);
+				MyLog.waitHere("ERRATO " + vetResults[i1] + " anzichï¿½ " + vetReference[i1]);
 				testok = false;
 			}
 		}
 		return testok;
 	}
 
-	public static boolean verifyResults2(int[] xMeasuredPoints,
-			int[] yMeasuredPoints, int[] xRefPoints, int[] yRefPoints,
-			String what) {
+	public static boolean verifyResults2(int[] xMeasuredPoints, int[] yMeasuredPoints, int[] xRefPoints,
+			int[] yRefPoints, String what) {
 
 		boolean testok = true;
 		for (int i1 = 0; i1 < xMeasuredPoints.length; i1++) {
 			if (xMeasuredPoints[i1] != xRefPoints[i1]) {
-				IJ.log("Coordinata  X " + what + (i1 + 1) + " ERRATA ="
-						+ xMeasuredPoints[i1] + " anzichè " + xRefPoints[i1]);
+				IJ.log("Coordinata  X " + what + (i1 + 1) + " ERRATA =" + xMeasuredPoints[i1] + " anzichï¿½ "
+						+ xRefPoints[i1]);
 				testok = false;
 			}
 		}
 		for (int i1 = 0; i1 < yMeasuredPoints.length; i1++) {
 			if (yMeasuredPoints[i1] != yRefPoints[i1]) {
-				IJ.log("Coordinata  Y " + what + (i1 + 1) + " ERRATA ="
-						+ yMeasuredPoints[i1] + " anzichè " + yRefPoints[i1]);
+				IJ.log("Coordinata  Y " + what + (i1 + 1) + " ERRATA =" + yMeasuredPoints[i1] + " anzichï¿½ "
+						+ yRefPoints[i1]);
 				testok = false;
 			}
 		}
@@ -1429,8 +1384,7 @@ public class UtilAyv {
 	 * 
 	 * @param imp1
 	 */
-	public static void presetRoi(ImagePlus imp1, int diamRoi, int xOffset,
-			int yOffset, boolean circular) {
+	public static void presetRoi(ImagePlus imp1, int diamRoi, int xOffset, int yOffset, boolean circular) {
 
 		int xRoi1 = imp1.getWidth() / 2 - diamRoi / 2 + xOffset;
 		int yRoi1 = imp1.getHeight() / 2 - diamRoi / 2 + yOffset;
@@ -1447,8 +1401,7 @@ public class UtilAyv {
 		return;
 	}
 
-	public static Polygon selectionPointsClick(ImagePlus imp1,
-			String messageLabel, String buttonLabel) {
+	public static Polygon selectionPointsClick(ImagePlus imp1, String messageLabel, String buttonLabel) {
 
 		String oldTool = IJ.getToolName();
 		imp1.killRoi();
@@ -1478,8 +1431,7 @@ public class UtilAyv {
 	 * @param fileDir
 	 * @param iw2ayvTable
 	 */
-	public static void saveResults2(int[] vetRiga, String fileDir,
-			String[][] iw2ayvTable) {
+	public static void saveResults2(int[] vetRiga, String fileDir, String[][] iw2ayvTable) {
 
 		// IJ.run("Excel...", "select...=[" + fileDir + MyConst.XLS_FILE + "]");
 		TableSequence lr = new TableSequence();
@@ -1520,8 +1472,7 @@ public class UtilAyv {
 	 * @param fileDir
 	 * @param iw2ayvTable
 	 */
-	public static void saveResults(int[] vetRiga, String fileDir,
-			String[][] iw2ayvTable, ResultsTable rt) {
+	public static void saveResults(int[] vetRiga, String fileDir, String[][] iw2ayvTable, ResultsTable rt) {
 
 		// IJ.run("Excel...", "select...=[" + fileDir + MyConst.XLS_FILE + "]");
 
@@ -1545,8 +1496,7 @@ public class UtilAyv {
 	 * @param fileDir
 	 * @param iw2ayvTable
 	 */
-	public static void saveResults33(int[] vetRiga, String fileDir,
-			String[][] iw2ayvTable) {
+	public static void saveResults33(int[] vetRiga, String fileDir, String[][] iw2ayvTable) {
 
 		try {
 			mySaveAs2(fileDir + MyConst.TXT_FILE);
@@ -1593,8 +1543,7 @@ public class UtilAyv {
 	 * ".csv". Displays a file save dialog if 'path' is empty or null. Does
 	 * nothing if the table is empty.
 	 */
-	public static void mySaveAs(String path, ResultsTable rt)
-			throws IOException {
+	public static void mySaveAs(String path, ResultsTable rt) throws IOException {
 
 		if (rt.getCounter() == 0) {
 			MyLog.waitHere("NO_SAVE table empty!");
@@ -1688,8 +1637,7 @@ public class UtilAyv {
 	 *            results table
 	 * @return
 	 */
-	public static double[] vectorizeResultsMultiple(ResultsTable rt1,
-			int columns) {
+	public static double[] vectorizeResultsMultiple(ResultsTable rt1, int columns) {
 
 		int startColumn = 0;
 
@@ -1723,8 +1671,8 @@ public class UtilAyv {
 
 	public void demoPixelPertainRoiTest(ImageProcessor ip) {
 		/**
-		 * questo è solo un appunto sui metodi che possiamo utilizzare per
-		 * stabilire se un pixel è all'interno di una ROI.
+		 * questo ï¿½ solo un appunto sui metodi che possiamo utilizzare per
+		 * stabilire se un pixel ï¿½ all'interno di una ROI.
 		 */
 
 		// byte[] pixels = (byte[]) ip.getPixels();
@@ -1820,8 +1768,7 @@ public class UtilAyv {
 		new WaitForUserDialog("Press a key ....").show();
 	}
 
-	public static String getString(BufferedInputStream bo, int len)
-			throws IOException {
+	public static String getString(BufferedInputStream bo, int len) throws IOException {
 		int pos = 0;
 		byte[] buf = new byte[len];
 		// int size = bo.available();
@@ -1871,47 +1818,43 @@ public class UtilAyv {
 	}
 
 	/**
-	 * Verifica se un valore calcolato è nei limiti assegnati
+	 * Verifica se un valore calcolato ï¿½ nei limiti assegnati
 	 * 
 	 * @param signal
 	 *            valore calcolato
 	 * @param low
-	 *            limite inferiore accettabilità
+	 *            limite inferiore accettabilitï¿½
 	 * @param high
-	 *            limite superiore accettabilità
+	 *            limite superiore accettabilitï¿½
 	 * @param title
 	 *            stringa con nome valore
 	 * @return true se accettato
 	 */
-	public static int checkLimits(double signal, double low, double high,
-			String title) {
+	public static int checkLimits(double signal, double low, double high, String title) {
 		int userSelection = 0;
 
-		if ((Double.isNaN(signal)) || (Double.isInfinite(signal))
-				|| (signal < low) || (signal > high)) {
+		if ((Double.isNaN(signal)) || (Double.isInfinite(signal)) || (signal < low) || (signal > high)) {
 
-			userSelection = ButtonMessages.ModelessMsg("IL VALORE " + title
-					+ "= " + signal + " E'AL DI FUORI DAI LIMITI " + low
-					+ " - " + high, "SUCCESSIVA", "VISUALIZZA", "CONTINUA");
+			userSelection = ButtonMessages.ModelessMsg(
+					"IL VALORE " + title + "= " + signal + " E'AL DI FUORI DAI LIMITI " + low + " - " + high,
+					"SUCCESSIVA", "VISUALIZZA", "CONTINUA");
 			return userSelection;
 		} else
 			return 0;
 	}
 
-	public static boolean checkLimits2(double signal, double low, double high,
-			String title) {
+	public static boolean checkLimits2(double signal, double low, double high, String title) {
 
-		if ((Double.isNaN(signal)) || (Double.isInfinite(signal))
-				|| (signal < low) || (signal > high)) {
-			MyLog.waitThere("IL VALORE DI " + title + " = " + signal
-					+ " E'AL DI FUORI DEI LIMITI " + low + " , " + high);
+		if ((Double.isNaN(signal)) || (Double.isInfinite(signal)) || (signal < low) || (signal > high)) {
+			MyLog.waitThere(
+					"IL VALORE DI " + title + " = " + signal + " E'AL DI FUORI DEI LIMITI " + low + " , " + high);
 			return true;
 		} else
 			return false;
 	}
 
 	/***
-	 * Verifica se un valore calcolato è nei limiti assegnati, overloaded senza
+	 * Verifica se un valore calcolato ï¿½ nei limiti assegnati, overloaded senza
 	 * messaggio
 	 * 
 	 * @param signal
@@ -1921,8 +1864,7 @@ public class UtilAyv {
 	 */
 	public static boolean checkLimits(double signal, double low, double high) {
 
-		if ((Double.isNaN(signal)) || (Double.isInfinite(signal))
-				|| (signal < low) || (signal > high))
+		if ((Double.isNaN(signal)) || (Double.isInfinite(signal)) || (signal < low) || (signal > high))
 			return false;
 		else
 
@@ -2062,7 +2004,7 @@ public class UtilAyv {
 	 * siano acquisite tutte dalla stessa sequenza. Verifica che tutte le
 	 * immagini siano acquisite dalla stessa bobina (oppure MISSIONG). Verifiche
 	 * sugli echi delle immagini: Caso singola immagine p4, p6, p8: non ne devo
-	 * passare più di una. Caso due immagini p3, p10 e p12: due sole immagini
+	 * passare piï¿½ di una. Caso due immagini p3, p10 e p12: due sole immagini
 	 * acquisite una di seguito all'altra con lo stesso eco. Caso di p5 e p10 e
 	 * p11 quattro immagini, due gruppi di due echi diversi, acquisiti uno dopo
 	 * l'altro il primo eco deve essere inferiore al secondo eco
@@ -2072,8 +2014,11 @@ public class UtilAyv {
 	 * @param sel
 	 * @return
 	 */
-	public static boolean checkImages(int[] vetRiga, String[][] iw2ayvTable,
-			int sel, boolean debug) {
+	public static boolean checkImages(int[] vetRiga, String[][] iw2ayvTable, int sel, boolean debug) {
+
+		IJ.log("checkImages riceve vetRiga= ");
+		MyLog.logVector(vetRiga, "vetRiga");
+
 		String[] coil = new String[vetRiga.length];
 		String[] descr = new String[vetRiga.length];
 		String[] echo = new String[vetRiga.length];
@@ -2087,19 +2032,14 @@ public class UtilAyv {
 			stampa += vetRiga[i1] + "#";
 			String path1 = TableSequence.getPath(iw2ayvTable, vetRiga[i1]);
 			imp1 = UtilAyv.openImageNoDisplay(path1, true);
-			descr[i1] = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_SERIES_DESCRIPTION);
+			IJ.log("checkImages apre path1= " + path1);
+			descr[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
 			coil[i1] = ReadDicom.getAllCoils(imp1);
-			echo[i1] = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_ECHO_TIME);
-			serie[i1] = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_SERIES_NUMBER);
-			acq[i1] = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_ACQUISITION_NUMBER);
-			ima[i1] = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_IMAGE_NUMBER);
-			manufacturer[i1] = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_MANUFACTURER);
+			echo[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ECHO_TIME);
+			serie[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_NUMBER);
+			acq[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ACQUISITION_NUMBER);
+			ima[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_IMAGE_NUMBER);
+			manufacturer[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_MANUFACTURER);
 		}
 
 		// Sicuramente le immagini da analizzare dovranno tutte essere acquisite
@@ -2112,131 +2052,107 @@ public class UtilAyv {
 		for (int i1 = 1; i1 < vetRiga.length; i1++) {
 			if (!descr0.equals(descr[i1])) {
 
-				MyLog.waitThere(
-						"Problema sui dati ricevuti in AUTOMATICO: \n"
-								+ "la descrizione delle sequenze ricevute è differente "
-								+ stampa + "   " + descr0 + "  " + descr[i1],
-						debug);
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "la descrizione delle sequenze ricevute ï¿½ differente " + stampa + "   " + descr0 + "  "
+						+ descr[i1], debug);
 				return false;
 			}
 			if (!coil0.equals(coil[i1])) {
-				MyLog.waitThere(
-						"Problema sui dati ricevuti in AUTOMATICO: \n"
-								+ "le immagini ricevute devono essere tutte acquisite \n"
-								+ "con la stessa bobina" + stampa + "  "
-								+ coil0 + "  " + coil[i1], debug);
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "le immagini ricevute devono essere tutte acquisite \n" + "con la stessa bobina" + stampa
+						+ "  " + coil0 + "  " + coil[i1], debug);
 				return false;
 			}
 		}
 
 		switch (sel) {
 		case 1:
-			// questo è il caso della singola immagine p4, p6, p8
+			// questo ï¿½ il caso della singola immagine p4, p6, p8
 			if (vetRiga.length != 1) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "errore sul numero parametri ricevuti da Sequenze \n"
-						+ "previsti= 1 reali= " + stampa, debug);
+						+ "errore sul numero parametri ricevuti da Sequenze \n" + "previsti= 1 reali= " + stampa,
+						debug);
 				return false;
 			}
 			break;
 
 		case 2:
-			// questo è il caso tipico di p3, p10 e p12
+			// questo ï¿½ il caso tipico di p3, p10 e p12
 			// due sole immagini acquisite una di seguito all'altra.
 			// hanno lo stesso eco
 			if (vetRiga.length != 2) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "errore sul numero parametri ricevuti da Sequenze \n"
-						+ "previsti= 2 reali= " + stampa, debug);
+						+ "errore sul numero parametri ricevuti da Sequenze \n" + "previsti= 2 reali= " + stampa,
+						debug);
 				return false;
 			}
 			if (!echo[0].equals(echo[1])) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "immagini ricevute con tempi di echo differenti "
-						+ stampa, debug);
+						+ "immagini ricevute con tempi di echo differenti " + stampa, debug);
 				return false;
 			}
-			if ((!ima[0].equals("1") || !ima[1].equals("1"))
-					&& (manufacturer[0].equals("SIEMENS"))) {
+			if ((!ima[0].equals("1") || !ima[1].equals("1")) && (manufacturer[0].equals("SIEMENS"))) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "non soddisfatta la condizione ima1= 1 && ima2= 1 \n"
-						+ "" + stampa, debug);
+						+ "non soddisfatta la condizione ima1= 1 && ima2= 1 \n" + "" + stampa, debug);
 				return false;
 			}
 			break;
 		case 3:
 
-			// questo è il caso tipico di p5 e p10 e p11
+			// questo ï¿½ il caso tipico di p5 e p10 e p11
 			// quattro immagini, due gruppi di due echi diversi, acquisiti uno
 			// dopo l'altro
 			// il primo eco deve essere inferiore al secondo eco
 			if (vetRiga.length != 4) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "errore sul numero parametri ricevuti da Sequenze \n"
-						+ "previsti= 4 reali= " + stampa, debug);
+						+ "errore sul numero parametri ricevuti da Sequenze \n" + "previsti= 4 reali= " + stampa,
+						debug);
 				return false;
 			}
 			if (!echo[0].equals(echo[2]) || !echo[1].equals(echo[3])) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "i tempi di echo devono essere a due a due uguali \n"
-						+ "" + stampa + "\n \nechi= " + echo[0] + " " + echo[1]
-						+ " " + echo[2] + " " + echo[3], debug);
+						+ "i tempi di echo devono essere a due a due uguali \n" + "" + stampa + "\n \nechi= " + echo[0]
+						+ " " + echo[1] + " " + echo[2] + " " + echo[3], debug);
 				return false;
 			}
 			if (!(ReadDicom.readInt(echo[0]) < ReadDicom.readInt(echo[1]))) {
-				MyLog.waitThere(
-						"Problema sui dati ricevuti in AUTOMATICO: \n"
-								+ "i tempi di echo delle prime immagini devono essere \n"
-								+ "inferiori a quelli delle seconde " + stampa
-								+ "\n \nechi= " + echo[0] + " " + echo[1] + " "
-								+ echo[2] + " " + echo[3], debug);
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "i tempi di echo delle prime immagini devono essere \n" + "inferiori a quelli delle seconde "
+						+ stampa + "\n \nechi= " + echo[0] + " " + echo[1] + " " + echo[2] + " " + echo[3], debug);
 
 				return false;
 			}
-			if (!(ima[0].equals("1")
-					&& ima[1].equals("2")
-					&& ima[2].equals("1")
-					&& ima[3].equals("2")
-					|| !(ima[0].equals("1") && ima[1].equals("4")
-							&& ima[2].equals("3") && ima[3].equals("6"))
-					|| !(ima[0].equals("2") && ima[1].equals("5")
-							&& ima[2].equals("1") && ima[3].equals("4")) || !(ima[0]
-					.equals("3") && ima[1].equals("6") && ima[2].equals("2") && ima[3]
-						.equals("5")))) {
-				MyLog.waitThere(
-						"Problema sui dati ricevuti in AUTOMATICO: \n"
-								+ "non soddisfatta la condizione ima1= 1, ima2= 2, ima3= 1, ima4=2 \n"
-								+ "" + stampa + "  ima=" + ima[0] + " "
-								+ ima[1] + " " + ima[2] + " " + ima[3], debug);
+			if (!(ima[0].equals("1") && ima[1].equals("2") && ima[2].equals("1") && ima[3].equals("2")
+					|| !(ima[0].equals("1") && ima[1].equals("4") && ima[2].equals("3") && ima[3].equals("6"))
+					|| !(ima[0].equals("2") && ima[1].equals("5") && ima[2].equals("1") && ima[3].equals("4"))
+					|| !(ima[0].equals("3") && ima[1].equals("6") && ima[2].equals("2") && ima[3].equals("5")))) {
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "non soddisfatta la condizione ima1= 1, ima2= 2, ima3= 1, ima4=2 \n" + "" + stampa + "  ima="
+						+ ima[0] + " " + ima[1] + " " + ima[2] + " " + ima[3], debug);
 				return false;
 			}
 			break;
 
 		case 4:
 
-			// questo è il caso tipico di p3 e p10 e p12, nell'ipotetico caso di
+			// questo ï¿½ il caso tipico di p3 e p10 e p12, nell'ipotetico caso di
 			// quattro immagini
 			if (vetRiga.length != 4) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "errore sul numero parametri ricevuti da Sequenze \n"
-						+ "previsti= 4 reali= " + stampa, debug);
+						+ "errore sul numero parametri ricevuti da Sequenze \n" + "previsti= 4 reali= " + stampa,
+						debug);
 				return false;
 			}
-			if (!echo[0].equals(echo[1]) || !echo[0].equals(echo[2])
-					|| !echo[0].equals(echo[3])) {
+			if (!echo[0].equals(echo[1]) || !echo[0].equals(echo[2]) || !echo[0].equals(echo[3])) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "immagini ricevute con tempi di echo differenti \n"
-						+ "" + stampa + "\n \nechi= " + echo[0] + " " + echo[1]
-						+ " " + echo[2] + " " + echo[3], debug);
+						+ "immagini ricevute con tempi di echo differenti \n" + "" + stampa + "\n \nechi= " + echo[0]
+						+ " " + echo[1] + " " + echo[2] + " " + echo[3], debug);
 				return false;
 			}
-			if (!ima[0].equals("1") || !ima[1].equals("2")
-					|| !ima[2].equals("1") || !ima[3].equals("2")) {
-				MyLog.waitThere(
-						"Problema sui dati ricevuti in AUTOMATICO: \n"
-								+ "non soddisfatta la condizione ima1= 1, ima2= 2, ima3= 1, ima4=2 \n"
-								+ "" + stampa + "  ima=" + ima[0] + " "
-								+ ima[1] + " " + ima[2] + " " + ima[3], debug);
+			if (!ima[0].equals("1") || !ima[1].equals("2") || !ima[2].equals("1") || !ima[3].equals("2")) {
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "non soddisfatta la condizione ima1= 1, ima2= 2, ima3= 1, ima4=2 \n" + "" + stampa + "  ima="
+						+ ima[0] + " " + ima[1] + " " + ima[2] + " " + ima[3], debug);
 				return false;
 			}
 			break;
@@ -2261,11 +2177,9 @@ public class UtilAyv {
 	 * @param irraggiungibile
 	 * @return
 	 */
-	public static double[] positionSearch15(ImagePlus imp1,
-			double[] circleData, double xBkg, double yBkg, double diamBkg,
-			int guard, int select, String info1, boolean circle,
-			boolean autoCalled, boolean step, boolean demo, boolean test,
-			boolean fast, boolean irraggiungibile) {
+	public static double[] positionSearch15(ImagePlus imp1, double[] circleData, double xBkg, double yBkg,
+			double diamBkg, int guard, int select, String info1, boolean circle, boolean autoCalled, boolean step,
+			boolean demo, boolean test, boolean fast, boolean irraggiungibile) {
 
 		boolean debug = true;
 
@@ -2293,12 +2207,11 @@ public class UtilAyv {
 			if (demo) {
 				UtilAyv.showImageMaximized(imp2);
 				ImageUtils.imageToFront(imp2);
-				imp2.setRoi(new OvalRoi(xCenterCircle - diamCircle / 2,
-						yCenterCircle - diamCircle / 2, diamCircle, diamCircle));
+				imp2.setRoi(new OvalRoi(xCenterCircle - diamCircle / 2, yCenterCircle - diamCircle / 2, diamCircle,
+						diamCircle));
 				imp2.getRoi().setStrokeColor(Color.red);
 				over2.addElement(imp2.getRoi());
-				MyLog.waitHere(
-						"Ricerca della posizione per calcolo background", debug);
+				MyLog.waitHere("Ricerca della posizione per calcolo background", debug);
 			}
 		}
 
@@ -2331,19 +2244,17 @@ public class UtilAyv {
 
 			double critic_0 = 9999;
 			if (circleData != null) {
-				critic_0 = UtilAyv.criticalDistanceCalculation((int) xcentBkg,
-						(int) ycentBkg, (int) diamBkg / 2, xCenterCircle,
-						yCenterCircle, diamCircle / 2);
+				critic_0 = UtilAyv.criticalDistanceCalculation((int) xcentBkg, (int) ycentBkg, (int) diamBkg / 2,
+						xCenterCircle, yCenterCircle, diamCircle / 2);
 			}
 
 			if (critic_0 >= guard) {
-				pieno = verifyBackgroundRoiMean(imp2, (int) xcentBkg,
-						(int) ycentBkg, (int) diamBkg, circle, test, demo);
+				pieno = verifyBackgroundRoiMean(imp2, (int) xcentBkg, (int) ycentBkg, (int) diamBkg, circle, test,
+						demo);
 				if (circle)
 					imp2.setRoi(new OvalRoi(px, py, diamBkg, diamBkg));
 				else
-					imp2.setRoi((int) px, (int) py, (int) diamBkg,
-							(int) diamBkg);
+					imp2.setRoi((int) px, (int) py, (int) diamBkg, (int) diamBkg);
 				imp2.getRoi().setStrokeColor(Color.yellow);
 				over2.addElement(imp2.getRoi());
 				IJ.wait(5);
@@ -2352,8 +2263,7 @@ public class UtilAyv {
 		} while ((pieno || a > 0) && (ycentBkg + diamBkg < height));
 
 		if (demo) {
-			MyLog.waitHere("Evidenziata la posizione per il calcolo del fondo",
-					debug);
+			MyLog.waitHere("Evidenziata la posizione per il calcolo del fondo", debug);
 		}
 		imp2.close();
 		double[] out1 = new double[3];
@@ -2379,10 +2289,8 @@ public class UtilAyv {
 	 * @param irraggiungibile
 	 * @return
 	 */
-	public static double[] positionSearch15(ImagePlus imp1,
-			double[] circleData, double xBkg, double yBkg, double diamBkg,
-			int guard, int select, String info1, boolean circle, int mode,
-			boolean irraggiungibile) {
+	public static double[] positionSearch15(ImagePlus imp1, double[] circleData, double xBkg, double yBkg,
+			double diamBkg, int guard, int select, String info1, boolean circle, int mode, boolean irraggiungibile) {
 
 		boolean autoCalled = false;
 		boolean step = false;
@@ -2390,7 +2298,7 @@ public class UtilAyv {
 		boolean test = false;
 		// boolean fast
 		boolean debug = true;
-		
+
 		switch (mode) {
 		case 1:
 			break;
@@ -2420,12 +2328,11 @@ public class UtilAyv {
 			if (demo) {
 				UtilAyv.showImageMaximized(imp2);
 				ImageUtils.imageToFront(imp2);
-				imp2.setRoi(new OvalRoi(xCenterCircle - diamCircle / 2,
-						yCenterCircle - diamCircle / 2, diamCircle, diamCircle));
+				imp2.setRoi(new OvalRoi(xCenterCircle - diamCircle / 2, yCenterCircle - diamCircle / 2, diamCircle,
+						diamCircle));
 				imp2.getRoi().setStrokeColor(Color.red);
 				over2.addElement(imp2.getRoi());
-				MyLog.waitHere(
-						"Ricerca della posizione per calcolo background", debug);
+				MyLog.waitHere("Ricerca della posizione per calcolo background", debug);
 			}
 		}
 
@@ -2462,19 +2369,17 @@ public class UtilAyv {
 
 			double critic_0 = 9999;
 			if (circleData != null) {
-				critic_0 = UtilAyv.criticalDistanceCalculation((int) xcentBkg,
-						(int) ycentBkg, (int) diamBkg / 2, xCenterCircle,
-						yCenterCircle, diamCircle / 2);
+				critic_0 = UtilAyv.criticalDistanceCalculation((int) xcentBkg, (int) ycentBkg, (int) diamBkg / 2,
+						xCenterCircle, yCenterCircle, diamCircle / 2);
 			}
 
 			if (critic_0 >= guard) {
-				pieno = verifyBackgroundRoiMean(imp2, (int) xcentBkg,
-						(int) ycentBkg, (int) diamBkg, circle, test, demo);
+				pieno = verifyBackgroundRoiMean(imp2, (int) xcentBkg, (int) ycentBkg, (int) diamBkg, circle, test,
+						demo);
 				if (circle)
 					imp2.setRoi(new OvalRoi(px, py, diamBkg, diamBkg));
 				else
-					imp2.setRoi((int) px, (int) py, (int) diamBkg,
-							(int) diamBkg);
+					imp2.setRoi((int) px, (int) py, (int) diamBkg, (int) diamBkg);
 				imp2.getRoi().setStrokeColor(Color.yellow);
 				over2.addElement(imp2.getRoi());
 				IJ.wait(5);
@@ -2483,8 +2388,7 @@ public class UtilAyv {
 		} while ((pieno || a > 0) && (ycentBkg + diamBkg < height));
 
 		if (demo) {
-			MyLog.waitHere("Evidenziata la posizione per il calcolo del fondo",
-					debug);
+			MyLog.waitHere("Evidenziata la posizione per il calcolo del fondo", debug);
 		}
 		imp2.close();
 		double[] out1 = new double[3];
@@ -2512,24 +2416,20 @@ public class UtilAyv {
 	 *            raggio cerchio 2
 	 * @return distanza minima tra i cechi
 	 */
-	public static int criticalDistanceCalculation(int x1, int y1, int r1,
-			int x2, int y2, int r2) {
+	public static int criticalDistanceCalculation(int x1, int y1, int r1, int x2, int y2, int r2) {
 
-		double dCentri = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1)
-				* (y2 - y1));
+		double dCentri = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 		double critical = dCentri - (r1 + r2);
 		return (int) Math.round(critical);
 	}
 
-	public static boolean verifyBackgroundRoiMean(ImagePlus imp1, int xRoi,
-			int yRoi, int diamRoi, boolean circle, boolean test, boolean demo) {
+	public static boolean verifyBackgroundRoiMean(ImagePlus imp1, int xRoi, int yRoi, int diamRoi, boolean circle,
+			boolean test, boolean demo) {
 
 		if (circle)
-			imp1.setRoi(new OvalRoi(xRoi - diamRoi / 2, yRoi - diamRoi / 2,
-					diamRoi, diamRoi));
+			imp1.setRoi(new OvalRoi(xRoi - diamRoi / 2, yRoi - diamRoi / 2, diamRoi, diamRoi));
 		else
-			imp1.setRoi(xRoi - diamRoi / 2, yRoi - diamRoi / 2, diamRoi,
-					diamRoi);
+			imp1.setRoi(xRoi - diamRoi / 2, yRoi - diamRoi / 2, diamRoi, diamRoi);
 		ImageStatistics stat1 = imp1.getStatistics();
 		double mean1 = stat1.mean;
 		if (mean1 > 0)
@@ -2672,8 +2572,7 @@ public class UtilAyv {
 	public static int[] shiftArray(int[] array, int stepSize) {
 		if (stepSize == 0)
 			return array;
-		int shiftStep = (Math.abs(stepSize) > array.length ? stepSize
-				% array.length : stepSize);
+		int shiftStep = (Math.abs(stepSize) > array.length ? stepSize % array.length : stepSize);
 		MyLog.waitHere("shiftStep= " + shiftStep);
 		int[] array2 = new int[array.length];
 		boolean safe = false;
@@ -2694,11 +2593,8 @@ public class UtilAyv {
 	 */
 	public static void noTest2() {
 
-		ButtonMessages
-				.ModelessMsg(
-						"Per questa funzione bisogna installare test2.jar (albertoduina@virgilio.it)",
-						"CONTINUA");
+		ButtonMessages.ModelessMsg("Per questa funzione bisogna installare test2.jar (albertoduina@virgilio.it)",
+				"CONTINUA");
 	}
 
 } // UtilAyv
-

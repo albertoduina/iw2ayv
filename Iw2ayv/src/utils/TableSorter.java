@@ -73,7 +73,7 @@ public class TableSorter {
 			for (int i1 = 0; i1 < (bubblesort.length - 1); i1++) {
 				if (bubblesort[i1] > bubblesort[i1 + 1]) {
 					long temp = bubblesort[i1];
-					// N.B. i2 in questo caso partirà da 1, poichè la colonna 0
+					// N.B. i2 in questo caso partirï¿½ da 1, poichï¿½ la colonna 0
 					// che contiene il numero della riga NON deve venire sortata
 					for (int i2 = 1; i2 < tableOut[0].length; i2++)
 						tempRiga[i2] = tableOut[i1][i2];
@@ -124,7 +124,7 @@ public class TableSorter {
 			for (int i1 = 0; i1 < (bubblesort1.length - 1); i1++) {
 				if (bubblesort1[i1] > bubblesort1[i1 + 1]) {
 					long temp = bubblesort1[i1];
-					// N.B. i2 in questo caso partirà da 1, poichè la colonna 0
+					// N.B. i2 in questo caso partirï¿½ da 1, poichï¿½ la colonna 0
 					// che contiene il numero della riga NON deve venire sortata
 					for (int i2 = 1; i2 < tableOut[0].length; i2++)
 						tempRiga[i2] = tableOut[i1][i2];
@@ -135,10 +135,9 @@ public class TableSorter {
 					for (int i2 = 1; i2 < tableOut[0].length; i2++)
 						tableOut[i1 + 1][i2] = tempRiga[i2];
 					sorted = false;
-				} else if ((bubblesort1[i1] == bubblesort1[i1 + 1])
-						&& (bubblesort2[i1] > bubblesort2[i1 + 1])) {
+				} else if ((bubblesort1[i1] == bubblesort1[i1 + 1]) && (bubblesort2[i1] > bubblesort2[i1 + 1])) {
 					int temp2 = bubblesort2[i1];
-					// N.B. i2 in questo caso partirà da 1, poichè la colonna 0
+					// N.B. i2 in questo caso partirï¿½ da 1, poichï¿½ la colonna 0
 					// che contiene il numero della riga NON deve venire sortata
 					for (int i2 = 1; i2 < tableOut[0].length; i2++)
 						tempRiga[i2] = tableOut[i1][i2];
@@ -201,9 +200,8 @@ public class TableSorter {
 		return tableOut;
 	}
 
-
 	/***
-	 * Riceve in input la tabella già sortata, riordinata e verificata e pronta
+	 * Riceve in input la tabella gia' sortata, riordinata e verificata e pronta
 	 * per l'utilizzo Modifica le posizioni dei codici passati in myCode,
 	 * facendo in modo che myCoil e myPosition vadano bene. In pratica fa in
 	 * modo di scrivere in righe adiacenti le quattro immagini prese per la
@@ -216,9 +214,84 @@ public class TableSorter {
 	 * @param myPosition
 	 * @return
 	 */
-	public static String[][] tableModifierSmart(String[][] tableIn,
-			String[] myCode) {
-		
+	public static String[][] tableModifierSmart(String[][] tableIn, String[] myCode, boolean debug1) {
+
+		// String[][] tableOut = new TableUtils().duplicateTable(tableIn); //
+		// duplico
+		// // la
+		// // tabella
+
+		String[][] tableOut = new String[tableIn.length][tableIn[0].length];
+		String[] vetCode = new String[tableIn.length];
+		String[] vetCoil = new String[tableIn.length];
+		String[] vetPosiz = new String[tableIn.length];
+		String[] vetAcq = new String[tableIn.length];
+		boolean[] vetMoved = new boolean[tableIn.length];
+		// carico nei vettori indice i relativi valori
+		for (int i10 = 0; i10 < tableIn.length; i10++) {
+			vetCode[i10] = TableSequence.getCode(tableIn, i10);
+			vetCoil[i10] = TableSequence.getCoil(tableIn, i10);
+			vetPosiz[i10] = TableSequence.getPosiz(tableIn, i10);
+			vetAcq[i10] = TableSequence.getNumAcq(tableIn, i10);
+		}
+
+		boolean moved = false;
+		boolean search = true;
+		boolean worked = false;
+		String oldCode = "";
+		String oldCoil = "";
+		String oldPosiz = "";
+		String oldAcq = "";
+		String newCode = "";
+		String newCoil = "";
+		String newPosiz = "";
+		String newAcq = "";
+		int outOrder = -1;
+		String[] vetAux1 = new String[tableIn[0].length];
+
+		for (int i1 = 0; i1 < vetCode.length; i1++) {
+			IJ.log("i1= " + i1);
+			moved = vetMoved[i1];
+			if (moved)
+				continue;
+			if (search) {
+				oldCode = vetCode[i1];
+				oldCoil = vetCoil[i1];
+				oldPosiz = vetPosiz[i1];
+				oldAcq = vetAcq[i1];
+				search = false;
+			}
+			worked = false;
+
+			for (int i4 = i1; i4 < vetCode.length; i4++) {
+				newCode = vetCode[i1];
+				newCoil = vetCoil[i1];
+				newPosiz = vetPosiz[i1];
+				newAcq = vetAcq[i1];
+				if ((newCode.equals(oldCode)) && (newCoil.equals(oldCoil)) && (newPosiz.equals(oldPosiz))) {
+					// se giungo qui vuol dire che devo trasferire il codice
+
+					outOrder++;
+					for (int i5 = 0; i5 < tableIn[0].length; i5++) {
+						tableOut[outOrder][i5] = tableIn[i4][i5];
+						vetAux1[i5] = tableIn[i4][i5];
+					}
+
+					MyLog.logVector(vetAux1, "vetAux1");
+					vetMoved[i4] = true;
+					worked = true;
+				}
+				if (worked)
+					break;
+			}
+			if (!worked)
+				search = true;
+		}
+		return tableOut;
+	}
+
+	public static String[][] tableModifierSmart2(String[][] tableIn, String[] myCode, boolean debug1) {
+
 		String[][] tableOut = new TableUtils().duplicateTable(tableIn);
 		String[] vetCode = new String[tableIn.length];
 		String[] vetCoil = new String[tableIn.length];
@@ -261,9 +334,8 @@ public class TableSorter {
 				vetPosiz[i10] = TableSequence.getPosiz(tableOut, i10);
 				vetAcq[i10] = TableSequence.getNumAcq(tableOut, i10);
 			}
-			for (int i4 = 0; i4 < vetCode.length; i4++) {
-				if ((newCode[i1].equals(vetCode[i4]))
-						&& (newCoil[i1].equals(vetCoil[i4]))
+			for (int i4 = 0; i4 < vetCode.length - 2; i4++) {
+				if ((newCode[i1].equals(vetCode[i4])) && (newCoil[i1].equals(vetCoil[i4]))
 						&& (newPosiz[i1].equals(vetPosiz[i4]))) {
 					order++;
 					if (order == 2) {
@@ -276,9 +348,10 @@ public class TableSorter {
 						index4 = i4;
 					}
 					if (order == 4) {
+						IJ.log("index2= " + index2 + "  index3= " + index3 + "  index4= " + index4);
 						// ho identificato le quattro righe
 						// contenenti le quattro immagini che ci
-						// interessano, è il momento di effettuare
+						// interessano, e' il momento di effettuare
 						// lo swap ed uscire dal loop
 						tableSwapper(tableOut, index2 + 1, index3);
 						tableSwapper(tableOut, index2 + 2, index4);
@@ -301,6 +374,12 @@ public class TableSorter {
 	 */
 	public static void tableSwapper(String[][] tableOut, int riga1, int riga2) {
 		String aux1 = "";
+
+		// if (riga1>= tableOut.length) MyLog.waitHere("BOH 1");
+		// if (riga2>= tableOut.length) MyLog.waitHere("BOH 2");
+		//// IJ.log("tableOut.length= " + tableOut.length + " riga1= " + riga1 +
+		// "riga2= " + riga2);
+
 		for (int i1 = 0; i1 < tableOut[0].length; i1++) {
 			aux1 = tableOut[riga1][i1];
 			tableOut[riga1][i1] = tableOut[riga2][i1];

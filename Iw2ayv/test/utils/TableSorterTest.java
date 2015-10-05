@@ -35,7 +35,7 @@ public class TableSorterTest {
 	public final void testMinsort() {
 
 		//
-		// dimostra che è possibile eseguire più di un sort, in coda ad un
+		// dimostra che ï¿½ possibile eseguire piï¿½ di un sort, in coda ad un
 		// altro. Questo serve quando si vuole fare un sort in base a criteri
 		// multipli
 		//
@@ -83,7 +83,7 @@ public class TableSorterTest {
 	}
 	
 	@Test
-	public final void testTableModifierSmart() {
+	public final void testTableModifierSmart1() {
 
 		String CODE_FILE = "TableSequenceLoaded.txt";
 
@@ -91,11 +91,30 @@ public class TableSorterTest {
 				CODE_FILE, ";");
 		MyLog.logMatrix(tableCode, "TableCode");
 		MyLog.waitHere();
-		
+		boolean debug1=true;
 		String[] myCode= {"BL2F_","BL2S_", "BR2F_", "BR2S_"};
-		TableSorter.tableModifierSmart(tableCode, myCode);
+		TableSorter.tableModifierSmart(tableCode, myCode, debug1);
 		
 		MyLog.logMatrix(tableCode, "TableCode");
+		MyLog.waitHere();
+
+	
+	}
+	
+	@Test
+	public final void testTableModifierSmart2() {
+
+		String CODE_FILE = "TableSequenceReordered.txt";
+
+		String[][] tableCode = InputOutput.readStringMatrixFromFileNew(
+				CODE_FILE, ";");
+//		MyLog.logMatrix(tableCode, "TableCode");
+//		MyLog.waitHere();
+		boolean debug1=true;
+		String[] myCode= { "JUS1A", "JUSAA"};
+		String[][] tableOut = TableSorter.tableModifierSmart(tableCode, myCode, debug1);
+		
+		MyLog.logMatrix(tableOut, "TableOut");
 		MyLog.waitHere();
 
 	
