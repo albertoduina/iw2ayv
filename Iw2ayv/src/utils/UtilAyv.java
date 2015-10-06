@@ -2016,8 +2016,8 @@ public class UtilAyv {
 	 */
 	public static boolean checkImages(int[] vetRiga, String[][] iw2ayvTable, int sel, boolean debug) {
 
-		IJ.log("checkImages riceve vetRiga= ");
-		MyLog.logVector(vetRiga, "vetRiga");
+//		IJ.log("checkImages riceve vetRiga= ");
+//		MyLog.logVector(vetRiga, "vetRiga");
 
 		String[] coil = new String[vetRiga.length];
 		String[] descr = new String[vetRiga.length];
@@ -2032,7 +2032,7 @@ public class UtilAyv {
 			stampa += vetRiga[i1] + "#";
 			String path1 = TableSequence.getPath(iw2ayvTable, vetRiga[i1]);
 			imp1 = UtilAyv.openImageNoDisplay(path1, true);
-			IJ.log("checkImages apre path1= " + path1);
+//			IJ.log("checkImages apre path1= " + path1);
 			descr[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
 			coil[i1] = ReadDicom.getAllCoils(imp1);
 			echo[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ECHO_TIME);
@@ -2053,7 +2053,7 @@ public class UtilAyv {
 			if (!descr0.equals(descr[i1])) {
 
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "la descrizione delle sequenze ricevute � differente " + stampa + "   " + descr0 + "  "
+						+ "la descrizione delle sequenze ricevute e'differente " + stampa + "   " + descr0 + "  "
 						+ descr[i1], debug);
 				return false;
 			}
@@ -2091,9 +2091,9 @@ public class UtilAyv {
 						+ "immagini ricevute con tempi di echo differenti " + stampa, debug);
 				return false;
 			}
-			if ((!ima[0].equals("1") || !ima[1].equals("1")) && (manufacturer[0].equals("SIEMENS"))) {
+			if ((!ima[0].equals(ima[1])) && (manufacturer[0].equals("SIEMENS"))) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "non soddisfatta la condizione ima1= 1 && ima2= 1 \n" + "" + stampa, debug);
+						+ "non soddisfatta la condizione numero ima1= numero ima2 \n" + "" + stampa, debug);
 				return false;
 			}
 			break;

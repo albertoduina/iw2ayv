@@ -202,31 +202,21 @@ public class TableSorter {
 
 	/***
 	 * Riceve in input la tabella gia' sortata, riordinata e verificata e pronta
-	 * per l'utilizzo Modifica le posizioni dei codici passati in myCode,
-	 * facendo in modo che myCoil e myPosition vadano bene. In pratica fa in
-	 * modo di scrivere in righe adiacenti le quattro immagini prese per la
-	 * sequenza multislice della bobina breast. la possibile tabella di input
-	 * (od i vettori) potrebbe essere:
+	 * per l'utilizzo. Raggruppa le acquisizioni effettuate con slices multiple
+	 * utilizzando la slicePos. Per renderlo VERAMENTE SMART ho dovuto rinumerare con il progressivo 
 	 * 
 	 * @param tableIn
 	 * @param myCode
-	 * @param vmyCoil
-	 * @param myPosition
 	 * @return
 	 */
-	public static String[][] tableModifierSmart(String[][] tableIn, String[] myCode, boolean debug1) {
-
-		// String[][] tableOut = new TableUtils().duplicateTable(tableIn); //
-		// duplico
-		// // la
-		// // tabella
+	public static String[][] tableModifierSmart(String[][] tableIn, String[] myCode) {
 
 		String[][] tableOut = new String[tableIn.length][tableIn[0].length];
 		String[] vetCode = new String[tableIn.length];
 		String[] vetCoil = new String[tableIn.length];
 		String[] vetPosiz = new String[tableIn.length];
 		String[] vetAcq = new String[tableIn.length];
-		boolean[] vetMoved = new boolean[tableIn.length];
+
 		// carico nei vettori indice i relativi valori
 		for (int i10 = 0; i10 < tableIn.length; i10++) {
 			vetCode[i10] = TableSequence.getCode(tableIn, i10);
@@ -235,57 +225,36 @@ public class TableSorter {
 			vetAcq[i10] = TableSequence.getNumAcq(tableIn, i10);
 		}
 
-		boolean moved = false;
-		boolean search = true;
-		boolean worked = false;
 		String oldCode = "";
 		String oldCoil = "";
 		String oldPosiz = "";
-		String oldAcq = "";
 		String newCode = "";
 		String newCoil = "";
 		String newPosiz = "";
-		String newAcq = "";
 		int outOrder = -1;
-		String[] vetAux1 = new String[tableIn[0].length];
 
 		for (int i1 = 0; i1 < vetCode.length; i1++) {
-			IJ.log("i1= " + i1);
-			moved = vetMoved[i1];
-			if (moved)
-				continue;
-			if (search) {
+			if (vetCode[i1] != "") {
 				oldCode = vetCode[i1];
 				oldCoil = vetCoil[i1];
 				oldPosiz = vetPosiz[i1];
-				oldAcq = vetAcq[i1];
-				search = false;
 			}
-			worked = false;
 
 			for (int i4 = i1; i4 < vetCode.length; i4++) {
-				newCode = vetCode[i1];
-				newCoil = vetCoil[i1];
-				newPosiz = vetPosiz[i1];
-				newAcq = vetAcq[i1];
+				newCode = vetCode[i4];
+				newCoil = vetCoil[i4];
+				newPosiz = vetPosiz[i4];
 				if ((newCode.equals(oldCode)) && (newCoil.equals(oldCoil)) && (newPosiz.equals(oldPosiz))) {
-					// se giungo qui vuol dire che devo trasferire il codice
-
+					// se giungo qui vuol dire che devo trasferire il codice nel
+					// file ordinato
 					outOrder++;
-					for (int i5 = 0; i5 < tableIn[0].length; i5++) {
+					tableOut[outOrder][0]=String.valueOf(outOrder);
+					for (int i5 = 1; i5 < tableIn[0].length; i5++) {
 						tableOut[outOrder][i5] = tableIn[i4][i5];
-						vetAux1[i5] = tableIn[i4][i5];
 					}
-
-					MyLog.logVector(vetAux1, "vetAux1");
-					vetMoved[i4] = true;
-					worked = true;
+					vetCode[i4] = "";
 				}
-				if (worked)
-					break;
 			}
-			if (!worked)
-				search = true;
 		}
 		return tableOut;
 	}

@@ -93,7 +93,7 @@ public class TableSorterTest {
 		MyLog.waitHere();
 		boolean debug1=true;
 		String[] myCode= {"BL2F_","BL2S_", "BR2F_", "BR2S_"};
-		TableSorter.tableModifierSmart(tableCode, myCode, debug1);
+		TableSorter.tableModifierSmart(tableCode, myCode);
 		
 		MyLog.logMatrix(tableCode, "TableCode");
 		MyLog.waitHere();
@@ -112,7 +112,7 @@ public class TableSorterTest {
 //		MyLog.waitHere();
 		boolean debug1=true;
 		String[] myCode= { "JUS1A", "JUSAA"};
-		String[][] tableOut = TableSorter.tableModifierSmart(tableCode, myCode, debug1);
+		String[][] tableOut = TableSorter.tableModifierSmart(tableCode, myCode);
 		
 		MyLog.logMatrix(tableOut, "TableOut");
 		MyLog.waitHere();
