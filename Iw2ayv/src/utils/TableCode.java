@@ -24,14 +24,22 @@ public class TableCode {
 	public static int IMA_TOTAL = 2;
 
 	public static int IMA_ORDER = 3;
+	
+	public static int IMA_INCREMENT = 4;
+	
+	public static int SPARE_1 = 5;
+	
+	public static int SPARE_2 = 6;
+	
+	public static int SPARE_3 = 7;
 
-	public static int COIL = 4;
+	public static int COIL = 8;
 
-	public static int DIREZ = 5;
+	public static int DIREZ = 9;
 
-	public static int PROFOND = 6;
+	public static int PROFOND = 10;
 
-	public static int PLUGIN = 7;
+	public static int PLUGIN = 11;
 
 	public static String[][] loadTable(String path) {
 		boolean absolute = false;
@@ -147,6 +155,27 @@ public class TableCode {
 		if (tableCode == null)
 			return null;
 		return (tableCode[riga][IMA_ORDER]);
+	}
+
+	public static String getImaIncrement(String[][] tableCode, int riga) {
+		if (tableCode == null)
+			return null;
+		return (tableCode[riga][IMA_INCREMENT]);
+	}
+	public static String getImaSpare_1(String[][] tableCode, int riga) {
+		if (tableCode == null)
+			return null;
+		return (tableCode[riga][SPARE_1]);
+	}
+	public static String getImaSpare_2(String[][] tableCode, int riga) {
+		if (tableCode == null)
+			return null;
+		return (tableCode[riga][SPARE_2]);
+	}
+	public static String getImaSpare_3(String[][] tableCode, int riga) {
+		if (tableCode == null)
+			return null;
+		return (tableCode[riga][SPARE_3]);
 	}
 
 	public static String getCoil(String[][] tableCode, int riga) {

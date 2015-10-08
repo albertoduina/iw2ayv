@@ -203,10 +203,11 @@ public class TableSorter {
 	/***
 	 * Riceve in input la tabella gia' sortata, riordinata e verificata e pronta
 	 * per l'utilizzo. Raggruppa le acquisizioni effettuate con slices multiple
-	 * utilizzando la slicePos. Per renderlo VERAMENTE SMART ho dovuto rinumerare con il progressivo 
+	 * utilizzando la slicePos. Per renderlo VERAMENTE SMART (funzionante) ho
+	 * dovuto rinumerare con il progressivo
 	 * 
-	 * @param tableIn
-	 * @param myCode
+	 * @param tableIn tabella da riordinare
+	 * @param myCode codici su cui effettuare il riordino
 	 * @return
 	 */
 	public static String[][] tableModifierSmart(String[][] tableIn, String[] myCode) {
@@ -248,7 +249,7 @@ public class TableSorter {
 					// se giungo qui vuol dire che devo trasferire il codice nel
 					// file ordinato
 					outOrder++;
-					tableOut[outOrder][0]=String.valueOf(outOrder);
+					tableOut[outOrder][0] = String.valueOf(outOrder);
 					for (int i5 = 1; i5 < tableIn[0].length; i5++) {
 						tableOut[outOrder][i5] = tableIn[i4][i5];
 					}

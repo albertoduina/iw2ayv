@@ -17,6 +17,11 @@ public class TableExpand {
 	public static int IMA_TOTAL = 4;
 
 	public static int PLUGIN = 5;
+	
+	
+
+	
+	
 
 //	public static String[][] loadTable(String path) {
 //		ArrayList<ArrayList<String>> tableArray = new InputOutput()

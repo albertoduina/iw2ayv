@@ -51,27 +51,35 @@ public class TableSequence {
 
 	public static int IMA_PASS = 4;
 	
-	public static int IMA_GROUP = 5;
+	public static int IMA_ORDER = 5;
+	
+	public static int IMA_INCREMENT = 6;
+	
+	public static int SPARE_1 = 7;
+	
+	public static int SPARE_2 = 8;
+	
+	public static int SPARE_3 = 9;
 
-	public static int SERIE = 6;
+	public static int SERIE = 10;
 
-	public static int ACQ = 7;
+	public static int ACQ = 11;
 
-	public static int IMA = 8;
+	public static int IMA = 12;
 
-	public static int TIME = 9;
+	public static int TIME = 13;
 
-	public static int ECHO = 10;
+	public static int ECHO = 14;
 
-	public static int POSIZ = 11;
+	public static int POSIZ = 15;
 
-	public static int DIREZ = 12;
+	public static int DIREZ = 16;
 
-	public static int PROFOND = 13;
+	public static int PROFOND = 17;
 
-	public static int DONE = 14;
+	public static int DONE = 18;
 
-	public static int COLUMNS = 15;
+	public static int COLUMNS = 19;
 
 	/***
 	 * Carica la tabella in memoria leggendo il file su disco
@@ -99,7 +107,7 @@ public class TableSequence {
 			return true;
 		} else {
 			MyLog.waitHere("errore larghezza iw2ayvTable = " + table[0].length
-					+ " anzichè " + COLUMNS);
+					+ " anzichï¿½ " + COLUMNS);
 			return false;
 		}
 	}
@@ -168,8 +176,33 @@ public class TableSequence {
 	public static String getImaGroup(String[][] strTabella, int riga) {
 		if (strTabella == null)
 			return null;
-		return strTabella[riga][IMA_GROUP];
+		return strTabella[riga][IMA_ORDER];
 	}
+	
+	
+	public static String getImaIncrement(String[][] strTabella, int riga) {
+		if (strTabella == null)
+			return null;
+		return strTabella[riga][IMA_INCREMENT];
+	}
+	
+	public static String getSpare_1(String[][] strTabella, int riga) {
+		if (strTabella == null)
+			return null;
+		return strTabella[riga][SPARE_1];
+	}
+	
+	public static String getSpare_2(String[][] strTabella, int riga) {
+		if (strTabella == null)
+			return null;
+		return strTabella[riga][SPARE_2];
+	}
+	
+	public static String getSpare_3(String[][] strTabella, int riga) {
+		if (strTabella == null)
+			return null;
+		return strTabella[riga][SPARE_3];
+	}	
 
 	public static String getNumSerie(String[][] strTabella, int riga) {
 		if (strTabella == null)
@@ -311,15 +344,19 @@ public class TableSequence {
 							+ strTabella[j1][PATH] + "#COD#"
 							+ strTabella[j1][CODE] + "#COIL#"
 							+ strTabella[j1][COIL] + "#PASS#"
-							+ strTabella[j1][IMA_PASS] + "#GROUP#"
-							+ strTabella[j1][IMA_GROUP] + "#SER#"
+							+ strTabella[j1][IMA_PASS] + "#ORD#"
+							+ strTabella[j1][IMA_ORDER] + "#INCR#"
+							+ strTabella[j1][IMA_INCREMENT] + "#SP1#"
+							+ strTabella[j1][SPARE_1] + "#SP2#"
+							+ strTabella[j1][SPARE_2] + "#SP3#"
+							+ strTabella[j1][SPARE_3] + "#SER#"
 							+ strTabella[j1][SERIE] + "#ACQ#"
 							+ strTabella[j1][ACQ] + "#IMA#"
 							+ strTabella[j1][IMA] + "#TIME#"
 							+ strTabella[j1][TIME] + "#ECHO#"
 							+ strTabella[j1][ECHO] + "#POSIZ#"
 							+ strTabella[j1][POSIZ] + "#DIREZ#"
-							+ strTabella[j1][DIREZ] + "#PROFOND#"
+							+ strTabella[j1][DIREZ] + "#PROF#"
 							+ strTabella[j1][PROFOND] + "#DONE#"
 							+ strTabella[j1][DONE] + "#\n";
 					j1++;
