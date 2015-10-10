@@ -19,7 +19,7 @@ public class MyConst {
 	public static final String DEFAULT_PATH = "C:/Dati/";
 	public static final String[] CODE_GROUP = { "codiciNew.csv",
 			"codiciEsine.csv", "codiciManerbio.csv", "codiciDesenzano.csv",
-			"codiciRovato.csv", "codiciCAXXO.csv" };
+			"codiciRovato.csv", "codiciGavardo.csv" };
 	// public static final String[] CODE_GROUP = {"codiciNewORIGINALE.csv"};
 
 	public static final int HMEAN = 2;

@@ -130,8 +130,8 @@ public class UtilAyv {
 		ImageProcessor ip1;
 		ImageProcessor ip2;
 		double v1, v2, v3;
-
-		if (UtilAyv.compareImagesByPixel(imp1, imp2))
+		boolean debug = false;
+		if (UtilAyv.compareImagesByPixel(imp1, imp2, debug))
 			MyLog.waitThere("ATTENZIONE SONO STATE PASSATE A GENIMADIFFERENCE \n"
 					+ "DUE IMMAGINU UGUALI, L'IMMAGINE DIFFERENZA VARRA' \n"
 					+ "PERTANTO ZERO E SI AVRA' UN SNR INFINITY");
@@ -501,7 +501,7 @@ public class UtilAyv {
 
 	}
 
-	public static boolean compareImagesByPixel(ImagePlus imp1, ImagePlus imp2) {
+	public static boolean compareImagesByPixel(ImagePlus imp1, ImagePlus imp2, boolean debug) {
 		if (imp1.getWidth() != imp2.getWidth() || imp1.getHeight() != imp2.getHeight()) {
 			IJ.log("compareImagesByPixel.images of different dimensions");
 			return false;
@@ -518,8 +518,9 @@ public class UtilAyv {
 			byte[] pixels2 = (byte[]) ip2.getPixels();
 			for (int i1 = 0; i1 < pixels1.length; i1++) {
 				if (pixels1[i1] != pixels2[i1]) {
-					IJ.log("first difference found in pixel " + i1 + "/" + pixels1.length + " value= " + pixels1[i1]
-							+ " instead of " + pixels2[i1]);
+					if (debug)
+						IJ.log("first difference found in pixel " + i1 + "/" + pixels1.length + " value= " + pixels1[i1]
+								+ " instead of " + pixels2[i1]);
 					return false;
 				}
 			}
@@ -531,8 +532,9 @@ public class UtilAyv {
 			short[] pixels2 = (short[]) ip2.getPixels();
 			for (int i1 = 0; i1 < pixels1.length; i1++) {
 				if (pixels1[i1] != pixels2[i1]) {
-					IJ.log("first difference found in pixel " + i1 + "/" + pixels1.length + " value= " + pixels1[i1]
-							+ " instead of " + pixels2[i1]);
+					if (debug)
+						IJ.log("first difference found in pixel " + i1 + "/" + pixels1.length + " value= " + pixels1[i1]
+								+ " instead of " + pixels2[i1]);
 					return false;
 				}
 			}
@@ -545,8 +547,9 @@ public class UtilAyv {
 			float[] pixels2 = (float[]) ip2.getPixels();
 			for (int i1 = 0; i1 < pixels1.length; i1++) {
 				if (pixels1[i1] != pixels2[i1]) {
-					IJ.log("first difference found in pixel " + i1 + "/" + pixels1.length + " value= " + pixels1[i1]
-							+ " instead of " + pixels2[i1]);
+					if (debug)
+						IJ.log("first difference found in pixel " + i1 + "/" + pixels1.length + " value= " + pixels1[i1]
+								+ " instead of " + pixels2[i1]);
 					return false;
 				}
 			}
@@ -2016,8 +2019,8 @@ public class UtilAyv {
 	 */
 	public static boolean checkImages(int[] vetRiga, String[][] iw2ayvTable, int sel, boolean debug) {
 
-//		IJ.log("checkImages riceve vetRiga= ");
-//		MyLog.logVector(vetRiga, "vetRiga");
+		// IJ.log("checkImages riceve vetRiga= ");
+		// MyLog.logVector(vetRiga, "vetRiga");
 
 		String[] coil = new String[vetRiga.length];
 		String[] descr = new String[vetRiga.length];
@@ -2032,7 +2035,7 @@ public class UtilAyv {
 			stampa += vetRiga[i1] + "#";
 			String path1 = TableSequence.getPath(iw2ayvTable, vetRiga[i1]);
 			imp1 = UtilAyv.openImageNoDisplay(path1, true);
-//			IJ.log("checkImages apre path1= " + path1);
+			// IJ.log("checkImages apre path1= " + path1);
 			descr[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
 			coil[i1] = ReadDicom.getAllCoils(imp1);
 			echo[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ECHO_TIME);
