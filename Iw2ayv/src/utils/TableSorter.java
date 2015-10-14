@@ -216,16 +216,17 @@ public class TableSorter {
 		String[] vetCode = new String[tableIn.length];
 		String[] vetCoil = new String[tableIn.length];
 		String[] vetPosiz = new String[tableIn.length];
-		String[] vetAcq = new String[tableIn.length];
+//		String[] vetAcq = new String[tableIn.length];
 
 		// carico nei vettori indice i relativi valori
 		for (int i10 = 0; i10 < tableIn.length; i10++) {
 			vetCode[i10] = TableSequence.getCode(tableIn, i10);
 			vetCoil[i10] = TableSequence.getCoil(tableIn, i10);
 			vetPosiz[i10] = TableSequence.getPosiz(tableIn, i10);
-			vetAcq[i10] = TableSequence.getNumAcq(tableIn, i10);
+//			vetAcq[i10] = TableSequence.getNumAcq(tableIn, i10);
 		}
 
+		
 		String oldCode = "";
 		String oldCoil = "";
 		String oldPosiz = "";

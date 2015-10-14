@@ -108,4 +108,17 @@ public class ReadDicomTest {
 		String coil = ReadDicom.getThisCoil(imp1, "PH");
 		MyLog.waitHere("coil= " + coil);
 	}
+
+
+@Test
+public final void testGetAllCoils() {
+	String path = ".\\Test4\\KUS1A.IMA";
+	ImagePlus imp1 = new Opener().openImage(path);
+	if (imp1 == null) {
+		fail("Manca immagine");
+	}
+	String coil = ReadDicom.getAllCoils(imp1);
+	MyLog.waitHere("coil= " + coil);
 }
+}
+

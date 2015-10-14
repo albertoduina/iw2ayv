@@ -102,7 +102,7 @@ public class InputOutput {
 		String myPart2 = myPart1.substring(0, end + 1);
 		// definizione del nome del file che andremo a scrivere
 		File outFile = new File(myPart2 + fileName);
-		// Viene testata l'esistenza del file, se esiste non lo si copia, così
+		// Viene testata l'esistenza del file, se esiste non lo si copia, cosï¿½
 		// vengono mantenute eventuali modifiche dell'utlizzatore
 		boolean present = checkFile(outFile.getPath());
 		if (present) {
@@ -110,10 +110,10 @@ public class InputOutput {
 			// file. Per me organizzo in modo che sia lo script di
 			// distribuzione a cancellare i file
 			// outFile.delete();
-			// MyLog.waitHere("skip perchè file già esistente");
+			// MyLog.waitHere("skip perchï¿½ file giï¿½ esistente");
 			return true;
 		}
-		// ricerco la risorsa da copiare, perchè qui arrivo solo se la risorsa
+		// ricerco la risorsa da copiare, perchï¿½ qui arrivo solo se la risorsa
 		// non esiste al di fuori del file jar
 		URL url1 = this.getClass().getResource("/" + fileName);
 		if (url1 == null) {
@@ -396,7 +396,7 @@ public class InputOutput {
 		String[][] out = new String[len1][len2];
 		for (int i1 = 0; i1 < len1; i1++) {
 			for (int i2 = 0; i2 < len2; i2++) {
-				out[i1][i2] = in[i1][i2].replaceAll(replace, withthis);
+				out[i1][i2] = in[i1][i2].replace(replace, withthis);
 			}
 		}
 		return out;
@@ -950,7 +950,7 @@ public class InputOutput {
 	}
 
 	/***
-	 * Verifica la disponibilità di una directory
+	 * Verifica la disponibilitï¿½ di una directory
 	 * 
 	 * @param name
 	 * @return
@@ -964,7 +964,7 @@ public class InputOutput {
 	}
 
 	/***
-	 * Verifica la disponibilità di un file jar
+	 * Verifica la disponibilitï¿½ di un file jar
 	 * 
 	 * @param source
 	 * @return
@@ -978,7 +978,7 @@ public class InputOutput {
 	}
 
 	/***
-	 * Verifica la disponibilità di un file
+	 * Verifica la disponibilitï¿½ di un file
 	 * 
 	 * @param name
 	 * @return
@@ -1014,7 +1014,7 @@ public class InputOutput {
 	}
 
 	/**
-	 * Estrae al volo un file da un archivio .jar by Réal Gagnon
+	 * Estrae al volo un file da un archivio .jar by Rï¿½al Gagnon
 	 * (www.rgagnon.com/javadetails/java-0429.html) for correct work in junit
 	 * the source file (ie: test2.jar) must be in the iw2ayv "data" sourceFolder
 	 * 
@@ -1081,7 +1081,7 @@ public class InputOutput {
 	}
 
 	/**
-	 * Estrae al volo un file da un archivio .jar by Réal Gagnon
+	 * Estrae al volo un file da un archivio .jar by Rï¿½al Gagnon
 	 * (www.rgagnon.com/javadetails/java-0429.html) for correct work in junit
 	 * the source file (ie: test2.jar) must be in the iw2ayv "data" sourceFolder
 	 * 
@@ -1200,7 +1200,7 @@ public class InputOutput {
 		}
 
 		String home1 = url1.getPath();
-		// nb: home è un path assoluto (preceduto da un "/")
+		// nb: home ï¿½ un path assoluto (preceduto da un "/")
 		String[] path = new String[list.length];
 		for (int i1 = 0; i1 < list.length; i1++) {
 			path[i1] = home1 + "/" + list[i1];
@@ -1209,7 +1209,7 @@ public class InputOutput {
 	}
 
 	/**
-	 * verifica se la riga è un commento (inizia con //)
+	 * verifica se la riga ï¿½ un commento (inizia con //)
 	 * 
 	 * @param riga
 	 * @return

@@ -65,7 +65,7 @@ public class TableCode {
 			if (path2 == null)
 				continue;
 			tableCode1 = new InputOutput().readFile6LIKE(path, absolute);
-			tableCode2 = InputOutput.substCharInMatrix(tableCode1, "�", ";");
+			tableCode2 = InputOutput.substCharInMatrix(tableCode1, "*", ";");
 			tableCode = InputOutput.removeColumn(tableCode2, 1);
 
 			sumTableCode = TableUtils.sumMultipleTable(sumTableCode, tableCode);
