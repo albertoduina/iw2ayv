@@ -39,8 +39,7 @@ public class MyLog {
 		if (tmp == null) {
 			IJ.log("Warning vector " + title + " = null");
 		} else {
-			IJ.log("----------- " + title + "  [ " + tmp.size()
-					+ " ] -----------");
+			IJ.log("----------- " + title + "  [ " + tmp.size() + " ] -----------");
 			String logRiga = "";
 			for (int j1 = 0; j1 < tmp.size(); j1++) {
 				logRiga += tmp.get(j1) + ",  ";
@@ -49,14 +48,11 @@ public class MyLog {
 		}
 	}
 
-	
-	
 	public static void logArrayList(ArrayList<Double> arrList, String title) {
 		if (arrList == null) {
 			IJ.log("Warning vector " + title + " = null");
 		} else {
-			IJ.log("----------- " + title + "  [ " + arrList.size()
-					+ " ] -----------");
+			IJ.log("----------- " + title + "  [ " + arrList.size() + " ] -----------");
 			String logRiga = "";
 			for (int j1 = 0; j1 < arrList.size(); j1++) {
 				logRiga += arrList.get(j1) + ",  ";
@@ -64,7 +60,6 @@ public class MyLog {
 			IJ.log(logRiga);
 		}
 	}
-
 
 	public static void logArrayList(ArrayList<String> arrList) {
 		if (arrList == null) {
@@ -90,15 +85,13 @@ public class MyLog {
 		}
 	}
 
-	public static void logArrayListTable(
-			ArrayList<ArrayList<Double>> matrixTable, String title) {
+	public static void logArrayListTable(ArrayList<ArrayList<Double>> matrixTable, String title) {
 		// ArrayList<Double> row1 = new ArrayList<Double>();
 		if (matrixTable == null) {
 			IJ.log("fromArrayListToStringTable.matrixTable == null");
 			return;
 		}
-		IJ.log("####### " + title + "[" + matrixTable.get(0).size() + " x "
-				+ matrixTable.size() + "] ########");
+		IJ.log("####### " + title + "[" + matrixTable.get(0).size() + " x " + matrixTable.size() + "] ########");
 		// ArrayList<String> riga = matrixTable.get(0);
 		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
 			ArrayList<Double> arrayList = matrixTable.get(i1);
@@ -111,15 +104,13 @@ public class MyLog {
 		return;
 	}
 
-	public static void logArrayListTable2(
-			ArrayList<ArrayList<String>> matrixTable, String title) {
+	public static void logArrayListTable2(ArrayList<ArrayList<String>> matrixTable, String title) {
 		// ArrayList<Double> row1 = new ArrayList<Double>();
 		if (matrixTable == null) {
 			IJ.log("logArrayListTable == null");
 			return;
 		}
-		IJ.log("####### " + title + "[" + matrixTable.get(0).size() + " x "
-				+ matrixTable.size() + "] ########");
+		IJ.log("####### " + title + "[" + matrixTable.get(0).size() + " x " + matrixTable.size() + "] ########");
 		// ArrayList<String> riga = matrixTable.get(0);
 		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
 			ArrayList<String> arrayList = matrixTable.get(i1);
@@ -281,8 +272,7 @@ public class MyLog {
 		if (vect == null) {
 			IJ.log("Warning vector " + nome + " = null");
 		} else {
-			IJ.log("----------- " + nome + "  [ " + vect.length
-					+ " ] -----------");
+			IJ.log("----------- " + nome + "  [ " + vect.length + " ] -----------");
 
 			for (int i1 = 0; i1 < vect.length; i1++) {
 				stri = stri + vect[i1] + ",  ";
@@ -297,8 +287,7 @@ public class MyLog {
 		if (vect == null) {
 			IJ.log("Warning vector " + nome + " = null");
 		} else {
-			IJ.log("----------- " + nome + "  [ " + vect.length
-					+ " ] -----------");
+			IJ.log("----------- " + nome + "  [ " + vect.length + " ] -----------");
 
 			for (int i1 = 0; i1 < vect.length; i1++) {
 				stri = stri + vect[i1] + "\n";
@@ -318,8 +307,7 @@ public class MyLog {
 			IJ.log("Warning vector " + nome + " = null");
 		} else {
 
-			IJ.log("----------- " + nome + "  [ " + vect.length
-					+ " ] -----------");
+			IJ.log("----------- " + nome + "  [ " + vect.length + " ] -----------");
 			if (vect.length <= 255) {
 				for (int i1 = 0; i1 < vect.length; i1++) {
 					stri = stri + vect[i1] + ",  ";
@@ -350,8 +338,7 @@ public class MyLog {
 			IJ.log("Warning vector " + nome + " = null");
 		} else {
 
-			IJ.log("----------- " + nome + "  [ " + vect.length
-					+ " ] -----------");
+			IJ.log("----------- " + nome + "  [ " + vect.length + " ] -----------");
 			for (int i1 = 0; i1 < vect.length; i1++) {
 				stri = stri + vect[i1] + ",  ";
 			}
@@ -366,8 +353,7 @@ public class MyLog {
 			IJ.log("Warning vector " + nome + " = null");
 		} else {
 
-			IJ.log("----------- " + nome + "  [ " + vect.length
-					+ " ] -----------");
+			IJ.log("----------- " + nome + "  [ " + vect.length + " ] -----------");
 			for (int i1 = 0; i1 < vect.length; i1++) {
 				stri = stri + vect[i1] + ",  ";
 			}
@@ -382,8 +368,7 @@ public class MyLog {
 			IJ.log("Warning vector " + nome + " = null");
 		} else {
 
-			IJ.log("----------- " + nome + "  [ " + vect.length
-					+ " ] -----------");
+			IJ.log("----------- " + nome + "  [ " + vect.length + " ] -----------");
 			for (int i1 = 0; i1 < vect.length; i1++) {
 				stri = stri + vect[i1] + ",  ";
 			}
@@ -397,8 +382,7 @@ public class MyLog {
 		if (vect == null) {
 			IJ.log("Warning vector " + nome + " = null");
 		} else {
-			IJ.log("----------- " + nome + "  [ " + vect.length
-					+ " ] -----------");
+			IJ.log("----------- " + nome + "  [ " + vect.length + " ] -----------");
 
 			for (int i1 = 0; i1 < vect.length; i1++) {
 				stri = stri + vect[i1] + ",  ";
@@ -413,8 +397,7 @@ public class MyLog {
 		if (vect == null) {
 			IJ.log("Warning vector " + nome + " = null");
 		} else {
-			IJ.log("----------- " + nome + "  [ " + vect.length
-					+ " ] -----------");
+			IJ.log("----------- " + nome + "  [ " + vect.length + " ] -----------");
 
 			for (int i1 = 0; i1 < vect.length; i1++) {
 				stri = stri + i1 + "  " + vect[i1] + "\n";
@@ -429,8 +412,7 @@ public class MyLog {
 		if (vect == null) {
 			IJ.log("Warning vector " + nome + " = null");
 		} else {
-			IJ.log("----------- " + nome + "  [ " + vect.length
-					+ " ] -----------");
+			IJ.log("----------- " + nome + "  [ " + vect.length + " ] -----------");
 
 			for (int i1 = 0; i1 < vect.length; i1++) {
 				if (vect[i1])
@@ -444,77 +426,60 @@ public class MyLog {
 	}
 
 	public static void logMatrixDimensions(double[][][] mat1, String nome) {
-		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ "
-				+ mat1[0].length + " ] x [ " + mat1[0][0].length + " ]");
+		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ " + mat1[0].length + " ] x [ " + mat1[0][0].length
+				+ " ]");
 	}
 
 	public static void logMatrixDimensions(double[][] mat1, String nome) {
-		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ "
-				+ mat1[0].length + " ]");
+		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ " + mat1[0].length + " ]");
 	}
 
 	public static void logMatrixDimensions(float[][][] mat1, String nome) {
-		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ "
-				+ mat1[0].length + " ] x [ " + mat1[0][0].length + " ]");
+		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ " + mat1[0].length + " ] x [ " + mat1[0][0].length
+				+ " ]");
 	}
 
 	public static void logMatrixDimensions(float[][] mat1, String nome) {
-		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ "
-				+ mat1[0].length + " ]");
+		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ " + mat1[0].length + " ]");
 	}
 
 	public static void logMatrixDimensions(int[][][] mat1, String nome) {
-		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ "
-				+ mat1[0].length + " ] x [ " + mat1[0][0].length + " ]");
+		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ " + mat1[0].length + " ] x [ " + mat1[0][0].length
+				+ " ]");
 	}
 
 	public static void logMatrixDimensions(int[][] mat1, String nome) {
-		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ "
-				+ mat1[0].length + " ]");
+		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ " + mat1[0].length + " ]");
 	}
 
 	public static void logMatrixDimensions(String[][][] mat1, String nome) {
-		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ "
-				+ mat1[0].length + " ] x [ " + mat1[0][0].length + " ]");
+		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ " + mat1[0].length + " ] x [ " + mat1[0][0].length
+				+ " ]");
 	}
 
 	public static void logMatrixDimensions(String[][] mat1, String nome) {
-		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ "
-				+ mat1[0].length + " ]");
+		IJ.log("matrice " + nome + " [ " + mat1.length + " ] x [ " + mat1[0].length + " ]");
 	}
 
 	public static void here() {
-		IJ.log("file="
-				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
-				+ "line="
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ " class="
-				+ Thread.currentThread().getStackTrace()[2].getClassName()
-				+ " method="
+		IJ.log("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + "line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + " class="
+				+ Thread.currentThread().getStackTrace()[2].getClassName() + " method="
 				+ Thread.currentThread().getStackTrace()[2].getMethodName());
 
 	}
 
 	public static void here(String str) {
-		IJ.log("file="
-				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
-				+ "line="
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ " class="
-				+ Thread.currentThread().getStackTrace()[2].getClassName()
-				+ " method="
-				+ Thread.currentThread().getStackTrace()[2].getMethodName()
-				+ " " + str);
+		IJ.log("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + "line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + " class="
+				+ Thread.currentThread().getStackTrace()[2].getClassName() + " method="
+				+ Thread.currentThread().getStackTrace()[2].getMethodName() + " " + str);
 	}
 
 	public static String qui() {
-		String out = ("file="
-				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
-				+ " line="
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ " class="
-				+ Thread.currentThread().getStackTrace()[2].getClassName()
-				+ " method="
+		String out = ("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + " class="
+				+ Thread.currentThread().getStackTrace()[2].getClassName() + " method="
 				+ Thread.currentThread().getStackTrace()[2].getMethodName() + "\n \n");
 		return out;
 	}
@@ -524,21 +489,15 @@ public class MyLog {
 	}
 
 	public static void waitHere(String str) {
-		new WaitForUserDialog("file="
-				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
-				+ " line="
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "\n \n" + str).show();
+		new WaitForUserDialog("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n \n" + str).show();
 	}
 
 	public static void waitHere(String str, boolean debug) {
 		if (debug) {
 			IJ.beep();
-			new WaitForUserDialog("file="
-					+ Thread.currentThread().getStackTrace()[2].getFileName()
-					+ " " + " line="
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "\n \n" + str).show();
+			new WaitForUserDialog("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n \n" + str).show();
 		} else {
 			IJ.beep();
 			new WaitForUserDialog(str).show();
@@ -549,11 +508,11 @@ public class MyLog {
 		int resp = 0;
 		if (debug) {
 			IJ.beep();
-			resp = ButtonMessages.ModelessMsg(("file="
-					+ Thread.currentThread().getStackTrace()[2].getFileName()
-					+ " " + " line="
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "\n \n" + str), uno, due);
+			resp = ButtonMessages
+					.ModelessMsg(
+							("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+									+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n \n" + str),
+							uno, due);
 		} else {
 			IJ.beep();
 			resp = ButtonMessages.ModelessMsg(str, uno, due);
@@ -562,11 +521,8 @@ public class MyLog {
 	}
 
 	public static void waitHere() {
-		new WaitForUserDialog("file="
-				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
-				+ " line="
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber())
-				.show();
+		new WaitForUserDialog("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()).show();
 	}
 
 	// public static void waitHere1(String str, boolean debug, final int milli)
@@ -579,8 +535,8 @@ public class MyLog {
 	// + Thread.currentThread().getStackTrace()[2].getLineNumber();
 	//
 	// JFrame f = new JFrame();
-	// JTextArea myarea = new JTextArea("\n       " + where
-	// + "           \n" + "\n       " + str + "  \n");
+	// JTextArea myarea = new JTextArea("\n " + where
+	// + " \n" + "\n " + str + " \n");
 	// final JDialog dialog = new JDialog(f, "Auto cancel msg", true);
 	// dialog.setLocation(500, 500);
 	// dialog.add(myarea);
@@ -602,30 +558,20 @@ public class MyLog {
 	// }
 
 	public static void waitThere(String str) {
-		new WaitForUserDialog("file="
-				+ Thread.currentThread().getStackTrace()[2].getFileName() + " "
-				+ " line="
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-				+ "\n" + "file="
-				+ Thread.currentThread().getStackTrace()[3].getFileName() + " "
-				+ " line="
-				+ Thread.currentThread().getStackTrace()[3].getLineNumber()
-				+ "\n \n" + str).show();
+		new WaitForUserDialog("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "file="
+				+ Thread.currentThread().getStackTrace()[3].getFileName() + " " + " line="
+				+ Thread.currentThread().getStackTrace()[3].getLineNumber() + "\n \n" + str).show();
 	}
 
 	public static void waitThere(String str, boolean debug) {
 		if (debug) {
 			IJ.beep();
 
-			new WaitForUserDialog("file="
-					+ Thread.currentThread().getStackTrace()[2].getFileName()
-					+ " " + " line="
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ "\n" + "file="
-					+ Thread.currentThread().getStackTrace()[3].getFileName()
-					+ " " + " line="
-					+ Thread.currentThread().getStackTrace()[3].getLineNumber()
-					+ "\n \n" + str).show();
+			new WaitForUserDialog("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "file="
+					+ Thread.currentThread().getStackTrace()[3].getFileName() + " " + " line="
+					+ Thread.currentThread().getStackTrace()[3].getLineNumber() + "\n \n" + str).show();
 		} else {
 			IJ.beep();
 			new WaitForUserDialog(str).show();
@@ -636,17 +582,10 @@ public class MyLog {
 		// dovrebbe ricavare dallo stackTrace l'albero delle chiamate SLOW but
 		// USEFUL!
 		for (int i1 = 2; i1 < Thread.currentThread().getStackTrace().length - 24; i1++) {
-			IJ.log("file="
-					+ Thread.currentThread().getStackTrace()[i1].getFileName()
-					+ " "
-					+ "line="
-					+ Thread.currentThread().getStackTrace()[i1]
-							.getLineNumber()
-					+ " class="
-					+ Thread.currentThread().getStackTrace()[i1].getClassName()
-					+ " method="
-					+ Thread.currentThread().getStackTrace()[i1]
-							.getMethodName());
+			IJ.log("file=" + Thread.currentThread().getStackTrace()[i1].getFileName() + " " + "line="
+					+ Thread.currentThread().getStackTrace()[i1].getLineNumber() + " class="
+					+ Thread.currentThread().getStackTrace()[i1].getClassName() + " method="
+					+ Thread.currentThread().getStackTrace()[i1].getMethodName());
 		}
 	}
 
@@ -661,17 +600,10 @@ public class MyLog {
 			if (Thread.currentThread().getStackTrace()[i1].getFileName() == null)
 				break;
 
-			IJ.log("file="
-					+ Thread.currentThread().getStackTrace()[i1].getFileName()
-					+ " "
-					+ "line="
-					+ Thread.currentThread().getStackTrace()[i1]
-							.getLineNumber()
-					+ " class="
-					+ Thread.currentThread().getStackTrace()[i1].getClassName()
-					+ " method="
-					+ Thread.currentThread().getStackTrace()[i1]
-							.getMethodName() + " " + str);
+			IJ.log("file=" + Thread.currentThread().getStackTrace()[i1].getFileName() + " " + "line="
+					+ Thread.currentThread().getStackTrace()[i1].getLineNumber() + " class="
+					+ Thread.currentThread().getStackTrace()[i1].getClassName() + " method="
+					+ Thread.currentThread().getStackTrace()[i1].getMethodName() + " " + str);
 		}
 		IJ.log("___________________________________________");
 	}
@@ -685,8 +617,7 @@ public class MyLog {
 	public static void appendLog(String path, String linea) {
 
 		BufferedWriter out;
-		String time = new SimpleDateFormat("yyyy-MM-dd hh:mm")
-				.format(new Date());
+		String time = new SimpleDateFormat("yyyy-MM-dd hh:mm").format(new Date());
 
 		try {
 			out = new BufferedWriter(new FileWriter(path, true));
@@ -729,17 +660,13 @@ public class MyLog {
 
 		String where = "";
 		if (debug)
-			where = " \nfile="
-					+ Thread.currentThread().getStackTrace()[2].getFileName()
-					+ " " + " line="
-					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-					+ " \n \n";
+			where = " \nfile=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber() + " \n \n";
 
 		if (timeout > 0) {
 			final WaitForUserDialog wfud = new WaitForUserDialog(where + str);
 
-			ScheduledExecutorService s = Executors
-					.newSingleThreadScheduledExecutor();
+			ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
 			s.schedule(new Runnable() {
 				public void run() {
 					wfud.close();
@@ -756,23 +683,23 @@ public class MyLog {
 	}
 
 	public static void logDebug(int riga, String prg, String fileDir) {
-		String[][] table = new TableSequence().loadTable(fileDir
-				+ MyConst.SEQUENZE_FILE);
+		String[][] table = new TableSequence().loadTable(fileDir + MyConst.SEQUENZE_FILE);
 		String tableRiga = TableSequence.getRow(table, riga);
 		String tablePath = TableSequence.getPath(table, riga);
 		File f1 = new File(tablePath);
 		String tableCode = TableSequence.getCode(table, riga);
 		String tableCoil = TableSequence.getCoil(table, riga);
 		ImagePlus imp1 = UtilAyv.openImageNoDisplay(tablePath, true);
-		String imaCode = ReadDicom
-				.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION)
-				.substring(0, 5).trim();
+		String aux1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
+		String imaCode = "";
+		if (aux1.length() >= 5)
+			imaCode = aux1.substring(0, 5).trim();
+		else
+			imaCode = aux1.substring(0, aux1.length()).trim();
 		String imaCoil = ReadDicom.getAllCoils(imp1);
 		MyLog.appendLog(fileDir + "MyLog.txt",
-				prg + " > logDebug name= " + f1.getName() + "  tableRiga= "
-						+ tableRiga + " tableCode= " + tableCode + " imaCode= "
-						+ imaCode + " tableCoil=" + tableCoil + " imaCoil= "
-						+ imaCoil);
+				prg + " > logDebug name= " + f1.getName() + "  tableRiga= " + tableRiga + " tableCode= " + tableCode
+						+ " imaCode= " + imaCode + " tableCoil=" + tableCoil + " imaCoil= " + imaCoil);
 	}
 
 }

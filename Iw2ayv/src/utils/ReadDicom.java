@@ -21,7 +21,7 @@ public class ReadDicom {
 
 	/**
 	 * La seguente routine, che si occupa di estrarre dati dall'header delle
-	 * immagini è tratta da QueryDicomHeader.java di Anthony Padua & Daniel
+	 * immagini ï¿½ tratta da QueryDicomHeader.java di Anthony Padua & Daniel
 	 * Barboriak - Duke University Medical Center. *** modified version ***
 	 * Alberto Duina - Spedali Civili di Brescia - Servizio di Fisica Sanitaria
 	 * 2006
@@ -239,7 +239,7 @@ public class ReadDicom {
 	 * 
 	 * @param fileName1
 	 *            path del file da validare
-	 * @return true se è un immagine valida
+	 * @return true se ï¿½ un immagine valida
 	 */
 	public static boolean isDicomOld(String fileName1) {
 		int totalFileLen = 0;
@@ -281,7 +281,7 @@ public class ReadDicom {
 	}
 
 	/***
-	 * Testa se è un file dicom ed è un immagine visualizzabile
+	 * Testa se ï¿½ un file dicom ed ï¿½ un immagine visualizzabile
 	 * 
 	 * @param fileName1
 	 * @return
@@ -336,6 +336,7 @@ public class ReadDicom {
 
 	public static String getThisCoil(ImagePlus imp1, String coil) {
 
+		if (coil==null) return null;
 		String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
 		int i1 = total.indexOf(coil);
 		if (i1 == -1) {

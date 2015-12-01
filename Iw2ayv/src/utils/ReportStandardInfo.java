@@ -19,8 +19,7 @@ public class ReportStandardInfo {
 	//
 	// private final static String DICOM_COIL = "0051,100F";
 
-	private static String[] simpleHeader = { "none", "none", "none", "none",
-			"none", "none", "none", "<END>" };
+	private static String[] simpleHeader = { "none", "none", "none", "none", "none", "none", "none", "<END>" };
 
 	/**
 	 * legge un gruppo di informazioni che verranno inserite nella ResultsTable
@@ -34,15 +33,13 @@ public class ReportStandardInfo {
 	 * @param version
 	 *            nome del plugin e sua versione
 	 * @param called
-	 *            true se il plugin è stato chiamato da sequenze
+	 *            true se il plugin ï¿½ stato chiamato da sequenze
 	 * @return gruppo informazioni per la ResultsTable
 	 */
-	public static String[][] getStandardInfo(String[][] tabImmagini, int riga,
-			String[][] tabCodici, String version, boolean called) {
-		String[][] out1 = { { "Codice", "none" }, { "Station", "none" },
-				{ "Patient", "none" }, { "AcqDate", "none" },
-				{ "ElabDate", "none" }, { "Coil", "none" },
-				{ "Frequeny", "none" }, { "<END>", "<END>" } };
+	public static String[][] getStandardInfo(String[][] tabImmagini, int riga, String[][] tabCodici, String version,
+			boolean called) {
+		String[][] out1 = { { "Codice", "none" }, { "Station", "none" }, { "Patient", "none" }, { "AcqDate", "none" },
+				{ "ElabDate", "none" }, { "Coil", "none" }, { "Frequeny", "none" }, { "<END>", "<END>" } };
 
 		if (tabImmagini == null) {
 			out1[0][1] = "TEST";
@@ -58,7 +55,7 @@ public class ReportStandardInfo {
 
 		//
 		// TODO
-		// posso ottenere i dati dell'immagine, anzichè partendo dalle tabelle e
+		// posso ottenere i dati dell'immagine, anzichï¿½ partendo dalle tabelle e
 		// cazzi e mazzi,
 		// semplicemente partendo da imp1 e, per il nome del file andando a
 		// leggere le fileInfo
@@ -79,8 +76,7 @@ public class ReportStandardInfo {
 		if (InputOutput.isCode(aux3, tabCodici))
 			codice2 = aux3.substring(0, 5).trim();
 		else {
-			aux3 = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_SERIES_DESCRIPTION);
+			aux3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
 			codice2 = aux3.substring(0, 5).trim();
 		}
 		String codice = "";
@@ -89,16 +85,12 @@ public class ReportStandardInfo {
 		else
 			codice = codice2;
 
-		String stationName = ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_STATION_NAME);
-		String patName = ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_PATIENT_NAME);
+		String stationName = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_STATION_NAME);
+		String patName = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_PATIENT_NAME);
 
-		String frequency = ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_IMAGING_FREQUENCY);
+		String frequency = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_IMAGING_FREQUENCY);
 
-		String[] mesi = { "gen", "feb", "mar", "apr", "mag", "giu", "lug",
-				"ago", "set", "ott", "nov", "dic" };
+		String[] mesi = { "gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic" };
 		// data acquisizione
 		String strDay = "none";
 		String strMonth = "none";
@@ -132,8 +124,7 @@ public class ReportStandardInfo {
 		// u1.ModelessMsg ("Elaborazione Day="+strDay+" Month="+strMonth+"
 		// Year="+strYear);
 
-		String elabDate = strDay + "-" + strMonth + "-" + strYear + "_"
-				+ version;
+		String elabDate = strDay + "-" + strMonth + "-" + strYear + "_" + version;
 
 		// String coil1 = ReadDicom.readDicomParameter(imp1, DICOM_COIL);
 		String coil = ReadDicom.getFirstCoil(imp1);
@@ -161,11 +152,9 @@ public class ReportStandardInfo {
 	 * @return acqDate
 	 */
 	public static String readDate(ImagePlus imp1) {
-		String acqTime = ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_ACQUISITION_DATE);
+		String acqTime = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ACQUISITION_DATE);
 		if (acqTime.equals("MISSING"))
-			acqTime = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_IMAGE_DATE);
+			acqTime = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_IMAGE_DATE);
 		return acqTime;
 	}
 
@@ -181,11 +170,11 @@ public class ReportStandardInfo {
 	 * @param version
 	 *            nome del plugin e sua versione
 	 * @param called
-	 *            true se il plugin è stato chiamato da sequenze
+	 *            true se il plugin ï¿½ stato chiamato da sequenze
 	 * @return gruppo informazioni per la ResultsTable
 	 */
-	public static String[] getSimpleStandardInfo(String path, ImagePlus imp1,
-			String[][] tabCodici, String version, boolean called) {
+	public static String[] getSimpleStandardInfo(String path, ImagePlus imp1, String[][] tabCodici, String reqCoil,
+			String version, boolean called) {
 
 		if (imp1 == null) {
 			IJ.log("getSimpleStandardInfo.imp1 == null");
@@ -203,21 +192,17 @@ public class ReportStandardInfo {
 			codice = UtilAyv.getFiveLetters(aux3).trim();
 		else {
 			// or: the code is in the dicomSeriesDescription
-			aux3 = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_SERIES_DESCRIPTION);
+			aux3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
 
 			codice = UtilAyv.getFiveLetters(aux3).trim();
 		}
 
-		String stationName = ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_STATION_NAME);
-		String patName = ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_PATIENT_NAME);
-		String frequency = ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_IMAGING_FREQUENCY);
+		// MyLog.waitHere("codice= " + codice + " reqCoil= " + reqCoil);
+		String stationName = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_STATION_NAME);
+		String patName = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_PATIENT_NAME);
+		String frequency = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_IMAGING_FREQUENCY);
 
-		String[] mesi = { "gen", "feb", "mar", "apr", "mag", "giu", "lug",
-				"ago", "set", "ott", "nov", "dic" };
+		String[] mesi = { "gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic" };
 		// acquisitionDate
 		// String acqDate2 = ReadDicom.readDicomParameter(imp1,
 		// MyConst.DICOM_ACQUISITION_DATE);
@@ -225,8 +210,7 @@ public class ReportStandardInfo {
 		String acqDate2 = readDate(imp1);
 
 		String strDay = acqDate2.substring(6).trim();
-		String strMonth = mesi[ReadDicom.readInt(acqDate2.substring(4, 6)
-				.trim()) - 1];
+		String strMonth = mesi[ReadDicom.readInt(acqDate2.substring(4, 6).trim()) - 1];
 		String strYear = acqDate2.substring(0, 4).trim();
 		String acqDate = strDay + "-" + strMonth + "-" + strYear;
 
@@ -240,25 +224,20 @@ public class ReportStandardInfo {
 
 		String strMonth2 = mesi[cal.get(Calendar.MONTH)];
 		String strYear2 = "" + (cal.get(Calendar.YEAR));
-		String elabDate = strDay2 + "-" + strMonth2 + "-" + strYear2 + "_"
-				+ version;
+		String elabDate = strDay2 + "-" + strMonth2 + "-" + strYear2 + "_" + version;
 		// String coil = UtilAyv.getFirstCoil(ReadDicom.readDicomParameter(imp1,
 		// DICOM_COIL));
 
-		aux3 = ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_SERIES_DESCRIPTION);
-
-		String reqCoil = getRequestedCoil(UtilAyv.getFiveLetters(aux3).trim(),
-				tabCodici);
+		aux3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
 
 		String coil = ReadDicom.getThisCoil(imp1, reqCoil);
+		// MyLog.waitHere("coil= " + coil);
 		if (coil == null)
 			coil = "";
 
 		if (coil.equals("MISSING")) {
 			coil = new UtilAyv().kludge(path);
 		}
-
 
 		// ModelessMsg("codice="+codice, "continua");
 		simpleHeader[0] = codice;
@@ -273,8 +252,206 @@ public class ReportStandardInfo {
 		return (simpleHeader);
 	}
 
-	public static String getRequestedCoil(String searchThis,
-			String[][] tabCodici) {
+	/**
+	 * legge un gruppo di informazioni che verranno inserite nella ResultsTable
+	 * 
+	 * @param strRiga
+	 *            tabella coi valori di iw2ayv.txt
+	 * @param imp1
+	 *            ImagePlus
+	 * @param tabCodici
+	 *            tabella coi valori di codici.txt
+	 * @param version
+	 *            nome del plugin e sua versione
+	 * @param called
+	 *            true se il plugin ï¿½ stato chiamato da sequenze
+	 * @return gruppo informazioni per la ResultsTable
+	 */
+	public static String[] getSimpleStandardInfo(String path, ImagePlus imp1, String[][] tabCodici, String version,
+			boolean called) {
+
+		if (imp1 == null) {
+			IJ.log("getSimpleStandardInfo.imp1 == null");
+			return null;
+		}
+		String aux3 = imp1.getTitle();
+
+		// IJ.log("getSimpleStandardInfo.aux3=" + aux3);
+		String codice;
+		// 2 possibilities: the first 5 letters of filename are the CODE or
+		// if (InputOutput.isCode(aux3.substring(0, 5).trim(), tabCodici))
+		if (InputOutput.isCode(UtilAyv.getFiveLetters(aux3).trim(), tabCodici))
+			// main possibility: the first 5 letters of the filename are a
+			// recognized code (in codici.txt)
+			codice = UtilAyv.getFiveLetters(aux3).trim();
+		else {
+			// or: the code is in the dicomSeriesDescription
+			aux3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
+
+			codice = UtilAyv.getFiveLetters(aux3).trim();
+		}
+
+		MyLog.waitHere("codice= " + codice);
+		String stationName = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_STATION_NAME);
+		String patName = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_PATIENT_NAME);
+		String frequency = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_IMAGING_FREQUENCY);
+
+		String[] mesi = { "gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic" };
+		// acquisitionDate
+		// String acqDate2 = ReadDicom.readDicomParameter(imp1,
+		// MyConst.DICOM_ACQUISITION_DATE);
+
+		String acqDate2 = readDate(imp1);
+
+		String strDay = acqDate2.substring(6).trim();
+		String strMonth = mesi[ReadDicom.readInt(acqDate2.substring(4, 6).trim()) - 1];
+		String strYear = acqDate2.substring(0, 4).trim();
+		String acqDate = strDay + "-" + strMonth + "-" + strYear;
+
+		// elaboration date
+		String strDay2 = "";
+		Calendar cal = Calendar.getInstance();
+		if (cal.get(Calendar.DAY_OF_MONTH) < 10)
+			strDay2 = "0" + cal.get(Calendar.DAY_OF_MONTH);
+		else
+			strDay2 = "" + cal.get(Calendar.DAY_OF_MONTH);
+
+		String strMonth2 = mesi[cal.get(Calendar.MONTH)];
+		String strYear2 = "" + (cal.get(Calendar.YEAR));
+		String elabDate = strDay2 + "-" + strMonth2 + "-" + strYear2 + "_" + version;
+		// String coil = UtilAyv.getFirstCoil(ReadDicom.readDicomParameter(imp1,
+		// DICOM_COIL));
+
+		aux3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
+
+		String reqCoil = getRequestedCoil(UtilAyv.getFiveLetters(aux3).trim(), tabCodici);
+		MyLog.waitHere("reqCoil= " + reqCoil);
+
+		String coil = ReadDicom.getThisCoil(imp1, reqCoil);
+		MyLog.waitHere("coil= " + coil);
+		if (coil == null)
+			coil = "";
+
+		if (coil.equals("MISSING")) {
+			coil = new UtilAyv().kludge(path);
+		}
+
+		// ModelessMsg("codice="+codice, "continua");
+		simpleHeader[0] = codice;
+		simpleHeader[1] = stationName;
+		simpleHeader[2] = patName;
+		simpleHeader[3] = acqDate;
+		simpleHeader[4] = elabDate;
+		simpleHeader[5] = coil;
+		simpleHeader[6] = frequency;
+		// MyLog.logVector(simpleHeader, "simpleHeader");
+
+		return (simpleHeader);
+	}
+
+	/**
+	 * legge un gruppo di informazioni che verranno inserite nella ResultsTable
+	 * 
+	 * @param strRiga
+	 *            tabella coi valori di iw2ayv.txt
+	 * @param imp1
+	 *            ImagePlus
+	 * @param tabCodici
+	 *            tabella coi valori di codici.txt
+	 * @param version
+	 *            nome del plugin e sua versione
+	 * @param called
+	 *            true se il plugin ï¿½ stato chiamato da sequenze
+	 * @return gruppo informazioni per la ResultsTable
+	 */
+	public static String[] getSimpleStandardInfo(String path, ImagePlus imp1, String[][] tabCodici,
+			String[][] tableSequence, int riga, String version, boolean called) {
+
+		if (imp1 == null) {
+			IJ.log("getSimpleStandardInfo.imp1 == null");
+			return null;
+		}
+		String aux3 = imp1.getTitle();
+
+		// String tableCode = TableSequence.getCode(tableSequence, riga);
+		String reqCoil = TableSequence.getCoil(tableSequence, riga);
+
+		// IJ.log("getSimpleStandardInfo.aux3=" + aux3);
+		String codice;
+		// 2 possibilities: the first 5 letters of filename are the CODE or
+		// if (InputOutput.isCode(aux3.substring(0, 5).trim(), tabCodici))
+		if (InputOutput.isCode(UtilAyv.getFiveLetters(aux3).trim(), tabCodici))
+			// main possibility: the first 5 letters of the filename are a
+			// recognized code (in codici.txt)
+			codice = UtilAyv.getFiveLetters(aux3).trim();
+		else {
+			// or: the code is in the dicomSeriesDescription
+			aux3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
+
+			codice = UtilAyv.getFiveLetters(aux3).trim();
+		}
+
+		MyLog.waitHere("codice= " + codice);
+		String stationName = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_STATION_NAME);
+		String patName = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_PATIENT_NAME);
+		String frequency = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_IMAGING_FREQUENCY);
+
+		String[] mesi = { "gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic" };
+		// acquisitionDate
+		// String acqDate2 = ReadDicom.readDicomParameter(imp1,
+		// MyConst.DICOM_ACQUISITION_DATE);
+
+		String acqDate2 = readDate(imp1);
+
+		String strDay = acqDate2.substring(6).trim();
+		String strMonth = mesi[ReadDicom.readInt(acqDate2.substring(4, 6).trim()) - 1];
+		String strYear = acqDate2.substring(0, 4).trim();
+		String acqDate = strDay + "-" + strMonth + "-" + strYear;
+
+		// elaboration date
+		String strDay2 = "";
+		Calendar cal = Calendar.getInstance();
+		if (cal.get(Calendar.DAY_OF_MONTH) < 10)
+			strDay2 = "0" + cal.get(Calendar.DAY_OF_MONTH);
+		else
+			strDay2 = "" + cal.get(Calendar.DAY_OF_MONTH);
+
+		String strMonth2 = mesi[cal.get(Calendar.MONTH)];
+		String strYear2 = "" + (cal.get(Calendar.YEAR));
+		String elabDate = strDay2 + "-" + strMonth2 + "-" + strYear2 + "_" + version;
+		// String coil = UtilAyv.getFirstCoil(ReadDicom.readDicomParameter(imp1,
+		// DICOM_COIL));
+
+		aux3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
+
+		// String reqCoil =
+		// getRequestedCoil(UtilAyv.getFiveLetters(aux3).trim(),
+		// tabCodici);
+		// MyLog.waitHere("reqCoil= "+reqCoil);
+
+		String coil = ReadDicom.getThisCoil(imp1, reqCoil);
+		MyLog.waitHere("coil= " + coil);
+		if (coil == null)
+			coil = "";
+
+		if (coil.equals("MISSING")) {
+			coil = new UtilAyv().kludge(path);
+		}
+
+		// ModelessMsg("codice="+codice, "continua");
+		simpleHeader[0] = codice;
+		simpleHeader[1] = stationName;
+		simpleHeader[2] = patName;
+		simpleHeader[3] = acqDate;
+		simpleHeader[4] = elabDate;
+		simpleHeader[5] = coil;
+		simpleHeader[6] = frequency;
+		// MyLog.logVector(simpleHeader, "simpleHeader");
+
+		return (simpleHeader);
+	}
+
+	public static String getRequestedCoil(String searchThis, String[][] tabCodici) {
 		String out1 = null;
 		for (int i1 = 0; i1 < tabCodici.length; i1++) {
 			if (TableCode.getCode(tabCodici, i1).equals(searchThis)) {
@@ -284,32 +461,25 @@ public class ReportStandardInfo {
 		return out1;
 	}
 
-	public static String[] getMiniStandardInfo(String path, ImagePlus imp1,
-			boolean called) {
+	public static String[] getMiniStandardInfo(String path, ImagePlus imp1, boolean called) {
 
 		if (imp1 == null) {
 			IJ.log("getSimpleStandardInfo.imp1 == null");
 			return null;
 		}
 		// or: the code is in the dicomSeriesDescription
-		String aux3 = ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_SERIES_DESCRIPTION);
+		String aux3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
 
 		String codice = UtilAyv.getFiveLetters(aux3).trim();
 
-		String stationName = ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_STATION_NAME);
-		String patName = ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_PATIENT_NAME);
-		String frequency = ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_IMAGING_FREQUENCY);
+		String stationName = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_STATION_NAME);
+		String patName = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_PATIENT_NAME);
+		String frequency = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_IMAGING_FREQUENCY);
 
-		String[] mesi = { "gen", "feb", "mar", "apr", "mag", "giu", "lug",
-				"ago", "set", "ott", "nov", "dic" };
+		String[] mesi = { "gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic" };
 		String acqDate2 = readDate(imp1);
 		String strDay = acqDate2.substring(6).trim();
-		String strMonth = mesi[ReadDicom.readInt(acqDate2.substring(4, 6)
-				.trim()) - 1];
+		String strMonth = mesi[ReadDicom.readInt(acqDate2.substring(4, 6).trim()) - 1];
 		String strYear = acqDate2.substring(0, 4).trim();
 		String acqDate = strDay + "-" + strMonth + "-" + strYear;
 		// elaboration date
@@ -366,7 +536,7 @@ public class ReportStandardInfo {
 	}
 
 	/***
-	 * Questa versione aggiornata non utilizza più setHeading, ora deprecata
+	 * Questa versione aggiornata non utilizza piï¿½ setHeading, ora deprecata
 	 * 
 	 * @param info1
 	 * @return
