@@ -52,8 +52,7 @@ public class ReadDicom {
 		// IJ.log("iLabel= "+iLabel);
 		// MyLog.waitHere();
 
-		String header = stack.getSize() > 1 ? stack.getSliceLabel(currSlice)
-				: (String) imp.getProperty("Info");
+		String header = stack.getSize() > 1 ? stack.getSliceLabel(currSlice) : (String) imp.getProperty("Info");
 
 		if (header != null) {
 			int idx1 = header.indexOf(userInput);
@@ -122,8 +121,7 @@ public class ReadDicom {
 		int currSlice = imp.getCurrentSlice();
 		ImageStack stack = imp.getStack();
 
-		String header = stack.getSize() > 1 ? stack.getSliceLabel(currSlice)
-				: (String) imp.getProperty("Info");
+		String header = stack.getSize() > 1 ? stack.getSliceLabel(currSlice) : (String) imp.getProperty("Info");
 
 		if (header != null)
 			return true;
@@ -137,8 +135,7 @@ public class ReadDicom {
 		int currSlice = imp.getCurrentSlice();
 		ImageStack stack = imp.getStack();
 
-		String header = stack.getSize() > 1 ? stack.getSliceLabel(currSlice)
-				: (String) imp.getProperty("Info");
+		String header = stack.getSize() > 1 ? stack.getSliceLabel(currSlice) : (String) imp.getProperty("Info");
 		return header;
 	}
 
@@ -248,15 +245,13 @@ public class ReadDicom {
 		boolean pixelsDataFound = false;
 
 		try {
-			BufferedInputStream f = new BufferedInputStream(
-					new FileInputStream(fileName1));
+			BufferedInputStream f = new BufferedInputStream(new FileInputStream(fileName1));
 			totalFileLen = f.available();
 			fBufCopy = new byte[totalFileLen];
 			f.read(fBufCopy, 0, totalFileLen);
 			f.close();
 		} catch (Exception e) {
-			IJ.showMessage("preFilter", "Error opening " + fileName1
-					+ "\n \n\"" + e.getMessage() + "\"");
+			IJ.showMessage("preFilter", "Error opening " + fileName1 + "\n \n\"" + e.getMessage() + "\"");
 		}
 
 		for (int i1 = 0; i1 < totalFileLen - 4; i1++) {
@@ -312,8 +307,7 @@ public class ReadDicom {
 	 */
 	public static String getCode(ImagePlus imp1) {
 
-		String seriesDescription = ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_SERIES_DESCRIPTION);
+		String seriesDescription = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
 		String codice = "";
 		if (seriesDescription.length() >= 5) {
 			codice = seriesDescription.substring(0, 5).trim();
@@ -334,22 +328,45 @@ public class ReadDicom {
 		return coil;
 	}
 
-	public static String getThisCoil(ImagePlus imp1, String coil) {
+	public static String getThisCoil(ImagePlus imp1, String[] vetCoils) {
 
-		if (coil==null) return null;
-		String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
-		int i1 = total.indexOf(coil);
-		if (i1 == -1) {
-			return total;
-		} else {
-			return coil;
+		if (vetCoils == null) {
+			// MyLog.waitHere("null1");
+			return null;
 		}
+		String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
+
+		String[] listCoils = splitCoils(total);
+		for (int i1 = 0; i1 < listCoils.length; i1++) {
+			for (int i2 = 0; i2 < vetCoils.length; i2++) {
+				if (total.equals(vetCoils[i2])) {
+					return total;
+				}
+				if (listCoils[i1].equals(vetCoils[i2]))
+					return vetCoils[i2];
+			}
+		}
+		// MyLog.logVector(vetCoils, "vetCoils");
+		// MyLog.logVector(listCoils, "listCoils");
+		// MyLog.waitHere("null2");
+		return null;
 	}
 
 	public static String getAllCoils(ImagePlus imp1) {
 
 		String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
 		return total;
+	}
+
+	public static String[] splitCoils(String multiCoil) {
+		String[] subCoils;
+		if (multiCoil.contains(";")) {
+			subCoils = multiCoil.split(";");
+		} else {
+			subCoils = new String[1];
+			subCoils[0] = multiCoil;
+		}
+		return subCoils;
 	}
 
 }

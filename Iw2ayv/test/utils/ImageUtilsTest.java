@@ -54,8 +54,10 @@ public class ImageUtilsTest {
 	@Test
 	public final void testFitCircle() {
 
-		int[] xPoints3 = { 58, 170, 213, 195, 86 };
-		int[] yPoints3 = { 61, 39, 111, 165, 191 };
+//		int[] xPoints3 = { 58, 170, 213, 195, 86 };
+//		int[] yPoints3 = { 61, 39, 111, 165, 191 };
+		int[] xPoints3 = { 58, 170, 240, 195, 86 };
+		int[] yPoints3 = { 61, 39, 160, 145, 191 };
 
 		ImagePlus imp12 = UtilAyv.openImageMaximized(".\\Test4\\bbb");
 		Overlay over12 = new Overlay();
@@ -68,6 +70,7 @@ public class ImageUtilsTest {
 		int xCenterCircle = Math.round(boundRec.x + boundRec.width / 2);
 		int yCenterCircle = Math.round(boundRec.y + boundRec.height / 2);
 		int diamCircle = boundRec.width;
+		MyLog.waitHere();
 		IJ.wait(200);
 
 		assertEquals(xCenterCircle, 126);
