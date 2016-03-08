@@ -46,8 +46,7 @@ public class InputOutput {
 	 * @return path del file
 	 */
 	public static String findResource(String name) {
-		URL url1 = new InputOutput().getClass().getClassLoader()
-				.getResource(name);
+		URL url1 = new InputOutput().getClass().getClassLoader().getResource(name);
 		String path = "";
 		if (url1 == null)
 			return null;
@@ -66,10 +65,8 @@ public class InputOutput {
 	 *            nome del file
 	 * @return path del file
 	 */
-	public static String findUnknownResource(String knownName,
-			String wildcardName) {
-		URL url1 = new InputOutput().getClass().getClassLoader()
-				.getResource(knownName);
+	public static String findUnknownResource(String knownName, String wildcardName) {
+		URL url1 = new InputOutput().getClass().getClassLoader().getResource(knownName);
 		String path = url1.getPath();
 
 		return path;
@@ -92,8 +89,7 @@ public class InputOutput {
 	 */
 	public boolean findCSV(String fileName) {
 
-		URL url3 = this.getClass().getClassLoader()
-				.getResource("contMensili/Sequenze_.class");
+		URL url3 = this.getClass().getClassLoader().getResource("contMensili/Sequenze_.class");
 		String myString = url3.toString();
 		int start = myString.indexOf("plugins");
 		int end = myString.lastIndexOf("!");
@@ -122,8 +118,7 @@ public class InputOutput {
 		}
 		try {
 			// tento la copia
-			InputStream is = this.getClass()
-					.getResourceAsStream("/" + fileName);
+			InputStream is = this.getClass().getResourceAsStream("/" + fileName);
 			FileOutputStream fos = new FileOutputStream(outFile);
 			while (is.available() > 0) {
 				// MyLog.waitHere("SCRIVO "+fileName);
@@ -250,8 +245,7 @@ public class InputOutput {
 				br = new BufferedReader(new FileReader(path));
 			} else {
 				path = findResource(fileName);
-				InputStream is = new InputOutput().getClass().getClassLoader()
-						.getResourceAsStream(fileName);
+				InputStream is = new InputOutput().getClass().getClassLoader().getResourceAsStream(fileName);
 				br = new BufferedReader(new InputStreamReader(is));
 			}
 			while (br.ready()) {
@@ -260,8 +254,7 @@ public class InputOutput {
 			}
 			br.close();
 		} catch (Exception e) {
-			MyLog.waitThere("readFilegeneric error <" + fileName + "> "
-					+ e.getMessage());
+			MyLog.waitThere("readFilegeneric error <" + fileName + "> " + e.getMessage());
 			return null;
 		}
 		return matrixTable;
@@ -297,8 +290,7 @@ public class InputOutput {
 		return matrixTable;
 	}
 
-	public ArrayList<ArrayList<String>> readFile5LIKE(String fileName,
-			boolean absolute) {
+	public ArrayList<ArrayList<String>> readFile5LIKE(String fileName, boolean absolute) {
 		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
 		ArrayList<String> arr1 = readFileGeneric(fileName, absolute);
 		String[] line = ArrayUtils.arrayListToArrayString(arr1);
@@ -337,8 +329,7 @@ public class InputOutput {
 				continue;
 			if (!isComment(riga)) {
 				String substr = riga.substring(0, 2);
-				if (line.equals("") || substr.equals("//")
-						|| substr.equals("/*")) {
+				if (line.equals("") || substr.equals("//") || substr.equals("/*")) {
 					continue;
 				}
 				ArrayList<String> row = new ArrayList<String>();
@@ -350,8 +341,7 @@ public class InputOutput {
 				matrixTable.add(row);
 			}
 		}
-		String[][] table = new String[matrixTable.size()][matrixTable.get(0)
-				.size()];
+		String[][] table = new String[matrixTable.size()][matrixTable.get(0).size()];
 		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
 			ArrayList<String> arrayList = matrixTable.get(i1);
 			row1 = arrayList;
@@ -360,6 +350,34 @@ public class InputOutput {
 			}
 		}
 		return (table);
+	}
+
+	public ArrayList<ArrayList<String>> readFile61LIKE(String fileName, boolean absolute) {
+
+		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
+		ArrayList<String> arr1 = readFileGeneric(fileName, absolute);
+		if (arr1 == null)
+			return null;
+		String[] line = ArrayUtils.arrayListToArrayString(arr1);
+		for (int i1 = 0; i1 < line.length; i1++) {
+			String riga = line[i1];
+			if (riga.trim().length() == 0)
+				continue;
+			if (!isComment(riga)) {
+				String substr = riga.substring(0, 2);
+				if (line.equals("") || substr.equals("//") || substr.equals("/*")) {
+					continue;
+				}
+				ArrayList<String> row = new ArrayList<String>();
+				String result = InputOutput.stripAllComments(riga);
+				String[] splitted = splitStringGeneric(result, ";");
+				for (int i2 = 0; i2 < splitted.length; i2++) {
+					row.add(splitted[i2]);
+				}
+				matrixTable.add(row);
+			}
+		}
+		return (matrixTable);
 	}
 
 	/**
@@ -388,8 +406,7 @@ public class InputOutput {
 		return out;
 	}
 
-	public static String[][] substCharInMatrix(String[][] in, String replace,
-			String withthis) {
+	public static String[][] substCharInMatrix(String[][] in, String replace, String withthis) {
 		int len1 = in.length;
 		int len2 = in[0].length;
 
@@ -686,18 +703,15 @@ public class InputOutput {
 	 * @param fileName
 	 * @return
 	 */
-	public static String[][] readStringMatrixFromFileNew(String fileName,
-			String separator) {
+	public static String[][] readStringMatrixFromFileNew(String fileName, String separator) {
 		ArrayList<String> vetList = new ArrayList<String>();
 		try {
-			URL url1 = new InputOutput().getClass().getClassLoader()
-					.getResource(fileName);
+			URL url1 = new InputOutput().getClass().getClassLoader().getResource(fileName);
 			if (url1 == null) {
 				IJ.log("readFile7: file " + fileName + " not visible or null");
 				return null;
 			}
-			InputStream is = new InputOutput().getClass().getClassLoader()
-					.getResourceAsStream(fileName);
+			InputStream is = new InputOutput().getClass().getClassLoader().getResourceAsStream(fileName);
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 			String str = br.readLine();
 			while (str != null) {
@@ -751,8 +765,7 @@ public class InputOutput {
 	// // NB: rinominato temporaneamente per vedere se lo ho utilizzato da
 	// qualche parte od era un progetto orfano
 
-	public static double[][][] addMatrix(double[][][] mat1, double[][] mat2,
-			int index) {
+	public static double[][][] addMatrix(double[][][] mat1, double[][] mat2, int index) {
 		int slices1 = mat1.length;
 		int rows1 = mat1[0].length;
 		int columns1 = mat1[0][0].length;
@@ -804,8 +817,7 @@ public class InputOutput {
 	 * @param matrixTable
 	 * @return
 	 */
-	public String[][] fromArrayListToStringTable(
-			ArrayList<ArrayList<String>> matrixTable) {
+	public String[][] fromArrayListToStringTable(ArrayList<ArrayList<String>> matrixTable) {
 		ArrayList<String> row1 = new ArrayList<String>();
 		if (matrixTable == null) {
 			MyLog.here("fromArrayListToStringTable.matrixTable == null");
@@ -817,8 +829,7 @@ public class InputOutput {
 		}
 
 		// ora trasferiamo tutto nella table
-		String[][] table = new String[matrixTable.size()][matrixTable.get(0)
-				.size()];
+		String[][] table = new String[matrixTable.size()][matrixTable.get(0).size()];
 		for (int i1 = 0; i1 < matrixTable.size(); i1++) {
 			ArrayList<String> arrayList = matrixTable.get(i1);
 			row1 = arrayList;
@@ -835,8 +846,7 @@ public class InputOutput {
 	 * @param matrixTable
 	 * @return
 	 */
-	public double[][] fromArrayListToDoubleTable(
-			ArrayList<ArrayList<Double>> matrixTable) {
+	public double[][] fromArrayListToDoubleTable(ArrayList<ArrayList<Double>> matrixTable) {
 		int rows = 0;
 		int columns = 0;
 
@@ -882,8 +892,7 @@ public class InputOutput {
 	 * @param matrixTable
 	 * @return
 	 */
-	public double[][] fromArrayListToDoubleTableSwapped(
-			ArrayList<ArrayList<Double>> matrixTable) {
+	public double[][] fromArrayListToDoubleTableSwapped(ArrayList<ArrayList<Double>> matrixTable) {
 		int rows = 0;
 		int columns = 0;
 
@@ -930,8 +939,7 @@ public class InputOutput {
 	 * @param title
 	 */
 
-	public static void dumpArrayListTable(
-			ArrayList<ArrayList<String>> matrixTable, String title) {
+	public static void dumpArrayListTable(ArrayList<ArrayList<String>> matrixTable, String title) {
 		ArrayList<String> row1 = new ArrayList<String>();
 		if (matrixTable == null) {
 			IJ.log("fromArrayListToStringTable.matrixTable == null");
@@ -1037,8 +1045,7 @@ public class InputOutput {
 		try {
 			URL url1 = this.getClass().getResource("/" + source);
 			if (url1 == null) {
-				IJ.log("extractFromJAR: file " + source
-						+ " not visible or null");
+				IJ.log("extractFromJAR: file " + source + " not visible or null");
 				return;
 			}
 			String home = url1.getPath();
@@ -1062,8 +1069,7 @@ public class InputOutput {
 			File efile = new File(home2 + dest, entry.getName());
 
 			InputStream in = new BufferedInputStream(jar.getInputStream(entry));
-			OutputStream out = new BufferedOutputStream(new FileOutputStream(
-					efile));
+			OutputStream out = new BufferedOutputStream(new FileOutputStream(efile));
 			byte[] buffer = new byte[2048];
 			for (;;) {
 				int nBytes = in.read(buffer);
@@ -1104,8 +1110,7 @@ public class InputOutput {
 		try {
 			URL url1 = this.getClass().getResource("/" + source);
 			if (url1 == null) {
-				IJ.log("extractFromJAR: file " + source
-						+ " not visible or null");
+				IJ.log("extractFromJAR: file " + source + " not visible or null");
 				return -1L;
 			}
 			String home = url1.getPath();
@@ -1129,8 +1134,7 @@ public class InputOutput {
 			File efile = new File(home2 + dest, entry.getName());
 
 			InputStream in = new BufferedInputStream(jar.getInputStream(entry));
-			OutputStream out = new BufferedOutputStream(new FileOutputStream(
-					efile));
+			OutputStream out = new BufferedOutputStream(new FileOutputStream(efile));
 			byte[] buffer = new byte[2048];
 			for (;;) {
 				int nBytes = in.read(buffer);
@@ -1158,8 +1162,7 @@ public class InputOutput {
 	 * @param destination
 	 * @return
 	 */
-	public String findListTestImages(String source, String[] list,
-			String destination) {
+	public String findListTestImages(String source, String[] list, String destination) {
 		if (list == null) {
 			IJ.log("findListTestImages.list==null");
 			return null;
@@ -1184,8 +1187,7 @@ public class InputOutput {
 	 * @param destination
 	 * @return
 	 */
-	public String[] findListTestImages2(String source, String[] list,
-			String destination) {
+	public String[] findListTestImages2(String source, String[] list, String destination) {
 		if (list == null) {
 			MyLog.here("list==null");
 			return null;
@@ -1250,8 +1252,7 @@ public class InputOutput {
 		if (endComment < 0)
 			endComment = riga.length();
 
-		noComment = riga.substring(0, beginComment)
-				+ riga.substring(endComment + 2, riga.length());
+		noComment = riga.substring(0, beginComment) + riga.substring(endComment + 2, riga.length());
 		return noComment;
 	}
 
@@ -1309,12 +1310,10 @@ public class InputOutput {
 				System.out.println("File not exist!");
 				System.exit(0);
 			}
-			ZipInputStream zis1 = new ZipInputStream(new FileInputStream(
-					sourcefile));
+			ZipInputStream zis1 = new ZipInputStream(new FileInputStream(sourcefile));
 			ZipFile zf1 = new ZipFile(sourcefile);
 			int count = 0;
-			for (Enumeration<? extends ZipEntry> em = zf1.entries(); em
-					.hasMoreElements();) {
+			for (Enumeration<? extends ZipEntry> em = zf1.entries(); em.hasMoreElements();) {
 				String targetfile = em.nextElement().toString();
 				out = new FileOutputStream(destination + "/" + targetfile);
 				byte[] buf = new byte[1024];
@@ -1348,16 +1347,14 @@ public class InputOutput {
 		try {
 			BufferedOutputStream dest = null;
 			FileInputStream fis = new FileInputStream(zipFile);
-			ZipInputStream zis = new ZipInputStream(
-					new BufferedInputStream(fis));
+			ZipInputStream zis = new ZipInputStream(new BufferedInputStream(fis));
 			ZipEntry entry;
 			while ((entry = zis.getNextEntry()) != null) {
 				// System.out.println("Extracting: " +entry);
 				int count;
 				byte data[] = new byte[BUFFER];
 				// write the files to the disk
-				FileOutputStream fos = new FileOutputStream(destDir + "\\"
-						+ entry.getName());
+				FileOutputStream fos = new FileOutputStream(destDir + "\\" + entry.getName());
 				dest = new BufferedOutputStream(fos, BUFFER);
 				while ((count = zis.read(data, 0, BUFFER)) != -1) {
 					dest.write(data, 0, count);

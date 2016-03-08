@@ -160,7 +160,6 @@ public class ReportStandardInfo {
 		return acqTime;
 	}
 
-
 	/**
 	 * legge un gruppo di informazioni che verranno inserite nella ResultsTable
 	 * 
@@ -234,8 +233,10 @@ public class ReportStandardInfo {
 		String[] reqCoil = getRequestedCoil2(UtilAyv.getFiveLetters(aux3).trim(), tabCodici);
 
 		String coil = ReadDicom.getThisCoil(imp1, reqCoil);
-		if (coil == null)
+		if (coil == null) {
 			coil = "null";
+			MyLog.waitHere("coil = null");
+		}
 
 		if (coil.equals("MISSING")) {
 			coil = new UtilAyv().kludge(path);
@@ -356,7 +357,6 @@ public class ReportStandardInfo {
 		return (simpleHeader);
 	}
 
-
 	public static String getRequestedCoil1(String searchThisCode, String[][] tabCodici) {
 		String out1 = null;
 		for (int i1 = 0; i1 < tabCodici.length; i1++) {
@@ -373,11 +373,11 @@ public class ReportStandardInfo {
 
 		for (int i1 = 0; i1 < tabCodici.length; i1++) {
 			if (TableCode.getCode(tabCodici, i1).equals(searchThisCode)) {
-					listOut1.add(TableCode.getCoil(tabCodici, i1));
+				listOut1.add(TableCode.getCoil(tabCodici, i1));
 			}
 		}
 		String[] vetOut1 = ArrayUtils.arrayListToArrayString(listOut1);
-		
+
 		return vetOut1;
 	}
 

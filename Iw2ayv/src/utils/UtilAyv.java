@@ -2017,12 +2017,14 @@ public class UtilAyv {
 	 * @param sel
 	 * @return
 	 */
-	public static boolean checkImages(int[] vetRiga, String[][] iw2ayvTable, int sel, boolean debug) {
+	public static boolean checkImages0(int[] vetRiga, String[][] iw2ayvTable, int sel, boolean debug) {
 
 		// IJ.log("checkImages riceve vetRiga= ");
 		// MyLog.logVector(vetRiga, "vetRiga");
 
 		String[] coil = new String[vetRiga.length];
+		String[] position = new String[vetRiga.length];
+		String[] location = new String[vetRiga.length];
 		String[] descr = new String[vetRiga.length];
 		String[] echo = new String[vetRiga.length];
 		String[] serie = new String[vetRiga.length];
@@ -2037,6 +2039,8 @@ public class UtilAyv {
 			imp1 = UtilAyv.openImageNoDisplay(path1, true);
 			// IJ.log("checkImages apre path1= " + path1);
 			descr[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
+			position[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_IMAGE_POSITION);
+			location[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SLICE_LOCATION);
 			coil[i1] = ReadDicom.getAllCoils(imp1);
 			echo[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ECHO_TIME);
 			serie[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_NUMBER);
@@ -2051,21 +2055,38 @@ public class UtilAyv {
 		// Tutte le immagini da analizzare dovranno essere acquisite dalla
 		// stessa bobina (oppure dalla MISSING)
 		String coil0 = coil[0];
+		String position0 = position[0];
+		String location0 = location[0];
 
 		for (int i1 = 1; i1 < vetRiga.length; i1++) {
 			if (!descr0.equals(descr[i1])) {
 
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "la descrizione delle sequenze ricevute e'differente " + stampa + "   " + descr0 + "  "
+						+ "la descrizione delle sequenze ricevute e'differente " + stampa + "  " + descr0 + "   <>    "
 						+ descr[i1], debug);
 				return false;
 			}
 			if (!coil0.equals(coil[i1])) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
 						+ "le immagini ricevute devono essere tutte acquisite \n" + "con la stessa bobina" + stampa
-						+ "  " + coil0 + "  " + coil[i1], debug);
+						+ "  " + coil0 + "   <>   " + coil[i1], debug);
 				return false;
 			}
+
+			if (!position0.equals(position[i1])) {
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "le immagini ricevute devono essere tutte acquisite \n" + "con la stessa POSITION" + stampa
+						+ "  " + position0 + "    <>    " + position[i1], debug);
+				return false;
+			}
+
+			if (!location0.equals(location[i1])) {
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "le immagini ricevute devono essere tutte acquisite \n" + "con la stessa LOCATION" + stampa
+						+ "  " + location0 + "   <>   " + location[i1], debug);
+				return false;
+			}
+
 		}
 
 		switch (sel) {
@@ -2163,6 +2184,121 @@ public class UtilAyv {
 		}
 
 		return true;
+	}
+
+	/**
+	 * checkImages2 effettua il controllo di coerenza delle immagini
+	 *
+	 * @param path1
+	 *            path prima immagine
+	 * @param path2
+	 *            path seconda immagine
+	 * @param debug
+	 * @return
+	 */
+	public static boolean checkImages2(String path1, String path2, boolean debug) {
+
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, true);
+		ImagePlus imp2 = UtilAyv.openImageNoDisplay(path2, true);
+
+		String[] vetString = { MyConst.DICOM_SERIES_DESCRIPTION, MyConst.DICOM_IMAGE_POSITION,
+				MyConst.DICOM_SLICE_LOCATION, MyConst.DICOM_ECHO_TIME };
+
+		for (int i1 = 0; i1 < vetString.length; i1++) {
+			String item1 = ReadDicom.readDicomParameter(imp1, vetString[i1]);
+			String item2 = ReadDicom.readDicomParameter(imp2, vetString[i1]);
+			if (!item1.equals(item2)) {
+
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "la descrizione delle sequenze ricevute e'differente " + vetString[i1] + "  " + item1
+						+ "   <>    " + item2, debug);
+				return false;
+			}
+		}
+
+		String coil1 = ReadDicom.getAllCoils(imp1);
+		String coil2 = ReadDicom.getAllCoils(imp2);
+		if (!coil1.equals(coil2)) {
+
+			MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+					+ "la descrizione delle sequenze ricevute e'differente per le bobine utilizzate: " + coil1
+					+ "   <>    " + coil2, debug);
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * checkImages3 effettua il controllo di coerenza delle immagini
+	 *
+	 * @param path1
+	 *            path prima immagine
+	 * @param path2
+	 *            path seconda immagine
+	 * @param debug
+	 * @return
+	 */
+	public static boolean checkImages4(String path1, String path2, String path11, String path21, boolean debug) {
+
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, true);
+		ImagePlus imp2 = UtilAyv.openImageNoDisplay(path2, true);
+		ImagePlus imp11 = UtilAyv.openImageNoDisplay(path11, true);
+		ImagePlus imp21 = UtilAyv.openImageNoDisplay(path21, true);
+
+		String[] vetString = { MyConst.DICOM_SERIES_DESCRIPTION, MyConst.DICOM_IMAGE_POSITION,
+				MyConst.DICOM_SLICE_LOCATION };
+
+		for (int i1 = 0; i1 < vetString.length; i1++) {
+			String item1 = ReadDicom.readDicomParameter(imp1, vetString[i1]);
+			String item2 = ReadDicom.readDicomParameter(imp2, vetString[i1]);
+			String item11 = ReadDicom.readDicomParameter(imp11, vetString[i1]);
+			String item21 = ReadDicom.readDicomParameter(imp21, vetString[i1]);
+			if (!(item1.equals(item2) && item1.equals(item11) && item1.equals(item21))) {
+
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "la descrizione delle sequenze ricevute e'differente " + vetString[i1] + "  " + item1
+						+ "   <>    " + item2 + "   <>    " + item11 + "   <>    " + item21, debug);
+				return false;
+			}
+		}
+
+		String eco1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ECHO_TIME);
+		String eco2 = ReadDicom.readDicomParameter(imp2, MyConst.DICOM_ECHO_TIME);
+		String eco11 = ReadDicom.readDicomParameter(imp11, MyConst.DICOM_ECHO_TIME);
+		String eco21 = ReadDicom.readDicomParameter(imp21, MyConst.DICOM_ECHO_TIME);
+
+		if (!(eco1.equals(eco2)) && (eco11.equals(eco21)) || (!(Integer.parseInt(eco1) < Integer.parseInt(eco11)))) {
+
+			MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n" + "i tempi di eco sono irregolari  " + eco1
+					+ "  " + eco2 + "  " + eco11 + "  " + eco21, debug);
+			return false;
+		}
+
+		// if (!(Integer.parseInt(eco1) < Integer.parseInt(eco11))) {
+		//
+		// MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n" + "i
+		// tempi di eco sono irregolari 222222",
+		// debug);
+		// return false;
+		// }
+
+		String coil1 = ReadDicom.getAllCoils(imp1);
+		String coil2 = ReadDicom.getAllCoils(imp2);
+		String coil11 = ReadDicom.getAllCoils(imp11);
+		String coil21 = ReadDicom.getAllCoils(imp21);
+		if (!(coil1.equals(coil2) || coil1.equals(coil11) || coil1.equals(coil21)))
+
+		{
+
+			MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+					+ "la descrizione delle sequenze ricevute e'differente per le bobine utilizzate: " + coil1
+					+ "   <>    " + coil2, debug);
+			return false;
+		}
+
+		return true;
+
 	}
 
 	/**

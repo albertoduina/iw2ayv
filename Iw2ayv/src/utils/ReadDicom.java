@@ -328,6 +328,14 @@ public class ReadDicom {
 		return coil;
 	}
 
+	/***
+	 * getThisCoil
+	 * 
+	 * @param imp1
+	 * @param vetCoils
+	 *            vettore coi le coils di cui verificare la presenza
+	 * @return
+	 */
 	public static String getThisCoil(ImagePlus imp1, String[] vetCoils) {
 
 		if (vetCoils == null) {
@@ -335,11 +343,19 @@ public class ReadDicom {
 			return null;
 		}
 		String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
+		// MyLog.waitHere("total= " + total);
 
 		String[] listCoils = splitCoils(total);
+		// MyLog.waitHere("listCoils[0]= " + listCoils[0]);
 		for (int i1 = 0; i1 < listCoils.length; i1++) {
 			for (int i2 = 0; i2 < vetCoils.length; i2++) {
+				// MyLog.waitHere("total= "+total+ " vetCoils["+i2+"]=
+				// "+vetCoils[i2]);
 				if (total.equals(vetCoils[i2])) {
+					// MyLog.waitHere("trovato?");
+					return total;
+				}
+				if (vetCoils[0].equals("xxx")) {
 					return total;
 				}
 				if (listCoils[i1].equals(vetCoils[i2]))
