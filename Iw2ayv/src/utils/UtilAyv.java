@@ -2212,6 +2212,7 @@ public class UtilAyv {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
 						+ "la descrizione delle sequenze ricevute e'differente " + vetString[i1] + "  " + item1
 						+ "   <>    " + item2, debug);
+
 				return false;
 			}
 		}

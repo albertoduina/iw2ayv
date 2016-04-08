@@ -48,7 +48,7 @@ public class ImageUtils {
 	 * 
 	 * @param test
 	 *            modo autotest
-	 * @return numeriosità classi simulata
+	 * @return numeriositï¿½ classi simulata
 	 */
 	public static int[][] generaSimulata12classi(int xCenterRoi,
 			int yCenterRoi, int latoRoi, ImagePlus imp1, String filePath,
@@ -92,7 +92,7 @@ public class ImageUtils {
 	 * 
 	 * @param test
 	 *            modo autotest
-	 * @return numeriosità classi simulata
+	 * @return numeriositï¿½ classi simulata
 	 */
 	public static int[][] generaSimulata12classi(int xCenterRoi,
 			int yCenterRoi, int latoRoi, ImagePlus imp1, String filePath,
@@ -230,12 +230,12 @@ public class ImageUtils {
 	}
 
 	/**
-	 * Estrae la numerosità dell classi dalla simulata
+	 * Estrae la numerositï¿½ dell classi dalla simulata
 	 * 
 	 * @param imp1
 	 *            immagine simulata da analizzare
-	 * @return numerosità delle classi in cui per ogni elemento abbiamo
-	 *         [valore][numerosità]
+	 * @return numerositï¿½ delle classi in cui per ogni elemento abbiamo
+	 *         [valore][numerositï¿½]
 	 */
 
 	public static int[][] numeroPixelsClassi(ImagePlus imp1) {
@@ -293,96 +293,15 @@ public class ImageUtils {
 		over1.add(roi1);
 	}
 
-	// /***
-	// * Porta l'immagine in primo piano
-	// *
-	// * @param iw1
-	// */
-	// public static void imageToFront22222(ImageWindow iw1) {
-	//
-	// boolean list = false;
-	// Window w2 = WindowManager.getActiveWindow();
-	// if (w2 == null || iw1 == null)
-	// return;
-	//
-	// String nome1 = iw1.toString();
-	// String nome2 = "noname";
-	//
-	// String[] vNome2 = new String[10];
-	//
-	// int count = -1;
-	// do {
-	// count++;
-	// if (iw1 != null) {
-	// WindowManager.setCurrentWindow(iw1);
-	// WindowManager.setWindow(iw1);
-	// IJ.wait(100);
-	// }
-	// w2 = WindowManager.getActiveWindow();
-	// nome2 = w2.toString();
-	// vNome2[count] = nome2;
-	// } while (!nome1.equals(nome2));
-	//
-	// String sNome2 = "";
-	// if (count > 0) {
-	// for (int i1 = 0; i1 < count; i1++) {
-	//
-	// sNome2 += vNome2[i1];
-	// sNome2 += "+";
-	// }
-	// if (list)
-	// MyLog.waitThere("conteggio = " + count + "\n" + "RICHIESTA ["
-	// + nome1 + "]\n" + "IMMAGINE FRONTE= [" + sNome2 + "]");
-	// }
-	// }
-	//
-	// /***
-	// * Porta l'immagine in primo piano
-	// *
-	// * @param imp1
-	// */
-	// public static void imageToFront2222(ImagePlus imp1) {
-	// boolean list = false;
-	// ImageWindow iw1 = null;
-	// if (imp1.isVisible()) {
-	// iw1 = imp1.getWindow();
-	// } else {
-	// MyLog.waitThere("ImagePlus non visualizzata, impossibile portarla to front");
-	// return;
-	// }
-	//
-	// String nome1 = iw1.toString();
-	// String nome2 = "noname";
-	// Window w2 = null;
-	// String[] vNome2 = new String[10];
-	// int count = -1;
-	// do {
-	// count++;
-	// if (iw1 != null) {
-	// WindowManager.setCurrentWindow(iw1);
-	// WindowManager.setWindow(iw1);
-	// IJ.wait(100);
-	// }
-	// w2 = WindowManager.getActiveWindow();
-	// nome2 = w2.toString();
-	// vNome2[count] = nome2;
-	// } while (!nome1.equals(nome2));
-	// String sNome2 = "";
-	// if (count > 0) {
-	// for (int i1 = 0; i1 < count; i1++) {
-	//
-	// sNome2 += vNome2[i1];
-	// sNome2 += "x";
-	// }
-	// if (list)
-	// MyLog.waitThere("conteggio = " + count + "\n" + "RICHIESTA ["
-	// + nome1 + "]\n" + "IMMAGINE FRONTE= [" + sNome2 + "]");
-	// }
-	//
-	// MyLog.waitHere("nome1= " + nome1 + " nome2= " + nome2);
-	//
-	// }
 
+	/***
+	 * Porta l'immagine in primo piano Pare che questa routine funzioni molto
+	 * meglio delle precedenti. Se, anzichï¿½ la ImagePlus si conosce la
+	 * ImageWindow, si puï¿½ utilizzare iw1.getImagePlus() per ottenere la image
+	 * plus "on the fly"
+	 * 
+	 * @param iw1
+	 */
 	public static void imageToFront(ImageWindow iw1) {
 
 		if (iw1 == null)
@@ -395,8 +314,8 @@ public class ImageUtils {
 
 	/***
 	 * Porta l'immagine in primo piano Pare che questa routine funzioni molto
-	 * meglio delle precedenti. Se, anzichè la ImagePlus si conosce la
-	 * ImageWindow, si può utilizzare iw1.getImagePlus() per ottenere la image
+	 * meglio delle precedenti. Se, anzichï¿½ la ImagePlus si conosce la
+	 * ImageWindow, si puï¿½ utilizzare iw1.getImagePlus() per ottenere la image
 	 * plus "on the fly"
 	 * 
 	 * @param imp1
@@ -419,7 +338,7 @@ public class ImageUtils {
 	}
 
 	/***
-	 * Questo è il fitCircle preso da ImageJ (ij.plugins.Selection.java, con
+	 * Questo ï¿½ il fitCircle preso da ImageJ (ij.plugins.Selection.java, con
 	 * sostituito imp.setRoi a IJ.makeOval
 	 * 
 	 * if selection is closed shape, create a circle with the same area and
@@ -563,7 +482,7 @@ public class ImageUtils {
 		CenterY = CenterY + meany;
 		imp.killRoi();
 
-		// messo imp.setRoi anzichè IJ.makeOval perchè permette di non mostrare
+		// messo imp.setRoi anzichï¿½ IJ.makeOval perchï¿½ permette di non mostrare
 		// l'immagine
 		imp.setRoi(new OvalRoi((int) Math.round(CenterX - radius), (int) Math
 				.round(CenterY - radius), (int) Math.round(2 * radius),
@@ -764,13 +683,13 @@ public class ImageUtils {
 		double[] clippingPoints = new double[4];
 		int count = 0;
 
-		// ora andrò a calcolare il crossing per i vari lati dell'immagine. Mi
-		// aspetto di avere due soli crossing. Esiste però un eccezione è il
+		// ora andrï¿½ a calcolare il crossing per i vari lati dell'immagine. Mi
+		// aspetto di avere due soli crossing. Esiste perï¿½ un eccezione ï¿½ il
 		// caso particolare in cui il crossing avviene esattamente su di un
-		// angolo dell'immagine: in tal caso avrò che is between mi darà il
+		// angolo dell'immagine: in tal caso avrï¿½ che is between mi darï¿½ il
 		// crossing sia per il lato orizzontale che per il lato verticale, per
-		// cui mi troverò con 3 crossing. Nel caso ancora più particolare di una
-		// diagonale del quadrato mi troverò con quattro crossing, anzichè due.
+		// cui mi troverï¿½ con 3 crossing. Nel caso ancora piï¿½ particolare di una
+		// diagonale del quadrato mi troverï¿½ con quattro crossing, anzichï¿½ due.
 		// ed io devo passare ad imageJ le coordinate di solo due punti.
 
 		// lato superiore
@@ -843,7 +762,7 @@ public class ImageUtils {
 	}
 
 	/**
-	 * Verifica se un valore è all'interno dei limiti assegnati, con una certa
+	 * Verifica se un valore ï¿½ all'interno dei limiti assegnati, con una certa
 	 * tolleranza
 	 * 
 	 * @param x1
@@ -854,7 +773,7 @@ public class ImageUtils {
 	 *            limite superiore
 	 * @param tolerance
 	 *            tolleranza
-	 * @return true se il valore è valido (entro i limiti)
+	 * @return true se il valore ï¿½ valido (entro i limiti)
 	 */
 	public static boolean isBetween(double x1, double low, double high,
 			double tolerance) {
@@ -993,44 +912,6 @@ public class ImageUtils {
 		return;
 	}
 
-	// /**
-	// * Disegna una serie di punti nell'overlay di una immagine
-	// *
-	// * @param imp1
-	// * @param over1
-	// * @param peaks1
-	// */
-	// public static void plotPoints(ImagePlus imp1, Overlay over1,
-	// double[][] peaks1, boolean vertical) {
-	//
-	// MyLog.waitHere("vertical= " + vertical);
-	//
-	// float[] xPoints = new float[peaks1[0].length];
-	// float[] yPoints = new float[peaks1[0].length];
-	//
-	// if (vertical) {
-	// MyLog.waitHere("verticale");
-	// for (int i1 = 0; i1 < peaks1[0].length; i1++) {
-	// xPoints[i1] = (float) peaks1[1][i1];
-	// yPoints[i1] = (float) peaks1[2][i1];
-	// }
-	// } else {
-	// for (int i1 = 0; i1 < peaks1[0].length; i1++) {
-	// xPoints[i1] = (float) peaks1[0][i1];
-	// yPoints[i1] = (float) peaks1[1][i1];
-	// }
-	// }
-	//
-	// // MyLog.logVector(xPoints, "xPoints");
-	// // MyLog.logVector(yPoints, "yPoints");
-	// PointRoi pr1 = new PointRoi(xPoints, yPoints, xPoints.length);
-	// pr1.setPointType(2);
-	// pr1.setSize(4);
-	//
-	// imp1.setRoi(pr1);
-	// imp1.getRoi().setStrokeColor(Color.green);
-	// over1.addElement(imp1.getRoi());
-	// }
 
 	/**
 	 * Copied from http://billauer.co.il/peakdet.htm Peak Detection using MATLAB
@@ -1107,7 +988,7 @@ public class ImageUtils {
 	}
 
 	/***
-	 * per intercambiabilità con peakDet2 restituisco un ArrayList<ArrayList<>>
+	 * per intercambiabilitï¿½ con peakDet2 restituisco un ArrayList<ArrayList<>>
 	 * anche se mi propongo di trovare solo UN massimo e basta
 	 * 
 	 * @param profile

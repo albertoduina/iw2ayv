@@ -15,7 +15,7 @@ import ij.process.*;
  * About box class, generation and display
  * 
  * @author Alberto Duina - SPEDALI CIVILI DI BRESCIA - Servizio di Fisica
- *         Sanitaria
+ *         Sanitaria _
  * 
  */
 public class AboutBox {

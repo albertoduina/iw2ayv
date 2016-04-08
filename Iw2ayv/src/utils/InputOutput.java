@@ -320,8 +320,9 @@ public class InputOutput {
 		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
 		ArrayList<String> row1 = new ArrayList<String>();
 		ArrayList<String> arr1 = readFileGeneric(fileName, absolute);
-		if (arr1 == null)
-			return null;
+		if (arr1 == null){
+			MyLog.waitHere("aaaahhhhh");
+			return null;}
 		String[] line = ArrayUtils.arrayListToArrayString(arr1);
 		for (int i1 = 0; i1 < line.length; i1++) {
 			String riga = line[i1];
