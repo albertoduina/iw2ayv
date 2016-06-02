@@ -480,9 +480,9 @@ public class ImageUtils {
 
 		CenterX = CenterX + meanx;
 		CenterY = CenterY + meany;
-		imp.killRoi();
+		imp.deleteRoi();
 
-		// messo imp.setRoi anzich� IJ.makeOval perch� permette di non mostrare
+		// messo imp.setRoi anziche' IJ.makeOval perche' permette di non mostrare
 		// l'immagine
 		imp.setRoi(new OvalRoi((int) Math.round(CenterX - radius), (int) Math
 				.round(CenterY - radius), (int) Math.round(2 * radius),
@@ -888,6 +888,29 @@ public class ImageUtils {
 		over1.addElement(imp1.getRoi());
 		return;
 	}
+	
+	public static void plotPoints(ImagePlus imp1, Overlay over1, int xPoints1,
+			int yPoints1, Color color) {
+
+		float[] xPoints = new float[1];
+		float[] yPoints = new float[1];
+
+		xPoints[0] = (float) xPoints1;
+		yPoints[0] = (float) yPoints1;
+		// MyLog.logVector(xPoints, "xPoints");
+		// MyLog.logVector(yPoints, "yPoints");
+		// MyLog.waitHere();
+
+		PointRoi pr1 = new PointRoi(xPoints, yPoints, xPoints.length);
+		pr1.setPointType(2);
+		pr1.setSize(4);
+
+		imp1.setRoi(pr1);
+		imp1.getRoi().setStrokeColor(color);
+		over1.addElement(imp1.getRoi());
+		return;
+	}
+
 
 	public static void plotPoints(ImagePlus imp1, Overlay over1, int xPoints1,
 			int yPoints1, Color color, double width) {
