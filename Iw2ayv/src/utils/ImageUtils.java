@@ -110,7 +110,7 @@ public class ImageUtils {
 			test = false;
 		}
 
-		if (mode == 10) {
+		if (mode == 10 || mode==3) {
 			verbose = true;
 			test = true;
 		}

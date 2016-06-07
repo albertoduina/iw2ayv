@@ -456,6 +456,25 @@ public class ReportStandardInfo {
 	}
 
 	/***
+	 * Questa versione aggiornata non utilizza piu' setHeading ed addLabel, ora deprecate
+	 * 
+	 * @param info1
+	 * @return
+	 */
+	public static ResultsTable putSimpleStandardInfoRT_new(String[] info1) {
+
+		ResultsTable rt = new ResultsTable();
+		rt.reset();
+
+		for (int i1 = 0; i1 < info1.length; i1++) {
+			rt.incrementCounter();			
+			rt.addValue("TESTO", info1[i1]);
+		}
+		rt.incrementCounter();			
+		return (rt);
+	}
+
+	/***
 	 * Questa versione aggiornata non utilizza pi� setHeading, ora deprecata
 	 * 
 	 * @param info1
@@ -478,6 +497,8 @@ public class ReportStandardInfo {
 		return (rt);
 	}
 
+	
+	
 	public static ResultsTable putMiniStandardInfoRT(String[] info1) {
 
 		ResultsTable rt = ResultsTable.getResultsTable();

@@ -1624,12 +1624,39 @@ public class UtilAyv {
 		int startColumn = 0;
 
 		int standardInfoLength = ReportStandardInfo.getStandardInfoLength();
+
 		double[] results = new double[rt1.getCounter() - standardInfoLength];
 		for (int i1 = 0; i1 < rt1.getCounter() - standardInfoLength; i1++) {
 			int row = i1 + standardInfoLength;
 			results[i1] = rt1.getValueAsDouble(startColumn, row);
-			// IJ.log("" + i1 + " " + results[i1]);
+			// IJ.log("" + i1 + " " + results[i1] + " at col=" + startColumn + "
+			// row=" + row);
 		}
+
+		return results;
+	}
+
+	/**
+	 * Vectorize the ResutlsTable
+	 * 
+	 * @param rt1
+	 *            results table
+	 * @return
+	 */
+	public static double[] vectorizeResultsNew(ResultsTable rt1) {
+
+		int startColumn = 1;
+
+		int standardInfoLength = ReportStandardInfo.getStandardInfoLength();
+
+		double[] results = new double[rt1.getCounter() - standardInfoLength];
+		for (int i1 = 0; i1 < rt1.getCounter() - standardInfoLength; i1++) {
+			int row = i1 + standardInfoLength;
+			results[i1] = rt1.getValueAsDouble(startColumn, row);
+			// IJ.log("" + i1 + " " + results[i1] + " at col=" + startColumn + "
+			// row=" + row);
+		}
+
 		return results;
 	}
 
