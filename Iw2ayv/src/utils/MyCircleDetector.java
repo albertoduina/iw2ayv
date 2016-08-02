@@ -34,12 +34,12 @@ public class MyCircleDetector {
 											// inutilizzato
 
 	/**
-	 * Ricerca della posizione della ROI per il calcolo dell'uniformità
+	 * Ricerca della posizione della ROI per il calcolo dell'uniformitï¿½
 	 * 
 	 * @param imp11
 	 *            immagine di input
 	 * @param profond
-	 *            profondità ROI
+	 *            profonditï¿½ ROI
 	 * @param info1
 	 *            messaggio esplicativo
 	 * @param autoCalled
@@ -267,7 +267,7 @@ public class MyCircleDetector {
 	}
 
 	/***
-	 * Questo è il fitCircle preso da ImageJ (ij.plugins.Selection.java, con
+	 * Questo ï¿½ il fitCircle preso da ImageJ (ij.plugins.Selection.java, con
 	 * sostituito imp.setRoi a IJ.makeOval
 	 * 
 	 * if selection is closed shape, create a circle with the same area and
@@ -411,7 +411,7 @@ public class MyCircleDetector {
 		CenterY = CenterY + meany;
 		imp.killRoi();
 
-		// messo imp.setRoi anzichè IJ.makeOval perchè permette di non mostrare
+		// messo imp.setRoi anzichï¿½ IJ.makeOval perchï¿½ permette di non mostrare
 		// l'immagine
 		imp.setRoi(new OvalRoi((int) Math.round(CenterX - radius), (int) Math
 				.round(CenterY - radius), (int) Math.round(2 * radius),
@@ -530,7 +530,7 @@ public class MyCircleDetector {
 	}
 
 	/**
-	 * Partendo da una immagine a cui è stato applicato il treshold automatico
+	 * Partendo da una immagine a cui ï¿½ stato applicato il treshold automatico
 	 * di ImageJ, traccia il perimetro esterno, di larghezza 1 pixel, del
 	 * cerchio
 	 * 
@@ -623,7 +623,7 @@ public class MyCircleDetector {
 	
 	/**
 	 * Imposta una Roi circolare diametro 4 in corrispondenza delle coordinate
-	 * passate, importa la Roi nell'Overlay. La routine è utilizzata per
+	 * passate, importa la Roi nell'Overlay. La routine e' utilizzata per
 	 * disegnare il centro di un cerchio su di un overlay.
 	 * 
 	 * @param imp1

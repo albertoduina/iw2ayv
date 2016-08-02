@@ -630,6 +630,25 @@ public class MyLog {
 		}
 
 	}
+	
+	public static void appendLog2(String path, String linea) {
+
+		BufferedWriter out;
+//		String time = new SimpleDateFormat("yyyy-MM-dd hh:mm")
+//				.format(new Date());
+
+		try {
+			out = new BufferedWriter(new FileWriter(path, true));
+			out.write("$> "+linea);
+			out.newLine();
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 
 	/***
 	 * Initialize a log file

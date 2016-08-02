@@ -167,19 +167,31 @@ public class InputOutput {
 	 * http://javaalmanac.com/egs/java.io/DeleteDir.html
 	 */
 	public static boolean deleteDir(File dir) {
-
+		
+//		if (!dir.exists()) MyLog.waitHere("non esiste la dir");
+		if (!dir.exists()) MyLog.waitThere("non esiste la dir");
+		
 		if (dir.isDirectory()) {
 			String[] children = dir.list();
-			for (int i = 0; i < children.length; i++) {
-				boolean success = deleteDir(new File(dir, children[i]));
+			for (int i1 = 0; i1 < children.length; i1++) {
+				boolean success = deleteDir(new File(dir, children[i1]));
 				if (!success) {
 					IJ.log("errore delete dir");
+					MyLog.waitHere("errore delete dir i1=" + i1 + " " + children[i1]);
 					return false;
 				}
 			}
+			int num = dir.list().length;
+			if (num > 0)
+				MyLog.waitHere("files residui= " + num);
 		}
+
+		
 		// The directory is now empty so delete it
-		return dir.delete();
+		boolean ok = dir.delete();
+		if (!ok)
+			MyLog.waitHere("errore cancellazione dir da java");
+		return ok;
 	}
 
 	/**
@@ -320,9 +332,10 @@ public class InputOutput {
 		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
 		ArrayList<String> row1 = new ArrayList<String>();
 		ArrayList<String> arr1 = readFileGeneric(fileName, absolute);
-		if (arr1 == null){
+		if (arr1 == null) {
 			MyLog.waitHere("aaaahhhhh");
-			return null;}
+			return null;
+		}
 		String[] line = ArrayUtils.arrayListToArrayString(arr1);
 		for (int i1 = 0; i1 < line.length; i1++) {
 			String riga = line[i1];
@@ -966,6 +979,12 @@ public class InputOutput {
 	 */
 	public static boolean checkDir(String name) {
 		File dirCheck = new File(name);
+		if (!dirCheck.exists())
+			return false;
+		else
+			return true;
+	}
+	public static boolean checkDir(File dirCheck) {
 		if (!dirCheck.exists())
 			return false;
 		else

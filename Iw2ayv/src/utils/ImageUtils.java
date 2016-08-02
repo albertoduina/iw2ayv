@@ -2,6 +2,7 @@ package utils;
 
 import java.awt.Color;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.Window;
 import java.util.ArrayList;
 
@@ -50,9 +51,8 @@ public class ImageUtils {
 	 *            modo autotest
 	 * @return numeriosit� classi simulata
 	 */
-	public static int[][] generaSimulata12classi(int xCenterRoi,
-			int yCenterRoi, int latoRoi, ImagePlus imp1, String filePath,
-			boolean step, boolean verbose, boolean test) {
+	public static int[][] generaSimulata12classi(int xCenterRoi, int yCenterRoi, int latoRoi, ImagePlus imp1,
+			String filePath, boolean step, boolean verbose, boolean test) {
 
 		boolean debug = true;
 		if (imp1 == null) {
@@ -60,12 +60,14 @@ public class ImageUtils {
 			return (null);
 		}
 
-		ImagePlus impSimulata = simulata12Classi(xCenterRoi, yCenterRoi,
-				latoRoi, imp1);
+		ImagePlus impSimulata = simulata12Classi(xCenterRoi, yCenterRoi, latoRoi, imp1);
 		if (verbose) {
 			UtilAyv.showImageMaximized(impSimulata);
 			IJ.run("Enhance Contrast", "saturated=0.5");
 		}
+
+		MyLog.waitHere("simulata1= " + filePath);
+
 		if (step)
 			MyLog.waitHere("Immagine Simulata", debug);
 		int[][] classiSimulata = numeroPixelsClassi(impSimulata);
@@ -94,9 +96,8 @@ public class ImageUtils {
 	 *            modo autotest
 	 * @return numeriosit� classi simulata
 	 */
-	public static int[][] generaSimulata12classi(int xCenterRoi,
-			int yCenterRoi, int latoRoi, ImagePlus imp1, String filePath,
-			int mode, int timeout) {
+	public static int[][] generaSimulata12classi(int xCenterRoi, int yCenterRoi, int latoRoi, ImagePlus imp1,
+			String filePath, int mode, int timeout) {
 
 		boolean debug = true;
 		if (imp1 == null) {
@@ -110,15 +111,12 @@ public class ImageUtils {
 			test = false;
 		}
 
-		if (mode == 10 || mode==3) {
+		if (mode == 10 || mode == 3) {
 			verbose = true;
 			test = true;
 		}
 
-		
-		
-		ImagePlus impSimulata = simulata12Classi(xCenterRoi, yCenterRoi,
-				latoRoi, imp1);
+		ImagePlus impSimulata = simulata12Classi(xCenterRoi, yCenterRoi, latoRoi, imp1);
 		if (verbose) {
 			UtilAyv.showImageMaximized(impSimulata);
 			IJ.run("Enhance Contrast", "saturated=0.5");
@@ -128,8 +126,10 @@ public class ImageUtils {
 			MyLog.waitHere("Immagine Simulata", debug);
 		int[][] classiSimulata = numeroPixelsClassi(impSimulata);
 
+		// MyLog.waitHere("simulata2= "+filePath);
 		if (!test)
 			new FileSaver(impSimulata).saveAsZip(filePath);
+
 		return classiSimulata;
 	}
 
@@ -178,13 +178,11 @@ public class ImageUtils {
 		double plus10 = mean * MyConst.PLUS_10_PERC;
 		double plus20 = mean * MyConst.PLUS_20_PERC;
 		// genero una immagine nera
-		ImagePlus impSimulata = NewImage.createShortImage("Simulata", width,
-				width, 1, NewImage.FILL_BLACK);
+		ImagePlus impSimulata = NewImage.createShortImage("Simulata", width, width, 1, NewImage.FILL_BLACK);
 		//
 		// nuova immagine simulata vuota
 		//
-		ShortProcessor processorSimulata = (ShortProcessor) impSimulata
-				.getProcessor();
+		ShortProcessor processorSimulata = (ShortProcessor) impSimulata.getProcessor();
 		short[] pixelsSimulata = (short[]) processorSimulata.getPixels();
 		//
 		// riempimento immagine simulata
@@ -251,12 +249,10 @@ public class ImageUtils {
 		int offset = 0;
 		int pix1 = 0;
 
-		int[][] vetClassi = { { MyConst.LEVEL_12, 0 }, { MyConst.LEVEL_11, 0 },
-				{ MyConst.LEVEL_10, 0 }, { MyConst.LEVEL_9, 0 },
-				{ MyConst.LEVEL_8, 0 }, { MyConst.LEVEL_7, 0 },
-				{ MyConst.LEVEL_6, 0 }, { MyConst.LEVEL_5, 0 },
-				{ MyConst.LEVEL_4, 0 }, { MyConst.LEVEL_3, 0 },
-				{ MyConst.LEVEL_2, 0 }, { MyConst.LEVEL_1, 0 } };
+		int[][] vetClassi = { { MyConst.LEVEL_12, 0 }, { MyConst.LEVEL_11, 0 }, { MyConst.LEVEL_10, 0 },
+				{ MyConst.LEVEL_9, 0 }, { MyConst.LEVEL_8, 0 }, { MyConst.LEVEL_7, 0 }, { MyConst.LEVEL_6, 0 },
+				{ MyConst.LEVEL_5, 0 }, { MyConst.LEVEL_4, 0 }, { MyConst.LEVEL_3, 0 }, { MyConst.LEVEL_2, 0 },
+				{ MyConst.LEVEL_1, 0 } };
 		boolean manca = true;
 
 		for (int y1 = 0; y1 < width; y1++) {
@@ -271,8 +267,7 @@ public class ImageUtils {
 						break;
 					}
 				if (manca) {
-					ButtonMessages.ModelessMsg("SIMULATA CON VALORE ERRATO="
-							+ pix1 + "   <38>", "CONTINUA");
+					ButtonMessages.ModelessMsg("SIMULATA CON VALORE ERRATO=" + pix1 + "   <38>", "CONTINUA");
 					return (null);
 				}
 			}
@@ -292,7 +287,6 @@ public class ImageUtils {
 		}
 		over1.add(roi1);
 	}
-
 
 	/***
 	 * Porta l'immagine in primo piano Pare che questa routine funzioni molto
@@ -326,7 +320,8 @@ public class ImageUtils {
 		if (imp1.isVisible()) {
 			iw1 = imp1.getWindow();
 		} else {
-			// MyLog.waitThere("ImagePlus non visualizzata, impossibile portarla to front");
+			// MyLog.waitThere("ImagePlus non visualizzata, impossibile portarla
+			// to front");
 			return;
 		}
 		String nome1 = iw1.toString();
@@ -367,13 +362,11 @@ public class ImageUtils {
 		if (roi.isArea()) { // create circle with the same area and centroid
 			ImageProcessor ip = imp.getProcessor();
 			ip.setRoi(roi);
-			ImageStatistics stats = ImageStatistics.getStatistics(ip,
-					Measurements.AREA + Measurements.CENTROID, null);
+			ImageStatistics stats = ImageStatistics.getStatistics(ip, Measurements.AREA + Measurements.CENTROID, null);
 			double r = Math.sqrt(stats.pixelCount / Math.PI);
 			imp.killRoi();
 			int d = (int) Math.round(2.0 * r);
-			imp.setRoi(new OvalRoi((int) Math.round(stats.xCentroid - r),
-					(int) Math.round(stats.yCentroid - r), d, d));
+			imp.setRoi(new OvalRoi((int) Math.round(stats.xCentroid - r), (int) Math.round(stats.yCentroid - r), d, d));
 
 			// IJ.makeOval((int) Math.round(stats.xCentroid - r),
 			// (int) Math.round(stats.yCentroid - r), d, d);
@@ -385,8 +378,7 @@ public class ImageUtils {
 		int[] x = poly.xpoints;
 		int[] y = poly.ypoints;
 		if (n < 3) {
-			IJ.error("Fit Circle",
-					"At least 3 points are required to fit a circle.");
+			IJ.error("Fit Circle", "At least 3 points are required to fit a circle.");
 			return;
 		}
 
@@ -427,8 +419,7 @@ public class ImageUtils {
 		double Myz2 = Myz * Myz;
 		double A2 = 4 * Cov_xy - 3 * Mz * Mz - Mzz;
 		double A1 = Mzz * Mz + 4 * Cov_xy * Mz - Mxz2 - Myz2 - Mz * Mz * Mz;
-		double A0 = Mxz2 * Myy + Myz2 * Mxx - Mzz * Cov_xy - 2 * Mxz * Myz
-				* Mxy + Mz * Mz * Cov_xy;
+		double A0 = Mxz2 * Myy + Myz2 * Mxx - Mzz * Cov_xy - 2 * Mxz * Myz * Mxy + Mz * Mz * Cov_xy;
 		double A22 = A2 + A2;
 		double epsilon = 1e-12;
 		double ynew = 1e+20;
@@ -464,15 +455,13 @@ public class ImageUtils {
 			}
 		}
 		if (IJ.debugMode)
-			IJ.log("Fit Circle: n=" + n + ", xnew=" + IJ.d2s(xnew, 2)
-					+ ", iterations=" + iterations);
+			IJ.log("Fit Circle: n=" + n + ", xnew=" + IJ.d2s(xnew, 2) + ", iterations=" + iterations);
 
 		// calculate the circle parameters
 		double DET = xnew * xnew - xnew * Mz + Cov_xy;
 		double CenterX = (Mxz * (Myy - xnew) - Myz * Mxy) / (2 * DET);
 		double CenterY = (Myz * (Mxx - xnew) - Mxz * Mxy) / (2 * DET);
-		double radius = Math.sqrt(CenterX * CenterX + CenterY * CenterY + Mz
-				+ 2 * xnew);
+		double radius = Math.sqrt(CenterX * CenterX + CenterY * CenterY + Mz + 2 * xnew);
 		if (Double.isNaN(radius)) {
 			IJ.error("Fit Circle", "Points are collinear.");
 			return;
@@ -482,11 +471,11 @@ public class ImageUtils {
 		CenterY = CenterY + meany;
 		imp.deleteRoi();
 
-		// messo imp.setRoi anziche' IJ.makeOval perche' permette di non mostrare
+		// messo imp.setRoi anziche' IJ.makeOval perche' permette di non
+		// mostrare
 		// l'immagine
-		imp.setRoi(new OvalRoi((int) Math.round(CenterX - radius), (int) Math
-				.round(CenterY - radius), (int) Math.round(2 * radius),
-				(int) Math.round(2 * radius)));
+		imp.setRoi(new OvalRoi((int) Math.round(CenterX - radius), (int) Math.round(CenterY - radius),
+				(int) Math.round(2 * radius), (int) Math.round(2 * radius)));
 	}
 
 	/***
@@ -513,9 +502,8 @@ public class ImageUtils {
 	 *            punto finale segmento
 	 * @return
 	 */
-	public static double[] liangBarsky(double edgeLeft, double edgeRight,
-			double edgeBottom, double edgeTop, double x0src, double y0src,
-			double x1src, double y1src) {
+	public static double[] liangBarsky(double edgeLeft, double edgeRight, double edgeBottom, double edgeTop,
+			double x0src, double y0src, double x1src, double y1src) {
 
 		double t0 = 0.0;
 		double t1 = 1.0;
@@ -597,8 +585,8 @@ public class ImageUtils {
 	 *            raggio
 	 * @return
 	 */
-	public static double[] getCircleLineCrossingPoints(double x0, double y0,
-			double x1, double y1, double xc, double yc, double rc) {
+	public static double[] getCircleLineCrossingPoints(double x0, double y0, double x1, double y1, double xc, double yc,
+			double rc) {
 
 		double[] out = null;
 		double bax = x1 - x0;
@@ -653,8 +641,7 @@ public class ImageUtils {
 	 *            altezza immagine
 	 * @return vettore con coordinate clipping points
 	 */
-	public static double[] crossingFrame(double x0, double y0, double x1,
-			double y1, double width, double height) {
+	public static double[] crossingFrame(double x0, double y0, double x1, double y1, double width, double height) {
 
 		double[] out1 = MyGeometry.fromPointsToEquLineImplicit(x0, y0, x1, y1);
 
@@ -731,8 +718,7 @@ public class ImageUtils {
 		x = 0;
 		y = -(a * x + c) / b;
 		// IJ.log("lato sinistro x= " + x + " y= " + y);
-		if (isBetween(y, 0, height, tolerance) && (!upperLeftVertex)
-				&& (!lowerLeftVertex)) {
+		if (isBetween(y, 0, height, tolerance) && (!upperLeftVertex) && (!lowerLeftVertex)) {
 			// if (isBetween(y, 0, height, tolerance)) {
 			if (count <= 2) {
 				clippingPoints[count++] = x;
@@ -747,8 +733,7 @@ public class ImageUtils {
 		x = width;
 		y = -(a * x + c) / b;
 		// IJ.log("lato destro x= " + x + " y= " + y);
-		if (isBetween(y, 0, height, tolerance) && (!upperRightVertex)
-				&& (!lowerRightVertex)) {
+		if (isBetween(y, 0, height, tolerance) && (!upperRightVertex) && (!lowerRightVertex)) {
 			// if (isBetween(y, 0, height, tolerance)) {
 			if (count <= 2) {
 				clippingPoints[count++] = x;
@@ -775,8 +760,7 @@ public class ImageUtils {
 	 *            tolleranza
 	 * @return true se il valore � valido (entro i limiti)
 	 */
-	public static boolean isBetween(double x1, double low, double high,
-			double tolerance) {
+	public static boolean isBetween(double x1, double low, double high, double tolerance) {
 
 		if (low < high) {
 			return ((x1 >= (low - tolerance)) && (x1 <= (high + tolerance)));
@@ -800,11 +784,9 @@ public class ImageUtils {
 	 *            raggio
 	 * @return distanza
 	 */
-	public static double pointCirconferenceDistance(int x1, int y1, int x2,
-			int y2, int r2) {
+	public static double pointCirconferenceDistance(int x1, int y1, int x2, int y2, int r2) {
 
-		double dist = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))
-				- r2;
+		double dist = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) - r2;
 		return dist;
 	}
 
@@ -815,8 +797,7 @@ public class ImageUtils {
 	 * @param over1
 	 * @param peaks1
 	 */
-	public static void plotPoints(ImagePlus imp1, Overlay over1,
-			double[][] peaks1) {
+	public static void plotPoints(ImagePlus imp1, Overlay over1, double[][] peaks1) {
 
 		float[] xPoints = new float[peaks1[0].length];
 		float[] yPoints = new float[peaks1[0].length];
@@ -837,8 +818,7 @@ public class ImageUtils {
 		over1.addElement(imp1.getRoi());
 	}
 
-	public static void plotPoints(ImagePlus imp1, Overlay over1,
-			int[] xPoints1, int[] yPoints1) {
+	public static void plotPoints(ImagePlus imp1, Overlay over1, int[] xPoints1, int[] yPoints1) {
 
 		if (xPoints1 == null)
 			return;
@@ -867,8 +847,7 @@ public class ImageUtils {
 		return;
 	}
 
-	public static void plotPoints(ImagePlus imp1, Overlay over1, int xPoints1,
-			int yPoints1) {
+	public static void plotPoints(ImagePlus imp1, Overlay over1, int xPoints1, int yPoints1) {
 
 		float[] xPoints = new float[1];
 		float[] yPoints = new float[1];
@@ -888,9 +867,8 @@ public class ImageUtils {
 		over1.addElement(imp1.getRoi());
 		return;
 	}
-	
-	public static void plotPoints(ImagePlus imp1, Overlay over1, int xPoints1,
-			int yPoints1, Color color) {
+
+	public static void plotPoints(ImagePlus imp1, Overlay over1, int xPoints1, int yPoints1, Color color) {
 
 		float[] xPoints = new float[1];
 		float[] yPoints = new float[1];
@@ -911,9 +889,8 @@ public class ImageUtils {
 		return;
 	}
 
-
-	public static void plotPoints(ImagePlus imp1, Overlay over1, int xPoints1,
-			int yPoints1, Color color, double width) {
+	public static void plotPoints(ImagePlus imp1, Overlay over1, int xPoints1, int yPoints1, Color color,
+			double width) {
 
 		float[] xPoints = new float[1];
 		float[] yPoints = new float[1];
@@ -935,7 +912,6 @@ public class ImageUtils {
 		return;
 	}
 
-
 	/**
 	 * Copied from http://billauer.co.il/peakdet.htm Peak Detection using MATLAB
 	 * Author: Eli Billauer
@@ -945,8 +921,7 @@ public class ImageUtils {
 	 * @param delta
 	 * @return ArrayList con le posizioni del picco minimo e del picco massimo
 	 */
-	public static ArrayList<ArrayList<Double>> peakDet(double[][] profile,
-			double delta) {
+	public static ArrayList<ArrayList<Double>> peakDet(double[][] profile, double delta) {
 
 		double max = Double.MIN_VALUE;
 		double min = Double.MAX_VALUE;
@@ -1019,8 +994,7 @@ public class ImageUtils {
 	 * @return
 	 */
 
-	public static ArrayList<ArrayList<Double>> peakDet1(double[][] profile,
-			double delta) {
+	public static ArrayList<ArrayList<Double>> peakDet1(double[][] profile, double delta) {
 
 		ArrayList<ArrayList<Double>> matout = new ArrayList<ArrayList<Double>>();
 
@@ -1089,8 +1063,7 @@ public class ImageUtils {
 	 * @param delta
 	 * @return
 	 */
-	public static ArrayList<ArrayList<Double>> peakDet2(double[][] profile,
-			double delta) {
+	public static ArrayList<ArrayList<Double>> peakDet2(double[][] profile, double delta) {
 
 		// for (int i1 = 0; i1 < profile[0].length; i1++) {
 		// IJ.log(""+profile[0][i1]+ "; "+profile[1][i1]+ "; "+profile[2][i1]);
@@ -1240,10 +1213,10 @@ public class ImageUtils {
 	/**
 	 * esegue l'autoAdjust del contrasto immagine
 	 * 
-	 * Author Terry Wu, Ph.D., University of Minnesota, <JavaPlugins@yahoo.com>
-	 * (from ij.plugin.frame. ContrastAdjuster by Wayne Rasband
-	 * <wayne@codon.nih.gov>)*** modified version *** Alberto Duina - Spedali
-	 * Civili di Brescia - Servizio di Fisica Sanitaria 2006
+	 * Author Terry Wu, Ph.D., University of Minnesota,
+	 * <JavaPlugins@yahoo.com> (from ij.plugin.frame. ContrastAdjuster by Wayne
+	 * Rasband <wayne@codon.nih.gov>)*** modified version *** Alberto Duina -
+	 * Spedali Civili di Brescia - Servizio di Fisica Sanitaria 2006
 	 * 
 	 * 
 	 * @param imp
@@ -1301,8 +1274,8 @@ public class ImageUtils {
 	 *            funzionamento passo passo
 	 * @return dati statistici
 	 */
-	public static ImageStatistics backCalc(int xRoi, int yRoi, int diaRoi,
-			ImagePlus imp, boolean bstep, boolean circular, boolean selftest) {
+	public static ImageStatistics backCalc(int xRoi, int yRoi, int diaRoi, ImagePlus imp, boolean bstep,
+			boolean circular, boolean selftest) {
 
 		ImageStatistics stat = null;
 		boolean redo = false;
@@ -1318,15 +1291,11 @@ public class ImageUtils {
 
 			if (!selftest) {
 				if (redo) {
-					ButtonMessages
-							.ModelessMsg(
-									"ATTENZIONE segnale medio fondo =0 SPOSTARE LA ROI E PREMERE CONTINUA",
-									"CONTINUA");
+					ButtonMessages.ModelessMsg("ATTENZIONE segnale medio fondo =0 SPOSTARE LA ROI E PREMERE CONTINUA",
+							"CONTINUA");
 
 				} else {
-					ButtonMessages.ModelessMsg(
-							"Posizionare ROI fondo e premere CONTINUA",
-							"CONTINUA " + i1);
+					ButtonMessages.ModelessMsg("Posizionare ROI fondo e premere CONTINUA", "CONTINUA " + i1);
 				}
 			}
 			stat = imp.getStatistics();
@@ -1335,8 +1304,7 @@ public class ImageUtils {
 			else
 				redo = false;
 			if (bstep)
-				ButtonMessages.ModelessMsg("Segnale medio =" + stat.mean,
-						"CONTINUA");
+				ButtonMessages.ModelessMsg("Segnale medio =" + stat.mean, "CONTINUA");
 		} while (redo);
 		return stat;
 	} // backCalc
@@ -1354,8 +1322,8 @@ public class ImageUtils {
 	 *            funzionamento passo passo
 	 * @return dati statistici
 	 */
-	public static ImageStatistics backCalc2(int xRoi, int yRoi, int diaRoi,
-			ImagePlus imp, boolean bstep, boolean circular, boolean selftest) {
+	public static ImageStatistics backCalc2(int xRoi, int yRoi, int diaRoi, ImagePlus imp, boolean bstep,
+			boolean circular, boolean selftest) {
 
 		ImageStatistics stat = null;
 		boolean redo = false;
@@ -1380,9 +1348,7 @@ public class ImageUtils {
 
 			if (!selftest) {
 				if (redo) {
-					MyLog.waitHere(
-							"ATTENZIONE segnale medio fondo =0 spostare la ROI e premere OK",
-							debug);
+					MyLog.waitHere("ATTENZIONE segnale medio fondo =0 spostare la ROI e premere OK", debug);
 
 				}
 			}
@@ -1406,8 +1372,7 @@ public class ImageUtils {
 	 * @param imp1
 	 *            puntatore ImagePlus alla immagine
 	 */
-	public static void backgroundEnhancement(int xRoi, int yRoi, int diaRoi,
-			ImagePlus imp1) {
+	public static void backgroundEnhancement(int xRoi, int yRoi, int diaRoi, ImagePlus imp1) {
 
 		ImageUtils.autoAdjust(imp1, imp1.getProcessor());
 		imp1.updateAndDraw();
@@ -1420,10 +1385,33 @@ public class ImageUtils {
 	 */
 	public static void noTest2() {
 
-		ButtonMessages
-				.ModelessMsg(
-						"Per questa funzione bisogna installare test2.jar (albertoduina@virgilio.it)",
-						"CONTINUA");
+		ButtonMessages.ModelessMsg("Per questa funzione bisogna installare test2.jar (albertoduina@virgilio.it)",
+				"CONTINUA");
+	}
+
+	
+	/***
+	 * restituisce coordinate centro e lato/raggio della ROI su imp1
+	 * @param imp1
+	 * @return
+	 */
+	
+	public static double[] roiCenter(ImagePlus imp1) {
+		Rectangle boundRec1 = imp1.getProcessor().getRoi();
+		double leftHX = boundRec1.x;
+		double leftHY = boundRec1.y;
+		double centerX = boundRec1.getCenterX();
+		double centerY = boundRec1.getCenterY();
+		double width1 = boundRec1.getWidth();
+		double height1 = boundRec1.getHeight();
+		Roi cazz1 = imp1.getRoi();
+		String aux1  =  cazz1.getTypeAsString();
+		
+				
+		ImageStatistics statGh2 = imp1.getStatistics();
+		String aux2 = statGh2.toString(); 
+		MyLog.waitHere("aux1= "+aux1+" aux2= "+aux2);
+		return null;
 	}
 
 }

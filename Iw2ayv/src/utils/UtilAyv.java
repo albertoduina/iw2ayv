@@ -1584,6 +1584,7 @@ public class UtilAyv {
 	 */
 	public static void afterWork() {
 		UtilAyv.resetResultsTable();
+		if (new File(MyConst.TEST_DIRECTORY).exists())
 		InputOutput.deleteDir(new File(MyConst.TEST_DIRECTORY));
 		UtilAyv.cleanUp();
 	}
@@ -2025,6 +2026,200 @@ public class UtilAyv {
 		}
 		return result;
 	}
+	
+	
+	/**
+	 * Test sulle immagini ricevute in automatico da Sequenze. In caso di
+	 * problemi viene dato un messaggio esplicativo e restituito false. Vengono
+	 * eseguiti i seguenti controlli sul gruppo di righe (e quindi di immagini)
+	 * passate al plugin. I controlli effettuati sono: verifica che le immagini
+	 * siano acquisite tutte dalla stessa sequenza. Verifica che tutte le
+	 * immagini siano acquisite dalla stessa bobina (oppure MISSIONG). Verifiche
+	 * sugli echi delle immagini: Caso singola immagine p4, p6, p8: non ne devo
+	 * passare pi� di una. Caso due immagini p3, p10 e p12: due sole immagini
+	 * acquisite una di seguito all'altra con lo stesso eco. Caso di p5 e p10 e
+	 * p11 quattro immagini, due gruppi di due echi diversi, acquisiti uno dopo
+	 * l'altro il primo eco deve essere inferiore al secondo eco
+	 * 
+	 * @param vetRiga
+	 * @param iw2ayvTable
+	 * @param sel
+	 * @return
+	 */
+	public static boolean checkImages_OLD(int[] vetRiga, String[][] iw2ayvTable,
+			int sel, boolean debug) {
+		String[] coil = new String[vetRiga.length];
+		String[] descr = new String[vetRiga.length];
+		String[] echo = new String[vetRiga.length];
+		String[] serie = new String[vetRiga.length];
+		String[] acq = new String[vetRiga.length];
+		String[] ima = new String[vetRiga.length];
+		String[] manufacturer = new String[vetRiga.length];
+		ImagePlus imp1;
+		String stampa = "#";
+		for (int i1 = 0; i1 < vetRiga.length; i1++) {
+			stampa += vetRiga[i1] + "#";
+			String path1 = TableSequence.getPath(iw2ayvTable, vetRiga[i1]);
+			imp1 = UtilAyv.openImageNoDisplay(path1, true);
+			descr[i1] = ReadDicom.readDicomParameter(imp1,
+					MyConst.DICOM_SERIES_DESCRIPTION);
+			coil[i1] = ReadDicom.getAllCoils(imp1);
+			echo[i1] = ReadDicom.readDicomParameter(imp1,
+					MyConst.DICOM_ECHO_TIME);
+			serie[i1] = ReadDicom.readDicomParameter(imp1,
+					MyConst.DICOM_SERIES_NUMBER);
+			acq[i1] = ReadDicom.readDicomParameter(imp1,
+					MyConst.DICOM_ACQUISITION_NUMBER);
+			ima[i1] = ReadDicom.readDicomParameter(imp1,
+					MyConst.DICOM_IMAGE_NUMBER);
+			manufacturer[i1] = ReadDicom.readDicomParameter(imp1,
+					MyConst.DICOM_MANUFACTURER);
+		}
+
+		// Sicuramente le immagini da analizzare dovranno tutte essere acquisite
+		// con la stessa sequenza
+		String descr0 = descr[0];
+		// Tutte le immagini da analizzare dovranno essere acquisite dalla
+		// stessa bobina (oppure dalla MISSING)
+		String coil0 = coil[0];
+
+		for (int i1 = 1; i1 < vetRiga.length; i1++) {
+			if (!descr0.equals(descr[i1])) {
+
+				MyLog.waitThere(
+						"Problema sui dati ricevuti in AUTOMATICO: \n"
+								+ "la descrizione delle sequenze ricevute � differente "
+								+ stampa + "   " + descr0 + "  " + descr[i1],
+						debug);
+				return false;
+			}
+			if (!coil0.equals(coil[i1])) {
+				MyLog.waitThere(
+						"Problema sui dati ricevuti in AUTOMATICO: \n"
+								+ "le immagini ricevute devono essere tutte acquisite \n"
+								+ "con la stessa bobina" + stampa + "  "
+								+ coil0 + "  " + coil[i1], debug);
+				return false;
+			}
+		}
+
+		switch (sel) {
+		case 1:
+			// questo � il caso della singola immagine p4, p6, p8
+			if (vetRiga.length != 1) {
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "errore sul numero parametri ricevuti da Sequenze \n"
+						+ "previsti= 1 reali= " + stampa, debug);
+				return false;
+			}
+			break;
+
+		case 2:
+			// questo � il caso tipico di p3, p10 e p12
+			// due sole immagini acquisite una di seguito all'altra.
+			// hanno lo stesso eco
+			if (vetRiga.length != 2) {
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "errore sul numero parametri ricevuti da Sequenze \n"
+						+ "previsti= 2 reali= " + stampa, debug);
+				return false;
+			}
+			if (!echo[0].equals(echo[1])) {
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "immagini ricevute con tempi di echo differenti "
+						+ stampa, debug);
+				return false;
+			}
+			if ((!ima[0].equals("1") || !ima[1].equals("1"))
+					&& (manufacturer[0].equals("SIEMENS"))) {
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "non soddisfatta la condizione ima1= 1 && ima2= 1 \n"
+						+ "" + stampa, debug);
+				return false;
+			}
+			break;
+		case 3:
+
+			// questo � il caso tipico di p5 e p10 e p11
+			// quattro immagini, due gruppi di due echi diversi, acquisiti uno
+			// dopo l'altro
+			// il primo eco deve essere inferiore al secondo eco
+			if (vetRiga.length != 4) {
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "errore sul numero parametri ricevuti da Sequenze \n"
+						+ "previsti= 4 reali= " + stampa, debug);
+				return false;
+			}
+			if (!echo[0].equals(echo[2]) || !echo[1].equals(echo[3])) {
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "i tempi di echo devono essere a due a due uguali \n"
+						+ "" + stampa + "\n \nechi= " + echo[0] + " " + echo[1]
+						+ " " + echo[2] + " " + echo[3], debug);
+				return false;
+			}
+			if (!(ReadDicom.readInt(echo[0]) < ReadDicom.readInt(echo[1]))) {
+				MyLog.waitThere(
+						"Problema sui dati ricevuti in AUTOMATICO: \n"
+								+ "i tempi di echo delle prime immagini devono essere \n"
+								+ "inferiori a quelli delle seconde " + stampa
+								+ "\n \nechi= " + echo[0] + " " + echo[1] + " "
+								+ echo[2] + " " + echo[3], debug);
+
+				return false;
+			}
+			if (!(ima[0].equals("1")
+					&& ima[1].equals("2")
+					&& ima[2].equals("1")
+					&& ima[3].equals("2")
+					|| !(ima[0].equals("1") && ima[1].equals("4")
+							&& ima[2].equals("3") && ima[3].equals("6"))
+					|| !(ima[0].equals("2") && ima[1].equals("5")
+							&& ima[2].equals("1") && ima[3].equals("4")) || !(ima[0]
+					.equals("3") && ima[1].equals("6") && ima[2].equals("2") && ima[3]
+						.equals("5")))) {
+				MyLog.waitThere(
+						"Problema sui dati ricevuti in AUTOMATICO: \n"
+								+ "non soddisfatta la condizione ima1= 1, ima2= 2, ima3= 1, ima4=2 \n"
+								+ "" + stampa + "  ima=" + ima[0] + " "
+								+ ima[1] + " " + ima[2] + " " + ima[3], debug);
+				return false;
+			}
+			break;
+
+		case 4:
+
+			// questo � il caso tipico di p3 e p10 e p12, nell'ipotetico caso di
+			// quattro immagini
+			if (vetRiga.length != 4) {
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "errore sul numero parametri ricevuti da Sequenze \n"
+						+ "previsti= 4 reali= " + stampa, debug);
+				return false;
+			}
+			if (!echo[0].equals(echo[1]) || !echo[0].equals(echo[2])
+					|| !echo[0].equals(echo[3])) {
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "immagini ricevute con tempi di echo differenti \n"
+						+ "" + stampa + "\n \nechi= " + echo[0] + " " + echo[1]
+						+ " " + echo[2] + " " + echo[3], debug);
+				return false;
+			}
+			if (!ima[0].equals("1") || !ima[1].equals("2")
+					|| !ima[2].equals("1") || !ima[3].equals("2")) {
+				MyLog.waitThere(
+						"Problema sui dati ricevuti in AUTOMATICO: \n"
+								+ "non soddisfatta la condizione ima1= 1, ima2= 2, ima3= 1, ima4=2 \n"
+								+ "" + stampa + "  ima=" + ima[0] + " "
+								+ ima[1] + " " + ima[2] + " " + ima[3], debug);
+				return false;
+			}
+			break;
+
+		}
+
+		return true;
+	}
+
 
 	/**
 	 * Test sulle immagini ricevute in automatico da Sequenze. In caso di

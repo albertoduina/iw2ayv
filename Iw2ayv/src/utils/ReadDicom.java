@@ -298,6 +298,10 @@ public class ReadDicom {
 			return true;
 		}
 	}
+	
+	
+
+	
 
 	/***
 	 * Legge il codice dall'header Dicom
