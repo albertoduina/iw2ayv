@@ -21,6 +21,96 @@ import ij.process.*;
 public class AboutBox {
 	static final int SMALL_FONT = 10, MEDIUM_FONT = 14, LARGE_FONT = 18;
 
+	public void aboutIW2AYV(String arg, String version1) {
+		// public void about(String arg, Class<?> myClass) {
+
+		int lines = 6;
+
+		String[] text = new String[lines];
+		text[0] = arg;
+		text[1] = "IW2AYV";
+		text[2] = "2007-2016  Alberto Duina";
+		text[3] = "albertoduina@virgilio.it";
+		text[4] = "VERSIONE " + version1;
+		text[5] = "VERSIONE libreria iw2ayv " + MyVersionUtils.getVersion();
+
+		// VERSION = className + "_build_"
+		// + MyVersion.CURRENT_VERSION
+		// + "_iw2ayv_build_"
+		// + MyVersionUtils.CURRENT_VERSION;
+
+		int w = 150, h = 150;
+		ImageProcessor ip = new ColorProcessor(w, h);
+		int[] pixels = (int[]) ip.getPixels();
+
+		for (int y = 0; y < (h / 2); y++) {
+			for (int x = 0; x < (w / 2); x++) {
+				int offset = (y * h) + x;
+				double paint = (double) (x * y) / (double) ((h / 2) * (w / 2)) * 150.;
+				pixels[offset] = gradient1(paint);
+			}
+		}
+		for (int y = 0; y < (h / 2); y++) {
+			for (int x = w - 1; x > (w / 2) - 1; x--) {
+				int offset = (y * h) + x;
+				double paint = (double) ((h - x) * y) / (double) ((h / 2) * (w / 2)) * 150.;
+				pixels[offset] = gradient1(paint);
+			}
+		}
+
+		for (int y = h - 1; y > (h / 2) - 1; y--) {
+			for (int x = w - 1; x > (w / 2) - 1; x--) {
+				int offset = (y * h) + x;
+				double paint = (double) ((h - x) * (h - y)) / (double) ((h / 2) * (w / 2)) * 150.;
+				pixels[offset] = gradient1(paint);
+			}
+		}
+
+		for (int y = h - 1; y > (h / 2) - 1; y--) {
+			for (int x = 0; x < (w / 2); x++) {
+				int offset = (y * h) + x;
+				double paint = (double) (x * (h - y)) / (double) ((h / 2) * (w / 2)) * 150.;
+				pixels[offset] = gradient1(paint);
+			}
+		}
+
+		ip = ip.resize(ip.getWidth() * 2, ip.getHeight() * 2);
+		ip.setFont(new Font("SansSerif", Font.BOLD, LARGE_FONT));
+		ip.setAntialiasedText(true);
+		int[] widths = new int[lines];
+		widths[0] = ip.getStringWidth(text[0]);
+		for (int i = 1; i < lines - 1; i++)
+			widths[i] = ip.getStringWidth(text[i]);
+		int max = 0;
+		for (int i = 0; i < lines - 1; i++)
+			if (widths[i] > max)
+				max = widths[i];
+		max = (int) (max * 1.4);
+		ip.setColor(new Color(0, 0, 0));
+		ip.setFont(new Font("SansSerif", Font.HANGING_BASELINE, LARGE_FONT));
+		ip.setJustification(ImageProcessor.LEFT_JUSTIFY);
+		int y = 100;
+		ip.drawString(text[0], xDim(text[0], ip, max), y);
+		ip.setFont(new Font("SansSerif", Font.ROMAN_BASELINE, LARGE_FONT));
+		y += 30;
+		ip.drawString(text[1], xDim(text[1], ip, max), y);
+		y += 25;
+		ip.setFont(new Font("SansSerif", Font.ITALIC, MEDIUM_FONT));
+		ip.drawString(text[2], xDim(text[2], ip, max), y);
+		y += 18;
+		ip.drawString(text[3], xDim(text[3], ip, max), y);
+		y += 18;
+		ip.drawString(text[4], xDim(text[4], ip, max), y);
+		y += 18;
+		ip.drawString(text[5], xDim(text[5], ip, max), y);
+		ImageWindow.centerNextImage();
+
+		new ImagePlus("IW2AYV", ip).show();
+		IJ.wait(2500);
+		close();
+
+	}
+
 	public void about(String arg, String version1) {
 		// public void about(String arg, Class<?> myClass) {
 
@@ -50,16 +140,14 @@ public class AboutBox {
 		for (int y = 0; y < (h / 2); y++) {
 			for (int x = 0; x < (w / 2); x++) {
 				int offset = (y * h) + x;
-				double paint = (double) (x * y) / (double) ((h / 2) * (w / 2))
-						* 150.;
+				double paint = (double) (x * y) / (double) ((h / 2) * (w / 2)) * 150.;
 				pixels[offset] = gradient1(paint);
 			}
 		}
 		for (int y = 0; y < (h / 2); y++) {
 			for (int x = w - 1; x > (w / 2) - 1; x--) {
 				int offset = (y * h) + x;
-				double paint = (double) ((h - x) * y)
-						/ (double) ((h / 2) * (w / 2)) * 150.;
+				double paint = (double) ((h - x) * y) / (double) ((h / 2) * (w / 2)) * 150.;
 				pixels[offset] = gradient1(paint);
 			}
 		}
@@ -67,8 +155,7 @@ public class AboutBox {
 		for (int y = h - 1; y > (h / 2) - 1; y--) {
 			for (int x = w - 1; x > (w / 2) - 1; x--) {
 				int offset = (y * h) + x;
-				double paint = (double) ((h - x) * (h - y))
-						/ (double) ((h / 2) * (w / 2)) * 150.;
+				double paint = (double) ((h - x) * (h - y)) / (double) ((h / 2) * (w / 2)) * 150.;
 				pixels[offset] = gradient1(paint);
 			}
 		}
@@ -76,8 +163,7 @@ public class AboutBox {
 		for (int y = h - 1; y > (h / 2) - 1; y--) {
 			for (int x = 0; x < (w / 2); x++) {
 				int offset = (y * h) + x;
-				double paint = (double) (x * (h - y))
-						/ (double) ((h / 2) * (w / 2)) * 150.;
+				double paint = (double) (x * (h - y)) / (double) ((h / 2) * (w / 2)) * 150.;
 				pixels[offset] = gradient1(paint);
 			}
 		}
@@ -129,8 +215,8 @@ public class AboutBox {
 		for (int i1 = 0; i1 < arg.length; i1++) {
 			text[i1] = arg[i1];
 		}
-		
-		int before = arg.length-1;
+
+		int before = arg.length - 1;
 		text[before + 1] = "Azienda Spedali Civili di Brescia";
 		text[before + 2] = "Servizio di Fisica Sanitaria";
 		text[before + 3] = "2007-2016  Alberto Duina";
@@ -139,9 +225,8 @@ public class AboutBox {
 		// text[6] = "VERSIONE libreria iw2ayv " +
 		// myImplementationVersion(this.getClass());
 		text[before + 5] = "VERSIONE " + version1;
-		text[before + 6] = "VERSIONE libreria iw2ayv "
-				+ MyVersionUtils.getVersion();
-		
+		text[before + 6] = "VERSIONE libreria iw2ayv " + MyVersionUtils.getVersion();
+
 		// VERSION = className + "_build_"
 		// + MyVersion.CURRENT_VERSION
 		// + "_iw2ayv_build_"
@@ -154,16 +239,14 @@ public class AboutBox {
 		for (int y = 0; y < (h / 2); y++) {
 			for (int x = 0; x < (w / 2); x++) {
 				int offset = (y * h) + x;
-				double paint = (double) (x * y) / (double) ((h / 2) * (w / 2))
-						* 150.;
+				double paint = (double) (x * y) / (double) ((h / 2) * (w / 2)) * 150.;
 				pixels[offset] = gradient1(paint);
 			}
 		}
 		for (int y = 0; y < (h / 2); y++) {
 			for (int x = w - 1; x > (w / 2) - 1; x--) {
 				int offset = (y * h) + x;
-				double paint = (double) ((h - x) * y)
-						/ (double) ((h / 2) * (w / 2)) * 150.;
+				double paint = (double) ((h - x) * y) / (double) ((h / 2) * (w / 2)) * 150.;
 				pixels[offset] = gradient1(paint);
 			}
 		}
@@ -171,8 +254,7 @@ public class AboutBox {
 		for (int y = h - 1; y > (h / 2) - 1; y--) {
 			for (int x = w - 1; x > (w / 2) - 1; x--) {
 				int offset = (y * h) + x;
-				double paint = (double) ((h - x) * (h - y))
-						/ (double) ((h / 2) * (w / 2)) * 150.;
+				double paint = (double) ((h - x) * (h - y)) / (double) ((h / 2) * (w / 2)) * 150.;
 				pixels[offset] = gradient1(paint);
 			}
 		}
@@ -180,8 +262,7 @@ public class AboutBox {
 		for (int y = h - 1; y > (h / 2) - 1; y--) {
 			for (int x = 0; x < (w / 2); x++) {
 				int offset = (y * h) + x;
-				double paint = (double) (x * (h - y))
-						/ (double) ((h / 2) * (w / 2)) * 150.;
+				double paint = (double) (x * (h - y)) / (double) ((h / 2) * (w / 2)) * 150.;
 				pixels[offset] = gradient1(paint);
 			}
 		}
@@ -244,16 +325,14 @@ public class AboutBox {
 		for (int y = 0; y < (h / 2); y++) {
 			for (int x = 0; x < (w / 2); x++) {
 				int offset = (y * h) + x;
-				double paint = (double) (x * y) / (double) ((h / 2) * (w / 2))
-						* 150.;
+				double paint = (double) (x * y) / (double) ((h / 2) * (w / 2)) * 150.;
 				pixels[offset] = gradient2(paint);
 			}
 		}
 		for (int y = 0; y < (h / 2); y++) {
 			for (int x = w - 1; x > (w / 2) - 1; x--) {
 				int offset = (y * h) + x;
-				double paint = (double) ((h - x) * y)
-						/ (double) ((h / 2) * (w / 2)) * 150.;
+				double paint = (double) ((h - x) * y) / (double) ((h / 2) * (w / 2)) * 150.;
 				pixels[offset] = gradient2(paint);
 			}
 		}
@@ -261,8 +340,7 @@ public class AboutBox {
 		for (int y = h - 1; y > (h / 2) - 1; y--) {
 			for (int x = w - 1; x > (w / 2) - 1; x--) {
 				int offset = (y * h) + x;
-				double paint = (double) ((h - x) * (h - y))
-						/ (double) ((h / 2) * (w / 2)) * 150.;
+				double paint = (double) ((h - x) * (h - y)) / (double) ((h / 2) * (w / 2)) * 150.;
 				pixels[offset] = gradient2(paint);
 			}
 		}
@@ -270,8 +348,7 @@ public class AboutBox {
 		for (int y = h - 1; y > (h / 2) - 1; y--) {
 			for (int x = 0; x < (w / 2); x++) {
 				int offset = (y * h) + x;
-				double paint = (double) (x * (h - y))
-						/ (double) ((h / 2) * (w / 2)) * 150.;
+				double paint = (double) (x * (h - y)) / (double) ((h / 2) * (w / 2)) * 150.;
 				pixels[offset] = gradient2(paint);
 			}
 		}
@@ -321,8 +398,7 @@ public class AboutBox {
 		int red = (int) paint + 100;
 		int green = 255;
 		int blue = 1;
-		int color = ((red & 0xff) << 16) | ((green & 0xff) << 8)
-				| (blue & 0xff);
+		int color = ((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff);
 		return color;
 	}
 
@@ -331,8 +407,7 @@ public class AboutBox {
 		int green = (int) paint + 100;
 		int red = 255;
 		int blue = 40;
-		int color = ((red & 0xff) << 16) | ((green & 0xff) << 8)
-				| (blue & 0xff);
+		int color = ((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff);
 		return color;
 	}
 
@@ -358,43 +433,35 @@ public class AboutBox {
 		for (int y = 0; y < (h / 2); y++) {
 			for (int x = 0; x < (w / 2); x++) {
 				int offset = (y * h) + x;
-				double paint = (double) (x * y) / (double) ((h / 2) * (w / 2))
-						* 150.;
+				double paint = (double) (x * y) / (double) ((h / 2) * (w / 2)) * 150.;
 				green = (int) paint + 100;
-				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
-						| (blue & 0xff);
+				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff);
 			}
 		}
 		for (int y = 0; y < (h / 2); y++) {
 			for (int x = w - 1; x > (w / 2) - 1; x--) {
 				int offset = (y * h) + x;
-				double paint = (double) ((h - x) * y)
-						/ (double) ((h / 2) * (w / 2)) * 150.;
+				double paint = (double) ((h - x) * y) / (double) ((h / 2) * (w / 2)) * 150.;
 				green = (int) paint + 100;
-				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
-						| (blue & 0xff);
+				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff);
 			}
 		}
 
 		for (int y = h - 1; y > (h / 2) - 1; y--) {
 			for (int x = w - 1; x > (w / 2) - 1; x--) {
 				int offset = (y * h) + x;
-				double paint = (double) ((h - x) * (h - y))
-						/ (double) ((h / 2) * (w / 2)) * 150.;
+				double paint = (double) ((h - x) * (h - y)) / (double) ((h / 2) * (w / 2)) * 150.;
 				green = (int) paint + 100;
-				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
-						| (blue & 0xff);
+				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff);
 			}
 		}
 
 		for (int y = h - 1; y > (h / 2) - 1; y--) {
 			for (int x = 0; x < (w / 2); x++) {
 				int offset = (y * h) + x;
-				double paint = (double) (x * (h - y))
-						/ (double) ((h / 2) * (w / 2)) * 150.;
+				double paint = (double) (x * (h - y)) / (double) ((h / 2) * (w / 2)) * 150.;
 				green = (int) paint + 100;
-				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
-						| (blue & 0xff);
+				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff);
 			}
 		}
 
@@ -460,47 +527,39 @@ public class AboutBox {
 		for (int y = 0; y < (h / 2); y++) {
 			for (int x = 0; x < (w / 2); x++) {
 				int offset = (y * h) + x;
-				double paint = (double) (x * y) / (double) ((h / 2) * (w / 2))
-						* 150.;
+				double paint = (double) (x * y) / (double) ((h / 2) * (w / 2)) * 150.;
 				green = 255;
 				blue = (int) paint + 100;
-				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
-						| (blue & 0xff);
+				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff);
 			}
 		}
 		for (int y = 0; y < (h / 2); y++) {
 			for (int x = w - 1; x > (w / 2) - 1; x--) {
 				int offset = (y * h) + x;
-				double paint = (double) ((h - x) * y)
-						/ (double) ((h / 2) * (w / 2)) * 150.;
+				double paint = (double) ((h - x) * y) / (double) ((h / 2) * (w / 2)) * 150.;
 				green = 255;
 				blue = (int) paint + 100;
-				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
-						| (blue & 0xff);
+				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff);
 			}
 		}
 
 		for (int y = h - 1; y > (h / 2) - 1; y--) {
 			for (int x = w - 1; x > (w / 2) - 1; x--) {
 				int offset = (y * h) + x;
-				double paint = (double) ((h - x) * (h - y))
-						/ (double) ((h / 2) * (w / 2)) * 150.;
+				double paint = (double) ((h - x) * (h - y)) / (double) ((h / 2) * (w / 2)) * 150.;
 				green = 255;
 				red = (int) paint + 100;
-				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
-						| (blue & 0xff);
+				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff);
 			}
 		}
 
 		for (int y = h - 1; y > (h / 2) - 1; y--) {
 			for (int x = 0; x < (w / 2); x++) {
 				int offset = (y * h) + x;
-				double paint = (double) (x * (h - y))
-						/ (double) ((h / 2) * (w / 2)) * 150.;
+				double paint = (double) (x * (h - y)) / (double) ((h / 2) * (w / 2)) * 150.;
 				green = 255;
 				blue = (int) paint + 100;
-				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8)
-						| (blue & 0xff);
+				pixels[offset] = ((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff);
 			}
 		}
 
@@ -556,19 +615,15 @@ public class AboutBox {
 	 */
 	public String myImplementationVersion(Class<?> myClass) {
 		String implementation = "unknown";
-		String myName = "/" + myClass.getPackage().getName() + "/"
-				+ myClass.getSimpleName() + ".class";
+		String myName = "/" + myClass.getPackage().getName() + "/" + myClass.getSimpleName() + ".class";
 		URL url = getClass().getResource(myName);
-		String type1 = url.toString().substring(0,
-				url.toString().indexOf(":") + 1);
+		String type1 = url.toString().substring(0, url.toString().indexOf(":") + 1);
 		String manifestPath = "";
 		if (type1.equals("file:")) {
 			// in questo caso sono in test, restituisco unknown
 			return implementation;
 		} else {
-			manifestPath = url.toString().substring(0,
-					url.toString().lastIndexOf("!") + 1)
-					+ "/META-INF/MANIFEST.MF";
+			manifestPath = url.toString().substring(0, url.toString().lastIndexOf("!") + 1) + "/META-INF/MANIFEST.MF";
 		}
 		try {
 			Manifest manifest = new Manifest(new URL(manifestPath).openStream());

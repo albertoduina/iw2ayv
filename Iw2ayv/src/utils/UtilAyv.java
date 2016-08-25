@@ -588,6 +588,38 @@ public class UtilAyv {
 		return Math.sqrt(sum / (n - 1));
 	}
 
+	public static double vetSdKnuth(int[] data) {
+		final int n = data.length;
+		if (n < 2) {
+			return Double.NaN;
+		}
+		double avg = (double) data[0];
+		double sum = 0;
+		// yes, i1 below starts from 1
+		for (int i1 = 1; i1 < data.length; i1++) {
+			double newavg = avg + (data[i1] - avg) / (i1 + 1);
+			sum += (data[i1] - avg) * (data[i1] - newavg);
+			avg = newavg;
+		}
+		return Math.sqrt(sum / (n - 1));
+	}
+
+	public static double vetSdKnuth(short[] data) {
+		final int n = data.length;
+		if (n < 2) {
+			return Double.NaN;
+		}
+		double avg = (double) data[0];
+		double sum = 0;
+		// yes, i1 below starts from 1
+		for (int i1 = 1; i1 < data.length; i1++) {
+			double newavg = avg + (data[i1] - avg) / (i1 + 1);
+			sum += (data[i1] - avg) * (data[i1] - newavg);
+			avg = newavg;
+		}
+		return Math.sqrt(sum / (n - 1));
+	}
+
 	public static double vetMean(double[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -597,6 +629,34 @@ public class UtilAyv {
 		// i1 below starts from 0
 		for (int i1 = 0; i1 < data.length; i1++) {
 			sum += data[i1];
+		}
+		double mean = sum / data.length;
+		return mean;
+	}
+
+	public static double vetMean(int[] data) {
+		final int n = data.length;
+		if (n < 1) {
+			return Double.NaN;
+		}
+		double sum = 0;
+		// i1 below starts from 0
+		for (int i1 = 0; i1 < data.length; i1++) {
+			sum += (double) data[i1];
+		}
+		double mean = sum / data.length;
+		return mean;
+	}
+	
+	public static double vetMean(short[] data) {
+		final int n = data.length;
+		if (n < 1) {
+			return Double.NaN;
+		}
+		double sum = 0;
+		// i1 below starts from 0
+		for (int i1 = 0; i1 < data.length; i1++) {
+			sum += (double) data[i1];
 		}
 		double mean = sum / data.length;
 		return mean;
@@ -726,7 +786,7 @@ public class UtilAyv {
 		}
 		ImageWindow win = imp.getWindow();
 		if (win != null) {
-			MyLog.waitThere("immagine gi� visualizzata !");
+			MyLog.waitThere("immagine gia' visualizzata !");
 		} else {
 			imp.show();
 			do {
@@ -1585,7 +1645,7 @@ public class UtilAyv {
 	public static void afterWork() {
 		UtilAyv.resetResultsTable();
 		if (new File(MyConst.TEST_DIRECTORY).exists())
-		InputOutput.deleteDir(new File(MyConst.TEST_DIRECTORY));
+			InputOutput.deleteDir(new File(MyConst.TEST_DIRECTORY));
 		UtilAyv.cleanUp();
 	}
 
@@ -2026,8 +2086,7 @@ public class UtilAyv {
 		}
 		return result;
 	}
-	
-	
+
 	/**
 	 * Test sulle immagini ricevute in automatico da Sequenze. In caso di
 	 * problemi viene dato un messaggio esplicativo e restituito false. Vengono
@@ -2046,8 +2105,7 @@ public class UtilAyv {
 	 * @param sel
 	 * @return
 	 */
-	public static boolean checkImages_OLD(int[] vetRiga, String[][] iw2ayvTable,
-			int sel, boolean debug) {
+	public static boolean checkImages_OLD(int[] vetRiga, String[][] iw2ayvTable, int sel, boolean debug) {
 		String[] coil = new String[vetRiga.length];
 		String[] descr = new String[vetRiga.length];
 		String[] echo = new String[vetRiga.length];
@@ -2061,19 +2119,13 @@ public class UtilAyv {
 			stampa += vetRiga[i1] + "#";
 			String path1 = TableSequence.getPath(iw2ayvTable, vetRiga[i1]);
 			imp1 = UtilAyv.openImageNoDisplay(path1, true);
-			descr[i1] = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_SERIES_DESCRIPTION);
+			descr[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
 			coil[i1] = ReadDicom.getAllCoils(imp1);
-			echo[i1] = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_ECHO_TIME);
-			serie[i1] = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_SERIES_NUMBER);
-			acq[i1] = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_ACQUISITION_NUMBER);
-			ima[i1] = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_IMAGE_NUMBER);
-			manufacturer[i1] = ReadDicom.readDicomParameter(imp1,
-					MyConst.DICOM_MANUFACTURER);
+			echo[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ECHO_TIME);
+			serie[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_NUMBER);
+			acq[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ACQUISITION_NUMBER);
+			ima[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_IMAGE_NUMBER);
+			manufacturer[i1] = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_MANUFACTURER);
 		}
 
 		// Sicuramente le immagini da analizzare dovranno tutte essere acquisite
@@ -2086,19 +2138,15 @@ public class UtilAyv {
 		for (int i1 = 1; i1 < vetRiga.length; i1++) {
 			if (!descr0.equals(descr[i1])) {
 
-				MyLog.waitThere(
-						"Problema sui dati ricevuti in AUTOMATICO: \n"
-								+ "la descrizione delle sequenze ricevute � differente "
-								+ stampa + "   " + descr0 + "  " + descr[i1],
-						debug);
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "la descrizione delle sequenze ricevute � differente " + stampa + "   " + descr0 + "  "
+						+ descr[i1], debug);
 				return false;
 			}
 			if (!coil0.equals(coil[i1])) {
-				MyLog.waitThere(
-						"Problema sui dati ricevuti in AUTOMATICO: \n"
-								+ "le immagini ricevute devono essere tutte acquisite \n"
-								+ "con la stessa bobina" + stampa + "  "
-								+ coil0 + "  " + coil[i1], debug);
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "le immagini ricevute devono essere tutte acquisite \n" + "con la stessa bobina" + stampa
+						+ "  " + coil0 + "  " + coil[i1], debug);
 				return false;
 			}
 		}
@@ -2108,8 +2156,8 @@ public class UtilAyv {
 			// questo � il caso della singola immagine p4, p6, p8
 			if (vetRiga.length != 1) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "errore sul numero parametri ricevuti da Sequenze \n"
-						+ "previsti= 1 reali= " + stampa, debug);
+						+ "errore sul numero parametri ricevuti da Sequenze \n" + "previsti= 1 reali= " + stampa,
+						debug);
 				return false;
 			}
 			break;
@@ -2120,21 +2168,18 @@ public class UtilAyv {
 			// hanno lo stesso eco
 			if (vetRiga.length != 2) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "errore sul numero parametri ricevuti da Sequenze \n"
-						+ "previsti= 2 reali= " + stampa, debug);
+						+ "errore sul numero parametri ricevuti da Sequenze \n" + "previsti= 2 reali= " + stampa,
+						debug);
 				return false;
 			}
 			if (!echo[0].equals(echo[1])) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "immagini ricevute con tempi di echo differenti "
-						+ stampa, debug);
+						+ "immagini ricevute con tempi di echo differenti " + stampa, debug);
 				return false;
 			}
-			if ((!ima[0].equals("1") || !ima[1].equals("1"))
-					&& (manufacturer[0].equals("SIEMENS"))) {
+			if ((!ima[0].equals("1") || !ima[1].equals("1")) && (manufacturer[0].equals("SIEMENS"))) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "non soddisfatta la condizione ima1= 1 && ima2= 1 \n"
-						+ "" + stampa, debug);
+						+ "non soddisfatta la condizione ima1= 1 && ima2= 1 \n" + "" + stampa, debug);
 				return false;
 			}
 			break;
@@ -2146,42 +2191,30 @@ public class UtilAyv {
 			// il primo eco deve essere inferiore al secondo eco
 			if (vetRiga.length != 4) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "errore sul numero parametri ricevuti da Sequenze \n"
-						+ "previsti= 4 reali= " + stampa, debug);
+						+ "errore sul numero parametri ricevuti da Sequenze \n" + "previsti= 4 reali= " + stampa,
+						debug);
 				return false;
 			}
 			if (!echo[0].equals(echo[2]) || !echo[1].equals(echo[3])) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "i tempi di echo devono essere a due a due uguali \n"
-						+ "" + stampa + "\n \nechi= " + echo[0] + " " + echo[1]
-						+ " " + echo[2] + " " + echo[3], debug);
+						+ "i tempi di echo devono essere a due a due uguali \n" + "" + stampa + "\n \nechi= " + echo[0]
+						+ " " + echo[1] + " " + echo[2] + " " + echo[3], debug);
 				return false;
 			}
 			if (!(ReadDicom.readInt(echo[0]) < ReadDicom.readInt(echo[1]))) {
-				MyLog.waitThere(
-						"Problema sui dati ricevuti in AUTOMATICO: \n"
-								+ "i tempi di echo delle prime immagini devono essere \n"
-								+ "inferiori a quelli delle seconde " + stampa
-								+ "\n \nechi= " + echo[0] + " " + echo[1] + " "
-								+ echo[2] + " " + echo[3], debug);
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "i tempi di echo delle prime immagini devono essere \n" + "inferiori a quelli delle seconde "
+						+ stampa + "\n \nechi= " + echo[0] + " " + echo[1] + " " + echo[2] + " " + echo[3], debug);
 
 				return false;
 			}
-			if (!(ima[0].equals("1")
-					&& ima[1].equals("2")
-					&& ima[2].equals("1")
-					&& ima[3].equals("2")
-					|| !(ima[0].equals("1") && ima[1].equals("4")
-							&& ima[2].equals("3") && ima[3].equals("6"))
-					|| !(ima[0].equals("2") && ima[1].equals("5")
-							&& ima[2].equals("1") && ima[3].equals("4")) || !(ima[0]
-					.equals("3") && ima[1].equals("6") && ima[2].equals("2") && ima[3]
-						.equals("5")))) {
-				MyLog.waitThere(
-						"Problema sui dati ricevuti in AUTOMATICO: \n"
-								+ "non soddisfatta la condizione ima1= 1, ima2= 2, ima3= 1, ima4=2 \n"
-								+ "" + stampa + "  ima=" + ima[0] + " "
-								+ ima[1] + " " + ima[2] + " " + ima[3], debug);
+			if (!(ima[0].equals("1") && ima[1].equals("2") && ima[2].equals("1") && ima[3].equals("2")
+					|| !(ima[0].equals("1") && ima[1].equals("4") && ima[2].equals("3") && ima[3].equals("6"))
+					|| !(ima[0].equals("2") && ima[1].equals("5") && ima[2].equals("1") && ima[3].equals("4"))
+					|| !(ima[0].equals("3") && ima[1].equals("6") && ima[2].equals("2") && ima[3].equals("5")))) {
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "non soddisfatta la condizione ima1= 1, ima2= 2, ima3= 1, ima4=2 \n" + "" + stampa + "  ima="
+						+ ima[0] + " " + ima[1] + " " + ima[2] + " " + ima[3], debug);
 				return false;
 			}
 			break;
@@ -2192,25 +2225,20 @@ public class UtilAyv {
 			// quattro immagini
 			if (vetRiga.length != 4) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "errore sul numero parametri ricevuti da Sequenze \n"
-						+ "previsti= 4 reali= " + stampa, debug);
+						+ "errore sul numero parametri ricevuti da Sequenze \n" + "previsti= 4 reali= " + stampa,
+						debug);
 				return false;
 			}
-			if (!echo[0].equals(echo[1]) || !echo[0].equals(echo[2])
-					|| !echo[0].equals(echo[3])) {
+			if (!echo[0].equals(echo[1]) || !echo[0].equals(echo[2]) || !echo[0].equals(echo[3])) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
-						+ "immagini ricevute con tempi di echo differenti \n"
-						+ "" + stampa + "\n \nechi= " + echo[0] + " " + echo[1]
-						+ " " + echo[2] + " " + echo[3], debug);
+						+ "immagini ricevute con tempi di echo differenti \n" + "" + stampa + "\n \nechi= " + echo[0]
+						+ " " + echo[1] + " " + echo[2] + " " + echo[3], debug);
 				return false;
 			}
-			if (!ima[0].equals("1") || !ima[1].equals("2")
-					|| !ima[2].equals("1") || !ima[3].equals("2")) {
-				MyLog.waitThere(
-						"Problema sui dati ricevuti in AUTOMATICO: \n"
-								+ "non soddisfatta la condizione ima1= 1, ima2= 2, ima3= 1, ima4=2 \n"
-								+ "" + stampa + "  ima=" + ima[0] + " "
-								+ ima[1] + " " + ima[2] + " " + ima[3], debug);
+			if (!ima[0].equals("1") || !ima[1].equals("2") || !ima[2].equals("1") || !ima[3].equals("2")) {
+				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+						+ "non soddisfatta la condizione ima1= 1, ima2= 2, ima3= 1, ima4=2 \n" + "" + stampa + "  ima="
+						+ ima[0] + " " + ima[1] + " " + ima[2] + " " + ima[3], debug);
 				return false;
 			}
 			break;
@@ -2219,7 +2247,6 @@ public class UtilAyv {
 
 		return true;
 	}
-
 
 	/**
 	 * Test sulle immagini ricevute in automatico da Sequenze. In caso di

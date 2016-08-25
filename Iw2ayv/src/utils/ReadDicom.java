@@ -276,7 +276,7 @@ public class ReadDicom {
 	}
 
 	/***
-	 * Testa se � un file dicom ed � un immagine visualizzabile
+	 * Testa se e' un file dicom ed e' un immagine visualizzabile
 	 * 
 	 * @param fileName1
 	 * @return

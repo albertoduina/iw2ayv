@@ -18,6 +18,7 @@ import ij.gui.Roi;
 import ij.io.FileSaver;
 import ij.measure.Calibration;
 import ij.measure.Measurements;
+import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ImageStatistics;
 import ij.process.ShortProcessor;
@@ -31,6 +32,203 @@ public class ImageUtils {
 	private static boolean pulse = false; // utilizzati per impulso, lasciare,
 											// serve anche se segnalato
 											// inutilizzato
+
+	public static ImagePlus generaSimulata5Colori(int xRoi, int yRoi, int diamRoi, ImagePlus imp, boolean step,
+			boolean verbose, boolean test) {
+
+		int xRoiSimulata = xRoi + (diamRoi - MyConst.P3_DIAM_FOR_450_PIXELS) / 2;
+		int yRoiSimulata = yRoi + (diamRoi - MyConst.P3_DIAM_FOR_450_PIXELS) / 2;
+		ImagePlus impSimulata = simulata5Colori(xRoiSimulata, yRoiSimulata, MyConst.P3_DIAM_FOR_450_PIXELS, imp);
+		if (verbose) {
+			UtilAyv.showImageMaximized(impSimulata);
+			ImageUtils.backgroundEnhancement(0, 0, 10, impSimulata);
+		}
+		impSimulata.updateAndDraw();
+		return impSimulata;
+	}
+
+	/**
+	 * 
+	 * @param sqX
+	 * @param sqY
+	 * @param sqR
+	 * @param imp1
+	 * @return
+	 */
+	public static ImagePlus simulata5Colori(int sqX, int sqY, int sqR, ImagePlus imp1) {
+
+		if (imp1 == null) {
+			IJ.error("Simula5Colori ricevuto null");
+			return (null);
+		}
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
+		short[] pixels1 = UtilAyv.truePixels(imp1);
+
+		imp1.setRoi(new OvalRoi(sqX, sqY, sqR, sqR));
+		ImageStatistics stat1 = imp1.getStatistics();
+		imp1.deleteRoi();
+
+		double mean = stat1.mean;
+		double minus20 = mean * MyConst.MINUS_20_PERC;
+		double minus10 = mean * MyConst.MINUS_10_PERC;
+		double plus10 = mean * MyConst.PLUS_10_PERC;
+		double plus20 = mean * MyConst.PLUS_20_PERC;
+		// genero una immagine nera
+
+		ImageProcessor ipSimulata = new ColorProcessor(width, height);
+		int[] pixelsSimulata = (int[]) ipSimulata.getPixels();
+
+		short pixSorgente = 0;
+		int pixSimulata = 0;
+		int posizioneArrayImmagine = 0;
+
+		int color1 = ((255 & 0xff) << 16) | ((127 & 0xff) << 8) | (127 & 0xff);
+
+		int color2 = ((127 & 0xff) << 16) | ((255 & 0xff) << 8) | (127 & 0xff);
+		int color3 = ((127 & 0xff) << 16) | ((127 & 0xff) << 8) | (255 & 0xff);
+		int color4 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff);
+		int color5 = ((0 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff);
+		int color6 = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (255 & 0xff);
+
+		for (int y = 0; y < width; y++) {
+			for (int x = 0; x < width; x++) {
+				posizioneArrayImmagine = y * width + x;
+				pixSorgente = pixels1[posizioneArrayImmagine];
+				if (pixSorgente > plus20)
+					pixSimulata = color1;
+				else if (pixSorgente > plus10)
+					pixSimulata = color2;
+				else if (pixSorgente > minus10)
+					pixSimulata = color3;
+				else if (pixSorgente > minus20)
+					pixSimulata = color4;
+				else if (pixSorgente > 100)
+					pixSimulata = color5;
+				else
+					pixSimulata = color6;
+				pixelsSimulata[posizioneArrayImmagine] = pixSimulata;
+			}
+		}
+
+		ipSimulata.resetMinAndMax();
+		ImagePlus impSimulata = new ImagePlus("ColorSimulata", ipSimulata);
+
+		return impSimulata;
+	}
+
+	public static ImagePlus generaSimulata5Classi(int xRoi, int yRoi, int diamRoi, ImagePlus imp, boolean step,
+			boolean verbose, boolean test) {
+
+		int xRoiSimulata = xRoi + (diamRoi - MyConst.P3_DIAM_FOR_450_PIXELS) / 2;
+		int yRoiSimulata = yRoi + (diamRoi - MyConst.P3_DIAM_FOR_450_PIXELS) / 2;
+		ImagePlus impSimulata = simulata5Classi(xRoiSimulata, yRoiSimulata, MyConst.P3_DIAM_FOR_450_PIXELS, imp);
+		if (verbose) {
+			UtilAyv.showImageMaximized(impSimulata);
+			ImageUtils.backgroundEnhancement(0, 0, 10, impSimulata);
+		}
+		impSimulata.updateAndDraw();
+		return impSimulata;
+	}
+
+	/**
+	 * Simulated 5 classes image
+	 * 
+	 * @param xRoi
+	 *            x roi coordinate
+	 * @param yRoi
+	 *            y roi coordinate
+	 * @param diamRoi
+	 *            roi diameter
+	 * @param imp
+	 *            original image
+	 * @param step
+	 *            step-by-step mode
+	 * @param test
+	 *            autotest mode
+	 * @return pixel counts of classes of the simulated image
+	 */
+	public static int[][] generaSimulata5Classi(int xRoi, int yRoi, int diamRoi, ImagePlus imp, String filename,
+			boolean step, boolean verbose, boolean test) {
+
+		int xRoiSimulata = xRoi + (diamRoi - MyConst.P3_DIAM_FOR_450_PIXELS) / 2;
+		int yRoiSimulata = yRoi + (diamRoi - MyConst.P3_DIAM_FOR_450_PIXELS) / 2;
+		ImagePlus impSimulata = simulata5Classi(xRoiSimulata, yRoiSimulata, MyConst.P3_DIAM_FOR_450_PIXELS, imp);
+		if (verbose) {
+			UtilAyv.showImageMaximized(impSimulata);
+			ImageUtils.backgroundEnhancement(0, 0, 10, impSimulata);
+		}
+		impSimulata.updateAndDraw();
+		int[][] classiSimulata = numeroPixelsClassi(impSimulata);
+		String patName = ReadDicom.readDicomParameter(imp, MyConst.DICOM_PATIENT_NAME);
+
+		String codice1 = ReadDicom.readDicomParameter(imp, MyConst.DICOM_SERIES_DESCRIPTION);
+
+		String codice = UtilAyv.getFiveLetters(codice1);
+
+		String simName = filename + patName + codice + "sim.zip";
+
+		if (!test)
+
+			new FileSaver(impSimulata).saveAsZip(simName);
+		return classiSimulata;
+	}
+
+	/**
+	 * 
+	 * @param sqX
+	 * @param sqY
+	 * @param sqR
+	 * @param imp1
+	 * @return
+	 */
+	public static ImagePlus simulata5Classi(int sqX, int sqY, int sqR, ImagePlus imp1) {
+
+		if (imp1 == null) {
+			IJ.error("Simula5Classi ricevuto null");
+			return (null);
+		}
+		int width = imp1.getWidth();
+		short[] pixels1 = UtilAyv.truePixels(imp1);
+
+		imp1.setRoi(new OvalRoi(sqX, sqY, sqR, sqR));
+		ImageStatistics stat1 = imp1.getStatistics();
+		imp1.deleteRoi();
+
+		double mean = stat1.mean;
+		double minus20 = mean * MyConst.MINUS_20_PERC;
+		double minus10 = mean * MyConst.MINUS_10_PERC;
+		double plus10 = mean * MyConst.PLUS_10_PERC;
+		double plus20 = mean * MyConst.PLUS_20_PERC;
+		// genero una immagine nera
+		ImagePlus impSimulata = NewImage.createShortImage("Simulata", width, width, 1, NewImage.FILL_BLACK);
+		ShortProcessor processorSimulata = (ShortProcessor) impSimulata.getProcessor();
+		short[] pixelsSimulata = (short[]) processorSimulata.getPixels();
+
+		short pixSorgente = 0;
+		short pixSimulata = 0;
+		int posizioneArrayImmagine = 0;
+
+		for (int y = 0; y < width; y++) {
+			for (int x = 0; x < width; x++) {
+				posizioneArrayImmagine = y * width + x;
+				pixSorgente = pixels1[posizioneArrayImmagine];
+				if (pixSorgente > plus20)
+					pixSimulata = MyConst.LEVEL_5;
+				else if (pixSorgente > plus10)
+					pixSimulata = MyConst.LEVEL_4;
+				else if (pixSorgente > minus10)
+					pixSimulata = MyConst.LEVEL_3;
+				else if (pixSorgente > minus20)
+					pixSimulata = MyConst.LEVEL_2;
+				else
+					pixSimulata = MyConst.LEVEL_1;
+				pixelsSimulata[posizioneArrayImmagine] = pixSimulata;
+			}
+		}
+		processorSimulata.resetMinAndMax();
+		return impSimulata;
+	}
 
 	/**
 	 * generazione di un immagine simulata, display e salvataggio
@@ -903,7 +1101,7 @@ public class ImageUtils {
 
 		PointRoi pr1 = new PointRoi(xPoints, yPoints, xPoints.length);
 		pr1.setPointType(2);
-		pr1.setSize(4);
+		pr1.setSize(2);
 
 		imp1.setRoi(pr1);
 		imp1.getRoi().setStrokeColor(color);
@@ -1389,13 +1587,13 @@ public class ImageUtils {
 				"CONTINUA");
 	}
 
-	
 	/***
 	 * restituisce coordinate centro e lato/raggio della ROI su imp1
+	 * 
 	 * @param imp1
 	 * @return
 	 */
-	
+
 	public static double[] roiCenter(ImagePlus imp1) {
 		Rectangle boundRec1 = imp1.getProcessor().getRoi();
 		double leftHX = boundRec1.x;
@@ -1405,12 +1603,11 @@ public class ImageUtils {
 		double width1 = boundRec1.getWidth();
 		double height1 = boundRec1.getHeight();
 		Roi cazz1 = imp1.getRoi();
-		String aux1  =  cazz1.getTypeAsString();
-		
-				
+		String aux1 = cazz1.getTypeAsString();
+
 		ImageStatistics statGh2 = imp1.getStatistics();
-		String aux2 = statGh2.toString(); 
-		MyLog.waitHere("aux1= "+aux1+" aux2= "+aux2);
+		String aux2 = statGh2.toString();
+		MyLog.waitHere("aux1= " + aux1 + " aux2= " + aux2);
 		return null;
 	}
 
