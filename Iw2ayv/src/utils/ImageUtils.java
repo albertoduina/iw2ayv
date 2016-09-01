@@ -83,30 +83,41 @@ public class ImageUtils {
 		int pixSimulata = 0;
 		int posizioneArrayImmagine = 0;
 
-		int color1 = ((255 & 0xff) << 16) | ((127 & 0xff) << 8) | (127 & 0xff);
+		
+		// int color1 = ((255 & 0xff) << 16) | ((127 & 0xff) << 8) | (127 &
+		// 0xff);
+		// int color2 = ((127 & 0xff) << 16) | ((255 & 0xff) << 8) | (127 &
+		// 0xff);
+		// int color3 = ((127 & 0xff) << 16) | ((127 & 0xff) << 8) | (255 &
+		// 0xff);
+		// int color4 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff);
+		// int color5 = ((0 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff);
+		// int color6 = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff);
 
-		int color2 = ((127 & 0xff) << 16) | ((255 & 0xff) << 8) | (127 & 0xff);
-		int color3 = ((127 & 0xff) << 16) | ((127 & 0xff) << 8) | (255 & 0xff);
-		int color4 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff);
-		int color5 = ((0 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff);
-		int color6 = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (255 & 0xff);
+		int colorP20 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff);
+		int colorP10 = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 & 0xff); 
+		int colorMED = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff); 
+		int colorM10 = ((124 & 0xff) << 16) | ((252 & 0xff) << 8) | (50 & 0xff); 
+		int colorM20 = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff); 
+		
+		int colorOUT = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); // nero
 
 		for (int y = 0; y < width; y++) {
 			for (int x = 0; x < width; x++) {
 				posizioneArrayImmagine = y * width + x;
 				pixSorgente = pixels1[posizioneArrayImmagine];
 				if (pixSorgente > plus20)
-					pixSimulata = color1;
+					pixSimulata = colorP20;
 				else if (pixSorgente > plus10)
-					pixSimulata = color2;
+					pixSimulata = colorP10;
 				else if (pixSorgente > minus10)
-					pixSimulata = color3;
+					pixSimulata = colorMED;
 				else if (pixSorgente > minus20)
-					pixSimulata = color4;
+					pixSimulata = colorM10;
 				else if (pixSorgente > 100)
-					pixSimulata = color5;
+					pixSimulata = colorM20;
 				else
-					pixSimulata = color6;
+					pixSimulata = colorOUT;
 				pixelsSimulata[posizioneArrayImmagine] = pixSimulata;
 			}
 		}
