@@ -167,10 +167,11 @@ public class InputOutput {
 	 * http://javaalmanac.com/egs/java.io/DeleteDir.html
 	 */
 	public static boolean deleteDir(File dir) {
-		
-//		if (!dir.exists()) MyLog.waitHere("non esiste la dir");
-		if (!dir.exists()) MyLog.waitThere("non esiste la dir");
-		
+
+		// if (!dir.exists()) MyLog.waitHere("non esiste la dir");
+		if (!dir.exists())
+			MyLog.waitThere("non esiste la dir");
+
 		if (dir.isDirectory()) {
 			String[] children = dir.list();
 			for (int i1 = 0; i1 < children.length; i1++) {
@@ -186,7 +187,6 @@ public class InputOutput {
 				MyLog.waitHere("files residui= " + num);
 		}
 
-		
 		// The directory is now empty so delete it
 		boolean ok = dir.delete();
 		if (!ok)
@@ -737,6 +737,7 @@ public class InputOutput {
 			e.printStackTrace();
 		}
 		String[] list = splitStringGeneric(vetList.get(0), separator);
+		// MyLog.waitHere("list.length= " + list.length);
 		String[][] vetResult = new String[vetList.size()][list.length];
 		for (int i1 = 0; i1 < vetList.size(); i1++) {
 			list = splitStringGeneric(vetList.get(i1), separator);
@@ -744,6 +745,8 @@ public class InputOutput {
 				vetResult[i1][i2] = list[i2];
 			}
 		}
+		// MyLog.waitHere("vetResult.length= " + vetResult.length +
+		// "vetResult[].length= " + vetResult[0].length);
 		return vetResult;
 	}
 
@@ -984,6 +987,7 @@ public class InputOutput {
 		else
 			return true;
 	}
+
 	public static boolean checkDir(File dirCheck) {
 		if (!dirCheck.exists())
 			return false;

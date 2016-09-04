@@ -47,6 +47,76 @@ public class ImageUtils {
 		return impSimulata;
 	}
 
+	public static ImagePlus generaSimulata5Colori( double mean11, ImagePlus imp,
+			boolean step, boolean verbose, boolean test) {
+
+		ImagePlus impSimulata = simulata5Colori( mean11, imp);
+		if (verbose) {
+			UtilAyv.showImageMaximized(impSimulata);
+			ImageUtils.backgroundEnhancement(0, 0, 10, impSimulata);
+		}
+		impSimulata.updateAndDraw();
+		return impSimulata;
+	}
+
+	public static ImagePlus simulata5Colori(double mean11, ImagePlus imp1) {
+
+		if (imp1 == null) {
+			IJ.error("Simula5Colori ricevuto null");
+			return (null);
+		}
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
+		short[] pixels1 = UtilAyv.truePixels(imp1);
+
+		double mean = mean11;
+		double minus20 = mean * MyConst.MINUS_20_PERC;
+		double minus10 = mean * MyConst.MINUS_10_PERC;
+		double plus10 = mean * MyConst.PLUS_10_PERC;
+		double plus20 = mean * MyConst.PLUS_20_PERC;
+		// genero una immagine nera
+
+		ImageProcessor ipSimulata = new ColorProcessor(width, height);
+		int[] pixelsSimulata = (int[]) ipSimulata.getPixels();
+
+		short pixSorgente = 0;
+		int pixSimulata = 0;
+		int posizioneArrayImmagine = 0;
+
+		int colorP20 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff);
+		int colorP10 = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 & 0xff);
+		int colorMED = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff);
+		int colorM10 = ((124 & 0xff) << 16) | ((252 & 0xff) << 8) | (50 & 0xff);
+		int colorM20 = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff);
+
+		int colorOUT = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); // nero
+
+		for (int y = 0; y < width; y++) {
+			for (int x = 0; x < width; x++) {
+				posizioneArrayImmagine = y * width + x;
+				pixSorgente = pixels1[posizioneArrayImmagine];
+				if (pixSorgente > plus20)
+					pixSimulata = colorP20;
+				else if (pixSorgente > plus10)
+					pixSimulata = colorP10;
+				else if (pixSorgente > minus10)
+					pixSimulata = colorMED;
+				else if (pixSorgente > minus20)
+					pixSimulata = colorM10;
+				else if (pixSorgente > 100)
+					pixSimulata = colorM20;
+				else
+					pixSimulata = colorOUT;
+				pixelsSimulata[posizioneArrayImmagine] = pixSimulata;
+			}
+		}
+
+		ipSimulata.resetMinAndMax();
+		ImagePlus impSimulata = new ImagePlus("ColorSimulata", ipSimulata);
+
+		return impSimulata;
+	}
+
 	/**
 	 * 
 	 * @param sqX
@@ -83,7 +153,6 @@ public class ImageUtils {
 		int pixSimulata = 0;
 		int posizioneArrayImmagine = 0;
 
-		
 		// int color1 = ((255 & 0xff) << 16) | ((127 & 0xff) << 8) | (127 &
 		// 0xff);
 		// int color2 = ((127 & 0xff) << 16) | ((255 & 0xff) << 8) | (127 &
@@ -95,11 +164,11 @@ public class ImageUtils {
 		// int color6 = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff);
 
 		int colorP20 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff);
-		int colorP10 = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 & 0xff); 
-		int colorMED = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff); 
-		int colorM10 = ((124 & 0xff) << 16) | ((252 & 0xff) << 8) | (50 & 0xff); 
-		int colorM20 = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff); 
-		
+		int colorP10 = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 & 0xff);
+		int colorMED = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff);
+		int colorM10 = ((124 & 0xff) << 16) | ((252 & 0xff) << 8) | (50 & 0xff);
+		int colorM20 = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff);
+
 		int colorOUT = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); // nero
 
 		for (int y = 0; y < width; y++) {
