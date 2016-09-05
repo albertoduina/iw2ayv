@@ -749,6 +749,40 @@ public class InputOutput {
 		// "vetResult[].length= " + vetResult[0].length);
 		return vetResult;
 	}
+	
+	public static String[][] readStringMatrixFromFileNew2(String fileName, String separator) {
+		ArrayList<String> vetList = new ArrayList<String>();
+		try {
+			URL url1 = new InputOutput().getClass().getClassLoader().getResource(fileName);
+			if (url1 == null) {
+				IJ.log("readFile7: file " + fileName + " not visible or null");
+				return null;
+			}
+			InputStream is = new InputOutput().getClass().getClassLoader().getResourceAsStream(fileName);
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			String str = br.readLine();
+			while (str != null) {
+				vetList.add(str);
+				str = br.readLine();
+			}
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String[] list = splitStringGeneric(vetList.get(0), separator);
+		// MyLog.waitHere("list.length= " + list.length);
+		String[][] vetResult = new String[list.length][vetList.size()];
+		for (int i1 = 0; i1 < vetList.size(); i1++) {
+			list = splitStringGeneric(vetList.get(i1), separator);
+			for (int i2 = 0; i2 < list.length; i2++) {
+				vetResult[i2][i1] = list[i2];
+			}
+		}
+		// MyLog.waitHere("vetResult.length= " + vetResult.length +
+		// "vetResult[].length= " + vetResult[0].length);
+		return vetResult;
+	}
+
 
 	/***
 	 * Legge i dati da una stringa e li restituisce in un vettore
