@@ -1,5 +1,6 @@
 package utils;
 
+import ij.IJ;
 import ij.ImagePlus;
 import ij.process.ImageProcessor;
 
@@ -285,6 +286,57 @@ public class MyFilter {
 		// + IJ.d2s(((System.nanoTime() - startNanoTime) / 1000000000.0),
 		// 6) + " seconds");
 		return out;
+	}
+
+	/**
+	 * Ricerca posizione del massimo con una roi 11x11
+	 * 
+	 * @param imp1
+	 * @return
+	 */
+	public static double[] maxPosition11x11_NEW(ImagePlus imp1) {
+		// double startNanoTime = System.nanoTime();
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
+		long sum121 = 0;
+		double mean121 = 0;
+		double max121 = 0;
+		int xmax121 = 0;
+		int ymax121 = 0;
+		int offset = 0;
+		int address = 0;
+		ImageProcessor ip1 = imp1.getProcessor();
+		short[] pixels1 = (short[]) ip1.getPixels();
+		// scansione sulle coordinate del centro roi 11x11
+		for (int i1 = 5; i1 < height - 5; i1++) {
+			for (int i2 = 5; i2 < width - 5; i2++) {
+				sum121 = 0;
+				// mi posiziono sulla riga
+				for (int i4 = -5; i4 < 6; i4++) {
+					offset = (i1 + i4) * width + i2;
+					for (int i3 = -5; i3 < 6; i3++) {
+						address = offset + i3;
+						sum121 = sum121 + (pixels1[address]);
+					}
+				}
+				mean121 = sum121 / 121.0;
+				if (mean121 > max121) {
+					max121 = mean121;
+					xmax121 = i1;
+					ymax121 = i2;
+				}
+			}
+		}
+
+		double[] out = new double[3];
+		out[0] = xmax121;
+		out[1] = ymax121;
+		out[2] = max121;
+		// IJ.log("maxPosition11x11 "
+		// + IJ.d2s(((System.nanoTime() - startNanoTime) / 1000000000.0),
+		// 6) + " seconds");
+		return out;
+
 	}
 
 	/**

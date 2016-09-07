@@ -16,7 +16,7 @@ import org.junit.Test;
 public class MyFilterTest {
 	@Before
 	public void setUp() throws Exception {
-//		new ImageJ(ImageJ.NORMAL);
+		new ImageJ(ImageJ.NORMAL);
 	}
 
 	@After
@@ -38,6 +38,7 @@ public class MyFilterTest {
 	public final void testMaxPosition3x3() {
 
 		String path1 = "./data/C001_testP10";
+//		String path1 = "C001_testP10";
 		ImagePlus imp1 = UtilAyv.openImageMaximized(path1);
 		double[] position1 = MyFilter.maxPosition3x3(imp1);
 		imp1.setRoi((int) Math.round(position1[0] - 1),
@@ -96,5 +97,20 @@ public class MyFilterTest {
 		assertTrue(UtilAyv
 				.compareVectors(position1, expected, 1e-12, ""));
 	}
+	
+	@Test
+	public final void testMaxPosition11x11_PROBLEM() {
+
+		String path1 = "./data/DUP_XZ_128.tif";
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, true);
+		double[] position1 = MyFilter.maxPosition11x11(imp1);
+		MyLog.waitHere();
+		imp1.setRoi((int) Math.round(position1[0] - 4),
+				(int) Math.round(position1[1] - 4), 7, 7);
+		double[] expected = { 196.0, 78.0, 743.3719008264463 };
+		assertTrue(UtilAyv
+				.compareVectors(position1, expected, 1e-12, ""));
+	}
+
 
 }

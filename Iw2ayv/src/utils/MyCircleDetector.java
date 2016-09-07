@@ -643,6 +643,16 @@ public class MyCircleDetector {
 		imp1.killRoi();
 	}
 
+	public static void drawCenter(ImagePlus imp1, Overlay over1,
+			double xCenterCircle, double yCenterCircle, Color color1) {
+		// imp1.setOverlay(over1);
+		imp1.setRoi(new OvalRoi(xCenterCircle - 2, yCenterCircle - 2, 4, 4));
+		Roi roi1 = imp1.getRoi();
+		roi1.setFillColor(color1);
+		roi1.setStrokeColor(color1);
+		over1.addElement(imp1.getRoi());
+		imp1.killRoi();
+	}
 	
 	
 }
