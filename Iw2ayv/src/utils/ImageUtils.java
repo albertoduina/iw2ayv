@@ -47,10 +47,10 @@ public class ImageUtils {
 		return impSimulata;
 	}
 
-	public static ImagePlus generaSimulata5Colori( double mean11, ImagePlus imp,
-			boolean step, boolean verbose, boolean test) {
+	public static ImagePlus generaSimulata5Colori(double mean11, ImagePlus imp, boolean step, boolean verbose,
+			boolean test) {
 
-		ImagePlus impSimulata = simulata5Colori( mean11, imp);
+		ImagePlus impSimulata = simulata5Colori(mean11, imp);
 		if (verbose) {
 			UtilAyv.showImageMaximized(impSimulata);
 			ImageUtils.backgroundEnhancement(0, 0, 10, impSimulata);
@@ -505,6 +505,142 @@ public class ImageUtils {
 		return impSimulata;
 	}
 
+	public static ImagePlus generaSimulata12colori(double mean, ImagePlus imp1, boolean step, boolean verbose,
+			boolean test) {
+
+		int timeout = 100;
+		boolean debug = true;
+		if (imp1 == null) {
+			MyLog.waitHere("generaSimulata12colori imp1==null");
+			return (null);
+		}
+
+		ImagePlus impSimulata = simulata12Colori(mean, imp1);
+		if (verbose) {
+			UtilAyv.showImageMaximized(impSimulata);
+			IJ.run("Enhance Contrast", "saturated=0.5");
+			MyLog.waitHere("Immagine Simulata", debug, timeout);
+		}
+		return impSimulata;
+	}
+
+	/**
+	 * Genera l'immagine simulata a 11+1 livelli
+	 * 
+	 * @param imp1
+	 *            immagine da analizzare
+	 * @param sqX
+	 *            coordinata x della Roi centrale
+	 * @param sqY
+	 *            coordinata y della Roi centrale
+	 * @param sqR
+	 *            diametro della Roi centrale
+	 * @return immagine simulata a 11+1 livelli
+	 */
+
+	static ImagePlus simulata12Colori(double mean, ImagePlus imp1) {
+
+		if (imp1 == null) {
+			MyLog.waitHere("Simula12 imp1 == null");
+			return (null);
+		}
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
+		short[] pixels1 = UtilAyv.truePixels(imp1);
+
+		//
+		// limiti classi
+		//
+		double minus90 = mean * MyConst.MINUS_90_PERC;
+		double minus80 = mean * MyConst.MINUS_80_PERC;
+		double minus70 = mean * MyConst.MINUS_70_PERC;
+		double minus60 = mean * MyConst.MINUS_60_PERC;
+		double minus50 = mean * MyConst.MINUS_50_PERC;
+		double minus40 = mean * MyConst.MINUS_40_PERC;
+		double minus30 = mean * MyConst.MINUS_30_PERC;
+		double minus20 = mean * MyConst.MINUS_20_PERC;
+		double minus10 = mean * MyConst.MINUS_10_PERC;
+		double plus10 = mean * MyConst.PLUS_10_PERC;
+		double plus20 = mean * MyConst.PLUS_20_PERC;
+		// genero una immagine nera
+		// ImagePlus impSimulata = NewImage.createShortImage("Simulata", width,
+		// height, 1, NewImage.FILL_BLACK);
+		//
+		// nuova immagine simulata vuota
+		//
+		// ShortProcessor processorSimulata = (ShortProcessor)
+		// impSimulata.getProcessor();
+		// short[] pixelsSimulata = (short[]) processorSimulata.getPixels();
+
+		int colorM90 = ((25 & 0xff) << 16) | ((25 & 0xff) << 8) | (112 & 0xff); // Midnight
+																				// Blue
+		int colorM80 = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (205 & 0xff); // Medium
+																				// Blue
+		int colorM70 = ((138 & 0xff) << 16) | ((43 & 0xff) << 8) | (226 & 0xff); // blue
+																					// violet
+		int colorM60 = ((0 & 0xff) << 16) | ((100 & 0xff) << 8) | (0 & 0xff); // dark
+																				// green
+		int colorM50 = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff); // green
+		int colorM40 = ((50 & 0xff) << 16) | ((205 & 0xff) << 8) | (50 & 0xff); // lime
+																				// green
+		int colorM30 = ((128 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff); // olive
+		int colorM20 = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff); // yellow
+		int colorM10 = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 & 0xff); // orange
+		int colorP10 = ((250 & 0xff) << 16) | ((128 & 0xff) << 8) | (114 & 0xff); // salmon
+		int colorP20 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); // red
+
+		int colorOUT = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); // nero
+
+		ImageProcessor ipSimulata = new ColorProcessor(width, height);
+		int[] pixelsSimulata = (int[]) ipSimulata.getPixels();
+
+		//
+		// riempimento immagine simulata
+		//
+		short pixSorgente;
+		int pixSimulata;
+		int posizioneArrayImmagine = 0;
+
+		for (int y = 0; y < width; y++) {
+			for (int x = 0; x < width; x++) {
+				posizioneArrayImmagine = y * width + x;
+				pixSorgente = pixels1[posizioneArrayImmagine];
+
+				if (pixSorgente > plus20)
+					pixSimulata = colorP20;
+				else if (pixSorgente > plus10)
+					pixSimulata = colorP10;
+				else if (pixSorgente > minus10)
+					pixSimulata = colorM10;
+				else if (pixSorgente > minus20)
+					pixSimulata = colorM20;
+				else if (pixSorgente > minus30)
+					pixSimulata = colorM30;
+				else if (pixSorgente > minus40)
+					pixSimulata = colorM40;
+				else if (pixSorgente > minus50)
+					pixSimulata = colorM50;
+				else if (pixSorgente > minus60)
+					pixSimulata = colorM60;
+				else if (pixSorgente > minus70)
+					pixSimulata = colorM70;
+				else if (pixSorgente > minus80)
+					pixSimulata = colorM80;
+				else if (pixSorgente > minus90)
+					pixSimulata = colorM90;
+				else
+					pixSimulata = colorOUT;
+				pixelsSimulata[posizioneArrayImmagine] = pixSimulata;
+			}
+		}
+
+		ipSimulata.resetMinAndMax();
+		ImagePlus impSimulata = new ImagePlus("ColorSimulata", ipSimulata);
+
+		ipSimulata.resetMinAndMax();
+		return impSimulata;
+	}
+
 	/**
 	 * Estrae la numerosit� dell classi dalla simulata
 	 * 
@@ -568,8 +704,8 @@ public class ImageUtils {
 
 	/***
 	 * Porta l'immagine in primo piano Pare che questa routine funzioni molto
-	 * meglio delle precedenti. Se, anzich� la ImagePlus si conosce la
-	 * ImageWindow, si pu� utilizzare iw1.getImagePlus() per ottenere la image
+	 * meglio delle precedenti. Se, anziche' la ImagePlus si conosce la
+	 * ImageWindow, si puo' utilizzare iw1.getImagePlus() per ottenere la image
 	 * plus "on the fly"
 	 * 
 	 * @param iw1
