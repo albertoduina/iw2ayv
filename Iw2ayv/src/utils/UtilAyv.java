@@ -1854,6 +1854,14 @@ public class UtilAyv {
 		lw.setLocation(100, 200);
 		return;
 	}
+	public static void logResizer(int width, int height, int posx, int posy) {
+		Frame lw = WindowManager.getFrame("Log");
+		if (lw == null)
+			return;
+		lw.setSize(width, height);
+		lw.setLocation(posx, posy);
+		return;
+	}
 
 	public static void myWait() {
 		new WaitForUserDialog("Press a key ....").show();

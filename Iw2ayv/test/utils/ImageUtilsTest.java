@@ -27,13 +27,31 @@ public class ImageUtilsTest {
 
 	@Before
 	public void setUp() throws Exception {
-		// new ImageJ(ImageJ.NORMAL);
+		new ImageJ(ImageJ.NORMAL);
 	}
 
 	@After
 	public void tearDown() throws Exception {
 	}
 
+	@Test
+	public final void testGeneraScala5Colori() {
+
+		int num = 5;
+		ImagePlus impScala = ImageUtils.generaScalaColori(num);
+		impScala.show();
+		MyLog.waitHere();
+	}
+
+	@Test
+	public final void testGeneraScala12Colori() {
+
+		int num = 12;
+		ImagePlus impScala = ImageUtils.generaScalaColori(num);
+		impScala.show();
+		MyLog.waitHere();
+	}
+	
 	@Test
 	public final void testgetCircleLineCrossingPoints() {
 
@@ -44,18 +62,16 @@ public class ImageUtilsTest {
 		double xc = 130;
 		double yc = 118;
 		double rc = 87;
-		double[] crossings = ImageUtils.getCircleLineCrossingPoints(x0, y0, x1,
-				y1, xc, yc, rc);
-		double[] expected = { 69.58988187652089, 55.393150308394375,
-				190.4101181234791, 180.60684969160562 };
+		double[] crossings = ImageUtils.getCircleLineCrossingPoints(x0, y0, x1, y1, xc, yc, rc);
+		double[] expected = { 69.58988187652089, 55.393150308394375, 190.4101181234791, 180.60684969160562 };
 		assertTrue(UtilAyv.compareVectors(crossings, expected, 1e-11, ""));
 	}
 
 	@Test
 	public final void testFitCircle() {
 
-//		int[] xPoints3 = { 58, 170, 213, 195, 86 };
-//		int[] yPoints3 = { 61, 39, 111, 165, 191 };
+		// int[] xPoints3 = { 58, 170, 213, 195, 86 };
+		// int[] yPoints3 = { 61, 39, 111, 165, 191 };
 		int[] xPoints3 = { 58, 170, 240, 195, 86 };
 		int[] yPoints3 = { 61, 39, 160, 145, 191 };
 
@@ -108,8 +124,7 @@ public class ImageUtilsTest {
 
 	@Test
 	public final void testBackgroundEnhancement() {
-		String[] list1 = InputOutput
-				.readStringArrayFromFile("./data/list1.txt");
+		String[] list1 = InputOutput.readStringArrayFromFile("./data/list1.txt");
 		ImagePlus imp1 = new Opener().openImage(list1[0]);
 		imp1.show();
 
@@ -129,8 +144,8 @@ public class ImageUtilsTest {
 		boolean test = false;
 
 		ImagePlus imp1 = UtilAyv.openImageMaximized(path1);
-		int[][] aux1 = ImageUtils.generaSimulata12classi(xCenterRoi,
-				yCenterRoi, latoRoi, imp1, "", step, verbose, test);
+		int[][] aux1 = ImageUtils.generaSimulata12classi(xCenterRoi, yCenterRoi, latoRoi, imp1, "", step, verbose,
+				test);
 
 	}
 
@@ -142,8 +157,7 @@ public class ImageUtilsTest {
 		int sqX = 100;
 		int sqY = 100;
 		int sqR = 50;
-		ImagePlus impSimulata = ImageUtils
-				.simulata12Classi(sqX, sqY, sqR, imp1);
+		ImagePlus impSimulata = ImageUtils.simulata12Classi(sqX, sqY, sqR, imp1);
 		UtilAyv.showImageMaximized(impSimulata);
 	}
 
@@ -172,8 +186,7 @@ public class ImageUtilsTest {
 		out = ImageUtils.crossingFrame(x0, y0, x1, y1, width, height);
 		// MyLog.logVector(out, "out");
 
-		double[] vetResults2 = { 2.0627437110885412E-6, 220.0, 220.0,
-				92.49454491113413 };
+		double[] vetResults2 = { 2.0627437110885412E-6, 220.0, 220.0, 92.49454491113413 };
 		ok = UtilAyv.verifyResults1(vetResults2, out, dummy);
 		assertTrue(ok);
 	}
@@ -190,8 +203,7 @@ public class ImageUtilsTest {
 		double x1src = 200.;
 		double y1src = 290.;
 
-		double[] out = ImageUtils.liangBarsky(edgeLeft, edgeRight, edgeBottom,
-				edgeTop, x0src, y0src, x1src, y1src);
+		double[] out = ImageUtils.liangBarsky(edgeLeft, edgeRight, edgeBottom, edgeTop, x0src, y0src, x1src, y1src);
 
 		// MyLog.logVector(out, "out");
 		// MyLog.waitHere();
@@ -209,17 +221,13 @@ public class ImageUtilsTest {
 		// .readDoubleMatrixFromFile((new InputOutput()
 		// .findResource("profile3d.txt")));
 
-		double[][] profile2 = InputOutput
-				.readDoubleMatrixFromFile((new InputOutput()
-						.findResource("profile4d.txt")));
+		double[][] profile2 = InputOutput.readDoubleMatrixFromFile((new InputOutput().findResource("profile4d.txt")));
 
-		MyLog.waitHere("profile2.length= " + profile2.length
-				+ " profile2[0].length= " + profile2[0].length);
+		MyLog.waitHere("profile2.length= " + profile2.length + " profile2[0].length= " + profile2[0].length);
 
 		double[][] profile1 = TableUtils.rotateTable(profile2);
 
-		MyLog.waitHere("profile1.length= " + profile1.length
-				+ " profile1[0].length= " + profile1[0].length);
+		MyLog.waitHere("profile1.length= " + profile1.length + " profile1[0].length= " + profile1[0].length);
 
 		double[] vetx = new double[profile1[0].length];
 		double[] vety = new double[profile1[0].length];
@@ -239,8 +247,7 @@ public class ImageUtilsTest {
 		MyLog.waitHere("Prima di peakDet2");
 
 		double delta = 100.0;
-		ArrayList<ArrayList<Double>> matOut = ImageUtils.peakDet2(profile1,
-				delta);
+		ArrayList<ArrayList<Double>> matOut = ImageUtils.peakDet2(profile1, delta);
 		double[][] out = new InputOutput().fromArrayListToDoubleTable(matOut);
 
 		// ImageUtils.plotPoints(imp12, over12, peaks5);
@@ -248,8 +255,8 @@ public class ImageUtilsTest {
 		MyLog.logMatrix(out, "out");
 		MyLog.waitHere();
 
-		double[][] expected = { { 197.18881225585938, 73.15223693847656 },
-				{ 62.81118392944336, 184.84776306152344 }, { 555.0, 2069.0 } };
+		double[][] expected = { { 197.18881225585938, 73.15223693847656 }, { 62.81118392944336, 184.84776306152344 },
+				{ 555.0, 2069.0 } };
 
 		assertTrue(UtilAyv.compareMatrix(out, expected, ""));
 
@@ -261,9 +268,7 @@ public class ImageUtilsTest {
 		// 16 dec 2011 sistemato, ora funziona in automatico senza bisogno di
 		// visualizzare il profilo
 
-		double[][] profile1 = InputOutput
-				.readDoubleMatrixFromFile((new InputOutput()
-						.findResource("BADProfile.txt")));
+		double[][] profile1 = InputOutput.readDoubleMatrixFromFile((new InputOutput().findResource("BADProfile.txt")));
 		double[] vetx = new double[profile1.length];
 		double[] vety = new double[profile1.length];
 		for (int j = 0; j < profile1.length; j++)
@@ -276,13 +281,11 @@ public class ImageUtilsTest {
 		// new WaitForUserDialog("Do something, then click OK.").show();
 		// IJ.wait(200);
 		double delta = 100.0;
-		ArrayList<ArrayList<Double>> matOut = ImageUtils.peakDet(profile1,
-				delta);
+		ArrayList<ArrayList<Double>> matOut = ImageUtils.peakDet(profile1, delta);
 
 		double[][] out = new InputOutput().fromArrayListToDoubleTable(matOut);
 
-		double[][] expected = { { 9.9609375, 128.3203125 },
-				{ 445.2493818993196, 199.34767076939997 } };
+		double[][] expected = { { 9.9609375, 128.3203125 }, { 445.2493818993196, 199.34767076939997 } };
 
 		// MyLog.logMatrix(out, "out");
 		// MyLog.logMatrix(expected, "expected");
@@ -302,17 +305,13 @@ public class ImageUtilsTest {
 		// .readDoubleMatrixFromFile((new InputOutput()
 		// .findResource("profile3d.txt")));
 
-		double[][] profile2 = InputOutput
-				.readDoubleMatrixFromFile((new InputOutput()
-						.findResource("LogP10error.txt")));
+		double[][] profile2 = InputOutput.readDoubleMatrixFromFile((new InputOutput().findResource("LogP10error.txt")));
 
-		MyLog.waitHere("profile2.length= " + profile2.length
-				+ " profile2[0].length= " + profile2[0].length);
+		MyLog.waitHere("profile2.length= " + profile2.length + " profile2[0].length= " + profile2[0].length);
 
 		double[][] profile1 = TableUtils.rotateTable(profile2);
 
-		MyLog.waitHere("profile1.length= " + profile1.length
-				+ " profile1[0].length= " + profile1[0].length);
+		MyLog.waitHere("profile1.length= " + profile1.length + " profile1[0].length= " + profile1[0].length);
 
 		double[] vetx = new double[profile1[0].length];
 		double[] vety = new double[profile1[0].length];
@@ -332,8 +331,7 @@ public class ImageUtilsTest {
 		MyLog.waitHere("Prima di peakDet2");
 
 		double delta = 1000.0;
-		ArrayList<ArrayList<Double>> matOut = ImageUtils.peakDet2(profile1,
-				delta);
+		ArrayList<ArrayList<Double>> matOut = ImageUtils.peakDet2(profile1, delta);
 		double[][] out = new InputOutput().fromArrayListToDoubleTable(matOut);
 
 		// ImageUtils.plotPoints(imp12, over12, peaks5);
@@ -341,8 +339,8 @@ public class ImageUtilsTest {
 		MyLog.logMatrix(out, "out");
 		MyLog.waitHere();
 
-		double[][] expected = { { 197.18881225585938, 73.15223693847656 },
-				{ 62.81118392944336, 184.84776306152344 }, { 555.0, 2069.0 } };
+		double[][] expected = { { 197.18881225585938, 73.15223693847656 }, { 62.81118392944336, 184.84776306152344 },
+				{ 555.0, 2069.0 } };
 
 		assertTrue(UtilAyv.compareMatrix(out, expected, ""));
 
@@ -358,17 +356,13 @@ public class ImageUtilsTest {
 		// .readDoubleMatrixFromFile((new InputOutput()
 		// .findResource("profile3d.txt")));
 
-		double[][] profile2 = InputOutput
-				.readDoubleMatrixFromFile((new InputOutput()
-						.findResource("profile6d.txt")));
+		double[][] profile2 = InputOutput.readDoubleMatrixFromFile((new InputOutput().findResource("profile6d.txt")));
 
-		MyLog.waitHere("profile2.length= " + profile2.length
-				+ " profile2[0].length= " + profile2[0].length);
+		MyLog.waitHere("profile2.length= " + profile2.length + " profile2[0].length= " + profile2[0].length);
 
 		double[][] profile1 = TableUtils.rotateTable(profile2);
 
-		MyLog.waitHere("profile1.length= " + profile1.length
-				+ " profile1[0].length= " + profile1[0].length);
+		MyLog.waitHere("profile1.length= " + profile1.length + " profile1[0].length= " + profile1[0].length);
 
 		double[] vetx = new double[profile1[0].length];
 		double[] vety = new double[profile1[0].length];

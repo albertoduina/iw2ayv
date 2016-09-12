@@ -289,7 +289,8 @@ public class MyFilter {
 	}
 
 	/**
-	 * Ricerca posizione del massimo con una roi 11x11
+	 * Ricerca posizione del massimo con una roi 11x11, restituisce le
+	 * coordinate del centro
 	 * 
 	 * @param imp1
 	 * @return
@@ -322,11 +323,14 @@ public class MyFilter {
 				mean121 = sum121 / 121.0;
 				if (mean121 > max121) {
 					max121 = mean121;
-					xmax121 = i1;
-					ymax121 = i2;
+					xmax121 = i2;
+					ymax121 = i1;
 				}
 			}
 		}
+
+		if (max121 < 50.0) // filtro per evitare di restitruire il fondo
+			return null;
 
 		double[] out = new double[3];
 		out[0] = xmax121;
