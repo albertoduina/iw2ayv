@@ -193,6 +193,7 @@ public class ImageUtilsTest {
 
 	@Test
 	public final void testLiangBarsky() {
+		
 
 		double edgeLeft = 0.;
 		double edgeRight = 255.;
