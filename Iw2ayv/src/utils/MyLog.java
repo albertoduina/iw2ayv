@@ -6,6 +6,7 @@ import ij.WindowManager;
 import ij.gui.ImageWindow;
 import ij.gui.MessageDialog;
 import ij.gui.WaitForUserDialog;
+import ij.measure.ResultsTable;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 
@@ -34,6 +35,33 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class MyLog {
+
+	public static void resultsLog(int[] in1, String title) {
+		if (in1 == null) {
+			MyLog.waitThere("Warning input vector "+title+" null");
+		} else {
+			ResultsTable rt1 = new ResultsTable();
+			for (int i1 = 0; i1 < in1.length; i1++) {
+				rt1.incrementCounter();
+				rt1.addValue(title, in1[i1]);
+			}
+			rt1.show(title);
+			return;
+		}
+	}
+	public static void resultsLog(double[] in1, String title) {
+		if (in1 == null) {
+			MyLog.waitThere("Warning input vector "+title+" null");
+		} else {
+			ResultsTable rt1 = new ResultsTable();
+			for (int i1 = 0; i1 < in1.length; i1++) {
+				rt1.incrementCounter();
+				rt1.addValue(title, in1[i1]);
+			}
+			rt1.show(title);
+			return;
+		}
+	}
 
 	public static void logArrayListInteger(List<int[]> tmp, String title) {
 		if (tmp == null) {

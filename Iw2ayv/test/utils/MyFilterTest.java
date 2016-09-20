@@ -5,6 +5,7 @@ import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
 import ij.gui.Line;
+import ij.gui.Overlay;
 import ij.gui.PolygonRoi;
 import ij.gui.Roi;
 import ij.io.Opener;
@@ -97,6 +98,47 @@ public class MyFilterTest {
 		assertTrue(UtilAyv
 				.compareVectors(position1, expected, 1e-12, ""));
 	}
+	
+	
+	@Test
+	public final void testMaxPosition11x11NEW() {
+
+		String path1 = "./data/C001_testP10";
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, true);
+		double[] position1 = MyFilter.maxPosition11x11_NEW(imp1);
+		imp1.setRoi((int) Math.round(position1[0] - 4),
+				(int) Math.round(position1[1] - 4), 7, 7);
+		double[] expected = { 196.0, 78.0, 743.3719008264463 };
+		assertTrue(UtilAyv
+				.compareVectors(position1, expected, 1e-12, ""));
+	}
+
+	@Test
+	public final void testMaxPositionGeneric() {
+
+		String path1 = "./data/C001_testP10";
+		ImagePlus imp1 = UtilAyv.openImageMaximized(path1);
+		double[] position1 = MyFilter.maxPositionGeneric(imp1, 5);
+		
+		Overlay over1= new Overlay();
+		imp1.setOverlay(over1);
+		ImageUtils.plotPoints(imp1, over1, (int) position1[0],(int) position1[1]);
+		MyLog.waitHere();
+	}
+
+	
+	@Test
+	public final void testMaxPosition11x11MARK() {
+
+		String path1 = "./data/C001_testP10";
+		ImagePlus imp1 = UtilAyv.openImageMaximized(path1);
+		double[] position1 = MyFilter.maxPosition11x11(imp1);
+		Overlay over1= new Overlay();
+		imp1.setOverlay(over1);
+		ImageUtils.plotPoints(imp1, over1, (int) position1[0],(int) position1[1]);
+		MyLog.waitHere();
+	}
+
 	
 	@Test
 	public final void testMaxPosition11x11_PROBLEM() {
