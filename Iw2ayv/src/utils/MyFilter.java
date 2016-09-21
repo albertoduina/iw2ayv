@@ -492,7 +492,7 @@ public class MyFilter {
 	 * @param imp1
 	 * @return
 	 */
-	public static double[] maxPositionGeneric(ImagePlus imp1, int lato, boolean debug) {
+	public static double[] maxPositionGeneric(ImagePlus imp1, int lato) {
 		if ((lato & 1) == 0) {
 			MyLog.waitHere("il latro del kernel deve essere dispari!!");
 			return null;
@@ -523,8 +523,6 @@ public class MyFilter {
 					for (int i3 = -pip; i3 < pip + 1; i3++) {
 						address = offset + i3;
 						sum1 = sum1 + (pixels1[address]);
-						if (debug)
-							pixels1[address] = 0;
 						count++;
 					}
 				}

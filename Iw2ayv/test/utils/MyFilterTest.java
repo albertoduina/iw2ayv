@@ -108,8 +108,8 @@ public class MyFilterTest {
 
 		String path1 = "./data/C001_testP10";
 		ImagePlus imp1 = UtilAyv.openImageMaximized(path1);
-		boolean debug = false;
-		double[] position1 = MyFilter.maxPositionGeneric(imp1, 5, debug);
+
+		double[] position1 = MyFilter.maxPositionGeneric(imp1, 5);
 
 		Overlay over1 = new Overlay();
 		imp1.setOverlay(over1);
