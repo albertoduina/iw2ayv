@@ -620,6 +620,33 @@ public class UtilAyv {
 		return Math.sqrt(sum / (n - 1));
 	}
 
+	public static double vetMax(double[] data) {
+		final int n = data.length;
+		if (n < 1) {
+			return Double.NaN;
+		}
+		double max = Double.MIN_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] > max) {
+				max=data[i1];
+			}
+		}
+		return max;
+	}
+	public static short vetMax(short[] data) {
+		final int n = data.length;
+		if (n < 1) {
+			return Short.MIN_VALUE;
+		}
+		short max = Short.MIN_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] > max) {
+				max=data[i1];
+			}
+		}
+		return max;
+	}
+
 	public static double vetMean(double[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -647,7 +674,7 @@ public class UtilAyv {
 		double mean = sum / data.length;
 		return mean;
 	}
-	
+
 	public static double vetMean(short[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -1854,6 +1881,7 @@ public class UtilAyv {
 		lw.setLocation(100, 200);
 		return;
 	}
+
 	public static void logResizer(int width, int height, int posx, int posy) {
 		Frame lw = WindowManager.getFrame("Log");
 		if (lw == null)
