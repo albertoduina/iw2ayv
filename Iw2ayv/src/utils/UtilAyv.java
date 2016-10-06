@@ -620,6 +620,20 @@ public class UtilAyv {
 		return Math.sqrt(sum / (n - 1));
 	}
 
+	public static int vetMax(int[] data) {
+		final int n = data.length;
+		if (n < 1) {
+			return Integer.MIN_VALUE;
+		}
+		int max = Integer.MIN_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] > max) {
+				max = data[i1];
+			}
+		}
+		return max;
+	}
+
 	public static double vetMax(double[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -628,11 +642,12 @@ public class UtilAyv {
 		double max = Double.MIN_VALUE;
 		for (int i1 = 0; i1 < data.length; i1++) {
 			if (data[i1] > max) {
-				max=data[i1];
+				max = data[i1];
 			}
 		}
 		return max;
 	}
+
 	public static short vetMax(short[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -641,7 +656,7 @@ public class UtilAyv {
 		short max = Short.MIN_VALUE;
 		for (int i1 = 0; i1 < data.length; i1++) {
 			if (data[i1] > max) {
-				max=data[i1];
+				max = data[i1];
 			}
 		}
 		return max;
