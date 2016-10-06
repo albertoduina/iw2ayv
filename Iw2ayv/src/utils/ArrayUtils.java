@@ -46,6 +46,18 @@ public class ArrayUtils {
 		return outIntArr;
 	}
 
+	
+	public static float[] arrayListToArrayFloat(List<Float> inArrayList) {
+
+		float[] outIntArr = new float[inArrayList.size()];
+		int i1 = 0;
+		for (Float n : inArrayList) {
+			outIntArr[i1++] = n;
+		}
+		return outIntArr;
+	}
+
+	
 	public static double[] arrayListToArrayDouble(List<Double> inArrayList) {
 
 		double[] outIntArr = new double[inArrayList.size()];
@@ -56,6 +68,9 @@ public class ArrayUtils {
 		return outIntArr;
 	}
 
+	
+	
+	
 	public static double[] rotateArrayLeft(double[] inArray) {
 		double[] outArray = new double[inArray.length];
 		for (int i1 = 0; i1 < inArray.length-1; i1++) {

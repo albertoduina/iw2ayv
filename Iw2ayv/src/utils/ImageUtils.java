@@ -47,19 +47,21 @@ public class ImageUtils {
 		return impSimulata;
 	}
 
-	public static ImagePlus generaSimulata5Colori(double mean11, ImagePlus imp, boolean step, boolean verbose,
-			boolean test) {
+	// public static ImagePlus generaSimulata5Colori(double mean11, ImagePlus
+	// imp, int[] minimi, int[] massimi,
+	// boolean step, boolean verbose, boolean test) {
+	//
+	// ImagePlus impSimulata = simulata5Colori(mean11, imp, minimi, massimi);
+	// // if (verbose) {
+	// // UtilAyv.showImageMaximized(impSimulata);
+	// // ImageUtils.backgroundEnhancement(0, 0, 10, impSimulata);
+	// // }
+	// impSimulata.updateAndDraw();
+	// return impSimulata;
+	// }
 
-		ImagePlus impSimulata = simulata5Colori(mean11, imp);
-		// if (verbose) {
-		// UtilAyv.showImageMaximized(impSimulata);
-		// ImageUtils.backgroundEnhancement(0, 0, 10, impSimulata);
-		// }
-		impSimulata.updateAndDraw();
-		return impSimulata;
-	}
-
-	public static ImagePlus simulata5Colori(double mean11, ImagePlus imp1) {
+	public static ImagePlus generaSimulata5Colori(double mean11, ImagePlus imp1, int[] minimi, int[] massimi,
+			int[] myColor) {
 
 		if (imp1 == null) {
 			IJ.error("Simula5Colori ricevuto null");
@@ -70,50 +72,57 @@ public class ImageUtils {
 		short[] pixels1 = UtilAyv.truePixels(imp1);
 
 		double mean = mean11;
-		double minus20 = mean * MyConst.MINUS_20_PERC;
-		double minus10 = mean * MyConst.MINUS_10_PERC;
-		double plus10 = mean * MyConst.PLUS_10_PERC;
-		double plus20 = mean * MyConst.PLUS_20_PERC;
+		int livello = 5;
+		int appoggioColore = 0;
+
+		double[] myMinimi = new double[livello];
+		double[] myMassimi = new double[livello];
+		for (int i1 = 0; i1 < livello; i1++) {
+			myMinimi[i1] = ((100.0 + (double) minimi[i1]) / 100) * mean;
+			myMassimi[i1] = ((100.0 + (double) massimi[i1]) / 100) * mean;
+		}
+
 		// genero una immagine nera
 
 		ImageProcessor ipSimulata = new ColorProcessor(width, height);
 		int[] pixelsSimulata = (int[]) ipSimulata.getPixels();
 
 		short pixSorgente = 0;
-		int pixSimulata = 0;
 		int posizioneArrayImmagine = 0;
-
-		int colorP20 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff);
-		int colorP10 = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 & 0xff);
-		int colorMED = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff);
-		int colorM10 = ((124 & 0xff) << 16) | ((252 & 0xff) << 8) | (50 & 0xff);
-		int colorM20 = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff);
+		// int[] myColor = new int[livello];
+		//
+		// myColor[0] = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff);
+		// myColor[1] = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 & 0xff);
+		// myColor[2] = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff);
+		// myColor[3] = ((124 & 0xff) << 16) | ((252 & 0xff) << 8) | (50 &
+		// 0xff);
+		// myColor[4] = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff);
 
 		int colorOUT = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); // nero
 
 		for (int y = 0; y < width; y++) {
 			for (int x = 0; x < width; x++) {
+				boolean cerca = true;
 				posizioneArrayImmagine = y * width + x;
 				pixSorgente = pixels1[posizioneArrayImmagine];
-				if (pixSorgente > plus20)
-					pixSimulata = colorP20;
-				else if (pixSorgente > plus10)
-					pixSimulata = colorP10;
-				else if (pixSorgente > minus10)
-					pixSimulata = colorMED;
-				else if (pixSorgente > minus20)
-					pixSimulata = colorM10;
-				else if (pixSorgente > 100)
-					pixSimulata = colorM20;
-				else
-					pixSimulata = colorOUT;
-				pixelsSimulata[posizioneArrayImmagine] = pixSimulata;
+
+				for (int i1 = 0; i1 < livello; i1++) {
+					if (cerca && (pixSorgente > myMinimi[i1]) && (pixSorgente <= myMassimi[i1])) {
+						appoggioColore = myColor[i1];
+						cerca = false;
+					}
+				}
+				if (cerca) {
+					appoggioColore = colorOUT;
+					cerca = false;
+				}
+				pixelsSimulata[posizioneArrayImmagine] = appoggioColore;
 			}
 		}
 
 		ipSimulata.resetMinAndMax();
 		ImagePlus impSimulata = new ImagePlus("ColorSimulata", ipSimulata);
-
+		impSimulata.updateAndDraw();
 		return impSimulata;
 	}
 

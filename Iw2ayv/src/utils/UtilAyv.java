@@ -588,6 +588,22 @@ public class UtilAyv {
 		return Math.sqrt(sum / (n - 1));
 	}
 
+	public static double vetSdKnuth(float[] data) {
+		final int n = data.length;
+		if (n < 2) {
+			return Float.NaN;
+		}
+		double avg = (double) data[0];
+		double sum = 0;
+		// yes, i1 below starts from 1
+		for (int i1 = 1; i1 < data.length; i1++) {
+			double newavg = avg + (data[i1] - avg) / (i1 + 1);
+			sum += (data[i1] - avg) * (data[i1] - newavg);
+			avg = newavg;
+		}
+		return Math.sqrt(sum / (n - 1));
+	}
+
 	public static double vetSdKnuth(int[] data) {
 		final int n = data.length;
 		if (n < 2) {
