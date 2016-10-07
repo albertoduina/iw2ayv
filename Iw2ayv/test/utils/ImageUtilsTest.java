@@ -34,24 +34,24 @@ public class ImageUtilsTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
-	public final void testGeneraScala5Colori() {
+	// @Test
+	// public final void testGeneraScala5Colori() {
+	//
+	// int num = 5;
+	// ImagePlus impScala = ImageUtils.generaScalaColori(num);
+	// impScala.show();
+	// MyLog.waitHere();
+	// }
+	//
+	// @Test
+	// public final void testGeneraScala12Colori() {
+	//
+	// int num = 12;
+	// ImagePlus impScala = ImageUtils.generaScalaColori(num);
+	// impScala.show();
+	// MyLog.waitHere();
+	// }
 
-		int num = 5;
-		ImagePlus impScala = ImageUtils.generaScalaColori(num);
-		impScala.show();
-		MyLog.waitHere();
-	}
-
-	@Test
-	public final void testGeneraScala12Colori() {
-
-		int num = 12;
-		ImagePlus impScala = ImageUtils.generaScalaColori(num);
-		impScala.show();
-		MyLog.waitHere();
-	}
-	
 	@Test
 	public final void testgetCircleLineCrossingPoints() {
 
@@ -193,7 +193,6 @@ public class ImageUtilsTest {
 
 	@Test
 	public final void testLiangBarsky() {
-		
 
 		double edgeLeft = 0.;
 		double edgeRight = 255.;

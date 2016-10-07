@@ -664,7 +664,7 @@ public class ImageUtils {
 	 * @return immagine simulata a 11+1 livelli
 	 */
 
-	static public ImagePlus generaScalaColori(int num) {
+	static public ImagePlus generaScalaColori(int[] myColor) {
 
 		// genero una immagine nera
 		int matrix = 256;
@@ -676,56 +676,74 @@ public class ImageUtils {
 		int gap = 0;
 		int offset = 0;
 
-		if (num == 12) {
-			imp1 = new ImagePlus("Scala -90% - +20%", ip1);
-
-			int m90 = ((25 & 0xff) << 16) | ((25 & 0xff) << 8) | (112 & 0xff); // Midnight
-			// Blue
-			int m80 = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (205 & 0xff); // Medium
-			// Blue
-			int m70 = ((138 & 0xff) << 16) | ((43 & 0xff) << 8) | (226 & 0xff); // blue
-			// violet
-			int m60 = ((0 & 0xff) << 16) | ((100 & 0xff) << 8) | (0 & 0xff); // dark
-			// green
-			int m50 = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff); // green
-			int m40 = ((50 & 0xff) << 16) | ((205 & 0xff) << 8) | (50 & 0xff); // lime
-			// green
-			int m30 = ((128 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff); // olive
-			int m20 = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff); // yellow
-			int m10 = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 & 0xff); // orange
-			int p10 = ((250 & 0xff) << 16) | ((128 & 0xff) << 8) | (114 & 0xff); // salmon
-			int p20 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); // red
-			int[] color1 = { m90, m80, m70, m60, m50, m40, m30, m20, m10, p10, p20 };
+		// if (num == 12) {
+		// imp1 = new ImagePlus("Scala -90% - +20%", ip1);
+		//
+		// int m90 = ((25 & 0xff) << 16) | ((25 & 0xff) << 8) | (112 & 0xff); //
+		// Midnight
+		// // Blue
+		// int m80 = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (205 & 0xff); //
+		// Medium
+		// // Blue
+		// int m70 = ((138 & 0xff) << 16) | ((43 & 0xff) << 8) | (226 & 0xff);
+		// // blue
+		// // violet
+		// int m60 = ((0 & 0xff) << 16) | ((100 & 0xff) << 8) | (0 & 0xff); //
+		// dark
+		// // green
+		// int m50 = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff); //
+		// green
+		// int m40 = ((50 & 0xff) << 16) | ((205 & 0xff) << 8) | (50 & 0xff); //
+		// lime
+		// // green
+		// int m30 = ((128 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff); //
+		// olive
+		// int m20 = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff); //
+		// yellow
+		// int m10 = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 & 0xff); //
+		// orange
+		// int p10 = ((250 & 0xff) << 16) | ((128 & 0xff) << 8) | (114 & 0xff);
+		// // salmon
+		// int p20 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); //
+		// red
+		// int[] color1 = { m90, m80, m70, m60, m50, m40, m30, m20, m10, p10,
+		// p20 };
+		if (myColor.length > 5) {
+			imp1 = new ImagePlus("Scala colori", ip1);
+			imp1.show();
 			lato = 200;
-			for (int i1 = 10; i1 >= 0; i1--) {
+			for (int i1 = myColor.length - 1; i1 >= 0; i1--) {
 				lato = (i1 + 1) * 20;
 				gap = (matrix - lato) / 2;
 				for (int y1 = 0; y1 < lato; y1++) {
 					offset = (y1 + gap) * matrix;
 					for (int x1 = 0; x1 < lato; x1++) {
-						pixels1[offset + gap + x1] = color1[i1];
+						pixels1[offset + gap + x1] = myColor[i1];
 					}
 				}
 				imp1.updateAndDraw();
 			}
 		} else {
-			imp1 = new ImagePlus("Scala -20% - +20%", ip1);
+			imp1 = new ImagePlus("Scala colori", ip1);
 			imp1.show();
-			int p20 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff);
-			int p10 = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 & 0xff);
-			int p0 = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff);
-			int m10 = ((124 & 0xff) << 16) | ((252 & 0xff) << 8) | (50 & 0xff);
-			int m20 = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff);
-			int OUT = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); // nero
-			int[] color2 = { m20, m10, p0, p10, p20 };
+			// int p20 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff);
+			// int p10 = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 &
+			// 0xff);
+			// int p0 = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff);
+			// int m10 = ((124 & 0xff) << 16) | ((252 & 0xff) << 8) | (50 &
+			// 0xff);
+			// int m20 = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff);
+			// int OUT = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); //
+			// nero
+			// int[] color2 = { m20, m10, p0, p10, p20 };
 			lato = 200;
-			for (int i1 = 4; i1 >= 0; i1--) {
+			for (int i1 = myColor.length - 1; i1 >= 0; i1--) {
 				lato = (i1 + 1) * 45;
 				gap = (matrix - lato) / 2;
 				for (int y1 = 0; y1 < lato; y1++) {
 					offset = (y1 + gap) * matrix;
 					for (int x1 = 0; x1 < lato; x1++) {
-						pixels1[offset + gap + x1] = color2[i1];
+						pixels1[offset + gap + x1] = myColor[i1];
 					}
 				}
 				imp1.updateAndDraw();
@@ -735,122 +753,6 @@ public class ImageUtils {
 		imp1.updateImage();
 		return imp1;
 	}
-
-	// static public ImagePlus generaScalaColoriOLD(int num) {
-	//
-	// // genero una immagine nera
-	// ImageProcessor ip1 = new ColorProcessor(256, 256);
-	// int[] pixels1 = (int[]) ip1.getPixels();
-	// ip1.resetMinAndMax();
-	// ImagePlus imp1 = null;
-	//
-	// if (num == 12) {
-	// imp1 = new ImagePlus("Scala -90% - +20%", ip1);
-	// // Color m90 = new Color(25, 25, 112);
-	// // Color m80 = new Color(0, 0, 205);
-	// // Color m70 = new Color(138, 43, 226);
-	// // Color m60 = new Color(0, 100, 0);
-	// // Color m50 = new Color(0, 128, 0);
-	// // Color m40 = new Color(50, 205, 50);
-	// // Color m30 = new Color(128, 128, 0);
-	// // Color m20 = new Color(255, 255, 0);
-	// // Color m10 = new Color(0, 128, 0);
-	// // Color p10 = new Color(50, 205, 50);
-	// // Color p20 = new Color(255, 0, 0);
-	// // Color out = new Color(0, 0, 0);
-	//
-	// int m90 = ((25 & 0xff) << 16) | ((25 & 0xff) << 8) | (112 & 0xff); //
-	// Midnight
-	// // Blue
-	// int m80 = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (205 & 0xff); //
-	// Medium
-	// // Blue
-	// int m70 = ((138 & 0xff) << 16) | ((43 & 0xff) << 8) | (226 & 0xff); //
-	// blue
-	// // violet
-	// int m60 = ((0 & 0xff) << 16) | ((100 & 0xff) << 8) | (0 & 0xff); // dark
-	// // green
-	// int m50 = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff); // green
-	// int m40 = ((50 & 0xff) << 16) | ((205 & 0xff) << 8) | (50 & 0xff); //
-	// lime
-	// // green
-	// int m30 = ((128 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff); //
-	// olive
-	// int m20 = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff); //
-	// yellow
-	// int m10 = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 & 0xff); //
-	// orange
-	// int p10 = ((250 & 0xff) << 16) | ((128 & 0xff) << 8) | (114 & 0xff); //
-	// salmon
-	// int p20 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); // red
-	//
-	// int OUT = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); // nero
-	//
-	// int diam = 200;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, m90);
-	// diam = 190;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, m80);
-	// diam = 180;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, m70);
-	// diam = 170;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, m60);
-	// diam = 160;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, m50);
-	// diam = 150;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, m40);
-	// diam = 140;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, m30);
-	// diam = 130;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, m20);
-	// diam = 120;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, m10);
-	// diam = 110;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, p10);
-	// diam = 100;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, p20);
-	// } else {
-	// imp1 = new ImagePlus("Scala -20% - +20%", ip1);
-	//
-	// int p20 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff);
-	// int p10 = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 & 0xff);
-	// int p0 = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff);
-	// int m10 = ((124 & 0xff) << 16) | ((252 & 0xff) << 8) | (50 & 0xff);
-	// int m20 = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff);
-	//
-	// int OUT = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); // nero
-	//
-	// int diam = 200;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, m20);
-	// diam = 180;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, m10);
-	// diam = 160;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, p0);
-	// diam = 140;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, p10);
-	// diam = 120;
-	// imp1.setRoi(new OvalRoi(128 - diam / 2, 128 - diam / 2, diam, diam));
-	// fillRoiPixels(imp1, p20);
-	// }
-	// ip1.resetMinAndMax();
-	// imp1.updateAndDraw();
-	//
-	// return imp1;
-	// }
 
 	/**
 	 * Estrae la numerosit� dell classi dalla simulata
