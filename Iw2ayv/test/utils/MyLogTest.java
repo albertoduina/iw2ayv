@@ -33,6 +33,7 @@ public class MyLogTest {
 		MyLog.logVector(vect1, "vect1");
 	}
 
+	
 	@Test
 	public final void testLogVectorInteger() {
 		int[] vect1 = { 2, 4, 5, 7, 9, 12, 15 };
@@ -53,28 +54,28 @@ public class MyLogTest {
 	
 	@Test
 	public final void testWaitHereMessage() {
-		MyLog.waitHere("questo è il messaggio");
+		MyLog.waitHere("questo ï¿½ il messaggio");
 	}
 	
 	@Test
 	public final void testWaitHereTimeout() {
-		MyLog.waitHere("questo è il messaggio", false, 2000);
+		MyLog.waitHere("questo ï¿½ il messaggio", false, 2000);
 	}
 	@Test
 	public final void testWaitHereNOTimeout() {
-		MyLog.waitHere("questo è il messaggio", false, 0);
+		MyLog.waitHere("questo ï¿½ il messaggio", false, 0);
 	}
 	@Test
 	public final void testWaitHereDebugTimeout() {
-		MyLog.waitHere("questo è il messaggio", true, 2000);
+		MyLog.waitHere("questo ï¿½ il messaggio", true, 2000);
 	}
 	@Test
 	public final void testWaitHereDebugNOTimeout() {
-		MyLog.waitHere("questo è il messaggio", true, 0);
+		MyLog.waitHere("questo ï¿½ il messaggio", true, 0);
 	}
 //	@Test
 //	public final void testWaitHere1Timeout() {
-//		MyLog.waitHere1("questo è il messaggio", false, 0);
+//		MyLog.waitHere1("questo ï¿½ il messaggio", false, 0);
 //	}
 
 	

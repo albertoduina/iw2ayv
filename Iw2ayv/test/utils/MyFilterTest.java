@@ -103,19 +103,19 @@ public class MyFilterTest {
 		assertTrue(UtilAyv.compareVectors(position1, expected, 1e-12, ""));
 	}
 
-	@Test
-	public final void testMaxPositionGeneric() {
-
-		String path1 = "./data/C001_testP10";
-		ImagePlus imp1 = UtilAyv.openImageMaximized(path1);
-
-		double[] position1 = MyFilter.maxPositionGeneric(imp1, 5);
-
-		Overlay over1 = new Overlay();
-		imp1.setOverlay(over1);
-		ImageUtils.plotPoints(imp1, over1, (int) position1[0], (int) position1[1]);
-		MyLog.waitHere();
-	}
+//	@Test
+//	public final void testMaxPositionGeneric() {
+//
+//		String path1 = "./data/C001_testP10";
+//		ImagePlus imp1 = UtilAyv.openImageMaximized(path1);
+//
+//		double[] position1 = MyFilter.maxPositionGeneric(imp1, 5);
+//
+//		Overlay over1 = new Overlay();
+//		imp1.setOverlay(over1);
+//		ImageUtils.plotPoints(imp1, over1, (int) position1[0], (int) position1[1]);
+//		MyLog.waitHere();
+//	}
 
 	@Test
 	public final void testMaxPosition11x11MARK() {

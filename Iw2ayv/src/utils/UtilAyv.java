@@ -572,6 +572,7 @@ public class UtilAyv {
 	 * @return standard deviation estimate of population ( to get estimate of
 	 *         sample, use n instead of n-1 in last line )
 	 */
+	@Deprecated
 	public static double vetSdKnuth(double[] data) {
 		final int n = data.length;
 		if (n < 2) {
@@ -588,6 +589,7 @@ public class UtilAyv {
 		return Math.sqrt(sum / (n - 1));
 	}
 
+	@Deprecated
 	public static double vetSdKnuth(float[] data) {
 		final int n = data.length;
 		if (n < 2) {
@@ -604,6 +606,7 @@ public class UtilAyv {
 		return Math.sqrt(sum / (n - 1));
 	}
 
+	@Deprecated
 	public static double vetSdKnuth(int[] data) {
 		final int n = data.length;
 		if (n < 2) {
@@ -620,6 +623,7 @@ public class UtilAyv {
 		return Math.sqrt(sum / (n - 1));
 	}
 
+	@Deprecated
 	public static double vetSdKnuth(short[] data) {
 		final int n = data.length;
 		if (n < 2) {
@@ -636,6 +640,7 @@ public class UtilAyv {
 		return Math.sqrt(sum / (n - 1));
 	}
 
+	@Deprecated
 	public static int vetMax(int[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -650,6 +655,15 @@ public class UtilAyv {
 		return max;
 	}
 
+
+	/***
+	 * Trova il max di un vettore
+	 * 
+	 * @param data
+	 * @return
+	 * @Deprecated instead use ArrayUtils vetMax(data)
+	 */
+	@Deprecated 
 	public static double vetMax(double[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -664,6 +678,14 @@ public class UtilAyv {
 		return max;
 	}
 
+	/***
+	 * Trova il max di un vettore
+	 * 
+	 * @param data
+	 * @return
+	 * @Deprecated instead use ArrayUtils vetMax(data)
+	 */
+	@Deprecated 
 	public static short vetMax(short[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -678,6 +700,7 @@ public class UtilAyv {
 		return max;
 	}
 
+	@Deprecated
 	public static double vetMean(double[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -692,6 +715,7 @@ public class UtilAyv {
 		return mean;
 	}
 
+	@Deprecated
 	public static double vetMean(int[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -706,6 +730,7 @@ public class UtilAyv {
 		return mean;
 	}
 
+	@Deprecated
 	public static double vetMean(short[] data) {
 		final int n = data.length;
 		if (n < 1) {

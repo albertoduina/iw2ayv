@@ -38,7 +38,7 @@ public class MyLog {
 
 	public static void resultsLog(int[] in1, String title) {
 		if (in1 == null) {
-			MyLog.waitThere("Warning input vector "+title+" null");
+			MyLog.waitThere("Warning input vector " + title + " null");
 		} else {
 			ResultsTable rt1 = new ResultsTable();
 			for (int i1 = 0; i1 < in1.length; i1++) {
@@ -49,9 +49,38 @@ public class MyLog {
 			return;
 		}
 	}
+
+	public static void resultsLog(short[] in1, String title) {
+		if (in1 == null) {
+			MyLog.waitThere("Warning input vector " + title + " null");
+		} else {
+			ResultsTable rt1 = new ResultsTable();
+			for (int i1 = 0; i1 < in1.length; i1++) {
+				rt1.incrementCounter();
+				rt1.addValue(title, in1[i1]);
+			}
+			rt1.show(title);
+			return;
+		}
+	}
+
 	public static void resultsLog(double[] in1, String title) {
 		if (in1 == null) {
-			MyLog.waitThere("Warning input vector "+title+" null");
+			MyLog.waitThere("Warning input vector " + title + " null");
+		} else {
+			ResultsTable rt1 = new ResultsTable();
+			for (int i1 = 0; i1 < in1.length; i1++) {
+				rt1.incrementCounter();
+				rt1.addValue(title, in1[i1]);
+			}
+			rt1.show(title);
+			return;
+		}
+	}
+
+	public static void resultsLog(float[] in1, String title) {
+		if (in1 == null) {
+			MyLog.waitThere("Warning input vector " + title + " null");
 		} else {
 			ResultsTable rt1 = new ResultsTable();
 			for (int i1 = 0; i1 < in1.length; i1++) {

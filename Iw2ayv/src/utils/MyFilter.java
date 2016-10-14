@@ -492,11 +492,12 @@ public class MyFilter {
 	 * @param imp1
 	 * @return
 	 */
-	public static double[] maxPositionGeneric(ImagePlus imp1, int lato) {
+	public static double[] maxPositionGeneric(ImagePlus imp1, int lato, boolean stampa2) {
 		if ((lato & 1) == 0) {
 			MyLog.waitHere("il latro del kernel deve essere dispari!!");
 			return null;
 		}
+
 		int width = imp1.getWidth();
 		int height = imp1.getHeight();
 		long sum1 = 0;
@@ -511,6 +512,8 @@ public class MyFilter {
 			return null;
 		ImageProcessor ip1 = imp1.getProcessor();
 		short[] pixels1 = (short[]) ip1.getPixels();
+		short[] pippo1 = new short[lato * lato];
+
 		// scansione sulle coordinate del centro roi yxy
 		int pip = (lato - 1) / 2;
 		for (int i1 = pip; i1 < height - pip; i1++) {
@@ -523,6 +526,7 @@ public class MyFilter {
 					for (int i3 = -pip; i3 < pip + 1; i3++) {
 						address = offset + i3;
 						sum1 = sum1 + (pixels1[address]);
+						pippo1[count] = pixels1[address];
 						count++;
 					}
 				}
@@ -536,7 +540,8 @@ public class MyFilter {
 				}
 			}
 		}
-
+		MyLog.resultsLog(pippo1, "pippo1");
+		stampa2 = false;
 		if (max1 < 50.0) // filtro per evitare di restitruire il fondo
 			return null;
 
