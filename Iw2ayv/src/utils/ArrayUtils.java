@@ -235,7 +235,7 @@ public class ArrayUtils {
 			}
 			double sum = 0;
 			for (int i1 = 0; i1 < data.length; i1++) {
-				sum += (double) data[i1];
+				sum += data[i1];
 			}
 			double mean = sum / data.length;
 			return mean;
@@ -247,7 +247,7 @@ public class ArrayUtils {
 			}
 			double sum = 0;
 			for (int i1 = 0; i1 < data.length; i1++) {
-				sum += (double) data[i1];
+				sum += data[i1];
 			}
 			double mean = sum / data.length;
 			return mean;

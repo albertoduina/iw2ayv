@@ -1,6 +1,7 @@
 package utils;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Window;
@@ -664,7 +665,7 @@ public class ImageUtils {
 	 * @return immagine simulata a 11+1 livelli
 	 */
 
-	static public ImagePlus generaScalaColori(int[] myColor) {
+	static public ImagePlus generaScalaColori(int[] myColor, String[] myLabels) {
 
 		// genero una immagine nera
 		int matrix = 256;
@@ -675,42 +676,16 @@ public class ImageUtils {
 		int lato = 0;
 		int gap = 0;
 		int offset = 0;
+		int wi1 = ip1.getStringWidth("-10 +10");
+		int[] a1 = new int[myColor.length];
 
-		// if (num == 12) {
-		// imp1 = new ImagePlus("Scala -90% - +20%", ip1);
-		//
-		// int m90 = ((25 & 0xff) << 16) | ((25 & 0xff) << 8) | (112 & 0xff); //
-		// Midnight
-		// // Blue
-		// int m80 = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (205 & 0xff); //
-		// Medium
-		// // Blue
-		// int m70 = ((138 & 0xff) << 16) | ((43 & 0xff) << 8) | (226 & 0xff);
-		// // blue
-		// // violet
-		// int m60 = ((0 & 0xff) << 16) | ((100 & 0xff) << 8) | (0 & 0xff); //
-		// dark
-		// // green
-		// int m50 = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff); //
-		// green
-		// int m40 = ((50 & 0xff) << 16) | ((205 & 0xff) << 8) | (50 & 0xff); //
-		// lime
-		// // green
-		// int m30 = ((128 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff); //
-		// olive
-		// int m20 = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff); //
-		// yellow
-		// int m10 = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 & 0xff); //
-		// orange
-		// int p10 = ((250 & 0xff) << 16) | ((128 & 0xff) << 8) | (114 & 0xff);
-		// // salmon
-		// int p20 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); //
-		// red
-		// int[] color1 = { m90, m80, m70, m60, m50, m40, m30, m20, m10, p10,
-		// p20 };
+		ip1.setColor(new Color(10, 10, 10));
+		ip1.setFont(new Font("Arial", Font.BOLD, 13));
+		ip1.setJustification(ImageProcessor.LEFT_JUSTIFY);
+		ip1.setAntialiasedText(true);
+
 		if (myColor.length > 5) {
 			imp1 = new ImagePlus("Scala colori", ip1);
-			imp1.show();
 			lato = 200;
 			for (int i1 = myColor.length - 1; i1 >= 0; i1--) {
 				lato = (i1 + 1) * 20;
@@ -719,23 +694,13 @@ public class ImageUtils {
 					offset = (y1 + gap) * matrix;
 					for (int x1 = 0; x1 < lato; x1++) {
 						pixels1[offset + gap + x1] = myColor[i1];
+						a1[i1] = y1 + gap;
 					}
 				}
 				imp1.updateAndDraw();
 			}
 		} else {
 			imp1 = new ImagePlus("Scala colori", ip1);
-			imp1.show();
-			// int p20 = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff);
-			// int p10 = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 &
-			// 0xff);
-			// int p0 = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff);
-			// int m10 = ((124 & 0xff) << 16) | ((252 & 0xff) << 8) | (50 &
-			// 0xff);
-			// int m20 = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff);
-			// int OUT = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); //
-			// nero
-			// int[] color2 = { m20, m10, p0, p10, p20 };
 			lato = 200;
 			for (int i1 = myColor.length - 1; i1 >= 0; i1--) {
 				lato = (i1 + 1) * 45;
@@ -744,11 +709,17 @@ public class ImageUtils {
 					offset = (y1 + gap) * matrix;
 					for (int x1 = 0; x1 < lato; x1++) {
 						pixels1[offset + gap + x1] = myColor[i1];
+						a1[i1] = y1 + gap;
 					}
 				}
-				imp1.updateAndDraw();
 			}
 		}
+
+		int wi2 = imp1.getWidth() / 2;
+		for (int i1 = 0; i1 < a1.length; i1++) {
+			ip1.drawString(myLabels[i1], wi2 - wi1 / 2, a1[i1]);
+		}
+		imp1.updateAndRepaintWindow();
 		ip1.resetMinAndMax();
 		imp1.updateImage();
 		return imp1;
