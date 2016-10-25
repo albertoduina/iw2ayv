@@ -679,8 +679,14 @@ public class ImageUtils {
 		int wi1 = ip1.getStringWidth("-10 +10");
 		int[] a1 = new int[myColor.length];
 
-		ip1.setColor(new Color(10, 10, 10));
-		ip1.setFont(new Font("Arial", Font.BOLD, 13));
+		if (myColor.length > 5) {
+			ip1.setColor(new Color(220, 220, 220));
+			ip1.setFont(new Font("Arial", Font.TYPE1_FONT, 8));
+		} else {
+			ip1.setColor(new Color(10, 10, 10));
+			ip1.setFont(new Font("Arial", Font.BOLD, 13));
+		}
+
 		ip1.setJustification(ImageProcessor.LEFT_JUSTIFY);
 		ip1.setAntialiasedText(true);
 
@@ -831,7 +837,7 @@ public class ImageUtils {
 	}
 
 	/***
-	 * Questo � il fitCircle preso da ImageJ (ij.plugins.Selection.java, con
+	 * Questo e' il fitCircle preso da ImageJ (ij.plugins.Selection.java, con
 	 * sostituito imp.setRoi a IJ.makeOval
 	 * 
 	 * if selection is closed shape, create a circle with the same area and

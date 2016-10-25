@@ -92,6 +92,22 @@ public class MyLog {
 		}
 	}
 
+	public static void resultsLog(byte[] in1, String title) {
+		if (in1 == null) {
+			MyLog.waitThere("Warning input vector " + title + " null");
+		} else {
+			ResultsTable rt1 = new ResultsTable();
+			for (int i1 = 0; i1 < in1.length; i1++) {
+				rt1.incrementCounter();
+				rt1.addValue(title, in1[i1]);
+			}
+			rt1.show(title);
+			return;
+		}
+	}
+
+	
+	
 	public static void logArrayListInteger(List<int[]> tmp, String title) {
 		if (tmp == null) {
 			IJ.log("Warning vector " + title + " = null");
@@ -117,6 +133,20 @@ public class MyLog {
 			IJ.log(logRiga);
 		}
 	}
+	
+	public static void logArrayListInteger(ArrayList<Integer> arrList, String title) {
+		if (arrList == null) {
+			IJ.log("Warning vector " + title + " = null");
+		} else {
+			IJ.log("----------- " + title + "  [ " + arrList.size() + " ] -----------");
+			String logRiga = "";
+			for (int j1 = 0; j1 < arrList.size(); j1++) {
+				logRiga += arrList.get(j1) + ",  ";
+			}
+			IJ.log(logRiga);
+		}
+	}
+
 
 	public static void logArrayList(ArrayList<String> arrList) {
 		if (arrList == null) {
