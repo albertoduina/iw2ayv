@@ -351,6 +351,21 @@ public class UtilAyv {
 			IJ.wait(100);
 		}
 	}
+	
+	/**
+	 * chiude tutte le finestre e la ResultsTable, ovvia ad un malfunzionamento
+	 * di CloseAllWindows se viene selezionato RIFAI pi� volte
+	 */
+	public static void cleanUp2() {
+
+
+		while (WindowManager.getWindowCount() > 0) {
+			IJ.wait(100);
+			IJ.run("Close");
+			IJ.wait(100);
+		}
+	}
+
 
 	/**
 	 * estrae da una stringa delle preferenze di ImageJ i dati, separati da ;
