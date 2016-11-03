@@ -351,13 +351,12 @@ public class UtilAyv {
 			IJ.wait(100);
 		}
 	}
-	
+
 	/**
 	 * chiude tutte le finestre e la ResultsTable, ovvia ad un malfunzionamento
 	 * di CloseAllWindows se viene selezionato RIFAI pi� volte
 	 */
 	public static void cleanUp2() {
-
 
 		while (WindowManager.getWindowCount() > 0) {
 			IJ.wait(100);
@@ -365,7 +364,6 @@ public class UtilAyv {
 			IJ.wait(100);
 		}
 	}
-
 
 	/**
 	 * estrae da una stringa delle preferenze di ImageJ i dati, separati da ;
@@ -670,7 +668,6 @@ public class UtilAyv {
 		return max;
 	}
 
-
 	/***
 	 * Trova il max di un vettore
 	 * 
@@ -678,7 +675,7 @@ public class UtilAyv {
 	 * @return
 	 * @Deprecated instead use ArrayUtils vetMax(data)
 	 */
-	@Deprecated 
+	@Deprecated
 	public static double vetMax(double[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -700,7 +697,7 @@ public class UtilAyv {
 	 * @return
 	 * @Deprecated instead use ArrayUtils vetMax(data)
 	 */
-	@Deprecated 
+	@Deprecated
 	public static short vetMax(short[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -797,6 +794,29 @@ public class UtilAyv {
 			MyLog.waitThere("imageSelection==null");
 			return null;
 
+		}
+		String path1 = directory + name;
+		return path1;
+	} // imageSelection
+
+	/**
+	 * selezione di un immagine da parte dell'utilizzatore
+	 * 
+	 * @param message
+	 *            messaggio per l'utilizzatore
+	 * @return path dell'immagine selezionata
+	 */
+	public static String imageSelection(String message, String defaultDirectory) {
+
+		// defaultDirectory=defaultDirectory+"/";
+		// IJ.log("defaultDirectory= "+defaultDirectory);
+		OpenDialog openDial = new OpenDialog(message, defaultDirectory);
+
+		String directory = openDial.getDirectory();
+		String name = openDial.getFileName();
+		if (name == null) {
+			MyLog.waitThere("imageSelection==null");
+			return null;
 		}
 		String path1 = directory + name;
 		return path1;
