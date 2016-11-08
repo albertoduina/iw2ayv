@@ -3,6 +3,7 @@ package utils;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
+import ij.Prefs;
 import ij.WindowManager;
 import ij.gui.ImageWindow;
 import ij.gui.OvalRoi;
@@ -3111,6 +3112,15 @@ public class UtilAyv {
 
 		ButtonMessages.ModelessMsg("Per questa funzione bisogna installare test2.jar (albertoduina@virgilio.it)",
 				"CONTINUA");
+	}
+
+	public static String dirSeparator(String path1) {
+		String path2 = "";
+		if (path1.lastIndexOf(File.separator) > 0)
+			path2 = path1.substring(0, path1.lastIndexOf(File.separator));
+		else
+			return path1;
+		return path2;
 	}
 
 } // UtilAyv

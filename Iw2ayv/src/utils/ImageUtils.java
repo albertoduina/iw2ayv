@@ -48,24 +48,12 @@ public class ImageUtils {
 		return impSimulata;
 	}
 
-	// public static ImagePlus generaSimulata5Colori(double mean11, ImagePlus
-	// imp, int[] minimi, int[] massimi,
-	// boolean step, boolean verbose, boolean test) {
-	//
-	// ImagePlus impSimulata = simulata5Colori(mean11, imp, minimi, massimi);
-	// // if (verbose) {
-	// // UtilAyv.showImageMaximized(impSimulata);
-	// // ImageUtils.backgroundEnhancement(0, 0, 10, impSimulata);
-	// // }
-	// impSimulata.updateAndDraw();
-	// return impSimulata;
-	// }
 
-	public static ImagePlus generaSimulata5Colori(double mean11, ImagePlus imp1, int[] minimi, int[] massimi,
+	public static ImagePlus generaSimulataMultiColori(double mean11, ImagePlus imp1, int[] minimi, int[] massimi,
 			int[] myColor) {
 
 		if (imp1 == null) {
-			IJ.error("Simula5Colori ricevuto null");
+			IJ.error("generaSimulataMultiColori ricevuto null");
 			return (null);
 		}
 		int width = imp1.getWidth();
@@ -73,7 +61,7 @@ public class ImageUtils {
 		short[] pixels1 = UtilAyv.truePixels(imp1);
 
 		double mean = mean11;
-		int livello = 5;
+		int livello = minimi.length;
 		int appoggioColore = 0;
 
 		double[] myMinimi = new double[livello];
@@ -90,15 +78,6 @@ public class ImageUtils {
 
 		short pixSorgente = 0;
 		int posizioneArrayImmagine = 0;
-		// int[] myColor = new int[livello];
-		//
-		// myColor[0] = ((255 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff);
-		// myColor[1] = ((255 & 0xff) << 16) | ((165 & 0xff) << 8) | (0 & 0xff);
-		// myColor[2] = ((255 & 0xff) << 16) | ((255 & 0xff) << 8) | (0 & 0xff);
-		// myColor[3] = ((124 & 0xff) << 16) | ((252 & 0xff) << 8) | (50 &
-		// 0xff);
-		// myColor[4] = ((0 & 0xff) << 16) | ((128 & 0xff) << 8) | (0 & 0xff);
-
 		int colorOUT = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); // nero
 
 		for (int y = 0; y < width; y++) {
@@ -126,6 +105,14 @@ public class ImageUtils {
 		impSimulata.updateAndDraw();
 		return impSimulata;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * 
@@ -1970,6 +1957,38 @@ public class ImageUtils {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Imposta il colore del pixel di un overlay
+	 * 
+	 * @param imp1
+	 *            image plus a cui è riferito l'overlay
+	 * @param x1
+	 *            coordinata x pixel
+	 * @param y1
+	 *            coordinata y pixel
+	 * @param col1
+	 *            colore 1
+	 * @param col2
+	 *            colorie 2
+	 * @param ok
+	 *            boolean scelta colore
+	 */
+	public static void setOverlayPixels(ImagePlus imp1, int x1, int y1, Color col1, Color col2, boolean ok) {
+		Overlay over1 = imp1.getOverlay();
+		if (over1 == null)
+			return;
+		imp1.setRoi(x1, y1, 1, 1);
+		if (ok) {
+			imp1.getRoi().setStrokeColor(col1);
+			imp1.getRoi().setFillColor(col1);
+		} else {
+			imp1.getRoi().setStrokeColor(col1);
+			imp1.getRoi().setFillColor(col2);
+		}
+		over1.addElement(imp1.getRoi());
+		imp1.deleteRoi();
 	}
 
 }

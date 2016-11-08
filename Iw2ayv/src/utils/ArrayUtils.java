@@ -252,6 +252,18 @@ public class ArrayUtils {
 			double mean = sum / data.length;
 			return mean;
 		}
+		public static double vetMean(byte[] data) {
+			final int n = data.length;
+			if (n < 1) {
+				return Double.NaN;
+			}
+			double sum = 0;
+			for (int i1 = 0; i1 < data.length; i1++) {
+				sum += data[i1];
+			}
+			double mean = sum / data.length;
+			return mean;
+		}
 
 		/**
 		 * Calculates the standard deviation of an array of numbers. see Knuth's The
