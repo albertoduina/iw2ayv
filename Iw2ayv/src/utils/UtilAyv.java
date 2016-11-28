@@ -213,23 +213,22 @@ public class UtilAyv {
 		double x1;
 		double y1;
 		double msd[];
-		double alf1;
 
-		alf1 = Math.atan((ay - by) / (ax - bx));
+		double angle1 = Math.atan((ay - by) / (ax - bx));
 		if (debug1) {
 			IJ.log("-------- coord2D --------");
 
-			IJ.log("angolo= " + Math.toDegrees(alf1) + "  sin= " + Math.sin(alf1));
-			IJ.log("angolo= " + Math.toDegrees(alf1) + "  cos= " + Math.cos(alf1));
+			IJ.log("angolo= " + Math.toDegrees(angle1) + "  sin= " + Math.sin(angle1));
+			IJ.log("angolo= " + Math.toDegrees(angle1) + "  cos= " + Math.cos(angle1));
 		}
-		if (Math.sin(alf1) < 0) {
+		if (Math.sin(angle1) < 0) {
 			// piu30
-			x1 = -cx * Math.sin(alf1) - cy * Math.cos(alf1) + ax;
-			y1 = cx * Math.cos(alf1) - cy * Math.sin(alf1) + ay;
+			x1 = -cx * Math.sin(angle1) - cy * Math.cos(angle1) + ax;
+			y1 = cx * Math.cos(angle1) - cy * Math.sin(angle1) + ay;
 		} else {
 			// meno30
-			x1 = cx * Math.sin(alf1) + cy * Math.cos(alf1) + ax;
-			y1 = -cx * Math.cos(alf1) + cy * Math.sin(alf1) + ay;
+			x1 = cx * Math.sin(angle1) + cy * Math.cos(angle1) + ax;
+			y1 = -cx * Math.cos(angle1) + cy * Math.sin(angle1) + ay;
 		}
 		msd = new double[2];
 		msd[0] = x1;
@@ -246,24 +245,26 @@ public class UtilAyv {
 		double x1;
 		double y1;
 		double msd[];
-		double alf1;
 
-		alf1 = Math.atan((vetReference[1] - vetReference[3]) / (vetReference[0] - vetReference[2]));
+		double angle1 = Math.atan((vetReference[1] - vetReference[3]) / (vetReference[0] - vetReference[2]));
+		// double decimalAngle = Math.toDegrees(angle1);
+		// IJ.log("decimalAngle= "+IJ.d2s(decimalAngle,3));
+
 		if (debug1) {
 			IJ.log("-------- coord2D2 --------");
 
-			IJ.log("angolo= " + Math.toDegrees(alf1) + "  sin= " + Math.sin(alf1));
-			IJ.log("angolo= " + Math.toDegrees(alf1) + "  cos= " + Math.cos(alf1));
+			IJ.log("angolo= " + Math.toDegrees(angle1) + "  sin= " + Math.sin(angle1));
+			IJ.log("angolo= " + Math.toDegrees(angle1) + "  cos= " + Math.cos(angle1));
 		}
 
-		if (Math.sin(alf1) < 0) {
+		if (Math.sin(angle1) < 0) {
 			// piu30
-			x1 = -cx * Math.sin(alf1) - cy * Math.cos(alf1) + vetReference[0];
-			y1 = cx * Math.cos(alf1) - cy * Math.sin(alf1) + vetReference[1];
+			x1 = -cx * Math.sin(angle1) - cy * Math.cos(angle1) + vetReference[0];
+			y1 = cx * Math.cos(angle1) - cy * Math.sin(angle1) + vetReference[1];
 		} else {
 			// meno30
-			x1 = cx * Math.sin(alf1) + cy * Math.cos(alf1) + vetReference[0];
-			y1 = -cx * Math.cos(alf1) + cy * Math.sin(alf1) + vetReference[1];
+			x1 = cx * Math.sin(angle1) + cy * Math.cos(angle1) + vetReference[0];
+			y1 = -cx * Math.cos(angle1) + cy * Math.sin(angle1) + vetReference[1];
 		}
 		msd = new double[2];
 		msd[0] = x1;

@@ -149,7 +149,7 @@ public class ReadDicom {
 	 * @return stringa con la parte selezionata
 	 */
 	public static String readSubstring(String s1, int number) {
-		StringTokenizer st = new StringTokenizer(s1, "\\");
+		StringTokenizer st = new StringTokenizer(s1, "\\ ");
 		int nTokens = st.countTokens();
 		String substring = "ERROR";
 		if (number > nTokens)

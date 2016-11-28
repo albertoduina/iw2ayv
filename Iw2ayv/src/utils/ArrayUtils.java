@@ -100,6 +100,24 @@ public class ArrayUtils {
 		}
 		return max;
 	}
+
+	public static int posMax(double[] data) {
+		int pos=-1;
+		final int n = data.length;
+		if (n < 1) {
+			return -1;
+		}
+		double max = Double.MIN_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] > max) {
+				max = data[i1];
+				pos=i1;
+			}
+		}
+		return pos;
+	}
+
+	
 	public static float vetMax(float[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -112,6 +130,22 @@ public class ArrayUtils {
 			}
 		}
 		return max;
+	}
+	
+	public static int posMax(float[] data) {
+		int pos=-1;
+		final int n = data.length;
+		if (n < 1) {
+			return -1;
+		}
+		float max = Float.MIN_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] > max) {
+				max = data[i1];
+				pos=i1;
+			}
+		}
+		return pos;
 	}
 	public static int vetMax(int[] data) {
 		final int n = data.length;
@@ -126,6 +160,23 @@ public class ArrayUtils {
 		}
 		return max;
 	}
+
+	public static int posMax(int[] data) {
+		int pos=-1;
+		final int n = data.length;
+		if (n < 1) {
+			return -1;
+		}
+		int max = Integer.MIN_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] > max) {
+				max = data[i1];
+				pos=i1;
+			}
+		}
+		return pos;
+	}
+	
 	public static short vetMax(short[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -138,6 +189,22 @@ public class ArrayUtils {
 			}
 		}
 		return max;
+	}
+
+	public static int posMax(short[] data) {
+		int pos=-1;
+		final int n = data.length;
+		if (n < 1) {
+			return -1;
+		}
+		short max = Short.MIN_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] > max) {
+				max = data[i1];
+				pos=i1;
+			}
+		}
+		return pos;
 	}
 
 	/**
@@ -158,6 +225,24 @@ public class ArrayUtils {
 			}
 			return min;
 		}
+
+		public static int posMin(double[] data) {
+			int pos=-1;
+			final int n = data.length;
+			if (n < 1) {
+				return -1;
+			}
+			double min = Double.MAX_VALUE;
+			for (int i1 = 0; i1 < data.length; i1++) {
+				if (data[i1] < min) {
+					min = data[i1];
+					pos=i1;
+				}
+			}
+			return pos;
+		}
+
+		
 		public static double vetMin(float[] data) {
 			final int n = data.length;
 			if (n < 1) {
@@ -171,6 +256,25 @@ public class ArrayUtils {
 			}
 			return min;
 		}
+		
+		public static int posMin(float[] data) {
+			int pos=-1;
+			final int n = data.length;
+			if (n < 1) {
+				return -1;
+			}
+			double min = Float.MAX_VALUE;
+			for (int i1 = 0; i1 < data.length; i1++) {
+				if (data[i1] < min) {
+					min = data[i1];
+					pos=i1;
+				}
+			}
+			return pos;
+		}
+		
+		
+		
 		public static int vetMin(int[] data) {
 			final int n = data.length;
 			if (n < 1) {
@@ -184,6 +288,24 @@ public class ArrayUtils {
 			}
 			return min;
 		}
+
+		public static int posMin(int[] data) {
+			int pos=-1;
+			final int n = data.length;
+			if (n < 1) {
+				return -1;
+			}
+			int min = Integer.MAX_VALUE;
+			for (int i1 = 0; i1 < data.length; i1++) {
+				if (data[i1] < min) {
+					min = data[i1];
+					pos=i1;
+				}
+			}
+			return pos;
+		}
+		
+		
 		public static short vetMin(short[] data) {
 			final int n = data.length;
 			if (n < 1) {
@@ -196,6 +318,22 @@ public class ArrayUtils {
 				}
 			}
 			return min;
+		}
+
+		public static int pos(short[] data) {
+			int pos=-1;
+			final int n = data.length;
+			if (n < 1) {
+				return -1;
+			}
+			short min = Short.MAX_VALUE;
+			for (int i1 = 0; i1 < data.length; i1++) {
+				if (data[i1] < min) {
+					min = data[i1];
+					pos=i1;
+				}
+			}
+			return pos;
 		}
 		
 		/**
@@ -337,91 +475,5 @@ public class ArrayUtils {
 			return Math.sqrt(sum / (n - 1));
 		}
 
-	
-//	public static String[][] bubbleSortMulti(String[][] MultiIn, int compIdx) {
-//	       String[][] temp = new String[MultiIn.length][MultiIn[0].length];
-//	       boolean finished = false;
-//
-//	       while (!finished) {
-//	         finished = true;
-//	         for (int i = 0; i < MultiIn.length - 1; i++) {
-//	            if (MultiIn[i][compIdx].compareToIgnoreCase(MultiIn[i + 1][compIdx]) > 0) {
-//	              for (int j = 0; j < MultiIn[i].length; j++) {
-//	            	  MyLog.waitHere();
-//	                 temp[i][j] = MultiIn[i][j];
-//	                 MultiIn[i][j] = MultiIn[i + 1][j];
-//	                 MultiIn[i + 1][j] = temp[i][j];
-//	              }
-//	              finished = false;
-//	            }
-//	          }
-//	       }
-//	       return MultiIn;
-//	}   
-//	/**
-//	 * Bubble sort on a 2D array
-//	 * @param myArray
-//	 * @param compareIndex
-//	 * @param increase
-//	 * @return
-//	 */
-//	public static String[][] bubbleSortMulti(String[][] myArray,
-//			int compareIndex) {
-//		String[][] temp = new String[myArray.length][myArray[0].length];
-//		boolean finished = false;
-//		while (!finished) {
-//			finished = true;
-//			for (int i1 = 0; i1 < myArray.length - 1; i1++) {
-//				if (myArray[i1][compareIndex]
-//						.compareToIgnoreCase(myArray[i1 + 1][compareIndex]) > 0) {
-//					for (int i2 = 0; i2 < myArray[i1].length; i1++) {
-//						temp[i1][i2] = myArray[i1][i2];
-//						myArray[i1][i2] = myArray[i1 + 1][i2];
-//						myArray[i1 + 1][i2] = temp[i1][i2];
-//					}
-//					finished = false;
-//				}
-//			}
-//		}
-//		return myArray;
-//	}
-
-//	public static int[][] bubbleSortMulti(int[][] myArray, int compareIndex) {
-//		int[][] temp = new int[myArray.length][myArray[0].length];
-//		boolean finished = false;
-//		while (!finished) {
-//			finished = true;
-//			for (int i1 = 0; i1 < myArray[i1].length - 1; i1++) {
-//				if (myArray[i1][compareIndex] > (myArray[i1 + 1][compareIndex])) {
-//					for (int i2 = 0; i2 < myArray[i1].length; i1++) {
-//						temp[i1][i2] = myArray[i1][i2];
-//						myArray[i1][i2] = myArray[i1 + 1][i2];
-//						myArray[i1 + 1][i2] = temp[i1][i2];
-//					}
-//					finished = false;
-//				}
-//			}
-//		}
-//		return myArray;
-//	}
-//
-//	public static double[][] bubbleSortMulti(double[][] myArray, int compareIndex) {
-//		double[][] temp = new double[myArray.length][myArray[0].length];
-//		boolean finished = false;
-//		while (!finished) {
-//			finished = true;
-//			for (int i1 = 0; i1 < myArray[i1].length - 1; i1++) {
-//				if (myArray[i1][compareIndex] > (myArray[i1 + 1][compareIndex])) {
-//					for (int i2 = 0; i2 < myArray[i1].length; i1++) {
-//						temp[i1][i2] = myArray[i1][i2];
-//						myArray[i1][i2] = myArray[i1 + 1][i2];
-//						myArray[i1 + 1][i2] = temp[i1][i2];
-//					}
-//					finished = false;
-//				}
-//			}
-//		}
-//		return myArray;
-//	}
 
 }

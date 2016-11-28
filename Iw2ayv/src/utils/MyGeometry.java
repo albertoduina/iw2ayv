@@ -26,9 +26,9 @@ public class MyGeometry {
 	 */
 	public static double[] fromPointsToEquLineExplicit(double x0, double y0,
 			double x1, double y1) {
-		// la formula esplicita è y = mx + b
-		// in cui m è detta anche slope (pendenza) e b intercept (intercetta)
-		// non può rappresentare rette verticali
+		// la formula esplicita e' y = mx + b
+		// in cui m e' detta anche slope (pendenza) e b intercept (intercetta)
+		// non puo' rappresentare rette verticali
 		double[] out = new double[2];
 
 		double m = (y1 - y0) / (x1 - x0);
@@ -56,7 +56,7 @@ public class MyGeometry {
 	 */
 	public static double[] fromPointsToEquLineImplicit(double x0, double y0,
 			double x1, double y1) {
-		// la formula implicita è ax + by + c = 0
+		// la formula implicita ï¿½ ax + by + c = 0
 		double[] out = new double[3];
 
 		double a = y0 - y1;
@@ -72,7 +72,7 @@ public class MyGeometry {
 
 	public static double[] fromPointsToEquCirconferenceImplicit(double cx,
 			double cy, double radius) {
-		// la formula implicita è x^2 + y^2 + ax + by + c = 0
+		// la formula implicita ï¿½ x^2 + y^2 + ax + by + c = 0
 		double[] out = new double[3];
 
 		double a = -2 * cx;
@@ -186,9 +186,9 @@ public class MyGeometry {
 	/**
 	 * Rotazione di un segmento
 	 * 
-	 * Probabilmente si può usare la AffineTransform di Java, mi mancano le
+	 * Probabilmente si puï¿½ usare la AffineTransform di Java, mi mancano le
 	 * conscenze tecniche e matematiche per capirne la eventuale convenienza e
-	 * modalità di utilizzo.
+	 * modalitï¿½ di utilizzo.
 	 * 
 	 * @param points
 	 *            coordinate degli estremi del segmento [x1][y1][x2][y2]

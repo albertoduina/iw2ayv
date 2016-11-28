@@ -18,7 +18,7 @@ public class MyStackUtils {
 	 * @param stack
 	 *            stack contenente le slices
 	 * @param slice
-	 *            numero della slice da estrarre, deve partire da 1, non è
+	 *            numero della slice da estrarre, deve partire da 1, non ï¿½
 	 *            ammesso lo 0
 	 * @return ImagePlus della slice estratta
 	 */
@@ -28,7 +28,7 @@ public class MyStackUtils {
 	 * @param stack
 	 *            stack contenente le slices
 	 * @param slice
-	 *            numero della slice da estrarre, deve partire da 1, non è
+	 *            numero della slice da estrarre, deve partire da 1, non ï¿½
 	 *            ammesso lo 0
 	 * @return ImagePlus della slice estratta
 	 */
@@ -194,7 +194,7 @@ public class MyStackUtils {
 	// }
 
 	/***
-	 * Estrae l'immagine da un mosaico. Attenzione che la prima immagine dovrà
+	 * Estrae l'immagine da un mosaico. Attenzione che la prima immagine dovra'
 	 * essere la 0
 	 * 
 	 * @param imp1
@@ -206,8 +206,17 @@ public class MyStackUtils {
 	 */
 	public static ImagePlus imageFromMosaic(ImagePlus imp1, int num) {
 
-		int step = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_PHASE_ENCODING_STEPS)); // 64 "0018,0089"
+		
+		
+//		int step = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
+//				MyConst.DICOM_PHASE_ENCODING_STEPS)); // 64 "0018,0089"
+		
+
+		String[] matrix2 = ReadDicom.parseString(ReadDicom.readDicomParameter(imp1, "0018,1310"));
+		int step = ReadDicom.readInt(matrix2[0]);
+
+		
+		
 
 		int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
 				MyConst.DICOM_COLUMNS)); // 384 "0028,0011"
@@ -232,7 +241,7 @@ public class MyStackUtils {
 	}
 
 	/***
-	 * Estrae l'immagine da un mosaico. Attenzione che la prima immagine dovrà
+	 * Estrae l'immagine da un mosaico. Attenzione che la prima immagine dovrï¿½
 	 * essere la 0 (questa routine serve esclusivamente a creare una immagine
 	 * farlocca per testare il posizionamento automatico) NON USARE SE NON PER
 	 * CREARE IMMAGINI FARLOCCHE

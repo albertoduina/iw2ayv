@@ -341,7 +341,7 @@ public class ImageUtils {
 			IJ.run("Enhance Contrast", "saturated=0.5");
 		}
 
-		MyLog.waitHere("simulata1= " + filePath);
+	//	MyLog.waitHere("simulata1= " + filePath);
 
 		if (step)
 			MyLog.waitHere("Immagine Simulata", debug);
@@ -1900,7 +1900,7 @@ public class ImageUtils {
 
 		ImageStatistics statGh2 = imp1.getStatistics();
 		String aux2 = statGh2.toString();
-		MyLog.waitHere("aux1= " + aux1 + " aux2= " + aux2);
+	//	MyLog.waitHere("aux1= " + aux1 + " aux2= " + aux2);
 		return null;
 	}
 
