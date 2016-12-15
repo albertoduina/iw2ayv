@@ -42,7 +42,7 @@
 	<!-- ######################## MAIN ####################### -->
 
 	<!-- target name="main" depends="init, cond_INS, cond_OLD, cond_WIN7 " / -->
-	<target name="main" depends="init, compile, moveSources, jarx, wipe,   cond_INS, cond_OLD, cond_WIN7, cond_FIJI" />
+	<target name="main" depends="init, compile, moveSources, jarx, wipe, cond_INS, cond_OLD, cond_WIN7, cond_FIJI" />
 	<!--target name="main" depends="init, compile, move1, jarx, libraries, wipe, move2,  installXp, installOthers" /-->
 
 
@@ -69,12 +69,12 @@
 		<property name="productDirWIN7" location="${disk}/Programmi2\ImageJ\plugins" />
 		<available file="${productDirWIN7}" type="dir" property="win7" />
 		<echo message="win7=${win7}" />
-		
+
 		<property name="productDirFIJI" location="${disk}/Programmi2\FIJI\fiji-win64\Fiji.app\plugins" />
 		<available file="${productDirFIJI}" type="dir" property="win7" />
 		<echo message="FIJI=${win7}" />
 
-		
+
 	</target>
 
 	<target name="compile" description="Compile everything.">
@@ -107,7 +107,7 @@
 			<attribute name="Built-By" value="${user.name}" />
 			<attribute name="Main-Class" value="${package}.utils" />
 			<!--attribute name="Implementation-Version" value="${version.num}-b${build.number}" /-->
-			<attribute name="Implementation-Version" value= "b${build.number}" />
+			<attribute name="Implementation-Version" value="b${build.number}" />
 		</manifest>
 		<copy file="./MANIFEST.MF" todir="${data}" />
 		<copy file="./MANIFEST.MF" todir="${binUtils}" />
@@ -176,6 +176,10 @@
 		</copy>
 	</target>
 
+	<target name="wait">
+		<echo message="wait" />
+		<input message="press return" />
+	</target>
 
 
 </project>

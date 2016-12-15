@@ -33,7 +33,7 @@ public class MyStackUtils {
 	 * @return ImagePlus della slice estratta
 	 */
 	public static ImagePlus imageFromStack(ImagePlus stack, int slice) {
-
+		
 		if (stack == null) {
 			IJ.log("imageFromStack.stack== null");
 			return null;
