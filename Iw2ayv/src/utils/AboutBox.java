@@ -16,6 +16,7 @@ import ij.process.*;
  * 
  * @author Alberto Duina - SPEDALI CIVILI DI BRESCIA - Servizio di Fisica
  *         Sanitaria _
+ *         
  * 
  */
 public class AboutBox {
