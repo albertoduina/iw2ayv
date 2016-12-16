@@ -22,6 +22,7 @@ public class MyMsg {
 		int w = 150;
 		int h = 30 + text.length * 15;
 
+		
 		ImageProcessor ip1 = new ColorProcessor(w, h);
 		ip1.setColor(background);
 		ip1.fill();
