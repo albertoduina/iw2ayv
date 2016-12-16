@@ -54,9 +54,11 @@
 		<delete dir="${output}" />
 		<mkdir dir="${output}" />
 		<echo message="mkdir dir=${output}" />
-		<delete dir="${dist}" />
+		
+		<!-- NON CANCELLARE DIST PER POTERLA MANTENERE IN GITHUB!!!!!!-->
+		<!-- delete dir="${dist}" />
 		<mkdir dir="${dist}" />
-		<echo message="mkdir dir=${dist}" />
+		<echo message="mkdir dir=${dist}" /-->
 
 		<property name="productDirINSIDE" location="${work}\imagej\Plugins" />
 		<available file="${productDirINSIDE}" type="dir" property="ins" />
@@ -115,6 +117,9 @@
 		<jar destfile="${output}/iw2ayv_${build.number}.jar" manifest="MANIFEST.MF">
 			<fileset dir="${output}" />
 		</jar>
+		<delete failonerror="false" verbose="true">
+			<fileset dir="${dist}" includes="*.*" />
+		</delete>
 		<copy todir="${dist}">
 			<fileset dir="${output}" includes="*.jar" />
 		</copy>
