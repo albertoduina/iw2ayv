@@ -18,6 +18,7 @@ public class MyMsg {
 
 	public static void timedMessage(String[] text, Color background, Color foreground, int milliseconds) {
 
+		
 		int w = 150;
 		int h = 30 + text.length * 15;
 
