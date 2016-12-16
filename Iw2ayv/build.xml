@@ -104,28 +104,20 @@
 		<delete file="MANIFEST.MF" />
 		<property name="version.num" value="1.00" />
 		<manifest file="MANIFEST.MF">
-			<attribute name="Built-By" value="${user.name}" />
+			<attribute name="Built-By" value="Alberto Duina - iw2ayv" />
 			<attribute name="Main-Class" value="${package}.utils" />
 			<!--attribute name="Implementation-Version" value="${version.num}-b${build.number}" /-->
 			<attribute name="Implementation-Version" value="b${build.number}" />
 		</manifest>
 		<copy file="./MANIFEST.MF" todir="${data}" />
 		<copy file="./MANIFEST.MF" todir="${binUtils}" />
-
-		<jar destfile="${dist}/iw2ayv_${build.number}.jar" manifest="MANIFEST.MF">
+		
+		<jar destfile="${output}/iw2ayv_${build.number}.jar" manifest="MANIFEST.MF">
 			<fileset dir="${output}" />
-			<!--fileset dir="${src}"/-->
-			<!--fileset dir="${test}"/-->
 		</jar>
-
-
-		<!--jar destfile="${dist}/iw2ayv.jar" basedir="${output}" manifest="MANIFEST.MF" /-->
-
-		<!--copy todir="${lib}">
-			<fileset dir="${dist}" includes="*.jar" />
-		</copy-->
-
-		<!--delete dir="${output}" /-->
+		<copy todir="${dist}">
+			<fileset dir="${output}" includes="*.jar" />
+		</copy>
 	</target>
 
 	<target name="wipe" description="Delete the build intermedie files.">
