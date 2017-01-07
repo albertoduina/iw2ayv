@@ -124,6 +124,8 @@
 		<copy todir="${dist}">
 			<fileset dir="${output}" includes="*.jar" />
 		</copy>
+		
+		
 	</target>
 
 	<target name="wipe" description="Delete the build intermedie files.">
