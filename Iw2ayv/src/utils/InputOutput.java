@@ -749,7 +749,7 @@ public class InputOutput {
 		// "vetResult[].length= " + vetResult[0].length);
 		return vetResult;
 	}
-	
+
 	public static String[][] readStringMatrixFromFileNew2(String fileName, String separator) {
 		ArrayList<String> vetList = new ArrayList<String>();
 		try {
@@ -782,7 +782,6 @@ public class InputOutput {
 		// "vetResult[].length= " + vetResult[0].length);
 		return vetResult;
 	}
-
 
 	/***
 	 * Legge i dati da una stringa e li restituisce in un vettore

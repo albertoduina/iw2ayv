@@ -46,7 +46,6 @@ public class ArrayUtils {
 		return outIntArr;
 	}
 
-	
 	public static float[] arrayListToArrayFloat(List<Float> inArrayList) {
 
 		float[] outIntArr = new float[inArrayList.size()];
@@ -57,7 +56,6 @@ public class ArrayUtils {
 		return outIntArr;
 	}
 
-	
 	public static double[] arrayListToArrayDouble(List<Double> inArrayList) {
 
 		double[] outIntArr = new double[inArrayList.size()];
@@ -68,25 +66,21 @@ public class ArrayUtils {
 		return outIntArr;
 	}
 
-	
-	
-	
 	public static double[] rotateArrayLeft(double[] inArray) {
 		double[] outArray = new double[inArray.length];
-		for (int i1 = 0; i1 < inArray.length-1; i1++) {
-			outArray[i1] = inArray[i1+1];
+		for (int i1 = 0; i1 < inArray.length - 1; i1++) {
+			outArray[i1] = inArray[i1 + 1];
 		}
-		outArray[inArray.length-1]=inArray[0];
+		outArray[inArray.length - 1] = inArray[0];
 		return outArray;
 	}
 
-	
-	
-/**
- * Calcola il max di un vettore	
- * @param data
- * @return
- */
+	/**
+	 * Calcola il max di un vettore
+	 * 
+	 * @param data
+	 * @return
+	 */
 	public static double vetMax(double[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -102,7 +96,7 @@ public class ArrayUtils {
 	}
 
 	public static int posMax(double[] data) {
-		int pos=-1;
+		int pos = -1;
 		final int n = data.length;
 		if (n < 1) {
 			return -1;
@@ -111,13 +105,12 @@ public class ArrayUtils {
 		for (int i1 = 0; i1 < data.length; i1++) {
 			if (data[i1] > max) {
 				max = data[i1];
-				pos=i1;
+				pos = i1;
 			}
 		}
 		return pos;
 	}
 
-	
 	public static float vetMax(float[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -131,9 +124,9 @@ public class ArrayUtils {
 		}
 		return max;
 	}
-	
+
 	public static int posMax(float[] data) {
-		int pos=-1;
+		int pos = -1;
 		final int n = data.length;
 		if (n < 1) {
 			return -1;
@@ -142,11 +135,12 @@ public class ArrayUtils {
 		for (int i1 = 0; i1 < data.length; i1++) {
 			if (data[i1] > max) {
 				max = data[i1];
-				pos=i1;
+				pos = i1;
 			}
 		}
 		return pos;
 	}
+
 	public static int vetMax(int[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -162,7 +156,7 @@ public class ArrayUtils {
 	}
 
 	public static int posMax(int[] data) {
-		int pos=-1;
+		int pos = -1;
 		final int n = data.length;
 		if (n < 1) {
 			return -1;
@@ -171,12 +165,12 @@ public class ArrayUtils {
 		for (int i1 = 0; i1 < data.length; i1++) {
 			if (data[i1] > max) {
 				max = data[i1];
-				pos=i1;
+				pos = i1;
 			}
 		}
 		return pos;
 	}
-	
+
 	public static short vetMax(short[] data) {
 		final int n = data.length;
 		if (n < 1) {
@@ -192,7 +186,7 @@ public class ArrayUtils {
 	}
 
 	public static int posMax(short[] data) {
-		int pos=-1;
+		int pos = -1;
 		final int n = data.length;
 		if (n < 1) {
 			return -1;
@@ -201,279 +195,300 @@ public class ArrayUtils {
 		for (int i1 = 0; i1 < data.length; i1++) {
 			if (data[i1] > max) {
 				max = data[i1];
-				pos=i1;
+				pos = i1;
 			}
 		}
 		return pos;
 	}
 
 	/**
-	 * Calcola il min di un vettore	
+	 * Calcola il min di un vettore
+	 * 
 	 * @param data
 	 * @return
 	 */
-		public static double vetMin(double[] data) {
-			final int n = data.length;
-			if (n < 1) {
-				return Double.NaN;
-			}
-			double min = Double.MAX_VALUE;
-			for (int i1 = 0; i1 < data.length; i1++) {
-				if (data[i1] < min) {
-					min = data[i1];
-				}
-			}
-			return min;
+	public static double vetMin(double[] data) {
+		final int n = data.length;
+		if (n < 1) {
+			return Double.NaN;
 		}
+		double min = Double.MAX_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] < min) {
+				min = data[i1];
+			}
+		}
+		return min;
+	}
 
-		public static int posMin(double[] data) {
-			int pos=-1;
-			final int n = data.length;
-			if (n < 1) {
-				return -1;
-			}
-			double min = Double.MAX_VALUE;
-			for (int i1 = 0; i1 < data.length; i1++) {
-				if (data[i1] < min) {
-					min = data[i1];
-					pos=i1;
-				}
-			}
-			return pos;
+	public static int posMin(double[] data) {
+		int pos = -1;
+		final int n = data.length;
+		if (n < 1) {
+			return -1;
 		}
+		double min = Double.MAX_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] < min) {
+				min = data[i1];
+				pos = i1;
+			}
+		}
+		return pos;
+	}
 
-		
-		public static double vetMin(float[] data) {
-			final int n = data.length;
-			if (n < 1) {
-				return Float.NaN;
-			}
-			double min = Float.MAX_VALUE;
-			for (int i1 = 0; i1 < data.length; i1++) {
-				if (data[i1] < min) {
-					min = data[i1];
-				}
-			}
-			return min;
+	public static double vetMin(float[] data) {
+		final int n = data.length;
+		if (n < 1) {
+			return Float.NaN;
 		}
-		
-		public static int posMin(float[] data) {
-			int pos=-1;
-			final int n = data.length;
-			if (n < 1) {
-				return -1;
+		double min = Float.MAX_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] < min) {
+				min = data[i1];
 			}
-			double min = Float.MAX_VALUE;
-			for (int i1 = 0; i1 < data.length; i1++) {
-				if (data[i1] < min) {
-					min = data[i1];
-					pos=i1;
-				}
-			}
-			return pos;
 		}
-		
-		
-		
-		public static int vetMin(int[] data) {
-			final int n = data.length;
-			if (n < 1) {
-				return Integer.MAX_VALUE;
-			}
-			int min = Integer.MAX_VALUE;
-			for (int i1 = 0; i1 < data.length; i1++) {
-				if (data[i1] < min) {
-					min = data[i1];
-				}
-			}
-			return min;
-		}
+		return min;
+	}
 
-		public static int posMin(int[] data) {
-			int pos=-1;
-			final int n = data.length;
-			if (n < 1) {
-				return -1;
-			}
-			int min = Integer.MAX_VALUE;
-			for (int i1 = 0; i1 < data.length; i1++) {
-				if (data[i1] < min) {
-					min = data[i1];
-					pos=i1;
-				}
-			}
-			return pos;
+	public static int posMin(float[] data) {
+		int pos = -1;
+		final int n = data.length;
+		if (n < 1) {
+			return -1;
 		}
-		
-		
-		public static short vetMin(short[] data) {
-			final int n = data.length;
-			if (n < 1) {
-				return Short.MAX_VALUE;
+		double min = Float.MAX_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] < min) {
+				min = data[i1];
+				pos = i1;
 			}
-			short min = Short.MAX_VALUE;
-			for (int i1 = 0; i1 < data.length; i1++) {
-				if (data[i1] < min) {
-					min = data[i1];
-				}
-			}
-			return min;
 		}
+		return pos;
+	}
 
-		public static int pos(short[] data) {
-			int pos=-1;
-			final int n = data.length;
-			if (n < 1) {
-				return -1;
-			}
-			short min = Short.MAX_VALUE;
-			for (int i1 = 0; i1 < data.length; i1++) {
-				if (data[i1] < min) {
-					min = data[i1];
-					pos=i1;
-				}
-			}
-			return pos;
+	public static int vetMin(int[] data) {
+		final int n = data.length;
+		if (n < 1) {
+			return Integer.MAX_VALUE;
 		}
-		
-		/**
-		 * Calcola la media di un vettore	
-		 * @param data
-		 * @return
-		 */
-		
-		public static double vetMean(double[] data) {
-			final int n = data.length;
-			if (n < 1) {
-				return Double.NaN;
+		int min = Integer.MAX_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] < min) {
+				min = data[i1];
 			}
-			double sum = 0;
-			for (int i1 = 0; i1 < data.length; i1++) {
-				sum += data[i1];
-			}
-			double mean = sum / data.length;
-			return mean;
 		}
-		public static double vetMean(float[] data) {
-			final int n = data.length;
-			if (n < 1) {
-				return Float.NaN;
-			}
-			double sum = 0;
-			for (int i1 = 0; i1 < data.length; i1++) {
-				sum += data[i1];
-			}
-			double mean = sum / data.length;
-			return mean;
-		}
-		public static double vetMean(int[] data) {
-			final int n = data.length;
-			if (n < 1) {
-				return Double.NaN;
-			}
-			double sum = 0;
-			for (int i1 = 0; i1 < data.length; i1++) {
-				sum += data[i1];
-			}
-			double mean = sum / data.length;
-			return mean;
-		}
-		public static double vetMean(short[] data) {
-			final int n = data.length;
-			if (n < 1) {
-				return Double.NaN;
-			}
-			double sum = 0;
-			for (int i1 = 0; i1 < data.length; i1++) {
-				sum += data[i1];
-			}
-			double mean = sum / data.length;
-			return mean;
-		}
-		public static double vetMean(byte[] data) {
-			final int n = data.length;
-			if (n < 1) {
-				return Double.NaN;
-			}
-			double sum = 0;
-			for (int i1 = 0; i1 < data.length; i1++) {
-				sum += data[i1];
-			}
-			double mean = sum / data.length;
-			return mean;
-		}
+		return min;
+	}
 
-		/**
-		 * Calculates the standard deviation of an array of numbers. see Knuth's The
-		 * Art Of Computer Programming Volume II: Seminumerical Algorithms This
-		 * algorithm is slower, but more resistant to error propagation.
-		 * 
-		 * @param data
-		 *            Numbers to compute the standard deviation of. Array must
-		 *            contain two or more numbers.
-		 * @return standard deviation estimate of population ( to get estimate of
-		 *         sample, use n instead of n-1 in last line )
-		 */
-		public static double vetSdKnuth(double[] data) {
-			final int n = data.length;
-			if (n < 2) {
-				return Double.NaN;
-			}
-			double avg = data[0];
-			double sum = 0;
-			// yes, i1 below starts from 1
-			for (int i1 = 1; i1 < data.length; i1++) {
-				double newavg = avg + (data[i1] - avg) / (i1 + 1);
-				sum += (data[i1] - avg) * (data[i1] - newavg);
-				avg = newavg;
-			}
-			return Math.sqrt(sum / (n - 1));
+	public static int posMin(int[] data) {
+		int pos = -1;
+		final int n = data.length;
+		if (n < 1) {
+			return -1;
 		}
-		public static double vetSdKnuth(float[] data) {
-			final int n = data.length;
-			if (n < 2) {
-				return Float.NaN;
+		int min = Integer.MAX_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] < min) {
+				min = data[i1];
+				pos = i1;
 			}
-			double avg = (double) data[0];
-			double sum = 0;
-			// yes, i1 below starts from 1
-			for (int i1 = 1; i1 < data.length; i1++) {
-				double newavg = avg + (data[i1] - avg) / (i1 + 1);
-				sum += (data[i1] - avg) * (data[i1] - newavg);
-				avg = newavg;
-			}
-			return Math.sqrt(sum / (n - 1));
 		}
-		public static double vetSdKnuth(int[] data) {
-			final int n = data.length;
-			if (n < 2) {
-				return Double.NaN;
-			}
-			double avg = (double) data[0];
-			double sum = 0;
-			// yes, i1 below starts from 1
-			for (int i1 = 1; i1 < data.length; i1++) {
-				double newavg = avg + (data[i1] - avg) / (i1 + 1);
-				sum += (data[i1] - avg) * (data[i1] - newavg);
-				avg = newavg;
-			}
-			return Math.sqrt(sum / (n - 1));
-		}
-		public static double vetSdKnuth(short[] data) {
-			final int n = data.length;
-			if (n < 2) {
-				return Double.NaN;
-			}
-			double avg = (double) data[0];
-			double sum = 0;
-			// yes, i1 below starts from 1
-			for (int i1 = 1; i1 < data.length; i1++) {
-				double newavg = avg + (data[i1] - avg) / (i1 + 1);
-				sum += (data[i1] - avg) * (data[i1] - newavg);
-				avg = newavg;
-			}
-			return Math.sqrt(sum / (n - 1));
-		}
+		return pos;
+	}
 
+	public static short vetMin(short[] data) {
+		final int n = data.length;
+		if (n < 1) {
+			return Short.MAX_VALUE;
+		}
+		short min = Short.MAX_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] < min) {
+				min = data[i1];
+			}
+		}
+		return min;
+	}
+
+	public static int pos(short[] data) {
+		int pos = -1;
+		final int n = data.length;
+		if (n < 1) {
+			return -1;
+		}
+		short min = Short.MAX_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] < min) {
+				min = data[i1];
+				pos = i1;
+			}
+		}
+		return pos;
+	}
+
+	/**
+	 * Calcola la media di un vettore
+	 * 
+	 * @param data
+	 * @return
+	 */
+
+	public static double vetMean(double[] data) {
+		final int n = data.length;
+		if (n < 1) {
+			return Double.NaN;
+		}
+		double sum = 0;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			sum += data[i1];
+		}
+		double mean = sum / data.length;
+		return mean;
+	}
+
+	public static double vetMean(float[] data) {
+		final int n = data.length;
+		if (n < 1) {
+			return Float.NaN;
+		}
+		double sum = 0;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			sum += data[i1];
+		}
+		double mean = sum / data.length;
+		return mean;
+	}
+
+	public static double vetMean(int[] data) {
+		final int n = data.length;
+		if (n < 1) {
+			return Double.NaN;
+		}
+		double sum = 0;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			sum += data[i1];
+		}
+		double mean = sum / data.length;
+		return mean;
+	}
+
+	public static double vetMean(short[] data) {
+		final int n = data.length;
+		if (n < 1) {
+			return Double.NaN;
+		}
+		double sum = 0;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			sum += data[i1];
+		}
+		double mean = sum / data.length;
+		return mean;
+	}
+
+	public static double vetMean(byte[] data) {
+		final int n = data.length;
+		if (n < 1) {
+			return Double.NaN;
+		}
+		double sum = 0;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			sum += data[i1];
+		}
+		double mean = sum / data.length;
+		return mean;
+	}
+
+	/**
+	 * Calculates the standard deviation of an array of numbers. see Knuth's The
+	 * Art Of Computer Programming Volume II: Seminumerical Algorithms This
+	 * algorithm is slower, but more resistant to error propagation.
+	 * 
+	 * @param data
+	 *            Numbers to compute the standard deviation of. Array must
+	 *            contain two or more numbers.
+	 * @return standard deviation estimate of population ( to get estimate of
+	 *         sample, use n instead of n-1 in last line )
+	 */
+	public static double vetSdKnuth(double[] data) {
+		final int n = data.length;
+		if (n < 2) {
+			return Double.NaN;
+		}
+		double avg = data[0];
+		double sum = 0;
+		// yes, i1 below starts from 1
+		for (int i1 = 1; i1 < data.length; i1++) {
+			double newavg = avg + (data[i1] - avg) / (i1 + 1);
+			sum += (data[i1] - avg) * (data[i1] - newavg);
+			avg = newavg;
+		}
+		return Math.sqrt(sum / (n - 1));
+	}
+
+	public static double vetSdKnuth(float[] data) {
+		final int n = data.length;
+		if (n < 2) {
+			return Float.NaN;
+		}
+		double avg = (double) data[0];
+		double sum = 0;
+		// yes, i1 below starts from 1
+		for (int i1 = 1; i1 < data.length; i1++) {
+			double newavg = avg + (data[i1] - avg) / (i1 + 1);
+			sum += (data[i1] - avg) * (data[i1] - newavg);
+			avg = newavg;
+		}
+		return Math.sqrt(sum / (n - 1));
+	}
+
+	public static double vetSdKnuth(int[] data) {
+		final int n = data.length;
+		if (n < 2) {
+			return Double.NaN;
+		}
+		double avg = (double) data[0];
+		double sum = 0;
+		// yes, i1 below starts from 1
+		for (int i1 = 1; i1 < data.length; i1++) {
+			double newavg = avg + (data[i1] - avg) / (i1 + 1);
+			sum += (data[i1] - avg) * (data[i1] - newavg);
+			avg = newavg;
+		}
+		return Math.sqrt(sum / (n - 1));
+	}
+
+	public static double vetSdKnuth(short[] data) {
+		final int n = data.length;
+		if (n < 2) {
+			return Double.NaN;
+		}
+		double avg = (double) data[0];
+		double sum = 0;
+		// yes, i1 below starts from 1
+		for (int i1 = 1; i1 < data.length; i1++) {
+			double newavg = avg + (data[i1] - avg) / (i1 + 1);
+			sum += (data[i1] - avg) * (data[i1] - newavg);
+			avg = newavg;
+		}
+		return Math.sqrt(sum / (n - 1));
+	}
+
+	public static double[] vetReverse(double[] profile1) {
+		double[] vetreverse = new double[profile1.length];
+		for (int i1 = 0; i1 < profile1.length; i1++) {
+			vetreverse[profile1.length - 1 - i1] = profile1[i1];
+		}
+		return vetreverse;
+	}
+
+	public static double[] vetInvert(double[] profile1) {
+		double max = ArrayUtils.vetMax(profile1);
+		double[] vetinvert = new double[profile1.length];
+		for (int i1 = 0; i1 < profile1.length; i1++) {
+			vetinvert[i1] = max - profile1[i1];
+		}
+		return vetinvert;
+	}
 
 }

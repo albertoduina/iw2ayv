@@ -1404,8 +1404,10 @@ public class ImageUtils {
 	}
 
 	/**
-	 * Copied from http://billauer.co.il/peakdet.htm Peak Detection using MATLAB
+	 * Copied from http://billauer.co.il/peakdet.html Peak Detection using MATLAB
 	 * Author: Eli Billauer
+	 * Vedi anche https://github.com/xuphys/peakdetect
+	 * 
 	 * 
 	 * @param profile
 	 *            profilo da analizzare
