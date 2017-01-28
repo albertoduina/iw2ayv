@@ -48,7 +48,6 @@ public class ImageUtils {
 		return impSimulata;
 	}
 
-
 	public static ImagePlus generaSimulataMultiColori(double mean11, ImagePlus imp1, int[] minimi, int[] massimi,
 			int[] myColor) {
 
@@ -105,14 +104,6 @@ public class ImageUtils {
 		impSimulata.updateAndDraw();
 		return impSimulata;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 
 	/**
 	 * 
@@ -341,7 +332,7 @@ public class ImageUtils {
 			IJ.run("Enhance Contrast", "saturated=0.5");
 		}
 
-	//	MyLog.waitHere("simulata1= " + filePath);
+		// MyLog.waitHere("simulata1= " + filePath);
 
 		if (step)
 			MyLog.waitHere("Immagine Simulata", debug);
@@ -815,10 +806,11 @@ public class ImageUtils {
 			// to front");
 			return;
 		}
-		String nome1 = iw1.toString();
-		IJ.selectWindow(nome1);
+		// String nome1 = iw1.toString();
+		// IJ.selectWindow(nome1);
 
-		// Window w2 = WindowManager.getActiveWindow();
+		WindowManager.setWindow(iw1);
+
 		// String nome2 = w2.toString();
 		// MyLog.waitHere("active= " + nome2);
 	}
@@ -1404,9 +1396,9 @@ public class ImageUtils {
 	}
 
 	/**
-	 * Copied from http://billauer.co.il/peakdet.html Peak Detection using MATLAB
-	 * Author: Eli Billauer
-	 * Vedi anche https://github.com/xuphys/peakdetect
+	 * Copied from http://billauer.co.il/peakdet.html Peak Detection using
+	 * MATLAB Author: Eli Billauer Vedi anche
+	 * https://github.com/xuphys/peakdetect
 	 * 
 	 * 
 	 * @param profile
@@ -1902,7 +1894,7 @@ public class ImageUtils {
 
 		ImageStatistics statGh2 = imp1.getStatistics();
 		String aux2 = statGh2.toString();
-	//	MyLog.waitHere("aux1= " + aux1 + " aux2= " + aux2);
+		// MyLog.waitHere("aux1= " + aux1 + " aux2= " + aux2);
 		return null;
 	}
 
@@ -1992,6 +1984,5 @@ public class ImageUtils {
 		over1.addElement(imp1.getRoi());
 		imp1.deleteRoi();
 	}
-			
 
 }
