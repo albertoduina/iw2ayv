@@ -62,8 +62,9 @@
 
 
 		<delete>
-			<fileset dir="${dist}" includes="*~" defaultexcludes="false" />
+			<fileset dir="${dist}" includes="*.jar" defaultexcludes="false" />
 		</delete>
+		
 
 		<property name="productDirINSIDE" location="${work}\imagej\Plugins" />
 		<available file="${productDirINSIDE}" type="dir" property="ins" />
