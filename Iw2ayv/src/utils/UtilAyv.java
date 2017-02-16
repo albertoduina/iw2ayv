@@ -2590,8 +2590,11 @@ public class UtilAyv {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
 						+ "la descrizione delle sequenze ricevute e'differente " + vetString[i1] + "  " + item1
 						+ "   <>    " + item2, debug);
+				int res = ButtonMessages.ModalMsg("ATTENZIONE se si preme CONTINUA ELABORAZIONE i risultati possono essere fuori specifiche!!",
+						"CONTINUA ELABORAZIONE", "SALTA A IMMAGINE SUCCESSIVA");
 
-				return false;
+				if (res == 1)
+					return false;
 			}
 		}
 
