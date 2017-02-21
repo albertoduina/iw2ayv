@@ -13,7 +13,7 @@ public class MyLine {
 	/**
 	 * Restituisce le coordinate x, y e z dei punti appartenenti alla linea, in
 	 * cui x ed y sono le coordinate del pixel (relative all'immagine di
-	 * partenza) e z è il valore di segnale
+	 * partenza) e z e' il valore di segnale
 	 * 
 	 * @param imp1
 	 * @return
