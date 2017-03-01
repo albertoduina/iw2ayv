@@ -75,7 +75,7 @@ public class ReadDicom {
 			}
 		} else {
 			String aux1 = (String) imp.getProperty("Info");
-			MyLog.waitThere("aux1= " + aux1);
+			// MyLog.waitThere("aux1= " + aux1);
 
 			IJ.log("" + imp.getTitle());
 
@@ -298,10 +298,6 @@ public class ReadDicom {
 			return true;
 		}
 	}
-	
-	
-
-	
 
 	/***
 	 * Legge il codice dall'header Dicom

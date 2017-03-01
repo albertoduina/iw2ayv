@@ -195,6 +195,8 @@ public class ReportStandardInfo {
 		else {
 			// or: the code is in the dicomSeriesDescription
 			aux3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
+			if (aux3 == null)
+				return null;
 
 			codice = UtilAyv.getFiveLetters(aux3).trim();
 		}
@@ -456,7 +458,8 @@ public class ReportStandardInfo {
 	}
 
 	/***
-	 * Questa versione aggiornata non utilizza piu' setHeading ed addLabel, ora deprecate
+	 * Questa versione aggiornata non utilizza piu' setHeading ed addLabel, ora
+	 * deprecate
 	 * 
 	 * @param info1
 	 * @return
@@ -467,10 +470,10 @@ public class ReportStandardInfo {
 		rt.reset();
 
 		for (int i1 = 0; i1 < info1.length; i1++) {
-			rt.incrementCounter();			
+			rt.incrementCounter();
 			rt.addValue("TESTO", info1[i1]);
 		}
-		rt.incrementCounter();			
+		rt.incrementCounter();
 		return (rt);
 	}
 
@@ -497,8 +500,6 @@ public class ReportStandardInfo {
 		return (rt);
 	}
 
-	
-	
 	public static ResultsTable putMiniStandardInfoRT(String[] info1) {
 
 		ResultsTable rt = ResultsTable.getResultsTable();

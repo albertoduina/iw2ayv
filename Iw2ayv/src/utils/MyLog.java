@@ -99,15 +99,13 @@ public class MyLog {
 			ResultsTable rt1 = new ResultsTable();
 			for (int i1 = 0; i1 < in1.length; i1++) {
 				rt1.incrementCounter();
-				rt1.addValue(title, in1[i1]);
+				rt1.addValue(title, (byte) in1[i1] & 0xFF);
 			}
 			rt1.show(title);
 			return;
 		}
 	}
 
-	
-	
 	public static void logArrayListInteger(List<int[]> tmp, String title) {
 		if (tmp == null) {
 			IJ.log("Warning vector " + title + " = null");
@@ -133,7 +131,7 @@ public class MyLog {
 			IJ.log(logRiga);
 		}
 	}
-	
+
 	public static void logArrayListInteger(ArrayList<Integer> arrList, String title) {
 		if (arrList == null) {
 			IJ.log("Warning vector " + title + " = null");
@@ -146,7 +144,6 @@ public class MyLog {
 			IJ.log(logRiga);
 		}
 	}
-
 
 	public static void logArrayList(ArrayList<String> arrList) {
 		if (arrList == null) {
@@ -575,6 +572,11 @@ public class MyLog {
 		new WaitForUserDialog(str).show();
 	}
 
+	public static void mark(String str) {
+		IJ.log("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + " ===> " + str);
+	}
+
 	public static void waitHere(String str) {
 		new WaitForUserDialog("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n \n" + str).show();
@@ -735,7 +737,7 @@ public class MyLog {
 		}
 
 	}
-	
+
 	public static void appendLog3(String path, String linea) {
 
 		BufferedWriter out;
@@ -752,7 +754,6 @@ public class MyLog {
 
 	}
 
-
 	/***
 	 * Initialize a log file
 	 * 
@@ -764,6 +765,13 @@ public class MyLog {
 			f1.delete();
 		}
 		appendLog(path, "---- INIZIO ---------");
+	}
+
+	public static void initLog3(String path) {
+		File f1 = new File(path);
+		if (f1.exists()) {
+			f1.delete();
+		}
 	}
 
 	/***
