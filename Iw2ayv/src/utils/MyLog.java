@@ -697,28 +697,28 @@ public class MyLog {
 		IJ.log("___________________________________________");
 	}
 
-	/***
-	 * Append a line to a log file
-	 * 
-	 * @param path
-	 * @param linea
-	 */
-	public static void appendLog(String path, String linea) {
-
-		BufferedWriter out;
-		String time = new SimpleDateFormat("yyyy-MM-dd hh:mm").format(new Date());
-
-		try {
-			out = new BufferedWriter(new FileWriter(path, true));
-			out.write(time + " " + linea);
-			out.newLine();
-			out.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
+//	/***
+//	 * Append a line to a log file
+//	 * 
+//	 * @param path
+//	 * @param linea
+//	 */
+//	public static void appendLog(String path, String linea) {
+//
+//		BufferedWriter out;
+//		String time = new SimpleDateFormat("yyyy-MM-dd hh:mm").format(new Date());
+//
+//		try {
+//			out = new BufferedWriter(new FileWriter(path, true));
+//			out.write(time + " " + linea);
+//			out.newLine();
+//			out.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//	}
 
 	public static void appendLog2(String path, String linea) {
 
@@ -754,18 +754,18 @@ public class MyLog {
 
 	}
 
-	/***
-	 * Initialize a log file
-	 * 
-	 * @param path
-	 */
-	public static void initLog(String path) {
-		File f1 = new File(path);
-		if (f1.exists()) {
-			f1.delete();
-		}
-		appendLog(path, "---- INIZIO ---------");
-	}
+//	/***
+//	 * Initialize a log file
+//	 * 
+//	 * @param path
+//	 */
+//	public static void initLog(String path) {
+//		File f1 = new File(path);
+//		if (f1.exists()) {
+//			f1.delete();
+//		}
+//		appendLog(path, "---- INIZIO ---------");
+//	}
 
 	public static void initLog3(String path) {
 		File f1 = new File(path);
@@ -831,5 +831,33 @@ public class MyLog {
 				prg + " > logDebug name= " + f1.getName() + "  tableRiga= " + tableRiga + " tableCode= " + tableCode
 						+ " imaCode= " + imaCode + " tableCoil=" + tableCoil + " imaCoil= " + imaCoil);
 	}
+	
+	public static void appendLog(String path, String linea) {
+
+		BufferedWriter out;
+		String time = new SimpleDateFormat("yyyy-MM-dd hh:mm").format(new Date());
+		String where = ("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + " ===> ");
+
+		try {
+			out = new BufferedWriter(new FileWriter(path, true));
+			out.write(time + " " + where + " " + linea);
+			out.newLine();
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void initLog(String path) {
+		File f1 = new File(path);
+		if (f1.exists()) {
+			f1.delete();
+		}
+		appendLog(path, "---- INIZIO ---------");
+	}
+
 
 }
