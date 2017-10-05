@@ -114,6 +114,7 @@ public class MyCircleDetector {
 
 		int[] xPoints = ArrayUtils.arrayListToArrayInt(vetX14);
 		int[] yPoints = ArrayUtils.arrayListToArrayInt(vetY14);
+		// MyLog.waitHere("punti per il fit del cerchio= "+xPoints.length);
 
 		imp14.setRoi(new PointRoi(xPoints, yPoints, xPoints.length));
 
@@ -135,10 +136,8 @@ public class MyCircleDetector {
 
 		Rectangle boundingRectangle14 = imp14.getProcessor().getRoi();
 		int diamRoi = (int) boundingRectangle14.width;
-		int xRoi = boundingRectangle14.x
-				+ ((boundingRectangle14.width - diamRoi) / 2);
-		int yRoi = boundingRectangle14.y
-				+ ((boundingRectangle14.height - diamRoi) / 2);
+		int xRoi = boundingRectangle14.x + ((boundingRectangle14.width - diamRoi) / 2);
+		int yRoi = boundingRectangle14.y + ((boundingRectangle14.height - diamRoi) / 2);
 
 		xRoi += 1;
 		yRoi += 1;
@@ -160,8 +159,8 @@ public class MyCircleDetector {
 		ImageProcessor ip1 = imp1.getProcessor();
 		short[] pixels1 = (short[]) ip1.getPixels();
 		int threshold = ip1.getAutoThreshold();
-		ImagePlus imp2 = NewImage.createByteImage("Thresholded",
-				imp1.getWidth(), imp1.getHeight(), slices, NewImage.FILL_BLACK);
+		ImagePlus imp2 = NewImage.createByteImage("Thresholded", imp1.getWidth(), imp1.getHeight(), slices,
+				NewImage.FILL_BLACK);
 		ByteProcessor ip2 = (ByteProcessor) imp2.getProcessor();
 		byte[] pixels2 = (byte[]) ip2.getPixels();
 		for (int i1 = 0; i1 < pixels2.length; i1++) {
@@ -183,8 +182,7 @@ public class MyCircleDetector {
 	 * @param dimPixel
 	 * @return
 	 */
-	public static int[] profileAnalyzer(ImagePlus imp1, String title,
-			boolean showProfiles) {
+	public static int[] profileAnalyzer(ImagePlus imp1, String title, boolean showProfiles) {
 		Roi roi11 = imp1.getRoi();
 		double[] profi1 = ((Line) roi11).getPixels();
 		double[] profi2y = profi1;
@@ -223,8 +221,7 @@ public class MyCircleDetector {
 	 * @param dimPixel
 	 * @return
 	 */
-	public static double[][] profileAnalyzer2(ImagePlus imp1, String title,
-			boolean showProfiles) {
+	public static double[][] profileAnalyzer2(ImagePlus imp1, String title, boolean showProfiles) {
 		Roi roi11 = imp1.getRoi();
 		double[] profi1 = ((Line) roi11).getPixels();
 
@@ -243,8 +240,7 @@ public class MyCircleDetector {
 			profi3[i1][1] = profi2y[i1];
 		}
 		ArrayList<ArrayList<Double>> matOut = peakDet(profi3, 100.);
-		double[][] peaks1 = new InputOutput()
-				.fromArrayListToDoubleTable(matOut);
+		double[][] peaks1 = new InputOutput().fromArrayListToDoubleTable(matOut);
 
 		double[] xPoints = new double[peaks1[2].length];
 		double[] yPoints = new double[peaks1[2].length];
@@ -289,20 +285,18 @@ public class MyCircleDetector {
 		Roi roi = imp.getRoi();
 
 		if (roi == null) {
-			IJ.error("Fit Circle", "Selection required");
+			MyLog.waitThere("Fit Circle: election required");
 			return;
 		}
 
 		if (roi.isArea()) { // create circle with the same area and centroid
 			ImageProcessor ip = imp.getProcessor();
 			ip.setRoi(roi);
-			ImageStatistics stats = ImageStatistics.getStatistics(ip,
-					Measurements.AREA + Measurements.CENTROID, null);
+			ImageStatistics stats = ImageStatistics.getStatistics(ip, Measurements.AREA + Measurements.CENTROID, null);
 			double r = Math.sqrt(stats.pixelCount / Math.PI);
 			imp.killRoi();
 			int d = (int) Math.round(2.0 * r);
-			imp.setRoi(new OvalRoi((int) Math.round(stats.xCentroid - r),
-					(int) Math.round(stats.yCentroid - r), d, d));
+			imp.setRoi(new OvalRoi((int) Math.round(stats.xCentroid - r), (int) Math.round(stats.yCentroid - r), d, d));
 
 			// IJ.makeOval((int) Math.round(stats.xCentroid - r),
 			// (int) Math.round(stats.yCentroid - r), d, d);
@@ -314,8 +308,7 @@ public class MyCircleDetector {
 		int[] x = poly.xpoints;
 		int[] y = poly.ypoints;
 		if (n < 3) {
-			IJ.error("Fit Circle",
-					"At least 3 points are required to fit a circle.");
+			MyLog.waitThere("Fit Circle: at least 3 points are required to fit a circle.");
 			return;
 		}
 
@@ -356,8 +349,7 @@ public class MyCircleDetector {
 		double Myz2 = Myz * Myz;
 		double A2 = 4 * Cov_xy - 3 * Mz * Mz - Mzz;
 		double A1 = Mzz * Mz + 4 * Cov_xy * Mz - Mxz2 - Myz2 - Mz * Mz * Mz;
-		double A0 = Mxz2 * Myy + Myz2 * Mxx - Mzz * Cov_xy - 2 * Mxz * Myz
-				* Mxy + Mz * Mz * Cov_xy;
+		double A0 = Mxz2 * Myy + Myz2 * Mxx - Mzz * Cov_xy - 2 * Mxz * Myz * Mxy + Mz * Mz * Cov_xy;
 		double A22 = A2 + A2;
 		double epsilon = 1e-12;
 		double ynew = 1e+20;
@@ -393,17 +385,15 @@ public class MyCircleDetector {
 			}
 		}
 		if (IJ.debugMode)
-			IJ.log("Fit Circle: n=" + n + ", xnew=" + IJ.d2s(xnew, 2)
-					+ ", iterations=" + iterations);
+			IJ.log("Fit Circle: n=" + n + ", xnew=" + IJ.d2s(xnew, 2) + ", iterations=" + iterations);
 
 		// calculate the circle parameters
 		double DET = xnew * xnew - xnew * Mz + Cov_xy;
 		double CenterX = (Mxz * (Myy - xnew) - Myz * Mxy) / (2 * DET);
 		double CenterY = (Myz * (Mxx - xnew) - Mxz * Mxy) / (2 * DET);
-		double radius = Math.sqrt(CenterX * CenterX + CenterY * CenterY + Mz
-				+ 2 * xnew);
+		double radius = Math.sqrt(CenterX * CenterX + CenterY * CenterY + Mz + 2 * xnew);
 		if (Double.isNaN(radius)) {
-			IJ.error("Fit Circle", "Points are collinear.");
+			MyLog.waitThere("Fit Circle: Points are collinear.");
 			return;
 		}
 
@@ -413,9 +403,8 @@ public class MyCircleDetector {
 
 		// messo imp.setRoi anzich� IJ.makeOval perch� permette di non mostrare
 		// l'immagine
-		imp.setRoi(new OvalRoi((int) Math.round(CenterX - radius), (int) Math
-				.round(CenterY - radius), (int) Math.round(2 * radius),
-				(int) Math.round(2 * radius)));
+		imp.setRoi(new OvalRoi((int) Math.round(CenterX - radius), (int) Math.round(CenterY - radius),
+				(int) Math.round(2 * radius), (int) Math.round(2 * radius)));
 	}
 
 	/***
@@ -426,8 +415,7 @@ public class MyCircleDetector {
 	 * @param delta
 	 * @return
 	 */
-	public static ArrayList<ArrayList<Double>> peakDet(double[][] profile,
-			double delta) {
+	public static ArrayList<ArrayList<Double>> peakDet(double[][] profile, double delta) {
 
 		double max = Double.MIN_VALUE;
 		double min = Double.MAX_VALUE;
@@ -607,8 +595,8 @@ public class MyCircleDetector {
 				}
 			}
 		}
-		ImagePlus imp15 = NewImage.createByteImage("OUTLINE", imp1.getWidth(),
-				imp1.getHeight(), 1, NewImage.FILL_BLACK);
+		ImagePlus imp15 = NewImage.createByteImage("OUTLINE", imp1.getWidth(), imp1.getHeight(), 1,
+				NewImage.FILL_BLACK);
 		ByteProcessor ip15 = (ByteProcessor) imp15.getProcessor();
 		byte[] pixels15 = (byte[]) ip15.getPixels();
 
@@ -619,8 +607,7 @@ public class MyCircleDetector {
 		}
 		return imp15;
 	}
-	
-	
+
 	/**
 	 * Imposta una Roi circolare diametro 4 in corrispondenza delle coordinate
 	 * passate, importa la Roi nell'Overlay. La routine e' utilizzata per
@@ -632,8 +619,7 @@ public class MyCircleDetector {
 	 * @param yCenterCircle
 	 * @param color1
 	 */
-	public static void drawCenter(ImagePlus imp1, Overlay over1,
-			int xCenterCircle, int yCenterCircle, Color color1) {
+	public static void drawCenter(ImagePlus imp1, Overlay over1, int xCenterCircle, int yCenterCircle, Color color1) {
 		// imp1.setOverlay(over1);
 		imp1.setRoi(new OvalRoi(xCenterCircle - 2, yCenterCircle - 2, 4, 4));
 		Roi roi1 = imp1.getRoi();
@@ -643,8 +629,8 @@ public class MyCircleDetector {
 		imp1.killRoi();
 	}
 
-	public static void drawCenter(ImagePlus imp1, Overlay over1,
-			double xCenterCircle, double yCenterCircle, Color color1) {
+	public static void drawCenter(ImagePlus imp1, Overlay over1, double xCenterCircle, double yCenterCircle,
+			Color color1) {
 		// imp1.setOverlay(over1);
 		imp1.setRoi(new OvalRoi(xCenterCircle - 2, yCenterCircle - 2, 4, 4));
 		Roi roi1 = imp1.getRoi();
@@ -653,6 +639,5 @@ public class MyCircleDetector {
 		over1.addElement(imp1.getRoi());
 		imp1.killRoi();
 	}
-	
-	
+
 }

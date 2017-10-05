@@ -64,6 +64,11 @@ public class SimplexBasedRegressor {
 			double t2_guess, boolean debug3) {
 
 		// check if this is two value
+		
+		if (te_points==null) IJ.log("te_points null");
+		if (signal_points==null) IJ.log("signal_points null");
+		
+		
 		if (te_points.length == 2) {
 			double[] ret = new double[3];
 			ret[0] = (te_points[1] - te_points[0])
@@ -76,17 +81,15 @@ public class SimplexBasedRegressor {
 			String sta1 = "";
 			for (int i1 = 0; i1 < te_points.length; i1++)
 				sta1 = sta1 + " " + te_points[i1];
-			IJ.log("te_points=" + sta1);
 			sta1 = "";
 			for (int i1 = 0; i1 < signal_points.length; i1++)
 				sta1 = sta1 + " " + signal_points[i1];
-			IJ.log("signal_points=" + sta1);
-			IJ.log("t2_guess= " + t2_guess);
 
 		}
 
 		// more than two values, use laborious fit
 		try {
+
 			mXPoints = te_points; // t3
 			mYPoints = signal_points; // signal
 			mSimplex.setObjectAndMethod(this, "calculateResidualT2", 2, 0d);
@@ -120,6 +123,10 @@ public class SimplexBasedRegressor {
 	 */
 	public double[] regressADC(double[] b_vals, double[] signal_points,
 			double d_guess) {
+		
+		if (b_vals==null) IJ.log("b_vals null");
+		if (signal_points==null) IJ.log("signal_points null");
+
 
 		// check if this is two value
 		if (b_vals.length == 2) {
@@ -162,6 +169,9 @@ public class SimplexBasedRegressor {
 			double[] signal_points, double t1_guess)
 
 	{
+		if (tr_points==null) IJ.log("tr_points null");
+		if (signal_points==null) IJ.log("signal_points null");
+
 
 		try {
 			mXPoints = tr_points; // te
@@ -225,7 +235,7 @@ public class SimplexBasedRegressor {
 //		if (t2 < 0.00001 || t2 > 3000)
 			if (t2 < 0.00001 || t2 > 300)
 
-			return Double.MAX_VALUE; // inserito il 300 poichè i nostri gel
+			return Double.MAX_VALUE; // inserito il 300 poichï¿½ i nostri gel
 		// hanno T2 superiori a 100 msec
 		double residual = 0d;
 		// int iter = 0;
@@ -272,8 +282,8 @@ public class SimplexBasedRegressor {
 	// #############################################################################
 	/**
 	 * returns the residual for a test t1 value in inversion recovery. Qui
-	 * abbiamo corretto la formula per la IR, vedremo in seguito se è possibile 
-	 * parametrizzare in qualche modo il TR, che vale 4000d e per ora è scritto
+	 * abbiamo corretto la formula per la IR, vedremo in seguito se ï¿½ possibile 
+	 * parametrizzare in qualche modo il TR, che vale 4000d e per ora ï¿½ scritto
 	 * come magicnumber
 	 * 
 	 * Perform a T1 relaxation fit S=So(1-2*exp(-TI/T1)-exp(-TR/T1)) returns

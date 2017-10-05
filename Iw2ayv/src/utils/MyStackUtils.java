@@ -5,7 +5,9 @@ import ij.ImagePlus;
 import ij.ImageStack;
 import ij.gui.Overlay;
 import ij.gui.Roi;
+import ij.io.DirectoryChooser;
 import ij.io.Opener;
+import ij.measure.Calibration;
 import ij.process.ImageConverter;
 import ij.process.ImageProcessor;
 import ij.process.ImageStatistics;
@@ -33,7 +35,7 @@ public class MyStackUtils {
 	 * @return ImagePlus della slice estratta
 	 */
 	public static ImagePlus imageFromStack(ImagePlus stack, int slice) {
-		
+
 		if (stack == null) {
 			IJ.log("imageFromStack.stack== null");
 			return null;
@@ -76,12 +78,46 @@ public class MyStackUtils {
 	public static ImagePlus imagesToStack16(String[] path) {
 		Opener opener1 = new Opener();
 		ImagePlus imp1 = opener1.openImage(path[0]);
-		int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_ROWS));
-		int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_COLUMNS));
+		int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ROWS));
+		int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COLUMNS));
 		ImageStack newStack = new ImageStack(width, height);
 		for (int f1 = 0; f1 < path.length; f1++) {
+			imp1 = opener1.openImage(path[f1]);
+			if (imp1 == null) {
+				IJ.log("stackBuilder2: image file unavailable?");
+				return null;
+			}
+			ImageProcessor ip1 = imp1.getProcessor();
+			if (f1 == 0)
+				newStack.update(ip1);
+
+			String sliceInfo1 = imp1.getTitle();
+			String sliceInfo2 = (String) imp1.getProperty("Info");
+			// aggiungo i dati header alle singole immagini dello stack
+			if (sliceInfo2 != null)
+				sliceInfo1 += "\n" + sliceInfo2;
+			newStack.addSlice(sliceInfo2, ip1);
+		}
+
+		ImagePlus newImpStack = new ImagePlus("INPUT_STACK", newStack);
+		if (path.length == 1) {
+			String sliceInfo3 = imp1.getTitle();
+			sliceInfo3 += "\n" + (String) imp1.getProperty("Info");
+			newImpStack.setProperty("Info", sliceInfo3);
+		}
+		return newImpStack;
+	}
+
+	public static ImagePlus imagesToStack16(String[] path, boolean deb) {
+		Opener opener1 = new Opener();
+		ImagePlus imp1 = opener1.openImage(path[0]);
+		int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ROWS));
+		int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COLUMNS));
+		ImageStack newStack = new ImageStack(width, height);
+		for (int f1 = 0; f1 < path.length; f1++) {
+			if (deb && f1 % 100 == 0)
+				MyLog.trace("load ima " + f1 + "/" + path.length + "   MEMORY= " + IJ.currentMemory() / (1024 * 1024),
+						deb);
 			imp1 = opener1.openImage(path[f1]);
 			if (imp1 == null) {
 				IJ.log("stackBuilder2: image file unavailable?");
@@ -118,10 +154,8 @@ public class MyStackUtils {
 	public static ImagePlus imagesToStack32(String[] path) {
 		Opener opener1 = new Opener();
 		ImagePlus imp1 = opener1.openImage(path[0]);
-		int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_ROWS));
-		int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_COLUMNS));
+		int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ROWS));
+		int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COLUMNS));
 		ImageStack newStack = new ImageStack(width, height);
 		for (int f1 = 0; f1 < path.length; f1++) {
 			imp1 = opener1.openImage(path[f1]);
@@ -178,6 +212,49 @@ public class MyStackUtils {
 		return ret;
 	}
 
+	public static double[][][] stack16ToMatrix32Calibrated(ImagePlus imp1) {
+		ImageStack stack1 = imp1.getImageStack();
+		int slices1 = imp1.getStackSize();
+		int width1 = imp1.getWidth();
+		int height1 = imp1.getHeight();
+		Calibration cal1 = imp1.getCalibration();
+
+		double[][][] ret = new double[slices1][width1][height1];
+		for (int slice = 0; slice < ret.length; slice++) {
+			ImageProcessor ip1 = stack1.getProcessor(slice + 1);
+			if (imp1.getType() == ImagePlus.GRAY16) {
+				short[] sdata = (short[]) ip1.getPixels();
+				for (int i1 = 0; i1 < width1; i1++) {
+					for (int i2 = 0; i2 < height1; i2++) {
+						ret[slice][i1][i2] = (double) cal1.getRawValue(sdata[i1 + i2 * width1]);
+					}
+				}
+			}
+			if (imp1.getType() == ImagePlus.GRAY32) {
+				float[] sdata = (float[]) ip1.getPixels();
+				for (int i1 = 0; i1 < width1; i1++) {
+					for (int i2 = 0; i2 < height1; i2++) {
+						ret[slice][i1][i2] = (double) cal1.getRawValue(sdata[i1 + i2 * width1]);
+					}
+				}
+			}
+
+		}
+		return ret;
+	}
+
+	// public static ImagePlus stackFromFolder(String path) {
+	//
+	// DirectoryChooser od2 = new DirectoryChooser(
+	// "SELEZIONARE LA CARTELLA IMMAGINI");
+	// String filePath = od2.getDirectory();
+	// if (filePath == null)
+	// return null;
+	//
+	//
+	// return null;
+	// }
+
 	// public ImagePlus extractZStack(ImagePlus imp1, int numberOfFrames,
 	// int numberOfTemporalPositions) {
 	//
@@ -206,23 +283,70 @@ public class MyStackUtils {
 	 */
 	public static ImagePlus imageFromMosaic(ImagePlus imp1, int num) {
 
-		
-		
-//		int step = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-//				MyConst.DICOM_PHASE_ENCODING_STEPS)); // 64 "0018,0089"
-		
+		// int step = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
+		// MyConst.DICOM_PHASE_ENCODING_STEPS)); // 64 "0018,0089"
 
 		String[] matrix2 = ReadDicom.parseString(ReadDicom.readDicomParameter(imp1, "0018,1310"));
 		int step = ReadDicom.readInt(matrix2[0]);
 
-		
-		
+		// int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
+		// MyConst.DICOM_COLUMNS)); // 384
+		// // "0028,0011"
 
-		int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_COLUMNS)); // 384 "0028,0011"
+		int width = imp1.getWidth();
 
-		int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_ROWS)); // 384 "0028,0010"
+		// int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
+		// MyConst.DICOM_ROWS)); // 384
+		// "0028,0010"
+		int height = imp1.getHeight();
+
+		int cropWidth = step;
+		int cropHeight = step;
+		int box = width / step;
+
+		int rigona = (num / box); // 252
+		int colonnona = num - rigona * box; // 131 (27)
+		ImageProcessor ip2 = imp1.getProcessor();
+		int startRiga = rigona * step;
+		int startColonna = colonnona * step;
+
+		imp1.setRoi(startColonna, startRiga, cropWidth, cropHeight);
+		String title = "SUBMOSAIC " + num;
+		ImagePlus imp3 = new ImagePlus(title, ip2.crop());
+		return imp3;
+	}
+
+	/***
+	 * Estrae l'immagine da un mosaico. Attenzione che la prima immagine dovra'
+	 * essere la 0
+	 * 
+	 * @param imp1
+	 *            Immagine mosaic
+	 * @param num2
+	 *            Numero della immagine da estrarre, si parte da 0 in alto a sx
+	 *            e ci si muove prima verso destra
+	 * @return Immgine estratta
+	 */
+	public static ImagePlus imageFromMosaic(ImagePlus imp1, int num, int step) {
+
+		// int step = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
+		// MyConst.DICOM_PHASE_ENCODING_STEPS)); // 64 "0018,0089"
+
+		// String[] matrix2 =
+		// ReadDicom.parseString(ReadDicom.readDicomParameter(imp1,
+		// "0018,1310"));
+		// int step = ReadDicom.readInt(matrix2[0]);
+
+		// int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
+		// MyConst.DICOM_COLUMNS)); // 384
+		// // "0028,0011"
+
+		int width = imp1.getWidth();
+
+		// int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
+		// MyConst.DICOM_ROWS)); // 384
+		// "0028,0010"
+		int height = imp1.getHeight();
 
 		int cropWidth = step;
 		int cropHeight = step;
@@ -253,17 +377,13 @@ public class MyStackUtils {
 	 *            e ci si muove prima verso destra
 	 * @return Immgine estratta
 	 */
-	public static ImagePlus imageFromMosaicWithOffset(ImagePlus imp1, int num,
-			int offX, int offY) {
+	public static ImagePlus imageFromMosaicWithOffset(ImagePlus imp1, int num, int offX, int offY) {
 
-		int step = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_PHASE_ENCODING_STEPS)); // 64
+		int step = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1, MyConst.DICOM_PHASE_ENCODING_STEPS)); // 64
 
-		int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_COLUMNS)); // 384
+		int width = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COLUMNS)); // 384
 
-		int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1,
-				MyConst.DICOM_ROWS)); // 384
+		int height = ReadDicom.readInt(ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ROWS)); // 384
 
 		int cropWidth = step;
 		int cropHeight = step;

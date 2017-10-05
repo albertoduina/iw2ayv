@@ -12,6 +12,7 @@ import ij.process.ImageProcessor;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
@@ -104,6 +105,68 @@ public class MyLog {
 			rt1.show(title);
 			return;
 		}
+	}
+
+	public static void resultsLog2(int[] in1, double[] in2, String title1, String title2, String name) {
+		ResultsTable rt1 = new ResultsTable();
+		for (int i1 = 0; i1 < in1.length; i1++) {
+			rt1.incrementCounter();
+			rt1.addValue(title1, in1[i1]);
+			rt1.addValue(title2, in2[i1]);
+		}
+		rt1.show(name);
+		return;
+
+	}
+
+	public static void resultsLogMatrix(String[][] in1, String[] titles, String name) {
+		ResultsTable rt1 = new ResultsTable();
+		// MyLog.waitHere("in1.length= " + in1.length + " in1[0].length= " +
+		// in1[0].length);
+
+		if (in1 == null) {
+			MyLog.waitThere("Warning input vector " + name + " null");
+		} else {
+			for (int i1 = 0; i1 < in1.length; i1++) {
+				rt1.incrementCounter();
+				for (int i2 = 0; i2 < in1[0].length; i2++) {
+					String aux = "";
+					if (i2 < titles.length)
+						aux = titles[i2];
+					else
+						aux = "" + i2;
+
+					rt1.addValue(aux, (String) in1[i1][i2]);
+				}
+			}
+		}
+		rt1.show(name);
+		return;
+	}
+
+	public static void resultsLogMatrix(double[][] in1, String[] titles, String name) {
+		ResultsTable rt1 = new ResultsTable();
+		// MyLog.waitHere("in1.length= " + in1.length + " in1[0].length= " +
+		// in1[0].length);
+
+		if (in1 == null) {
+			MyLog.waitThere("Warning input vector " + name + " null");
+		} else {
+			for (int i1 = 0; i1 < in1.length; i1++) {
+				rt1.incrementCounter();
+				for (int i2 = 0; i2 < in1[0].length; i2++) {
+					String aux = "";
+					if (i2 < titles.length)
+						aux = titles[i2];
+					else
+						aux = "" + i2;
+
+					rt1.addValue(aux, (double) in1[i1][i2]);
+				}
+			}
+		}
+		rt1.show(name);
+		return;
 	}
 
 	public static void logArrayListInteger(List<int[]> tmp, String title) {
@@ -646,6 +709,41 @@ public class MyLog {
 	// }
 	// }
 
+	public static void traceStart() {
+		IJ.log("");
+		Frame lw = WindowManager.getFrame("Log");
+		if (lw == null)
+			return;
+		lw.setSize(600, 1000);
+		lw.setLocation(10, 10);
+
+	}
+
+	public static void trace(String str, boolean trok) {
+
+		if (trok)
+	//		TextWindow tw = new TextWindow("Sequenze", "<-- INIZIO Sequenze -->", 300, 200);
+
+			IJ.log("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "    " + str);
+	}
+
+	public static void trace(boolean trok) {
+		if (trok)
+			IJ.log("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber());
+	}
+
+	public static void trace2(String str) {
+		IJ.log("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "    " + str);
+	}
+
+	public static void trace2() {
+		IJ.log("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber());
+	}
+
 	public static void waitThere(String str) {
 		new WaitForUserDialog("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "file="
@@ -697,28 +795,29 @@ public class MyLog {
 		IJ.log("___________________________________________");
 	}
 
-//	/***
-//	 * Append a line to a log file
-//	 * 
-//	 * @param path
-//	 * @param linea
-//	 */
-//	public static void appendLog(String path, String linea) {
-//
-//		BufferedWriter out;
-//		String time = new SimpleDateFormat("yyyy-MM-dd hh:mm").format(new Date());
-//
-//		try {
-//			out = new BufferedWriter(new FileWriter(path, true));
-//			out.write(time + " " + linea);
-//			out.newLine();
-//			out.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//	}
+	// /***
+	// * Append a line to a log file
+	// *
+	// * @param path
+	// * @param linea
+	// */
+	// public static void appendLog(String path, String linea) {
+	//
+	// BufferedWriter out;
+	// String time = new SimpleDateFormat("yyyy-MM-dd hh:mm").format(new
+	// Date());
+	//
+	// try {
+	// out = new BufferedWriter(new FileWriter(path, true));
+	// out.write(time + " " + linea);
+	// out.newLine();
+	// out.close();
+	// } catch (IOException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	//
+	// }
 
 	public static void appendLog2(String path, String linea) {
 
@@ -754,18 +853,18 @@ public class MyLog {
 
 	}
 
-//	/***
-//	 * Initialize a log file
-//	 * 
-//	 * @param path
-//	 */
-//	public static void initLog(String path) {
-//		File f1 = new File(path);
-//		if (f1.exists()) {
-//			f1.delete();
-//		}
-//		appendLog(path, "---- INIZIO ---------");
-//	}
+	// /***
+	// * Initialize a log file
+	// *
+	// * @param path
+	// */
+	// public static void initLog(String path) {
+	// File f1 = new File(path);
+	// if (f1.exists()) {
+	// f1.delete();
+	// }
+	// appendLog(path, "---- INIZIO ---------");
+	// }
 
 	public static void initLog3(String path) {
 		File f1 = new File(path);
@@ -831,7 +930,7 @@ public class MyLog {
 				prg + " > logDebug name= " + f1.getName() + "  tableRiga= " + tableRiga + " tableCode= " + tableCode
 						+ " imaCode= " + imaCode + " tableCoil=" + tableCoil + " imaCoil= " + imaCoil);
 	}
-	
+
 	public static void appendLog(String path, String linea) {
 
 		BufferedWriter out;
@@ -858,6 +957,5 @@ public class MyLog {
 		}
 		appendLog(path, "---- INIZIO ---------");
 	}
-
 
 }

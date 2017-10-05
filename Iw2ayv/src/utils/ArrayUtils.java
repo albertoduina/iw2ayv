@@ -474,6 +474,73 @@ public class ArrayUtils {
 		return Math.sqrt(sum / (n - 1));
 	}
 
+	
+	public static double vetSd(double[] data) {
+		final int n = data.length;
+		if (n < 2) {
+			return Double.NaN;
+		}
+		double avg = data[0];
+		double sum = 0;
+		// yes, i1 below starts from 1
+		for (int i1 = 1; i1 < data.length; i1++) {
+			double newavg = avg + (data[i1] - avg) / (i1 + 1);
+			sum += (data[i1] - avg) * (data[i1] - newavg);
+			avg = newavg;
+		}
+		return Math.sqrt(sum / (n));
+	}
+	
+
+	public static double vetSd(float[] data) {
+		final int n = data.length;
+		if (n < 2) {
+			return Float.NaN;
+		}
+		double avg = (double) data[0];
+		double sum = 0;
+		// yes, i1 below starts from 1
+		for (int i1 = 1; i1 < data.length; i1++) {
+			double newavg = avg + (data[i1] - avg) / (i1 + 1);
+			sum += (data[i1] - avg) * (data[i1] - newavg);
+			avg = newavg;
+		}
+		return Math.sqrt(sum / (n));
+	}
+
+	public static double vetSd(int[] data) {
+		final int n = data.length;
+		if (n < 2) {
+			return Double.NaN;
+		}
+		double avg = (double) data[0];
+		double sum = 0;
+		// yes, i1 below starts from 1
+		for (int i1 = 1; i1 < data.length; i1++) {
+			double newavg = avg + (data[i1] - avg) / (i1 + 1);
+			sum += (data[i1] - avg) * (data[i1] - newavg);
+			avg = newavg;
+		}
+		return Math.sqrt(sum / (n));
+	}
+
+	public static double vetSd(short[] data) {
+		final int n = data.length;
+		if (n < 2) {
+			return Double.NaN;
+		}
+		double avg = (double) data[0];
+		double sum = 0;
+		// yes, i1 below starts from 1
+		for (int i1 = 1; i1 < data.length; i1++) {
+			double newavg = avg + (data[i1] - avg) / (i1 + 1);
+			sum += (data[i1] - avg) * (data[i1] - newavg);
+			avg = newavg;
+		}
+		return Math.sqrt(sum / (n));
+	}
+
+
 	public static double[] vetReverse(double[] profile1) {
 		double[] vetreverse = new double[profile1.length];
 		for (int i1 = 0; i1 < profile1.length; i1++) {
@@ -491,4 +558,11 @@ public class ArrayUtils {
 		return vetinvert;
 	}
 
+	public static double[] vetCopy(double[] source, double[] destination) {
+		for (int i1 = 0; i1 < source.length; i1++) {
+			destination[i1] = source[i1];
+		}
+		return destination;
+	}
+	
 }

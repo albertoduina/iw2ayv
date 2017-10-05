@@ -64,4 +64,68 @@ public class MyGenericDialogGrid {
 		}
 		return d == null ? Double.NaN : d.doubleValue();
 	}
+
+	// =======================================================
+
+	public boolean showDialog3(int gridWidth, int gridHeight, TextField[] tf2, String[] lab2, double[] value2,
+			double[] value3, String title2, int decimals) {
+
+		boolean vai = false;
+		do {
+			GenericDialog gd3 = new GenericDialog(title2);
+			gd3.enableYesNoCancel("default", "OK");
+			gd3.addPanel(makePanel3(gd3, gridWidth, gridHeight, tf2, lab2, value2, decimals));
+			gd3.showDialog();
+			if (gd3.wasCanceled()) {
+				return false;
+			}
+			if (gd3.wasOKed()) {
+				ArrayUtils.vetCopy(value3, value2);
+				vai = true;
+			} else {
+				vai=false;
+			}
+		} while (vai);
+
+		getValues3(gridWidth * gridHeight, tf2, value2);
+		return true;
+	}
+
+	Panel makePanel3(GenericDialog gd2, int gridWidth, int gridHeight, TextField[] tf2, String[] lab2, double[] value2,
+			int decimals) {
+		Panel panel = new Panel();
+		panel.setLayout(new GridLayout(gridHeight, gridWidth));
+		int gridSize = gridWidth * gridHeight;
+		for (int i1 = 0; i1 < gridSize; i1++) {
+			tf2[i1] = new TextField("  " + IJ.d2s(value2[i1], decimals));
+			panel.add(new Label(lab2[i1]));
+			panel.add(tf2[i1]);
+		}
+		return panel;
+	}
+
+	public void getValues3(int gridSize, TextField[] tf2, double[] value2) {
+		for (int i1 = 0; i1 < gridSize; i1++) {
+			String s2 = tf2[i1].getText();
+			value2[i1] = getValue3(s2);
+		}
+	}
+
+	public void displayValues3(int gridSize, double[] value2, int decimals) {
+		for (int i1 = 0; i1 < gridSize; i1++)
+			IJ.log(i1 + " " + IJ.d2s(value2[i1], decimals));
+	}
+
+	public double getValue3(String theText) {
+		Double d;
+		String str = theText;
+		try {
+			str = str.replaceAll("\\s+", "");
+			d = new Double(str);
+		} catch (NumberFormatException e) {
+			d = null;
+		}
+		return d == null ? Double.NaN : d.doubleValue();
+	}
+
 }

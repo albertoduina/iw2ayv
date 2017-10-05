@@ -586,7 +586,9 @@ public class UtilAyv {
 	 *            contain two or more numbers.
 	 * @return standard deviation estimate of population ( to get estimate of
 	 *         sample, use n instead of n-1 in last line )
+	 * @deprecated see ArrayUtils.vetSdKnuth
 	 */
+
 	@Deprecated
 	public static double vetSdKnuth(double[] data) {
 		final int n = data.length;
@@ -714,6 +716,9 @@ public class UtilAyv {
 		return max;
 	}
 
+	/**
+	 * @deprecated see ArrayUtils.vetMean
+	 */
 	@Deprecated
 	public static double vetMean(double[] data) {
 		final int n = data.length;
@@ -2590,7 +2595,8 @@ public class UtilAyv {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
 						+ "la descrizione delle sequenze ricevute e'differente " + vetString[i1] + "  " + item1
 						+ "   <>    " + item2, debug);
-				int res = ButtonMessages.ModalMsg("ATTENZIONE se si preme CONTINUA ELABORAZIONE i risultati possono essere fuori specifiche!!",
+				int res = ButtonMessages.ModalMsg(
+						"ATTENZIONE se si preme CONTINUA ELABORAZIONE i risultati possono essere fuori specifiche!!",
 						"CONTINUA ELABORAZIONE", "SALTA A IMMAGINE SUCCESSIVA");
 
 				if (res == 1)
@@ -3126,6 +3132,5 @@ public class UtilAyv {
 			return path1;
 		return path2;
 	}
-
 
 } // UtilAyv

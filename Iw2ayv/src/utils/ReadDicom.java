@@ -3,6 +3,7 @@ package utils;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
+import ij.gui.WaitForUserDialog;
 import ij.io.Opener;
 import ij.plugin.DICOM;
 
@@ -78,8 +79,14 @@ public class ReadDicom {
 			// MyLog.waitThere("aux1= " + aux1);
 
 			IJ.log("" + imp.getTitle());
+			MyLog.trace("readDicomParameter WARNING!! Header is null.", true);
+			MyLog.trace("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "file="
+					+ Thread.currentThread().getStackTrace()[3].getFileName() + " " + " line="
+					+ Thread.currentThread().getStackTrace()[3].getLineNumber()  , true);
 
-			IJ.error("readDicomParameter WARNING!! Header is null.");
+
+//			IJ.error("readDicomParameter WARNING!! Header is null.");
 			attribute = null;
 			return (attribute);
 		}
