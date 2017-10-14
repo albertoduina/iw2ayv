@@ -474,7 +474,6 @@ public class ArrayUtils {
 		return Math.sqrt(sum / (n - 1));
 	}
 
-	
 	public static double vetSd(double[] data) {
 		final int n = data.length;
 		if (n < 2) {
@@ -490,7 +489,6 @@ public class ArrayUtils {
 		}
 		return Math.sqrt(sum / (n));
 	}
-	
 
 	public static double vetSd(float[] data) {
 		final int n = data.length;
@@ -540,6 +538,44 @@ public class ArrayUtils {
 		return Math.sqrt(sum / (n));
 	}
 
+	public static int vetMedian(int[] data) {
+
+		int[] sorted = ArrayUtils.vetSort(data);
+		int median = sorted[sorted.length / 2];
+		return median;
+	}
+
+	public static double vetMedian(double[] data) {
+
+		double[] sorted = ArrayUtils.vetSort(data);
+		double median = sorted[sorted.length / 2];
+		return median;
+	}
+
+	public static int vetQuartile(int[] data, int num) {
+
+		int[] sorted = ArrayUtils.vetSort(data);
+		int len = sorted.length / 2;
+		int out = 0;
+		int[] aux = new int[len];
+		if (num == 1) {
+			for (int i1 = 0; i1 < len; i1++) {
+				aux[i1] = sorted[i1];
+			}
+			out = vetMedian(aux);
+
+		} else if (num == 3) {
+			for (int i1 = 0; i1 < len; i1++) {
+				aux[i1] = sorted[len + i1];
+			}
+			out = vetMedian(aux);
+
+		} else {
+			MyLog.waitHere("non previsto");
+			return 999999;
+		}
+		return out;
+	}
 
 	public static double[] vetReverse(double[] profile1) {
 		double[] vetreverse = new double[profile1.length];
@@ -547,6 +583,44 @@ public class ArrayUtils {
 			vetreverse[profile1.length - 1 - i1] = profile1[i1];
 		}
 		return vetreverse;
+	}
+
+	public static double[] vetSort(double[] source) {
+		double[] sorted = new double[source.length];
+		for (int i1 = 0; i1 < source.length; i1++) {
+			sorted[i1] = source[i1];
+		}
+		// effettuo minsort su key, gli altri campi andranno in parallelo
+		double aux1 = 0;
+		for (int i1 = 0; i1 < sorted.length; i1++) {
+			for (int i2 = i1 + 1; i2 < sorted.length; i2++) {
+				if (sorted[i2] < sorted[i1]) {
+					aux1 = sorted[i1];
+					sorted[i1] = sorted[i2];
+					sorted[i2] = aux1;
+				}
+			}
+		}
+		return sorted;
+	}
+
+	public static int[] vetSort(int[] source) {
+		int[] sorted = new int[source.length];
+		for (int i1 = 0; i1 < source.length; i1++) {
+			sorted[i1] = source[i1];
+		}
+		// effettuo minsort su key, gli altri campi andranno in parallelo
+		int aux1 = 0;
+		for (int i1 = 0; i1 < sorted.length; i1++) {
+			for (int i2 = i1 + 1; i2 < sorted.length; i2++) {
+				if (sorted[i2] < sorted[i1]) {
+					aux1 = sorted[i1];
+					sorted[i1] = sorted[i2];
+					sorted[i2] = aux1;
+				}
+			}
+		}
+		return sorted;
 	}
 
 	public static double[] vetInvert(double[] profile1) {
@@ -564,5 +638,5 @@ public class ArrayUtils {
 		}
 		return destination;
 	}
-	
+
 }

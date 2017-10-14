@@ -20,17 +20,7 @@ public class MyStackUtils {
 	 * @param stack
 	 *            stack contenente le slices
 	 * @param slice
-	 *            numero della slice da estrarre, deve partire da 1, non �
-	 *            ammesso lo 0
-	 * @return ImagePlus della slice estratta
-	 */
-	/**
-	 * estrae una singola slice da uno stack. Estrae anche i dati header
-	 * 
-	 * @param stack
-	 *            stack contenente le slices
-	 * @param slice
-	 *            numero della slice da estrarre, deve partire da 1, non �
+	 *            numero della slice da estrarre, deve partire da 1, non e'
 	 *            ammesso lo 0
 	 * @return ImagePlus della slice estratta
 	 */
