@@ -20,6 +20,7 @@ import ij.gui.PlotWindow;
 import ij.gui.PointRoi;
 import ij.plugin.Duplicator;
 import ij.plugin.Orthogonal_Views;
+import ij.process.ImageProcessor;
 import ij.process.ImageStatistics;
 
 public class MySphere {
@@ -396,9 +397,10 @@ public class MySphere {
 		// direzioni mancanti.
 		// =================================================================
 
-		// imp1.show();
+		imp1.show();
 		IJ.run(imp1, "Orthogonal Views", "");
 		Orthogonal_Views ort1 = Orthogonal_Views.getInstance();
+		IJ.wait(10);
 		if (demo)
 			MyLog.waitHere(
 					"--- 000 ---\noutput di 'Orthogonal Views', centrato di default sulla slice centrale dello stack\n"
@@ -545,7 +547,7 @@ public class MySphere {
 	 * @return
 	 */
 
-	public static double[] searchSpotSphere(ImagePlus imp1, double[] out1, boolean demo) {
+	public static double[] searchSpotSphere(ImagePlus imp1, double[] out1, String aa, boolean demo) {
 
 		ArrayList<Double> xlist = new ArrayList<Double>();
 		ArrayList<Double> ylist = new ArrayList<Double>();
@@ -555,6 +557,7 @@ public class MySphere {
 		int radius = (int) out1[3] / 2;
 
 		for (int i1 = 0; i1 < imp1.getImageStackSize(); i1++) {
+			IJ.showStatus("" + aa + i1 + "/" + imp1.getImageStackSize());
 			ImagePlus imp20 = MyStackUtils.imageFromStack(imp1, i1 + 1);
 			if (demo)
 				IJ.log("slice= " + i1);
@@ -589,6 +592,8 @@ public class MySphere {
 			ylist.add(spot[1]);
 			zlist.add((double) i1);
 			maxlist.add(spot[2]);
+			// IJ.log("" + spot[0] + ", " + spot[1] + ", " + i1 + ", " +
+			// spot[2]);
 		}
 		double maxval = -99999;
 		double maxx = 0;
@@ -609,4 +614,48 @@ public class MySphere {
 		out4[3] = maxval;
 		return out4;
 	}
+
+	public static ImagePlus orthogonalStack(ImagePlus imp1, int direction, boolean demo) {
+		imp1.show();
+		IJ.run(imp1, "Orthogonal Views", "");
+		Orthogonal_Views ort2 = Orthogonal_Views.getInstance();
+		IJ.wait(10);
+		ImageStack newStack = null;
+		ImagePlus imp102 = null;
+		ImageProcessor ip102 = null;
+		if (direction == 1) {
+			newStack = new ImageStack(imp1.getWidth(), imp1.getNSlices());
+			for (int i1 = 0; i1 < imp1.getHeight(); i1++) {
+				int crossx = imp1.getWidth() / 2;
+				int crossy = i1;
+				int crossz = imp1.getNSlices() / 2;
+				ort2.setCrossLoc(crossx, crossy, crossz);
+				IJ.wait(10);
+				imp102 = ort2.getXZImage();
+				ip102 = imp102.getProcessor();
+				if (i1 == 0)
+					newStack.update(ip102);
+				newStack.addSlice("uno", ip102);
+			}
+		}
+		if (direction == 2) {
+			newStack = new ImageStack(imp1.getNSlices(), imp1.getHeight());
+			for (int i1 = 0; i1 < imp1.getWidth(); i1++) {
+				int crossx = i1;
+				int crossy = imp1.getHeight() / 2;
+				int crossz = imp1.getNSlices() / 2;
+				ort2.setCrossLoc(crossx, crossy, crossz);
+				IJ.wait(10);
+				imp102 = ort2.getYZImage();
+				ip102 = imp102.getProcessor();
+				if (i1 == 0)
+					newStack.update(ip102);
+				newStack.addSlice("due", ip102);
+			}
+		}
+		Orthogonal_Views.stop();
+		ImagePlus newImpStack = new ImagePlus("INPUT_STACK", newStack);
+		return newImpStack;
+	}
+
 }

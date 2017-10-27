@@ -6,8 +6,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
+import ij.plugin.Duplicator;
+import ij.plugin.Orthogonal_Views;
 
 public class MySphereTest {
 
@@ -80,16 +83,68 @@ public class MySphereTest {
 		String path1 = "./Data2/HC1-7";
 		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, false);
 		Boolean demo = false;
+		ImagePlus imp204 = new Duplicator().run(imp1);
 		if (demo)
 			UtilAyv.showImageMaximized(imp1);
 		else
 			imp1.show();
-		double[] center = MySphere.centerSphere(imp1, demo);
+
+		double[] center = MySphere.centerSphere(imp204, demo);
 		MyLog.logVector(center, "center sphere");
-		MyLog.waitHere();
+		IJ.log("==================");
+
 		demo = false;
-		double[] out = MySphere.searchSpotSphere(imp1, center, demo);
-		MyLog.logVector(out, "dati spot finali");
+		double[] out = MySphere.searchSpotSphere(imp204, center, "XY ", demo);
+		MyLog.logVector(out, "XY dati spot finali");
+
+		ImagePlus imp111 = MySphere.orthogonalStack(imp1, 1, demo);
+		demo = false;
+		double[] out2 = MySphere.searchSpotSphere(imp111, center, "XZ ", demo);
+		double[] reorder1 = new double[4];
+		reorder1[0] = out2[0];
+		reorder1[1] = out2[2];
+		reorder1[2] = out2[1];
+		reorder1[3] = out2[3];
+
+		MyLog.logVector(reorder1, "XZ dati spot finali");
+
+		ImagePlus imp222 = MySphere.orthogonalStack(imp1, 2, demo);
+		demo = false;
+		double[] out3 = MySphere.searchSpotSphere(imp222, center, "YZ ", demo);
+		double[] reorder2 = new double[4];
+		reorder2[0] = out3[2];
+		reorder2[1] = out3[1];
+		reorder2[2] = out3[0];
+		reorder2[3] = out3[3];
+
+		MyLog.logVector(reorder2, "YZ dati spot finali");
+
+		MyLog.waitHere("==== FINE ====");
+	}
+
+	@Test
+	public final void testOrthogonalStack1() {
+
+		String path1 = "./Data2/HC1-7";
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, false);
+		Boolean demo = false;
+		imp1.show();
+
+		ImagePlus imp111 = MySphere.orthogonalStack(imp1, 1, demo);
+		imp111.show();
+		MyLog.waitHere("==== FINE ====");
+	}
+
+	@Test
+	public final void testOrthogonalStack2() {
+
+		String path1 = "./Data2/HC1-7";
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, false);
+		Boolean demo = false;
+		imp1.show();
+
+		ImagePlus imp111 = MySphere.orthogonalStack(imp1, 2, demo);
+		imp111.show();
 		MyLog.waitHere("==== FINE ====");
 	}
 
