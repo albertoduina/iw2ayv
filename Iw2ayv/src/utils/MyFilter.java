@@ -639,8 +639,10 @@ public class MyFilter {
 		int yRoi0 = yCenter1 - diam1 / 2;
 		int diamRoi0 = diam1;
 
-		if (demo)
-			UtilAyv.showImageMaximized(imp2);
+		ImageWindow iw1 = null;
+		if (demo) {
+			iw1 = UtilAyv.showImageMaximized(imp2);
+		}
 		// marco con un punto il centro del fantoccio
 
 		imp2.setRoi(new OvalRoi(xRoi0, yRoi0, diamRoi0, diamRoi0));
@@ -684,7 +686,9 @@ public class MyFilter {
 			imp2.getRoi().setStrokeColor(Color.blue);
 			over2.addElement(imp2.getRoi());
 		}
-
+		IJ.wait(100);
+		if (iw1 != null)
+			iw1.close();
 		double[] out = new double[3];
 		out[0] = xmax;
 		out[1] = ymax;

@@ -1,5 +1,6 @@
 package utils;
 
+import java.awt.Frame;
 import java.util.Arrays;
 
 import org.junit.After;
@@ -9,6 +10,7 @@ import org.junit.Test;
 import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
+import ij.WindowManager;
 import ij.plugin.Duplicator;
 import ij.plugin.Orthogonal_Views;
 
@@ -27,6 +29,10 @@ public class MySphereTest {
 	public final void testCircleCannyEdge() {
 
 		String path1 = "./Data/uno/002A";
+		IJ.log("=== start ====");
+		Frame frame = WindowManager.getFrame("Log");
+		frame.setSize(240, 280);
+
 		// ImagePlus imp1 = UtilAyv.openImageMaximized(path1);
 		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, false);
 		double maxFitError = 21.0;
@@ -80,9 +86,15 @@ public class MySphereTest {
 	@Test
 	public final void testSearchSpotSphere() {
 
+		Boolean demo = true;
+		if (demo) {
+			IJ.log("=== start ====");
+			Frame frame = WindowManager.getFrame("Log");
+			frame.setSize(600, 1200);
+		}
+
 		String path1 = "./Data2/HC1-7";
 		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, false);
-		Boolean demo = false;
 		ImagePlus imp204 = new Duplicator().run(imp1);
 		if (demo)
 			UtilAyv.showImageMaximized(imp1);
@@ -90,12 +102,14 @@ public class MySphereTest {
 			imp1.show();
 
 		double[] center = MySphere.centerSphere(imp204, demo);
-		MyLog.logVector(center, "center sphere");
-		IJ.log("==================");
+		if (demo) {
+			MyLog.logVector(center, "center sphere");
+			IJ.log("==================");
+		}
 
-		demo = false;
 		double[] out = MySphere.searchSpotSphere(imp204, center, "XY ", demo);
-		MyLog.logVector(out, "XY dati spot finali");
+		if (demo)
+			MyLog.logVector(out, "XY dati spot finali");
 
 		ImagePlus imp111 = MySphere.orthogonalStack(imp1, 1, demo);
 		demo = false;
@@ -105,8 +119,8 @@ public class MySphereTest {
 		reorder1[1] = out2[2];
 		reorder1[2] = out2[1];
 		reorder1[3] = out2[3];
-
-		MyLog.logVector(reorder1, "XZ dati spot finali");
+		if (demo)
+			MyLog.logVector(reorder1, "XZ dati spot finali");
 
 		ImagePlus imp222 = MySphere.orthogonalStack(imp1, 2, demo);
 		demo = false;
@@ -117,9 +131,10 @@ public class MySphereTest {
 		reorder2[2] = out3[0];
 		reorder2[3] = out3[3];
 
-		MyLog.logVector(reorder2, "YZ dati spot finali");
-
-		MyLog.waitHere("==== FINE ====");
+		if (demo) {
+			MyLog.logVector(reorder2, "YZ dati spot finali");
+		}
+		IJ.showMessage("==== FINE ====");
 	}
 
 	@Test
