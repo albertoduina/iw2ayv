@@ -1,9 +1,14 @@
 package utils;
 
+import java.awt.Color;
+
 import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.ImageWindow;
+import ij.gui.OvalRoi;
 import ij.gui.Overlay;
 import ij.process.ImageProcessor;
+import ij.process.ImageStatistics;
 
 public class MyFilter {
 
@@ -343,6 +348,58 @@ public class MyFilter {
 		return out;
 	}
 
+	public static double[] maxCircularPosition11x11_NEW(ImagePlus imp1) {
+		// double startNanoTime = System.nanoTime();
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
+		long sum121 = 0;
+		double mean121 = 0;
+		double max121 = 0;
+		int xmax121 = 0;
+		int ymax121 = 0;
+		int offset = 0;
+		int address = 0;
+		int count = 0;
+		if (imp1.getBytesPerPixel() != 2)
+			return null;
+		ImageProcessor ip1 = imp1.getProcessor();
+		short[] pixels1 = (short[]) ip1.getPixels();
+		// scansione sulle coordinate del centro roi 11x11
+		for (int i1 = 5; i1 < height - 5; i1++) {
+			for (int i2 = 5; i2 < width - 5; i2++) {
+				sum121 = 0;
+				count = 0;
+
+				// mi posiziono sulla riga
+				for (int i4 = -5; i4 < 6; i4++) {
+					offset = (i1 + i4) * width + i2;
+					for (int i3 = -5; i3 < 6; i3++) {
+						address = offset + i3;
+						sum121 = sum121 + (pixels1[address]);
+						count++;
+					}
+				}
+				mean121 = sum121 / count;
+				if (count != 121)
+					MyLog.waitHere("count= " + count);
+				if (mean121 > max121) {
+					max121 = mean121;
+					xmax121 = i2;
+					ymax121 = i1;
+				}
+			}
+		}
+
+		if (max121 < 50.0) // filtro per evitare di restitruire il fondo
+			return null;
+
+		double[] out = new double[3];
+		out[0] = xmax121;
+		out[1] = ymax121;
+		out[2] = max121;
+		return out;
+	}
+
 	/**
 	 * Ricerca posizione del massimo con una roi 11x11, restituisce le
 	 * coordinate del centro
@@ -512,7 +569,7 @@ public class MyFilter {
 			return null;
 		ImageProcessor ip1 = imp1.getProcessor();
 		short[] pixels1 = (short[]) ip1.getPixels();
-//		short[] pippo1 = new short[lato * lato];
+		// short[] pippo1 = new short[lato * lato];
 
 		// scansione sulle coordinate del centro roi yxy
 		int pip = (lato - 1) / 2;
@@ -526,7 +583,7 @@ public class MyFilter {
 					for (int i3 = -pip; i3 < pip + 1; i3++) {
 						address = offset + i3;
 						sum1 = sum1 + (pixels1[address]);
-//						pippo1[count] = pixels1[address];
+						// pippo1[count] = pixels1[address];
 						count++;
 					}
 				}
@@ -540,7 +597,7 @@ public class MyFilter {
 				}
 			}
 		}
-//		MyLog.resultsLog(pippo1, "pippo1");
+		// MyLog.resultsLog(pippo1, "pippo1");
 		stampa2 = false;
 		if (max1 < 50.0) // filtro per evitare di restitruire il fondo
 			return null;
@@ -548,6 +605,89 @@ public class MyFilter {
 		double[] out = new double[3];
 		out[0] = xmax1;
 		out[1] = ymax1;
+		out[2] = max1;
+		return out;
+	}
+
+	/***
+	 * Cerca l'hotspot all'interno di un cerchio posto sull'immagine reale
+	 * 
+	 * @param imp1
+	 *            immagine da analizzare
+	 * @param circleData
+	 *            profilo esterno fantoccio
+	 * @param circleSearch
+	 *            cerchio di ricerca
+	 * @return
+	 */
+	public static double[] positionSearchCircular(ImagePlus imp1, double[] circleData, double diam22, boolean demo) {
+
+		Overlay over2 = new Overlay();
+		imp1.deleteRoi();
+
+		ImagePlus imp2 = imp1.duplicate();
+		imp2.setOverlay(over2);
+
+		int xCenter1 = (int) circleData[0];
+		int yCenter1 = (int) circleData[1];
+		int diam1 = (int) circleData[2];
+
+		int diam2 = (int) diam22;
+
+		// disegno il perimetro del fantoccio
+		int xRoi0 = xCenter1 - diam1 / 2;
+		int yRoi0 = yCenter1 - diam1 / 2;
+		int diamRoi0 = diam1;
+
+		if (demo)
+			UtilAyv.showImageMaximized(imp2);
+		// marco con un punto il centro del fantoccio
+
+		imp2.setRoi(new OvalRoi(xRoi0, yRoi0, diamRoi0, diamRoi0));
+		if (demo) {
+			imp2.getRoi().setStrokeColor(Color.red);
+			over2.addElement(imp2.getRoi());
+		}
+
+		// ora faccio la scansione del bounding rectangle del cerchio esterno,
+		// utilizzando il cerchio interno, se risulta che il cerchio interno è
+		// completamente all'interno ne marco il contorno in verde
+
+		int xstart = (int) xCenter1 - diam1 / 2 + diam2 / 2;
+		int xend = (int) xCenter1 + diam1 / 2 - diam2 / 2;
+		int ystart = (int) yCenter1 - diam1 / 2 + diam2 / 2;
+		int yend = (int) yCenter1 + diam1 / 2 - diam2 / 2;
+		double max1 = -99999;
+		int xmax = 0;
+		int ymax = 0;
+		for (int x2 = xstart; x2 < xend; x2++) {
+			for (int y2 = ystart; y2 < yend; y2++) {
+				if (MyGeometry.isCircleInside(xCenter1, yCenter1, diam1, x2, y2, diam2)) {
+					imp2.setRoi(new OvalRoi(x2 - diam2 / 2, y2 - diam2 / 2, diam2, diam2));
+					if (demo) {
+						imp2.getRoi().setStrokeColor(Color.green);
+						over2.addElement(imp2.getRoi());
+					}
+
+					ImageStatistics is1 = imp2.getStatistics();
+					double med1 = is1.mean;
+					if (med1 > max1) {
+						max1 = med1;
+						xmax = x2;
+						ymax = y2;
+					}
+				}
+			}
+		}
+		if (demo) {
+			imp2.setRoi(new OvalRoi(xmax - diam2 / 2, ymax - diam2 / 2, diam2, diam2));
+			imp2.getRoi().setStrokeColor(Color.blue);
+			over2.addElement(imp2.getRoi());
+		}
+
+		double[] out = new double[3];
+		out[0] = xmax;
+		out[1] = ymax;
 		out[2] = max1;
 		return out;
 	}

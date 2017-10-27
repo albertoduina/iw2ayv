@@ -2,11 +2,16 @@ package utils;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import ij.IJ;
+import ij.ImagePlus;
+import ij.gui.ImageWindow;
 import ij.gui.Line;
 import ij.gui.OvalRoi;
+import ij.gui.Overlay;
 import ij.gui.PointRoi;
+import ij.process.ImageStatistics;
 
 public class MyGeometry {
 
@@ -24,8 +29,7 @@ public class MyGeometry {
 	 *            coordinata Y fine
 	 * @return vettore con parametri equazione
 	 */
-	public static double[] fromPointsToEquLineExplicit(double x0, double y0,
-			double x1, double y1) {
+	public static double[] fromPointsToEquLineExplicit(double x0, double y0, double x1, double y1) {
 		// la formula esplicita e' y = mx + b
 		// in cui m e' detta anche slope (pendenza) e b intercept (intercetta)
 		// non puo' rappresentare rette verticali
@@ -54,8 +58,7 @@ public class MyGeometry {
 	 *            coordinata Y fine
 	 * @return vettore con parametri equazione
 	 */
-	public static double[] fromPointsToEquLineImplicit(double x0, double y0,
-			double x1, double y1) {
+	public static double[] fromPointsToEquLineImplicit(double x0, double y0, double x1, double y1) {
 		// la formula implicita � ax + by + c = 0
 		double[] out = new double[3];
 
@@ -70,8 +73,7 @@ public class MyGeometry {
 		return out;
 	}
 
-	public static double[] fromPointsToEquCirconferenceImplicit(double cx,
-			double cy, double radius) {
+	public static double[] fromPointsToEquCirconferenceImplicit(double cx, double cy, double radius) {
 		// la formula implicita � x^2 + y^2 + ax + by + c = 0
 		double[] out = new double[3];
 
@@ -107,8 +109,7 @@ public class MyGeometry {
 	 * @return msd[0] coordinata x rototraslata, msd[1] coordinata y
 	 *         rototraslata
 	 */
-	public static double[] coord2D(double ax, double ay, double bx, double by,
-			double cx, double cy, boolean debug1) {
+	public static double[] coord2D(double ax, double ay, double bx, double by, double cx, double cy, boolean debug1) {
 		double x1;
 		double y1;
 		double msd[];
@@ -118,10 +119,8 @@ public class MyGeometry {
 		if (debug1) {
 			IJ.log("-------- coord2D --------");
 
-			IJ.log("angolo= " + Math.toDegrees(alf1) + "  sin= "
-					+ Math.sin(alf1));
-			IJ.log("angolo= " + Math.toDegrees(alf1) + "  cos= "
-					+ Math.cos(alf1));
+			IJ.log("angolo= " + Math.toDegrees(alf1) + "  sin= " + Math.sin(alf1));
+			IJ.log("angolo= " + Math.toDegrees(alf1) + "  cos= " + Math.cos(alf1));
 		}
 		if (Math.sin(alf1) < 0) {
 			// piu30
@@ -136,30 +135,25 @@ public class MyGeometry {
 		msd[0] = x1;
 		msd[1] = y1;
 		if (debug1) {
-			IJ.log("coord2D output cx= " + cx + "  x1= " + x1 + "  cy= " + cy
-					+ "  y1= " + y1);
+			IJ.log("coord2D output cx= " + cx + "  x1= " + x1 + "  cy= " + cy + "  y1= " + y1);
 			IJ.log("--------------------------");
 
 		}
 		return msd;
 	} // coord2D
 
-	public static double[] coord2D2(double[] vetReference, double cx,
-			double cy, boolean debug1) {
+	public static double[] coord2D2(double[] vetReference, double cx, double cy, boolean debug1) {
 		double x1;
 		double y1;
 		double msd[];
 		double alf1;
 
-		alf1 = Math.atan((vetReference[1] - vetReference[3])
-				/ (vetReference[0] - vetReference[2]));
+		alf1 = Math.atan((vetReference[1] - vetReference[3]) / (vetReference[0] - vetReference[2]));
 		if (debug1) {
 			IJ.log("-------- coord2D2 --------");
 
-			IJ.log("angolo= " + Math.toDegrees(alf1) + "  sin= "
-					+ Math.sin(alf1));
-			IJ.log("angolo= " + Math.toDegrees(alf1) + "  cos= "
-					+ Math.cos(alf1));
+			IJ.log("angolo= " + Math.toDegrees(alf1) + "  sin= " + Math.sin(alf1));
+			IJ.log("angolo= " + Math.toDegrees(alf1) + "  cos= " + Math.cos(alf1));
 		}
 
 		if (Math.sin(alf1) < 0) {
@@ -175,8 +169,7 @@ public class MyGeometry {
 		msd[0] = x1;
 		msd[1] = y1;
 		if (debug1) {
-			IJ.log("coord2D output cx= " + cx + "  x1= " + x1 + "  cy= " + cy
-					+ "  y1= " + y1);
+			IJ.log("coord2D output cx= " + cx + "  x1= " + x1 + "  cy= " + cy + "  y1= " + y1);
 			IJ.log("--------------------------");
 		}
 
@@ -235,23 +228,18 @@ public class MyGeometry {
 	 *            end point coordinata y
 	 * @return
 	 */
-	public static double pointsDistance(double ax, double ay, double bx,
-			double by) {
+	public static double pointsDistance(double ax, double ay, double bx, double by) {
 
 		return (new Line(ax, ay, bx, by).getLength());
 
 	}
 
-	
 	public static double pointsDistance(Point a1, Point b1) {
 
 		return (new Line(a1.getX(), a1.getY(), b1.getX(), b1.getY()).getLength());
 
 	}
 
-	
-	
-	
 	/**
 	 * Distanza di un punto da un segmento
 	 * 
@@ -269,22 +257,16 @@ public class MyGeometry {
 	 *            coordinata punto
 	 * @return distanza
 	 */
-	public static double pointToLineDistance(double x1, double y1, double x2,
-			double y2, double xp, double yp) {
+	public static double pointToLineDistance(double x1, double y1, double x2, double y2, double xp, double yp) {
 
-		double normalLength = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1)
-				* (y2 - y1));
-		return Math.abs((xp - x1) * (y2 - y1) - (yp - y1) * (x2 - x1))
-				/ normalLength;
+		double normalLength = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+		return Math.abs((xp - x1) * (y2 - y1) - (yp - y1) * (x2 - x1)) / normalLength;
 	}
 
 	public static double pointToLineDistance(Point a1, Point a2, Point p1) {
 
-		double normalLength = Math.sqrt((a2.x - a1.x) * (a2.x - a1.x)
-				+ (a2.y - a1.y) * (a2.y - a1.y));
-		return Math.abs((p1.x - a1.x) * (a2.y - a1.y) - (p1.y - a1.y)
-				* (a2.x - a1.x))
-				/ normalLength;
+		double normalLength = Math.sqrt((a2.x - a1.x) * (a2.x - a1.x) + (a2.y - a1.y) * (a2.y - a1.y));
+		return Math.abs((p1.x - a1.x) * (a2.y - a1.y) - (p1.y - a1.y) * (a2.x - a1.x)) / normalLength;
 	}
 
 	/***
@@ -326,8 +308,8 @@ public class MyGeometry {
 	 *            angolo di rotazione
 	 * @return coordinate punto dopo rotazione [0]x, [1]y
 	 */
-	public static double[] traslateRotatePoint(double rotx, double roty,
-			double pointx, double pointy, double angoloDec) {
+	public static double[] traslateRotatePoint(double rotx, double roty, double pointx, double pointy,
+			double angoloDec) {
 
 		double[] punto1 = MyGeometry.rotatePoint(pointx, pointy, angoloDec);
 		double[] punto2 = new double[2];
@@ -356,10 +338,10 @@ public class MyGeometry {
 		double valDp = dotProduct(e1, e2);
 		// get squared length of e1
 		double len2 = e1.x * e1.x + e1.y * e1.y;
-		Point p2 = new Point((int) (v1.x + (valDp * e1.x) / len2),
-				(int) (v1.y + (valDp * e1.y) / len2));
+		Point p2 = new Point((int) (v1.x + (valDp * e1.x) / len2), (int) (v1.y + (valDp * e1.y) / len2));
 		return p2;
 	}
+
 	/**
 	 * From www.sunshine2k.de/coding/PointOnLine/PointOnLine.html. Calculates
 	 * the dot product of two 2D vectors / points.
@@ -370,8 +352,28 @@ public class MyGeometry {
 	 *            second point used as vector
 	 * @return dotProduct of vectors
 	 */
-	 private static double dotProduct(Point p1, Point p2) {
-	 return (p1.x * p2.x + p1.y * p2.y);
-	 }
+	private static double dotProduct(Point p1, Point p2) {
+		return (p1.x * p2.x + p1.y * p2.y);
+	}
+
+	/***
+	 * verifica che un cerchio sia dentro un altro
+	 * 
+	 * @param x1
+	 * @param y1
+	 * @param d1
+	 * @param x2
+	 * @param y2
+	 * @param d2
+	 * @return
+	 */
+	public static boolean isCircleInside(int x1, int y1, int d1, int x2, int y2, int d2) {
+		double centersDistance = Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
+		double radiusDifference = d1 / 2 - d2 / 2;
+		if (centersDistance < radiusDifference) {
+			return true;
+		} else
+			return false;
+	}
 
 }
