@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import ij.IJ;
 import ij.ImagePlus;
@@ -401,11 +402,11 @@ public class MySphere {
 		IJ.run(imp1, "Orthogonal Views", "");
 		Orthogonal_Views ort1 = Orthogonal_Views.getInstance();
 		IJ.wait(10);
-		if (demo)
-			MyLog.waitHere(
-					"--- 000 ---\noutput di 'Orthogonal Views', centrato di default sulla slice centrale dello stack\n"
-							+ "ricostruisce le viste XZ ed YZ dalle quali viene ricavata la reale slice centrale della sfera"
-							+ "\nSI ACCETTANO SUGGERIMENTI SU QUESTA SCRITTA, maledetti....");
+//		if (demo)
+//			MyLog.waitHere(
+//					"--- 000 ---\noutput di 'Orthogonal Views', centrato di default sulla slice centrale dello stack\n"
+//							+ "ricostruisce le viste XZ ed YZ dalle quali viene ricavata la reale slice centrale della sfera"
+//							+ "\nSI ACCETTANO SUGGERIMENTI SU QUESTA SCRITTA, maledetti....");
 
 		ImagePlus imp102 = ort1.getXZImage();
 		if (imp102 == null)
@@ -449,10 +450,17 @@ public class MySphere {
 		double yCenterEXT = out202[1];
 		double diamEXT = out202[2];
 		imp202.setRoi(new OvalRoi(xCenterEXT - diamEXT / 2, yCenterEXT - diamEXT / 2, diamEXT, diamEXT));
-		imp202.getRoi().setStrokeColor(Color.green);
+		imp202.getRoi().setStrokeColor(Color.red);
+		over202.addElement(imp202.getRoi());
+		imp202.deleteRoi();
+		imp202.setRoi(new OvalRoi(xCenterEXT - 2, yCenterEXT - 2, 4, 4));
+		imp202.getRoi().setStrokeColor(Color.red);
+		imp202.getRoi().setFillColor(Color.red);
+
 		over202.addElement(imp202.getRoi());
 		imp202.deleteRoi();
 		imp202.show();
+		MyLog.waitHere("center sphere  XZ", true, 200);
 
 		// Ricerca posizione ROI per calcolo uniformita'. Versione con Canny
 		// Edge Detector, da utilizzare per il fantoccio sferico. La coordinata
@@ -462,22 +470,31 @@ public class MySphere {
 		direction = 0;
 		double out203[] = centerCircleCannyEdge(imp203, direction, maxFitError, maxBubbleGapLimit, false);
 		if (out203 == null) {
-			MyLog.waitHere("--- 005 ---\nout203 == null");
+			MyLog.waitHere("--- 005 ---\nout203 == null", true, 200);
 			IJ.log("--- 006 ---\nposition search YZimage xCenterCircle= " + out203[0] + "yCenterCircle= " + out203[1]
 					+ "diamCircle= " + out203[2]);
-			MyLog.waitHere();
+			MyLog.waitHere("aaa", true, 100);
 		}
 
+		MyLog.waitHere("bbb", true, 500);
 		Overlay over203 = new Overlay();
 		imp203.setOverlay(over203);
 		xCenterEXT = out203[0];
 		yCenterEXT = out203[1];
 		diamEXT = out203[2];
 		imp203.setRoi(new OvalRoi(xCenterEXT - diamEXT / 2, yCenterEXT - diamEXT / 2, diamEXT, diamEXT));
-		imp203.getRoi().setStrokeColor(Color.green);
+		imp203.getRoi().setStrokeColor(Color.red);
+		over203.addElement(imp203.getRoi());
+		imp203.deleteRoi();
+
+		imp203.setRoi(new OvalRoi(xCenterEXT - 2, yCenterEXT - 2, 4, 4));
+		imp203.getRoi().setStrokeColor(Color.red);
+		imp203.getRoi().setFillColor(Color.red);
 		over203.addElement(imp203.getRoi());
 		imp203.deleteRoi();
 		imp203.show();
+		MyLog.waitHere("center sphere YZ", true, 500);
+
 
 		// ===============================
 		// IMMAGINE DI CENTRO DELLA SFERA
@@ -520,13 +537,21 @@ public class MySphere {
 		diamEXT = out201[2];
 		imp201.setRoi(new OvalRoi(xCenterEXT - diamEXT / 2, yCenterEXT - diamEXT / 2, diamEXT, diamEXT));
 
-		imp201.getRoi().setStrokeColor(Color.green);
+		imp201.getRoi().setStrokeColor(Color.red);
 		over201.addElement(imp201.getRoi());
 		imp201.deleteRoi();
-		imp201.show();
-		if (demo)
-			MyLog.waitHere();
 
+		imp201.setRoi(new OvalRoi(xCenterEXT - 2, yCenterEXT - 2, 4, 4));
+		imp201.getRoi().setStrokeColor(Color.red);
+		imp201.getRoi().setFillColor(Color.red);
+		over201.addElement(imp201.getRoi());
+		imp201.deleteRoi();
+
+		imp201.show();
+		MyLog.waitHere("center sphere xy", true, 500);
+
+
+	
 		// stabiliamo i dati di output
 		double[] out4 = new double[4];
 		out4[0] = out201[0];
@@ -538,6 +563,125 @@ public class MySphere {
 
 	}
 
+	public static void maskHotSphere(ImageStack imaStack, int xc, int yc, int zc, int radius, int value) {
+
+		List<Float> aux = new ArrayList<Float>();
+		float[] boundCubePixels = null;
+		int diameter = (int) Math.round(radius * 2);
+		double r = radius;
+		int xmin = (int) (xc - r + 0.5), ymin = (int) (yc - r + 0.5), zmin = (int) (zc - r + 0.5);
+		int xmax = xmin + diameter, ymax = ymin + diameter, zmax = zmin + diameter;
+		boundCubePixels = imaStack.getVoxels(xmin, ymin, zmin, diameter, diameter, diameter, boundCubePixels);
+		double r2 = r * r;
+		r -= 0.5;
+		double xoffset = xmin + r, yoffset = ymin + r, zoffset = zmin + r;
+		double xx, yy, zz;
+		for (int x = xmin; x <= xmax; x++) {
+			for (int y = ymin; y <= ymax; y++) {
+				for (int z = zmin; z <= zmax; z++) {
+					xx = x - xoffset;
+					yy = y - yoffset;
+					zz = z - zoffset;
+					if (xx * xx + yy * yy + zz * zz <= r2) {
+						aux.add((float) imaStack.getVoxel(x, y, z));
+						imaStack.setVoxel(x, y, z, value);
+					}
+				}
+			}
+		}
+		// float[] out1 = ArrayUtils.arrayListToArrayFloat(aux);
+
+		return;
+	}
+
+	public static void maskRGBHotSphere(ImageStack imaStack, int xc, int yc, int zc, int radius, int value) {
+
+		List<Float> aux = new ArrayList<Float>();
+		float[] boundCubePixels = null;
+		int diameter = (int) Math.round(radius * 2);
+		double r = radius;
+		int xmin = (int) (xc - r + 0.5), ymin = (int) (yc - r + 0.5), zmin = (int) (zc - r + 0.5);
+		int xmax = xmin + diameter, ymax = ymin + diameter, zmax = zmin + diameter;
+		boundCubePixels = imaStack.getVoxels(xmin, ymin, zmin, diameter, diameter, diameter, boundCubePixels);
+		double r2 = r * r;
+		r -= 0.5;
+		double xoffset = xmin + r, yoffset = ymin + r, zoffset = zmin + r;
+		double xx, yy, zz;
+		for (int x = xmin; x <= xmax; x++) {
+			for (int y = ymin; y <= ymax; y++) {
+				for (int z = zmin; z <= zmax; z++) {
+					xx = x - xoffset;
+					yy = y - yoffset;
+					zz = z - zoffset;
+					if (xx * xx + yy * yy + zz * zz <= r2) {
+						aux.add((float) imaStack.getVoxel(x, y, z));
+						imaStack.setVoxel(x, y, z, value);
+					}
+				}
+			}
+		}
+		// float[] out1 = ArrayUtils.arrayListToArrayFloat(aux);
+
+		return;
+	}
+
+	/***
+	 * 
+	 * @param width
+	 *            width in pixels
+	 * @param height
+	 *            height in pixels
+	 * @param depth
+	 *            numbers of images
+	 * @param titolo
+	 *            titolo
+	 * @return ImagePlus
+	 */
+
+	public static ImagePlus generaMappazzaVuota16(int width, int height, int depth, String titolo) {
+
+		int bitdepth = 16;
+		ImageStack newStack = ImageStack.create(width, height, depth, bitdepth);
+		ImagePlus impMappazza = new ImagePlus(titolo, newStack);
+		return impMappazza;
+	}
+
+	public static ImagePlus createImageRGB(ImagePlus imp1, double[] in1, boolean demo) {
+
+		boolean generate = true;
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
+		ImagePlus impMappazzaR = null;
+		ImagePlus impMappazzaG = null;
+		ImagePlus impMappazzaB = null;
+		ImageStack newStackOUT = null;
+		ImagePlus impMappazzaOUT = null;
+		if (generate) {
+			impMappazzaR = generaMappazzaVuota16(width, height, imp1.getImageStackSize(), "impMappazzaR");
+			impMappazzaG = generaMappazzaVuota16(width, height, imp1.getImageStackSize(), "impMappazzaG");
+			impMappazzaB = generaMappazzaVuota16(width, height, imp1.getImageStackSize(), "impMappazzaB");
+			int bitdepth = 24;
+			newStackOUT = ImageStack.create(width, height, imp1.getImageStackSize(), bitdepth);
+			impMappazzaOUT = new ImagePlus("MAPPAZZA", newStackOUT);
+			generate = false;
+		}
+
+		int bitdepth = 24;
+		newStackOUT = ImageStack.create(width, height, imp1.getImageStackSize(), bitdepth);
+
+		/// questo esperimento pare funzionare, a questo punto potrei fare
+		/// la prova di creare una hotSphere !!
+		double radius = 40;
+		int xc = 100;
+		int yc = 100;
+		int zc = 80;
+		newStackOUT.drawSphere(radius, xc, yc, zc);
+
+		impMappazzaOUT = new ImagePlus("MAPPAZZA", newStackOUT);
+
+		return impMappazzaOUT;
+	}
+
 	/***
 	 * ricerca gli hotspot circolari, slice per slice, restituendo il massimo
 	 * 
@@ -547,7 +691,7 @@ public class MySphere {
 	 * @return
 	 */
 
-	public static double[] searchSpotSphere(ImagePlus imp1, double[] out1, String aa, boolean demo) {
+	public static double[] searchCircularSpot(ImagePlus imp1, double[] out1, String aa, int demolevel) {
 
 		ArrayList<Double> xlist = new ArrayList<Double>();
 		ArrayList<Double> ylist = new ArrayList<Double>();
@@ -555,6 +699,9 @@ public class MySphere {
 		ArrayList<Double> maxlist = new ArrayList<Double>();
 		int zcenter = (int) out1[2];
 		int radius = (int) out1[3] / 2;
+		boolean demo = false;
+		if (demolevel > 0)
+			demo = true;
 
 		for (int i1 = 0; i1 < imp1.getImageStackSize(); i1++) {
 			IJ.showStatus("" + aa + i1 + "/" + imp1.getImageStackSize());
@@ -584,7 +731,7 @@ public class MySphere {
 			out2[1] = out1[1];
 			out2[2] = diam33;
 
-			double[] spot = MyFilter.positionSearchCircular(imp20, out2, diam22, demo);
+			double[] spot = MyFilter.positionSearchCircular(imp20, out2, diam22, demolevel);
 			if (demo)
 				MyLog.logVector(spot, "spot");
 
@@ -615,7 +762,7 @@ public class MySphere {
 		return out4;
 	}
 
-	public static ImagePlus orthogonalStack(ImagePlus imp1, int direction, boolean demo) {
+	public static ImagePlus createOrthogonalStack(ImagePlus imp1, int direction, boolean demo) {
 		imp1.show();
 		IJ.run(imp1, "Orthogonal Views", "");
 		Orthogonal_Views ort2 = Orthogonal_Views.getInstance();

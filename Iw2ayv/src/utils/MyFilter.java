@@ -620,7 +620,7 @@ public class MyFilter {
 	 *            cerchio di ricerca
 	 * @return
 	 */
-	public static double[] positionSearchCircular(ImagePlus imp1, double[] circleData, double diam22, boolean demo) {
+	public static double[] positionSearchCircular(ImagePlus imp1, double[] circleData, double diam22, int demolevel) {
 
 		Overlay over2 = new Overlay();
 		imp1.deleteRoi();
@@ -633,6 +633,24 @@ public class MyFilter {
 		int diam1 = (int) circleData[2];
 
 		int diam2 = (int) diam22;
+		boolean demo = false;
+		if (demolevel > 0)
+			demo = true;
+		Color color1 = null;
+		Color color2 = null;
+
+		if (demolevel == 1) {
+			color1 = Color.green;
+			color2 = Color.yellow;
+		}
+		if (demolevel == 2) {
+			color1 = Color.red;
+			color2 = Color.yellow;
+		}
+		if (demolevel == 3) {
+			color1 = Color.blue;
+			color2 = Color.yellow;
+		}
 
 		// disegno il perimetro del fantoccio
 		int xRoi0 = xCenter1 - diam1 / 2;
@@ -647,9 +665,11 @@ public class MyFilter {
 
 		imp2.setRoi(new OvalRoi(xRoi0, yRoi0, diamRoi0, diamRoi0));
 		if (demo) {
-			imp2.getRoi().setStrokeColor(Color.red);
+			imp2.getRoi().setStrokeColor(color2);
 			over2.addElement(imp2.getRoi());
 		}
+
+		// MyLog.waitHere("cerchio esterno");
 
 		// ora faccio la scansione del bounding rectangle del cerchio esterno,
 		// utilizzando il cerchio interno, se risulta che il cerchio interno è
@@ -667,7 +687,7 @@ public class MyFilter {
 				if (MyGeometry.isCircleInside(xCenter1, yCenter1, diam1, x2, y2, diam2)) {
 					imp2.setRoi(new OvalRoi(x2 - diam2 / 2, y2 - diam2 / 2, diam2, diam2));
 					if (demo) {
-						imp2.getRoi().setStrokeColor(Color.green);
+						imp2.getRoi().setStrokeColor(color1);
 						over2.addElement(imp2.getRoi());
 					}
 
@@ -683,10 +703,11 @@ public class MyFilter {
 		}
 		if (demo) {
 			imp2.setRoi(new OvalRoi(xmax - diam2 / 2, ymax - diam2 / 2, diam2, diam2));
-			imp2.getRoi().setStrokeColor(Color.blue);
+			imp2.getRoi().setStrokeColor(color2);
+			imp2.getRoi().setFillColor(color2);
 			over2.addElement(imp2.getRoi());
 		}
-		IJ.wait(100);
+		MyLog.waitHere("center", true, 100);
 		if (iw1 != null)
 			iw1.close();
 		double[] out = new double[3];

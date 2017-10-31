@@ -10,9 +10,11 @@ import org.junit.Test;
 import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
+import ij.ImageStack;
 import ij.WindowManager;
 import ij.plugin.Duplicator;
 import ij.plugin.Orthogonal_Views;
+import ij.process.ImageConverter;
 
 public class MySphereTest {
 
@@ -83,10 +85,16 @@ public class MySphereTest {
 		MyLog.waitHere("==== FINE ====");
 	}
 
+	/***
+	 * questo e'il test di come potrebbe essere la ricerca di uno spot sferico
+	 * (cerco i tre spot circolari nelle tre direzioni)
+	 */
 	@Test
 	public final void testSearchSpotSphere() {
 
 		Boolean demo = true;
+		int demoLevel = 0;
+
 		if (demo) {
 			IJ.log("=== start ====");
 			Frame frame = WindowManager.getFrame("Log");
@@ -107,13 +115,19 @@ public class MySphereTest {
 			IJ.log("==================");
 		}
 
-		double[] out = MySphere.searchSpotSphere(imp204, center, "XY ", demo);
+		
+		
+		
+		int demolevel = 1;
+
+		double[] out = MySphere.searchCircularSpot(imp204, center, "XY ", demolevel);
 		if (demo)
 			MyLog.logVector(out, "XY dati spot finali");
 
-		ImagePlus imp111 = MySphere.orthogonalStack(imp1, 1, demo);
-		demo = false;
-		double[] out2 = MySphere.searchSpotSphere(imp111, center, "XZ ", demo);
+		ImagePlus imp111 = MySphere.createOrthogonalStack(imp1, 1, demo);
+		demo = true;
+		demolevel = 2;
+		double[] out2 = MySphere.searchCircularSpot(imp111, center, "XZ ", demolevel);
 		double[] reorder1 = new double[4];
 		reorder1[0] = out2[0];
 		reorder1[1] = out2[2];
@@ -122,9 +136,10 @@ public class MySphereTest {
 		if (demo)
 			MyLog.logVector(reorder1, "XZ dati spot finali");
 
-		ImagePlus imp222 = MySphere.orthogonalStack(imp1, 2, demo);
-		demo = false;
-		double[] out3 = MySphere.searchSpotSphere(imp222, center, "YZ ", demo);
+		ImagePlus imp222 = MySphere.createOrthogonalStack(imp1, 2, demo);
+		demo = true;
+		demolevel = 3;
+		double[] out3 = MySphere.searchCircularSpot(imp222, center, "YZ ", demolevel);
 		double[] reorder2 = new double[4];
 		reorder2[0] = out3[2];
 		reorder2[1] = out3[1];
@@ -145,7 +160,7 @@ public class MySphereTest {
 		Boolean demo = false;
 		imp1.show();
 
-		ImagePlus imp111 = MySphere.orthogonalStack(imp1, 1, demo);
+		ImagePlus imp111 = MySphere.createOrthogonalStack(imp1, 1, demo);
 		imp111.show();
 		MyLog.waitHere("==== FINE ====");
 	}
@@ -158,8 +173,56 @@ public class MySphereTest {
 		Boolean demo = false;
 		imp1.show();
 
-		ImagePlus imp111 = MySphere.orthogonalStack(imp1, 2, demo);
+		ImagePlus imp111 = MySphere.createOrthogonalStack(imp1, 2, demo);
 		imp111.show();
+		MyLog.waitHere("==== FINE ====");
+	}
+
+	@Test
+	public final void testMaskHotSphere() {
+
+		String path1 = "./Data2/HC1-7";
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, false);
+		// IJ.run(imp1, "AND...", "value=00 stack");
+
+		imp1.show();
+		MyLog.waitHere("prima");
+		ImageStack imaStack = imp1.getImageStack();
+
+		int xc = 220;
+		int yc = 220;
+		int zc = 90;
+		int radius = 20;
+		int value = 4000;
+
+		MySphere.maskHotSphere(imaStack, xc, yc, zc, radius, value);
+		imp1.updateAndDraw();
+		MyLog.waitHere("dopo");
+		MyLog.waitHere("==== FINE ====");
+	}
+
+	@Test
+	public final void testMaskRGBHotSphere() {
+
+		String path1 = "./Data2/HC1-7";
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, false);
+		IJ.run(imp1, "RGB Color", "");
+		ImageConverter ic1 = new ImageConverter(imp1);
+		ic1.convertToRGBStack();
+
+		imp1.show();
+		MyLog.waitHere("prima");
+		ImageStack imaStack = imp1.getImageStack();
+
+		int xc = 100;
+		int yc = 150;
+		int zc = 80;
+		int radius = 50;
+		int value = 10000;
+
+		MySphere.maskRGBHotSphere(imaStack, xc, yc, zc, radius, value);
+		imp1.updateAndDraw();
+		MyLog.waitHere("dopo");
 		MyLog.waitHere("==== FINE ====");
 	}
 
