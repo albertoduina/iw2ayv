@@ -402,11 +402,13 @@ public class MySphere {
 		IJ.run(imp1, "Orthogonal Views", "");
 		Orthogonal_Views ort1 = Orthogonal_Views.getInstance();
 		IJ.wait(10);
-//		if (demo)
-//			MyLog.waitHere(
-//					"--- 000 ---\noutput di 'Orthogonal Views', centrato di default sulla slice centrale dello stack\n"
-//							+ "ricostruisce le viste XZ ed YZ dalle quali viene ricavata la reale slice centrale della sfera"
-//							+ "\nSI ACCETTANO SUGGERIMENTI SU QUESTA SCRITTA, maledetti....");
+		// if (demo)
+		// MyLog.waitHere(
+		// "--- 000 ---\noutput di 'Orthogonal Views', centrato di default sulla
+		// slice centrale dello stack\n"
+		// + "ricostruisce le viste XZ ed YZ dalle quali viene ricavata la reale
+		// slice centrale della sfera"
+		// + "\nSI ACCETTANO SUGGERIMENTI SU QUESTA SCRITTA, maledetti....");
 
 		ImagePlus imp102 = ort1.getXZImage();
 		if (imp102 == null)
@@ -495,7 +497,6 @@ public class MySphere {
 		imp203.show();
 		MyLog.waitHere("center sphere YZ", true, 500);
 
-
 		// ===============================
 		// IMMAGINE DI CENTRO DELLA SFERA
 		// ===============================
@@ -550,8 +551,6 @@ public class MySphere {
 		imp201.show();
 		MyLog.waitHere("center sphere xy", true, 500);
 
-
-	
 		// stabiliamo i dati di output
 		double[] out4 = new double[4];
 		out4[0] = out201[0];
@@ -563,67 +562,67 @@ public class MySphere {
 
 	}
 
-	public static void maskHotSphere(ImageStack imaStack, int xc, int yc, int zc, int radius, int value) {
-
-		List<Float> aux = new ArrayList<Float>();
-		float[] boundCubePixels = null;
-		int diameter = (int) Math.round(radius * 2);
-		double r = radius;
-		int xmin = (int) (xc - r + 0.5), ymin = (int) (yc - r + 0.5), zmin = (int) (zc - r + 0.5);
-		int xmax = xmin + diameter, ymax = ymin + diameter, zmax = zmin + diameter;
-		boundCubePixels = imaStack.getVoxels(xmin, ymin, zmin, diameter, diameter, diameter, boundCubePixels);
-		double r2 = r * r;
-		r -= 0.5;
-		double xoffset = xmin + r, yoffset = ymin + r, zoffset = zmin + r;
-		double xx, yy, zz;
-		for (int x = xmin; x <= xmax; x++) {
-			for (int y = ymin; y <= ymax; y++) {
-				for (int z = zmin; z <= zmax; z++) {
-					xx = x - xoffset;
-					yy = y - yoffset;
-					zz = z - zoffset;
-					if (xx * xx + yy * yy + zz * zz <= r2) {
-						aux.add((float) imaStack.getVoxel(x, y, z));
-						imaStack.setVoxel(x, y, z, value);
-					}
-				}
-			}
-		}
-		// float[] out1 = ArrayUtils.arrayListToArrayFloat(aux);
-
-		return;
-	}
-
-	public static void maskRGBHotSphere(ImageStack imaStack, int xc, int yc, int zc, int radius, int value) {
-
-		List<Float> aux = new ArrayList<Float>();
-		float[] boundCubePixels = null;
-		int diameter = (int) Math.round(radius * 2);
-		double r = radius;
-		int xmin = (int) (xc - r + 0.5), ymin = (int) (yc - r + 0.5), zmin = (int) (zc - r + 0.5);
-		int xmax = xmin + diameter, ymax = ymin + diameter, zmax = zmin + diameter;
-		boundCubePixels = imaStack.getVoxels(xmin, ymin, zmin, diameter, diameter, diameter, boundCubePixels);
-		double r2 = r * r;
-		r -= 0.5;
-		double xoffset = xmin + r, yoffset = ymin + r, zoffset = zmin + r;
-		double xx, yy, zz;
-		for (int x = xmin; x <= xmax; x++) {
-			for (int y = ymin; y <= ymax; y++) {
-				for (int z = zmin; z <= zmax; z++) {
-					xx = x - xoffset;
-					yy = y - yoffset;
-					zz = z - zoffset;
-					if (xx * xx + yy * yy + zz * zz <= r2) {
-						aux.add((float) imaStack.getVoxel(x, y, z));
-						imaStack.setVoxel(x, y, z, value);
-					}
-				}
-			}
-		}
-		// float[] out1 = ArrayUtils.arrayListToArrayFloat(aux);
-
-		return;
-	}
+//	public static void maskHotSphere(ImageStack imaStack, int xc, int yc, int zc, int radius, int value) {
+//
+//		List<Float> aux = new ArrayList<Float>();
+//		float[] boundCubePixels = null;
+//		int diameter = (int) Math.round(radius * 2);
+//		double r = radius;
+//		int xmin = (int) (xc - r + 0.5), ymin = (int) (yc - r + 0.5), zmin = (int) (zc - r + 0.5);
+//		int xmax = xmin + diameter, ymax = ymin + diameter, zmax = zmin + diameter;
+//		boundCubePixels = imaStack.getVoxels(xmin, ymin, zmin, diameter, diameter, diameter, boundCubePixels);
+//		double r2 = r * r;
+//		r -= 0.5;
+//		double xoffset = xmin + r, yoffset = ymin + r, zoffset = zmin + r;
+//		double xx, yy, zz;
+//		for (int x = xmin; x <= xmax; x++) {
+//			for (int y = ymin; y <= ymax; y++) {
+//				for (int z = zmin; z <= zmax; z++) {
+//					xx = x - xoffset;
+//					yy = y - yoffset;
+//					zz = z - zoffset;
+//					if (xx * xx + yy * yy + zz * zz <= r2) {
+//						aux.add((float) imaStack.getVoxel(x, y, z));
+//						imaStack.setVoxel(x, y, z, value);
+//					}
+//				}
+//			}
+//		}
+//		// float[] out1 = ArrayUtils.arrayListToArrayFloat(aux);
+//
+//		return;
+//	}
+//
+//	public static void maskRGBHotSphere(ImageStack imaStack, int xc, int yc, int zc, int radius, int value) {
+//
+//		List<Float> aux = new ArrayList<Float>();
+//		float[] boundCubePixels = null;
+//		int diameter = (int) Math.round(radius * 2);
+//		double r = radius;
+//		int xmin = (int) (xc - r + 0.5), ymin = (int) (yc - r + 0.5), zmin = (int) (zc - r + 0.5);
+//		int xmax = xmin + diameter, ymax = ymin + diameter, zmax = zmin + diameter;
+//		boundCubePixels = imaStack.getVoxels(xmin, ymin, zmin, diameter, diameter, diameter, boundCubePixels);
+//		double r2 = r * r;
+//		r -= 0.5;
+//		double xoffset = xmin + r, yoffset = ymin + r, zoffset = zmin + r;
+//		double xx, yy, zz;
+//		for (int x = xmin; x <= xmax; x++) {
+//			for (int y = ymin; y <= ymax; y++) {
+//				for (int z = zmin; z <= zmax; z++) {
+//					xx = x - xoffset;
+//					yy = y - yoffset;
+//					zz = z - zoffset;
+//					if (xx * xx + yy * yy + zz * zz <= r2) {
+//						aux.add((float) imaStack.getVoxel(x, y, z));
+//						imaStack.setVoxel(x, y, z, value);
+//					}
+//				}
+//			}
+//		}
+//		// float[] out1 = ArrayUtils.arrayListToArrayFloat(aux);
+//
+//		return;
+//	}
 
 	/***
 	 * 
@@ -646,44 +645,265 @@ public class MySphere {
 		return impMappazza;
 	}
 
-	public static ImagePlus createImageRGB(ImagePlus imp1, double[] in1, boolean demo) {
+	/**
+	 * Creazione di una immagine RGB su cui plottare i modelli di sfera da noi
+	 * ricavati. Si utilizza l'immagine dello stach fantoccio per ricavarne le
+	 * dimensioni per creare il nuovo stackRGB nero
+	 * 
+	 * @param imp1
+	 * @param in1
+	 * @param demo
+	 * @return
+	 */
+	public static ImagePlus createImageRGB(ImagePlus imp1, boolean demo) {
 
-		boolean generate = true;
 		int width = imp1.getWidth();
 		int height = imp1.getHeight();
-		ImagePlus impMappazzaR = null;
-		ImagePlus impMappazzaG = null;
-		ImagePlus impMappazzaB = null;
-		ImageStack newStackOUT = null;
-		ImagePlus impMappazzaOUT = null;
-		if (generate) {
-			impMappazzaR = generaMappazzaVuota16(width, height, imp1.getImageStackSize(), "impMappazzaR");
-			impMappazzaG = generaMappazzaVuota16(width, height, imp1.getImageStackSize(), "impMappazzaG");
-			impMappazzaB = generaMappazzaVuota16(width, height, imp1.getImageStackSize(), "impMappazzaB");
-			int bitdepth = 24;
-			newStackOUT = ImageStack.create(width, height, imp1.getImageStackSize(), bitdepth);
-			impMappazzaOUT = new ImagePlus("MAPPAZZA", newStackOUT);
-			generate = false;
-		}
-
+		int depth = imp1.getImageStackSize();
 		int bitdepth = 24;
-		newStackOUT = ImageStack.create(width, height, imp1.getImageStackSize(), bitdepth);
+		ImageStack newStackOUT = ImageStack.create(width, height, depth, bitdepth);
+		ImagePlus impMappazzaOUT = new ImagePlus("MAPPAZZA", newStackOUT);
+		//
+		//
+		//
+		//// public float[] getVoxels(int x0, int y0, int z0, int w, int h, int
+		// d, float[] voxels, int channel) {
+		//
+		// setVoxels(int x0, int y0, int z0, int w, int h, int d, float[]
+		// voxels, int channel)
+		//
+		//
+		//
+		//
+		//
+		// /// questo esperimento pare funzionare, a questo punto potrei fare
+		// /// la prova di creare una hotSphere !!
+		// double radius = 40;
+		// int xc = 100;
+		// int yc = 100;
+		// int zc = 80;
+		// newStackOUT.drawSphere(radius, xc, yc, zc);
 
-		/// questo esperimento pare funzionare, a questo punto potrei fare
-		/// la prova di creare una hotSphere !!
-		double radius = 40;
-		int xc = 100;
-		int yc = 100;
-		int zc = 80;
-		newStackOUT.drawSphere(radius, xc, yc, zc);
-
-		impMappazzaOUT = new ImagePlus("MAPPAZZA", newStackOUT);
+		// impMappazzaOUT = new ImagePlus("MAPPAZZA", newStackOUT);
 
 		return impMappazzaOUT;
 	}
 
+
+	public static void drawSphere(double radius, int xc, int yc, int zc, float[] voxels) {
+		MyLog.waitHere("voxelslength= " + voxels.length);
+		int diameter = (int) Math.round(radius * 2);
+		double r = radius;
+		int xmin = (int) (xc - r + 0.5), ymin = (int) (yc - r + 0.5), zmin = (int) (zc - r + 0.5);
+		int xmax = xmin + diameter, ymax = ymin + diameter, zmax = zmin + diameter;
+		double r2 = r * r;
+		r -= 0.5;
+		double xoffset = xmin + r, yoffset = ymin + r, zoffset = zmin + r;
+		double xx, yy, zz;
+		int lenx = (int) radius;
+		int leny = (int) radius;
+		int displace = 0;
+		for (int x = xmin; x <= xmax; x++) {
+			for (int y = ymin; y <= ymax; y++) {
+				for (int z = zmin; z <= zmax; z++) {
+					xx = x - xoffset;
+					yy = y - yoffset;
+					zz = z - zoffset;
+					if (xx * xx + yy * yy + zz * zz <= r2)
+						displace = x * (lenx) * y * leny;
+					voxels[displace + z] = 255;
+				}
+			}
+		}
+	}
+
+	public static void addSphere(ImagePlus impMapR, ImagePlus impMapG, ImagePlus impMapB, int x0, int y0, int z0,
+			int radius, int[] colorRGB, boolean surfaceOnly) {
+		int r2 = radius * radius;
+		int r1 = (radius - 1) * (radius - 1);
+		int width = impMapR.getWidth();
+		short auxR = 0;
+		short auxG = 0;
+		short auxB = 0;
+		int x2 = 0;
+		int y2 = 0;
+		int z2 = 0;
+
+		for (int z1 = z0 - radius; z1 < z0 + radius; z1++) {
+			int slice = z1 + 1;
+			z2 = z1 - z0;
+			ImageStack isR = impMapR.getStack();
+			ImageStack isG = impMapG.getStack();
+			ImageStack isB = impMapB.getStack();
+
+			short[] pixelsMapR = (short[]) isR.getProcessor(slice).getPixels();
+			short[] pixelsMapG = (short[]) isG.getProcessor(slice).getPixels();
+			short[] pixelsMapB = (short[]) isB.getProcessor(slice).getPixels();
+			for (int x1 = x0 - radius; x1 < x0 + radius; x1++) {
+				x2 = x1 - x0;
+				int offset = x1 * width;
+				for (int y1 = y0 - radius; y1 < y0 + radius; y1++) {
+					y2 = y1 - y0;
+					int aux2 = x2 * x2 + y2 * y2 + z2 * z2;
+					if (surfaceOnly) {
+						if (aux2 <= r2 && aux2 > r1) {
+							auxR = pixelsMapR[offset + y1];
+							auxR += colorRGB[0];
+							pixelsMapR[offset + y1] = auxR;
+							auxG = pixelsMapG[offset + y1];
+							auxG += colorRGB[1];
+							pixelsMapG[offset + y1] = auxG;
+							auxB = pixelsMapB[offset + y1];
+							auxB += colorRGB[2];
+							pixelsMapB[offset + y1] = auxB;
+						}
+
+					} else {
+						if (aux2 <= r2) {
+							auxR = pixelsMapR[offset + y1];
+							auxR += colorRGB[0];
+							pixelsMapR[offset + y1] = auxR;
+							auxG = pixelsMapG[offset + y1];
+							auxG += colorRGB[1];
+							pixelsMapG[offset + y1] = auxG;
+							auxB = pixelsMapB[offset + y1];
+							auxB += colorRGB[2];
+							pixelsMapB[offset + y1] = auxB;
+						}
+					}
+				}
+			}
+			// devo ricaricare l'immagine!
+			isR.setPixels(pixelsMapR, slice);
+			isG.setPixels(pixelsMapG, slice);
+			isB.setPixels(pixelsMapB, slice);
+			impMapR.updateAndDraw();
+
+		}
+	}
+
+	public static void generaMappazzaCombinata(ImagePlus impMappazzaR, ImagePlus impMappazzaG, ImagePlus impMappazzaB,
+			ImagePlus impMappazzaRGB, int myColors) {
+
+		double auxR = 0;
+		double auxG = 0;
+		double auxB = 0;
+
+		int[] pixelsMappazzaRGB = null;
+		short[] pixelsMappaR = null;
+		short[] pixelsMappaG = null;
+		short[] pixelsMappaB = null;
+		short largestValue = Short.MIN_VALUE;
+		short largestR = Short.MIN_VALUE;
+		short largestG = Short.MIN_VALUE;
+		short largestB = Short.MIN_VALUE;
+		short[] searchMax = new short[4];
+
+		for (int i10 = 0; i10 < impMappazzaR.getNSlices(); i10++) {
+			pixelsMappazzaRGB = (int[]) impMappazzaRGB.getStack().getPixels(i10 + 1);
+			pixelsMappaR = (short[]) impMappazzaR.getStack().getPixels(i10 + 1);
+			pixelsMappaG = (short[]) impMappazzaG.getStack().getPixels(i10 + 1);
+			pixelsMappaB = (short[]) impMappazzaB.getStack().getPixels(i10 + 1);
+			largestR = ArrayUtils.vetMax(pixelsMappaR);
+			largestG = ArrayUtils.vetMax(pixelsMappaG);
+			largestB = ArrayUtils.vetMax(pixelsMappaB);
+			if (largestR > searchMax[0])
+				searchMax[0] = largestR;
+			if (largestG > searchMax[1])
+				searchMax[1] = largestG;
+			if (largestB > searchMax[2])
+				searchMax[2] = largestB;
+			if (largestValue > searchMax[3])
+				searchMax[3] = largestValue;
+			largestValue = ArrayUtils.vetMax(searchMax);
+		}
+
+		largestR = searchMax[0];
+		largestG = searchMax[1];
+		largestB = searchMax[2];
+		largestValue = searchMax[3];
+
+		double kappa = 255.0 / largestValue;
+		double kappaR = 0;
+		double kappaG = 0;
+		double kappaB = 0;
+
+		switch (myColors) {
+		case 1:
+			if (largestR == 0)
+				largestR = 1;
+			kappaR = 255 / largestR;
+			if (largestG == 0)
+				largestG = 1;
+			kappaG = 255 / largestG;
+			if (largestB == 0)
+				largestB = 1;
+			kappaB = 255 / largestB;
+			break;
+		case 2:
+			kappaR = kappa;
+			kappaG = kappa;
+			kappaB = kappa;
+			break;
+		case 3:
+			if (largestR == 0)
+				largestR = 1;
+			kappaR = 255 / largestR;
+			if (largestG == 0)
+				largestG = 1;
+			kappaG = 255 / largestG;
+			if (largestB == 0)
+				largestB = 1;
+			kappaB = 255 / largestB;
+			break;
+		}
+
+		if (true) {
+			IJ.log("generaMappazzaCombinata >> largestR= " + largestR);
+			IJ.log("generaMappazzaCombinata >> largestG= " + largestG);
+			IJ.log("generaMappazzaCombinata >> largestB= " + largestB);
+			IJ.log("generaMappazzaCombinata >> largestValue= " + largestValue);
+			IJ.log("generaMappazzaCombinata >> kappa= " + kappa);
+		}
+
+		for (int i10 = 0; i10 < impMappazzaR.getNSlices(); i10++) {
+			pixelsMappazzaRGB = (int[]) impMappazzaRGB.getStack().getPixels(i10 + 1);
+			pixelsMappaR = (short[]) impMappazzaR.getStack().getPixels(i10 + 1);
+			pixelsMappaG = (short[]) impMappazzaG.getStack().getPixels(i10 + 1);
+			pixelsMappaB = (short[]) impMappazzaB.getStack().getPixels(i10 + 1);
+
+			int colorRGB = 0;
+			int red = 0;
+			int green = 0;
+			int blue = 0;
+
+			for (int i1 = 0; i1 < pixelsMappaR.length; i1++) {
+
+				auxR = (double) pixelsMappaR[i1] * kappaR;
+				red = (int) auxR;
+				auxG = (double) pixelsMappaG[i1] * kappaG;
+				green = (int) auxG;
+				auxB = (double) pixelsMappaB[i1] * kappaB;
+				blue = (int) auxB;
+
+				colorRGB = ((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff);
+				pixelsMappazzaRGB[i1] = colorRGB;
+				// if (debug && (puntatore == i1)) {
+				// IJ.log("pixelsMappaR= " + pixelsMappaR[i1] + " kappa= " +
+				// kappa + " auxR= " + auxR + " colorRGB= "
+				// + colorRGB);
+				// }
+			}
+			impMappazzaRGB.updateAndRepaintWindow();
+		}
+		return;
+	}
+
 	/***
 	 * ricerca gli hotspot circolari, slice per slice, restituendo il massimo
+	 * utilizzeremo un diametro dello spot di 14 pixels con volume 153 voxels,
+	 * il diametro di 12 pixels avrebbe volume 113 pixels, il diametro 13 pixels
+	 * mi darebbe un raggio frazionario
 	 * 
 	 * @param imp1
 	 * @param out1

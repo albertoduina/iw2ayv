@@ -707,7 +707,7 @@ public class MyFilter {
 			imp2.getRoi().setFillColor(color2);
 			over2.addElement(imp2.getRoi());
 		}
-		MyLog.waitHere("center", true, 100);
+		if (demo) MyLog.waitHere("center", true, 400);
 		if (iw1 != null)
 			iw1.close();
 		double[] out = new double[3];

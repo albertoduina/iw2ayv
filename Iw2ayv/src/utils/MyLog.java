@@ -444,6 +444,21 @@ public class MyLog {
 		IJ.log("---------------------------------------------");
 	}
 	
+	public static void logVectorVertical(short vect[], String nome) {
+		String stri = "";
+		if (vect == null) {
+			IJ.log("Warning vector " + nome + " = null");
+		} else {
+			IJ.log("----------- " + nome + "  [ " + vect.length + " ] -----------");
+
+			for (int i1 = 0; i1 < vect.length; i1++) {
+				stri = stri + vect[i1] + "\n";
+			}
+			IJ.log(stri);
+		}
+		IJ.log("---------------------------------------------");
+	}
+	
 	public static void logVectorVertical(int vect[], String nome) {
 		String stri = "";
 		if (vect == null) {
