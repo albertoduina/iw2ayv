@@ -438,7 +438,7 @@ public class MySphere {
 		int direction = 0;
 		String info10 = "position search XZimage";
 		direction = 2;
-		double out202[] = centerCircleCannyEdge(imp202, direction, maxFitError, maxBubbleGapLimit, false);
+		double out202[] = MySphere.centerCircleCannyEdge(imp202, direction, maxFitError, maxBubbleGapLimit, false);
 		if (out202 == null) {
 			MyLog.waitHere("--- 003 ---\nout202 == null");
 			IJ.log("--- 004 ---\nposition search XZimage xCenterCircle= " + out202[0] + "yCenterCircle= " + out202[1]
@@ -470,7 +470,7 @@ public class MySphere {
 		// slice centrale dello stack
 		info10 = "position search YZimage";
 		direction = 0;
-		double out203[] = centerCircleCannyEdge(imp203, direction, maxFitError, maxBubbleGapLimit, false);
+		double out203[] = MySphere.centerCircleCannyEdge(imp203, direction, maxFitError, maxBubbleGapLimit, false);
 		if (out203 == null) {
 			MyLog.waitHere("--- 005 ---\nout203 == null", true, 200);
 			IJ.log("--- 006 ---\nposition search YZimage xCenterCircle= " + out203[0] + "yCenterCircle= " + out203[1]
@@ -523,7 +523,7 @@ public class MySphere {
 		// coordinate del centro e del raggio qui determinati, viene di seguito
 		// costruita la sfera.
 		direction = 1;
-		double out201[] = centerCircleCannyEdge(imp201, direction, maxFitError, maxBubbleGapLimit, false);
+		double out201[] = MySphere.centerCircleCannyEdge(imp201, direction, maxFitError, maxBubbleGapLimit, false);
 		if (out201 == null) {
 			MyLog.waitHere("--- 009 ---\nout201 null");
 			IJ.log("--- 010 ---\nposition search XYimage xCenterCircle= " + out201[0] + "yCenterCircle= " + out201[1]
@@ -663,59 +663,10 @@ public class MySphere {
 		int bitdepth = 24;
 		ImageStack newStackOUT = ImageStack.create(width, height, depth, bitdepth);
 		ImagePlus impMappazzaOUT = new ImagePlus("MAPPAZZA", newStackOUT);
-		//
-		//
-		//
-		//// public float[] getVoxels(int x0, int y0, int z0, int w, int h, int
-		// d, float[] voxels, int channel) {
-		//
-		// setVoxels(int x0, int y0, int z0, int w, int h, int d, float[]
-		// voxels, int channel)
-		//
-		//
-		//
-		//
-		//
-		// /// questo esperimento pare funzionare, a questo punto potrei fare
-		// /// la prova di creare una hotSphere !!
-		// double radius = 40;
-		// int xc = 100;
-		// int yc = 100;
-		// int zc = 80;
-		// newStackOUT.drawSphere(radius, xc, yc, zc);
-
-		// impMappazzaOUT = new ImagePlus("MAPPAZZA", newStackOUT);
-
 		return impMappazzaOUT;
 	}
 
 
-	public static void drawSphere(double radius, int xc, int yc, int zc, float[] voxels) {
-		MyLog.waitHere("voxelslength= " + voxels.length);
-		int diameter = (int) Math.round(radius * 2);
-		double r = radius;
-		int xmin = (int) (xc - r + 0.5), ymin = (int) (yc - r + 0.5), zmin = (int) (zc - r + 0.5);
-		int xmax = xmin + diameter, ymax = ymin + diameter, zmax = zmin + diameter;
-		double r2 = r * r;
-		r -= 0.5;
-		double xoffset = xmin + r, yoffset = ymin + r, zoffset = zmin + r;
-		double xx, yy, zz;
-		int lenx = (int) radius;
-		int leny = (int) radius;
-		int displace = 0;
-		for (int x = xmin; x <= xmax; x++) {
-			for (int y = ymin; y <= ymax; y++) {
-				for (int z = zmin; z <= zmax; z++) {
-					xx = x - xoffset;
-					yy = y - yoffset;
-					zz = z - zoffset;
-					if (xx * xx + yy * yy + zz * zz <= r2)
-						displace = x * (lenx) * y * leny;
-					voxels[displace + z] = 255;
-				}
-			}
-		}
-	}
 
 	public static void addSphere(ImagePlus impMapR, ImagePlus impMapG, ImagePlus impMapB, int x0, int y0, int z0,
 			int radius, int[] colorRGB, boolean surfaceOnly) {
