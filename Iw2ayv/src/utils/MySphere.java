@@ -915,8 +915,8 @@ public class MySphere {
 		int diam2 = (int) sphere2[3];
 		double volume = (4 / 3) * 3.14 * rad2 * rad2 * rad2;
 
-		MyLog.logVector(sphere1, "sphere1");
-		MyLog.logVector(sphere2, "sphere2");
+		MyLog.logVector(sphere1, "sphere1_001");
+		MyLog.logVector(sphere2, "sphere2_001");
 		IJ.log("radius= " + rad2 + " volume teorico= " + volume + " voxels");
 
 		// int xmin = x2 - rad2;
@@ -942,7 +942,19 @@ public class MySphere {
 			ImageProcessor impMask = roi1.getMask();
 			byte[] mask = (byte[]) impMask.getPixels();
 			ImageProcessor ip2 = imp2.getProcessor();
-			short[] pixels = (short[]) ip2.getPixels();
+			float[] buffer = new float[ip2.getPixelCount()];
+			if (ip2.getBitDepth() == 32) {
+				float[] pixels = (float[]) ip2.getPixels();
+				for (int i1 = 0; i1 < pixels.length; i1++) {
+					buffer[i1] = (float) pixels[i1];
+				}
+			} else if (ip2.getBitDepth() == 16) {
+				short[] pixels = (short[]) ip2.getPixels();
+				for (int i1 = 0; i1 < pixels.length; i1++) {
+					buffer[i1] = (float) pixels[i1];
+				}
+			}
+
 			int offset3 = 0;
 			int offset1 = 0;
 			if (mask == null)
@@ -960,7 +972,7 @@ public class MySphere {
 				for (int rr = 0; rr < r3.width; rr++) {
 					if (mask[offset3 + rr] != 0) {
 						appx = x2 + rr - r3.width / 2;
-						aux1 = (double) pixels[offset1 + appx];
+						aux1 = (float) buffer[offset1 + appx];
 						pixlist.add(aux1);
 						// IJ.log("" + appx + ", " + appy + ", " + zz + ", " +
 						// aux1);
