@@ -19,6 +19,7 @@ import ij.gui.Overlay;
 import ij.gui.Plot;
 import ij.gui.PlotWindow;
 import ij.gui.PointRoi;
+import ij.gui.Roi;
 import ij.plugin.Duplicator;
 import ij.plugin.Orthogonal_Views;
 import ij.process.ImageProcessor;
@@ -379,13 +380,13 @@ public class MySphere {
 	}
 
 	/***
-	 * Ricerca del centro di una sfera
+	 * Ricerca del centro di una sfera nello stack. Utilizza Orthogonal_Views
 	 * 
 	 * @param imp1
 	 *            stack immagini sfera
 	 * @param demo
 	 *            flag per grafica
-	 * @return coordinate centro sfera
+	 * @return coordinate centro sfera (x, y, z, diam)
 	 */
 
 	public static double[] centerSphere(ImagePlus imp1, boolean demo) {
@@ -402,24 +403,21 @@ public class MySphere {
 		IJ.run(imp1, "Orthogonal Views", "");
 		Orthogonal_Views ort1 = Orthogonal_Views.getInstance();
 		IJ.wait(10);
-		// if (demo)
-		// MyLog.waitHere(
-		// "--- 000 ---\noutput di 'Orthogonal Views', centrato di default sulla
-		// slice centrale dello stack\n"
-		// + "ricostruisce le viste XZ ed YZ dalle quali viene ricavata la reale
-		// slice centrale della sfera"
-		// + "\nSI ACCETTANO SUGGERIMENTI SU QUESTA SCRITTA, maledetti....");
+		if (demo)
+			MyLog.waitHere(
+					"--- 000 ---\noutput di 'Orthogonal Views', centrato di default sulla slice centrale dello stack\n"
+							+ "ricostruisce le viste XZ ed YZ dalle quali viene ricavata la reale slice centrale della sfera");
 
 		ImagePlus imp102 = ort1.getXZImage();
 		if (imp102 == null)
 			MyLog.waitHere("--- 001 ---\nimp102=null");
-		ImagePlus imp202 = new Duplicator().run(imp102);
+		ImagePlus impXZ = new Duplicator().run(imp102);
 		IJ.wait(10);
 		// imp202.setTitle("SAGITTALE ??");;
 		ImagePlus imp103 = ort1.getYZImage();
 		if (imp103 == null)
 			MyLog.waitHere("--- 002 ---\nimp103=null");
-		ImagePlus imp203 = new Duplicator().run(imp103);
+		ImagePlus impYZ = new Duplicator().run(imp103);
 		IJ.wait(10);
 		// imp203.setTitle("CORONALE ??");;
 
@@ -436,65 +434,65 @@ public class MySphere {
 		// slice centrale dello stack
 
 		int direction = 0;
-		String info10 = "position search XZimage";
+		// String info10 = "position search XZimage";
 		direction = 2;
-		double out202[] = MySphere.centerCircleCannyEdge(imp202, direction, maxFitError, maxBubbleGapLimit, false);
-		if (out202 == null) {
+		double outXZ[] = MySphere.centerCircleCannyEdge(impXZ, direction, maxFitError, maxBubbleGapLimit, false);
+		if (outXZ == null) {
 			MyLog.waitHere("--- 003 ---\nout202 == null");
-			IJ.log("--- 004 ---\nposition search XZimage xCenterCircle= " + out202[0] + "yCenterCircle= " + out202[1]
-					+ "diamCircle= " + out202[2]);
+			IJ.log("--- 004 ---\nposition search XZimage xCenterCircle= " + outXZ[0] + "yCenterCircle= " + outXZ[1]
+					+ "diamCircle= " + outXZ[2]);
 			MyLog.waitHere();
 		}
 
 		Overlay over202 = new Overlay();
-		imp202.setOverlay(over202);
-		double xCenterEXT = out202[0];
-		double yCenterEXT = out202[1];
-		double diamEXT = out202[2];
-		imp202.setRoi(new OvalRoi(xCenterEXT - diamEXT / 2, yCenterEXT - diamEXT / 2, diamEXT, diamEXT));
-		imp202.getRoi().setStrokeColor(Color.red);
-		over202.addElement(imp202.getRoi());
-		imp202.deleteRoi();
-		imp202.setRoi(new OvalRoi(xCenterEXT - 2, yCenterEXT - 2, 4, 4));
-		imp202.getRoi().setStrokeColor(Color.red);
-		imp202.getRoi().setFillColor(Color.red);
+		impXZ.setOverlay(over202);
+		double xCenterEXT = outXZ[0];
+		double yCenterEXT = outXZ[1];
+		double diamEXT = outXZ[2];
+		impXZ.setRoi(new OvalRoi(xCenterEXT - diamEXT / 2, yCenterEXT - diamEXT / 2, diamEXT, diamEXT));
+		impXZ.getRoi().setStrokeColor(Color.red);
+		over202.addElement(impXZ.getRoi());
+		impXZ.deleteRoi();
+		impXZ.setRoi(new OvalRoi(xCenterEXT - 2, yCenterEXT - 2, 4, 4));
+		impXZ.getRoi().setStrokeColor(Color.red);
+		impXZ.getRoi().setFillColor(Color.red);
 
-		over202.addElement(imp202.getRoi());
-		imp202.deleteRoi();
-		imp202.show();
+		over202.addElement(impXZ.getRoi());
+		impXZ.deleteRoi();
+		// impXZ.show();
 		MyLog.waitHere("center sphere  XZ", true, 200);
 
 		// Ricerca posizione ROI per calcolo uniformita'. Versione con Canny
 		// Edge Detector, da utilizzare per il fantoccio sferico. La coordinata
 		// del centro della sfera verrà utilizzata per determinare quale è la
 		// slice centrale dello stack
-		info10 = "position search YZimage";
+		// info10 = "position search YZimage";
 		direction = 0;
-		double out203[] = MySphere.centerCircleCannyEdge(imp203, direction, maxFitError, maxBubbleGapLimit, false);
-		if (out203 == null) {
+		double outYZ[] = MySphere.centerCircleCannyEdge(impYZ, direction, maxFitError, maxBubbleGapLimit, false);
+		if (outYZ == null) {
 			MyLog.waitHere("--- 005 ---\nout203 == null", true, 200);
-			IJ.log("--- 006 ---\nposition search YZimage xCenterCircle= " + out203[0] + "yCenterCircle= " + out203[1]
-					+ "diamCircle= " + out203[2]);
+			IJ.log("--- 006 ---\nposition search YZimage xCenterCircle= " + outYZ[0] + "yCenterCircle= " + outYZ[1]
+					+ "diamCircle= " + outYZ[2]);
 			MyLog.waitHere("aaa", true, 100);
 		}
 
 		MyLog.waitHere("bbb", true, 500);
 		Overlay over203 = new Overlay();
-		imp203.setOverlay(over203);
-		xCenterEXT = out203[0];
-		yCenterEXT = out203[1];
-		diamEXT = out203[2];
-		imp203.setRoi(new OvalRoi(xCenterEXT - diamEXT / 2, yCenterEXT - diamEXT / 2, diamEXT, diamEXT));
-		imp203.getRoi().setStrokeColor(Color.red);
-		over203.addElement(imp203.getRoi());
-		imp203.deleteRoi();
+		impYZ.setOverlay(over203);
+		xCenterEXT = outYZ[0];
+		yCenterEXT = outYZ[1];
+		diamEXT = outYZ[2];
+		impYZ.setRoi(new OvalRoi(xCenterEXT - diamEXT / 2, yCenterEXT - diamEXT / 2, diamEXT, diamEXT));
+		impYZ.getRoi().setStrokeColor(Color.red);
+		over203.addElement(impYZ.getRoi());
+		impYZ.deleteRoi();
 
-		imp203.setRoi(new OvalRoi(xCenterEXT - 2, yCenterEXT - 2, 4, 4));
-		imp203.getRoi().setStrokeColor(Color.red);
-		imp203.getRoi().setFillColor(Color.red);
-		over203.addElement(imp203.getRoi());
-		imp203.deleteRoi();
-		imp203.show();
+		impYZ.setRoi(new OvalRoi(xCenterEXT - 2, yCenterEXT - 2, 4, 4));
+		impYZ.getRoi().setStrokeColor(Color.red);
+		impYZ.getRoi().setFillColor(Color.red);
+		over203.addElement(impYZ.getRoi());
+		impYZ.deleteRoi();
+		// impYZ.show();
 		MyLog.waitHere("center sphere YZ", true, 500);
 
 		// ===============================
@@ -503,8 +501,8 @@ public class MySphere {
 		// Determinazione della centerSlice, utilizzando le coordinate Z del
 		// centro sfera determinate in precedenza.
 		int centerSlice = 0;
-		if ((out202[1] - out203[0]) < 2 || (out203[0] - out202[1]) < 2) {
-			centerSlice = (int) out202[1]; // max incertezza permessa = 1
+		if ((outXZ[1] - outYZ[0]) < 2 || (outYZ[0] - outXZ[1]) < 2) {
+			centerSlice = (int) outXZ[1]; // max incertezza permessa = 1
 											// immagine
 		} else
 			MyLog.waitHere("--- 007 ---\nnon riesco a determinare la posizione Z, eccessiva incertezza");
@@ -516,113 +514,51 @@ public class MySphere {
 			MyLog.waitHere("--- 008 ---\nimp101=null");
 		}
 		imp101.setTitle("XY");
-		ImagePlus imp201 = imp101.duplicate();
+		ImagePlus impXY = imp101.duplicate();
 
 		// Ricerca posizione ROI per calcolo uniformita'. Versione con Canny
 		// Edge Detector, da utilizzare per il fantoccio sferico. In base alle
 		// coordinate del centro e del raggio qui determinati, viene di seguito
 		// costruita la sfera.
 		direction = 1;
-		double out201[] = MySphere.centerCircleCannyEdge(imp201, direction, maxFitError, maxBubbleGapLimit, false);
-		if (out201 == null) {
+		double outXY[] = MySphere.centerCircleCannyEdge(impXY, direction, maxFitError, maxBubbleGapLimit, false);
+		if (outXY == null) {
 			MyLog.waitHere("--- 009 ---\nout201 null");
-			IJ.log("--- 010 ---\nposition search XYimage xCenterCircle= " + out201[0] + "yCenterCircle= " + out201[1]
-					+ "diamCircle= " + out201[2]);
+			IJ.log("--- 010 ---\nposition search XYimage xCenterCircle= " + outXY[0] + "yCenterCircle= " + outXY[1]
+					+ "diamCircle= " + outXY[2]);
 			MyLog.waitHere();
 		}
 
 		Overlay over201 = new Overlay();
-		imp201.setOverlay(over201);
-		xCenterEXT = out201[0];
-		yCenterEXT = out201[1];
-		diamEXT = out201[2];
-		imp201.setRoi(new OvalRoi(xCenterEXT - diamEXT / 2, yCenterEXT - diamEXT / 2, diamEXT, diamEXT));
+		impXY.setOverlay(over201);
+		xCenterEXT = outXY[0];
+		yCenterEXT = outXY[1];
+		diamEXT = outXY[2];
+		impXY.setRoi(new OvalRoi(xCenterEXT - diamEXT / 2, yCenterEXT - diamEXT / 2, diamEXT, diamEXT));
 
-		imp201.getRoi().setStrokeColor(Color.red);
-		over201.addElement(imp201.getRoi());
-		imp201.deleteRoi();
+		impXY.getRoi().setStrokeColor(Color.red);
+		over201.addElement(impXY.getRoi());
+		impXY.deleteRoi();
 
-		imp201.setRoi(new OvalRoi(xCenterEXT - 2, yCenterEXT - 2, 4, 4));
-		imp201.getRoi().setStrokeColor(Color.red);
-		imp201.getRoi().setFillColor(Color.red);
-		over201.addElement(imp201.getRoi());
-		imp201.deleteRoi();
+		impXY.setRoi(new OvalRoi(xCenterEXT - 2, yCenterEXT - 2, 4, 4));
+		impXY.getRoi().setStrokeColor(Color.red);
+		impXY.getRoi().setFillColor(Color.red);
+		over201.addElement(impXY.getRoi());
+		impXY.deleteRoi();
 
-		imp201.show();
+		// impXY.show();
 		MyLog.waitHere("center sphere xy", true, 500);
 
 		// stabiliamo i dati di output
 		double[] out4 = new double[4];
-		out4[0] = out201[0];
-		out4[1] = out201[1];
+		out4[0] = outXY[0];
+		out4[1] = outXY[1];
 		out4[2] = centerSlice - 1;
-		out4[3] = out201[2];
+		out4[3] = outXY[2];
 
 		return out4;
 
 	}
-
-//	public static void maskHotSphere(ImageStack imaStack, int xc, int yc, int zc, int radius, int value) {
-//
-//		List<Float> aux = new ArrayList<Float>();
-//		float[] boundCubePixels = null;
-//		int diameter = (int) Math.round(radius * 2);
-//		double r = radius;
-//		int xmin = (int) (xc - r + 0.5), ymin = (int) (yc - r + 0.5), zmin = (int) (zc - r + 0.5);
-//		int xmax = xmin + diameter, ymax = ymin + diameter, zmax = zmin + diameter;
-//		boundCubePixels = imaStack.getVoxels(xmin, ymin, zmin, diameter, diameter, diameter, boundCubePixels);
-//		double r2 = r * r;
-//		r -= 0.5;
-//		double xoffset = xmin + r, yoffset = ymin + r, zoffset = zmin + r;
-//		double xx, yy, zz;
-//		for (int x = xmin; x <= xmax; x++) {
-//			for (int y = ymin; y <= ymax; y++) {
-//				for (int z = zmin; z <= zmax; z++) {
-//					xx = x - xoffset;
-//					yy = y - yoffset;
-//					zz = z - zoffset;
-//					if (xx * xx + yy * yy + zz * zz <= r2) {
-//						aux.add((float) imaStack.getVoxel(x, y, z));
-//						imaStack.setVoxel(x, y, z, value);
-//					}
-//				}
-//			}
-//		}
-//		// float[] out1 = ArrayUtils.arrayListToArrayFloat(aux);
-//
-//		return;
-//	}
-//
-//	public static void maskRGBHotSphere(ImageStack imaStack, int xc, int yc, int zc, int radius, int value) {
-//
-//		List<Float> aux = new ArrayList<Float>();
-//		float[] boundCubePixels = null;
-//		int diameter = (int) Math.round(radius * 2);
-//		double r = radius;
-//		int xmin = (int) (xc - r + 0.5), ymin = (int) (yc - r + 0.5), zmin = (int) (zc - r + 0.5);
-//		int xmax = xmin + diameter, ymax = ymin + diameter, zmax = zmin + diameter;
-//		boundCubePixels = imaStack.getVoxels(xmin, ymin, zmin, diameter, diameter, diameter, boundCubePixels);
-//		double r2 = r * r;
-//		r -= 0.5;
-//		double xoffset = xmin + r, yoffset = ymin + r, zoffset = zmin + r;
-//		double xx, yy, zz;
-//		for (int x = xmin; x <= xmax; x++) {
-//			for (int y = ymin; y <= ymax; y++) {
-//				for (int z = zmin; z <= zmax; z++) {
-//					xx = x - xoffset;
-//					yy = y - yoffset;
-//					zz = z - zoffset;
-//					if (xx * xx + yy * yy + zz * zz <= r2) {
-//						aux.add((float) imaStack.getVoxel(x, y, z));
-//						imaStack.setVoxel(x, y, z, value);
-//					}
-//				}
-//			}
-//		}
-//		// float[] out1 = ArrayUtils.arrayListToArrayFloat(aux);
-//
-//		return;
-//	}
 
 	/***
 	 * 
@@ -666,21 +602,34 @@ public class MySphere {
 		return impMappazzaOUT;
 	}
 
-
-
-	public static void addSphere(ImagePlus impMapR, ImagePlus impMapG, ImagePlus impMapB, int x0, int y0, int z0,
-			int radius, int[] colorRGB, boolean surfaceOnly) {
+	public static void addSphere(ImagePlus impMapR, ImagePlus impMapG, ImagePlus impMapB, double[] sphere, int[] bounds,
+			int[] colorRGB, boolean surfaceOnly) {
+		// public static void addSphere(ImagePlus impMapR, ImagePlus impMapG,
+		// ImagePlus impMapB, int x0, int y0, int z0,
+		// int diameter, int[] bounds, int[] colorRGB, boolean surfaceOnly) {
+		int radius = (int) sphere[3] / 2;
+		int diameter = (int) sphere[3];
 		int r2 = radius * radius;
 		int r1 = (radius - 1) * (radius - 1);
 		int width = impMapR.getWidth();
 		short auxR = 0;
 		short auxG = 0;
 		short auxB = 0;
+		int x0 = (int) sphere[0];
+		int y0 = (int) sphere[1];
+		int z0 = (int) sphere[2];
 		int x2 = 0;
 		int y2 = 0;
 		int z2 = 0;
-
-		for (int z1 = z0 - radius; z1 < z0 + radius; z1++) {
+		int xmin = x0 - radius;
+		int xmax = xmin + diameter;
+		int ymin = y0 - radius;
+		int ymax = ymin + diameter;
+		int zmin = z0 - radius;
+		int zmax = zmin + diameter;
+		for (int z1 = zmin; z1 <= zmax; z1++) {
+			if (z1 < 0 || z1 > bounds[2] - 1)
+				continue;
 			int slice = z1 + 1;
 			z2 = z1 - z0;
 			ImageStack isR = impMapR.getStack();
@@ -690,36 +639,40 @@ public class MySphere {
 			short[] pixelsMapR = (short[]) isR.getProcessor(slice).getPixels();
 			short[] pixelsMapG = (short[]) isG.getProcessor(slice).getPixels();
 			short[] pixelsMapB = (short[]) isB.getProcessor(slice).getPixels();
-			for (int x1 = x0 - radius; x1 < x0 + radius; x1++) {
-				x2 = x1 - x0;
-				int offset = x1 * width;
-				for (int y1 = y0 - radius; y1 < y0 + radius; y1++) {
-					y2 = y1 - y0;
+			for (int y4 = ymin; y4 <= ymax; y4++) {
+				if (y4 < 0 || y4 > bounds[1])
+					continue;
+				y2 = y4 - y0;
+				int offset = y4 * width;
+				for (int x4 = xmin; x4 <= xmax; x4++) {
+					if (x4 < 0 || x4 > bounds[0])
+						continue;
+					x2 = x4 - x0;
 					int aux2 = x2 * x2 + y2 * y2 + z2 * z2;
 					if (surfaceOnly) {
 						if (aux2 <= r2 && aux2 > r1) {
-							auxR = pixelsMapR[offset + y1];
+							auxR = pixelsMapR[offset + x4];
 							auxR += colorRGB[0];
-							pixelsMapR[offset + y1] = auxR;
-							auxG = pixelsMapG[offset + y1];
+							pixelsMapR[offset + x4] = auxR;
+							auxG = pixelsMapG[offset + x4];
 							auxG += colorRGB[1];
-							pixelsMapG[offset + y1] = auxG;
-							auxB = pixelsMapB[offset + y1];
+							pixelsMapG[offset + x4] = auxG;
+							auxB = pixelsMapB[offset + x4];
 							auxB += colorRGB[2];
-							pixelsMapB[offset + y1] = auxB;
+							pixelsMapB[offset + x4] = auxB;
 						}
 
 					} else {
 						if (aux2 <= r2) {
-							auxR = pixelsMapR[offset + y1];
+							auxR = pixelsMapR[offset + x4];
 							auxR += colorRGB[0];
-							pixelsMapR[offset + y1] = auxR;
-							auxG = pixelsMapG[offset + y1];
+							pixelsMapR[offset + x4] = auxR;
+							auxG = pixelsMapG[offset + x4];
 							auxG += colorRGB[1];
-							pixelsMapG[offset + y1] = auxG;
-							auxB = pixelsMapB[offset + y1];
+							pixelsMapG[offset + x4] = auxG;
+							auxB = pixelsMapB[offset + x4];
 							auxB += colorRGB[2];
-							pixelsMapB[offset + y1] = auxB;
+							pixelsMapB[offset + x4] = auxB;
 						}
 					}
 				}
@@ -729,7 +682,6 @@ public class MySphere {
 			isG.setPixels(pixelsMapG, slice);
 			isB.setPixels(pixelsMapB, slice);
 			impMapR.updateAndDraw();
-
 		}
 	}
 
@@ -775,21 +727,21 @@ public class MySphere {
 		largestValue = searchMax[3];
 
 		double kappa = 255.0 / largestValue;
-		double kappaR = 0;
-		double kappaG = 0;
-		double kappaB = 0;
+		double kappaR = 255.0 / largestR;
+		double kappaG = 255.0 / largestG;
+		double kappaB = 255.0 / largestB;
 
 		switch (myColors) {
 		case 1:
 			if (largestR == 0)
 				largestR = 1;
-			kappaR = 255 / largestR;
+			kappaR = 255.0 / largestR;
 			if (largestG == 0)
 				largestG = 1;
-			kappaG = 255 / largestG;
+			kappaG = 255.0 / largestG;
 			if (largestB == 0)
 				largestB = 1;
-			kappaB = 255 / largestB;
+			kappaB = 255.0 / largestB;
 			break;
 		case 2:
 			kappaR = kappa;
@@ -799,22 +751,25 @@ public class MySphere {
 		case 3:
 			if (largestR == 0)
 				largestR = 1;
-			kappaR = 255 / largestR;
+			kappaR = 255.0 / largestR;
 			if (largestG == 0)
 				largestG = 1;
-			kappaG = 255 / largestG;
+			kappaG = 255.0 / largestG;
 			if (largestB == 0)
 				largestB = 1;
-			kappaB = 255 / largestB;
+			kappaB = 255.0 / largestB;
 			break;
 		}
 
-		if (true) {
+		if (false) {
 			IJ.log("generaMappazzaCombinata >> largestR= " + largestR);
 			IJ.log("generaMappazzaCombinata >> largestG= " + largestG);
 			IJ.log("generaMappazzaCombinata >> largestB= " + largestB);
 			IJ.log("generaMappazzaCombinata >> largestValue= " + largestValue);
 			IJ.log("generaMappazzaCombinata >> kappa= " + kappa);
+			IJ.log("generaMappazzaCombinata >> kappaR= " + kappaR);
+			IJ.log("generaMappazzaCombinata >> kappaG= " + kappaG);
+			IJ.log("generaMappazzaCombinata >> kappaB= " + kappaB);
 		}
 
 		for (int i10 = 0; i10 < impMappazzaR.getNSlices(); i10++) {
@@ -839,11 +794,6 @@ public class MySphere {
 
 				colorRGB = ((red & 0xff) << 16) | ((green & 0xff) << 8) | (blue & 0xff);
 				pixelsMappazzaRGB[i1] = colorRGB;
-				// if (debug && (puntatore == i1)) {
-				// IJ.log("pixelsMappaR= " + pixelsMappaR[i1] + " kappa= " +
-				// kappa + " auxR= " + auxR + " colorRGB= "
-				// + colorRGB);
-				// }
 			}
 			impMappazzaRGB.updateAndRepaintWindow();
 		}
@@ -857,19 +807,24 @@ public class MySphere {
 	 * mi darebbe un raggio frazionario
 	 * 
 	 * @param imp1
-	 * @param out1
+	 * @param sphere1
 	 * @param demo
 	 * @return
 	 */
 
-	public static double[] searchCircularSpot(ImagePlus imp1, double[] out1, String aa, int demolevel) {
+	public static double[] searchCircularSpot(ImagePlus imp1, double[] sphere1, int diamsearch, String aa,
+			int demolevel) {
 
 		ArrayList<Double> xlist = new ArrayList<Double>();
 		ArrayList<Double> ylist = new ArrayList<Double>();
 		ArrayList<Double> zlist = new ArrayList<Double>();
 		ArrayList<Double> maxlist = new ArrayList<Double>();
-		int zcenter = (int) out1[2];
-		int radius = (int) out1[3] / 2;
+
+		int x1 = (int) sphere1[0];
+		int y1 = (int) sphere1[1];
+		int z1 = (int) sphere1[2];
+		int d1 = (int) sphere1[3];
+		int radius = (int) sphere1[3] / 2;
 		boolean demo = false;
 		if (demolevel > 0)
 			demo = true;
@@ -881,7 +836,7 @@ public class MySphere {
 				IJ.log("slice= " + i1);
 
 			int zslice = i1;
-			int distanceFromCenter = zcenter - zslice;
+			int distanceFromCenter = z1 - zslice;
 			// calcolo della proiezione della sfera nella slice
 			int diam33 = (int) Math.sqrt(radius * radius - distanceFromCenter * distanceFromCenter) * 2;
 			if (demo)
@@ -889,20 +844,20 @@ public class MySphere {
 
 			if (diam33 < 0)
 				diam33 = 0;
-			int diam22 = 14; // diam 14 sono 153 pixels, con diam 12 sono solo
-								// 113 pixels
-			if (diam33 < diam22) {
+			if (diam33 < diamsearch) {
 				if (demo)
 					IJ.log("skip");
 				continue; // se il diametro della sfera è più piccolo del
 							// diametro di ricerca lasciamo perdere
 			}
-			double[] out2 = new double[3];
-			out2[0] = out1[0];
-			out2[1] = out1[1];
-			out2[2] = diam33;
+			double[] out2 = new double[4];
+			out2[0] = sphere1[0];
+			out2[1] = sphere1[1];
+			out2[2] = sphere1[2];
+			out2[3] = diam33;
 
-			double[] spot = MyFilter.positionSearchCircular(imp20, out2, diam22, demolevel);
+			double[] spot = MyFilter.positionSearchSphere(imp20, sphere1, diam33, diamsearch, zslice, demolevel);
+
 			if (demo)
 				MyLog.logVector(spot, "spot");
 
@@ -925,12 +880,123 @@ public class MySphere {
 				maxz = zlist.get(i1);
 			}
 		}
+
 		double[] out4 = new double[4];
 		out4[0] = maxx;
 		out4[1] = maxy;
 		out4[2] = maxz;
 		out4[3] = maxval;
 		return out4;
+	}
+
+	/***
+	 * 
+	 * @param imp1
+	 * @param sphere1
+	 * @param diamsearch
+	 * @param aa
+	 * @param demolevel
+	 * @return
+	 */
+
+	public static double[] vectorizeSphericalSpot(ImagePlus imp1, double[] sphere1, double[] sphere2, int demolevel) {
+
+		boolean demo = false;
+		if (demolevel > 0)
+			demo = true;
+
+		ArrayList<Double> pixlist = new ArrayList<Double>();
+
+		int x2 = (int) sphere2[0];
+		int y2 = (int) sphere2[1];
+		int z2 = (int) sphere2[2];
+		// int d2 = (int) sphere2[3];
+		int rad2 = (int) sphere2[3] / 2;
+		int diam2 = (int) sphere2[3];
+		double volume = (4 / 3) * 3.14 * rad2 * rad2 * rad2;
+
+		MyLog.logVector(sphere1, "sphere1");
+		MyLog.logVector(sphere2, "sphere2");
+		IJ.log("radius= " + rad2 + " volume teorico= " + volume + " voxels");
+
+		// int xmin = x2 - rad2;
+		// int xmax = xmin + diam2;
+		// int ymin = y2 - rad2;
+		// int ymax = y2 + diam2;
+		int zmin = z2 - rad2;
+		int zmax = zmin + diam2;
+		int width = imp1.getWidth();
+		// int height = imp1.getHeight();
+		double aux1 = 0;
+		double rad3 = 0;
+		int dd = 0;
+		for (int zz = zmin; zz < zmax; zz++) {
+			dd = Math.abs(zz - z2);
+			rad3 = Math.sqrt(rad2 * rad2 - dd * dd);
+			// IJ.log("zz= " + zz + " dd= " + dd + " rad3= " + rad3 + " x2= " +
+			// x2 + " y2= " + y2);
+			ImagePlus imp2 = MyStackUtils.imageFromStack(imp1, zz + 1);
+			imp2.setRoi(new OvalRoi(x2 - rad3, y2 - rad3, rad3 * 2, rad3 * 2));
+			Roi roi1 = imp2.getRoi();
+			Rectangle r3 = roi1.getBounds();
+			ImageProcessor impMask = roi1.getMask();
+			byte[] mask = (byte[]) impMask.getPixels();
+			ImageProcessor ip2 = imp2.getProcessor();
+			short[] pixels = (short[]) ip2.getPixels();
+			int offset3 = 0;
+			int offset1 = 0;
+			if (mask == null)
+				MyLog.waitHere("maskArray==null");
+
+			// scansiono la mask e trovero' i pixel interessati della immagine
+			// sorgente mediante calcoli
+			int appx = 0;
+			int appy = 0;
+
+			for (int ww = 0; ww < r3.height; ww++) {
+				offset3 = ww * (r3.width);
+				appy = (y2 + ww - r3.height / 2);
+				offset1 = appy * width;
+				for (int rr = 0; rr < r3.width; rr++) {
+					if (mask[offset3 + rr] != 0) {
+						appx = x2 + rr - r3.width / 2;
+						aux1 = (double) pixels[offset1 + appx];
+						pixlist.add(aux1);
+						IJ.log("" + appx + ", " + appy + ", " + zz + ", " + aux1);
+						// pixels[offset1 + appx] = 10000;
+					}
+				}
+			}
+		}
+		double[] pix = ArrayUtils.arrayListToArrayDouble(pixlist);
+		imp1.updateAndDraw();
+		return pix;
+	}
+
+	public void demoPixelPertainRoiTest(ImageProcessor ip) {
+		/**
+		 * questo � solo un appunto sui metodi che possiamo utilizzare per
+		 * stabilire se un pixel � all'interno di una ROI.
+		 */
+
+		// byte[] pixels = (byte[]) ip.getPixels();
+		// int width = ip.getWidth();
+		Rectangle r = ip.getRoi();
+		ImageProcessor mask = ip.getMask();
+		for (int y = r.y; y < (r.y + r.height); y++) {
+			for (int x = r.x; x < (r.x + r.width); x++) {
+				if (mask == null || mask.getPixel(x - r.x, y - r.y) != 0) {
+					// ...DO What YOU WISH TO DO
+					/**
+					 * Roi roi = Imp.getRoi(); Rectangle rect = roi.getBounds();
+					 * rx = rect.x; ry = rect.y; w = rect.width; h =
+					 * rect.height; for(int y=ry; y<ry+h; y++) { for(int x=rx;
+					 * x<rx+w; x++) { if(roi.contains(x, y)) {
+					 */
+
+				}
+			}
+		}
 	}
 
 	public static ImagePlus createOrthogonalStack(ImagePlus imp1, int direction, boolean demo) {

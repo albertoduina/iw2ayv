@@ -14,8 +14,12 @@ import ij.ImageJ;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.WindowManager;
+import ij.gui.OvalRoi;
+import ij.gui.Roi;
+import ij.io.Opener;
 import ij.plugin.Duplicator;
 import ij.process.ImageConverter;
+import ij.process.ImageProcessor;
 
 public class MySphereTest {
 
@@ -136,7 +140,8 @@ public class MySphereTest {
 			MyLog.logVector(center1, "XYZ center sphere x,y,z,diam");
 		}
 
-		double[] out = MySphere.searchCircularSpot(imp204, center1, "XY ", demoLevel);
+		int diamsearch = 14;
+		double[] out = MySphere.searchCircularSpot(imp204, center1, diamsearch, "XY ", demoLevel);
 		if (true)
 			MyLog.logVector(out, "XYZ dati spot finali x,y,z,mean");
 
@@ -151,7 +156,7 @@ public class MySphereTest {
 
 		demo = true;
 		demoLevel = 0;
-		double[] out2 = MySphere.searchCircularSpot(imp111, center2, "XZ ", demoLevel);
+		double[] out2 = MySphere.searchCircularSpot(imp111, center2, diamsearch, "XZ ", demoLevel);
 		double[] reorder1 = new double[4];
 		reorder1[0] = out2[0];
 		reorder1[1] = out2[2];
@@ -168,7 +173,7 @@ public class MySphereTest {
 		}
 		demo = true;
 		demoLevel = 0;
-		double[] out3 = MySphere.searchCircularSpot(imp222, center3, "YZ ", demoLevel);
+		double[] out3 = MySphere.searchCircularSpot(imp222, center3, diamsearch, "YZ ", demoLevel);
 		double[] reorder2 = new double[4];
 		reorder2[0] = out3[2];
 		reorder2[1] = out3[1];
@@ -215,54 +220,6 @@ public class MySphereTest {
 		MyLog.waitHere("==== FINE ====");
 	}
 
-	// @Test
-	// public final void testMaskHotSphere() {
-	//
-	// String path1 = "./Data2/HC1-7";
-	// ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, false);
-	// // IJ.run(imp1, "AND...", "value=00 stack");
-	//
-	// imp1.show();
-	// MyLog.waitHere("prima");
-	// ImageStack imaStack = imp1.getImageStack();
-	//
-	// int xc = 220;
-	// int yc = 220;
-	// int zc = 90;
-	// int radius = 20;
-	// int value = 4000;
-	//
-	// MySphere.maskHotSphere(imaStack, xc, yc, zc, radius, value);
-	// imp1.updateAndDraw();
-	// MyLog.waitHere("dopo");
-	// MyLog.waitHere("==== FINE ====");
-	// }
-	//
-	// @Test
-	// public final void testMaskRGBHotSphere() {
-	//
-	// String path1 = "./Data2/HC1-7";
-	// ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, false);
-	// IJ.run(imp1, "RGB Color", "");
-	// ImageConverter ic1 = new ImageConverter(imp1);
-	// ic1.convertToRGBStack();
-	//
-	// imp1.show();
-	// MyLog.waitHere("prima");
-	// ImageStack imaStack = imp1.getImageStack();
-	//
-	// int xc = 100;
-	// int yc = 150;
-	// int zc = 80;
-	// int radius = 50;
-	// int value = 10000;
-	//
-	// MySphere.maskRGBHotSphere(imaStack, xc, yc, zc, radius, value);
-	// imp1.updateAndDraw();
-	// MyLog.waitHere("dopo");
-	// MyLog.waitHere("==== FINE ====");
-	// }
-
 	@Test
 	public final void testAddSphere() {
 
@@ -287,34 +244,133 @@ public class MySphereTest {
 			impMapRGB = new ImagePlus("MAPPAZZA_" + myColors, stackRGB);
 			generate = false;
 		}
-		int radius = depth / 2 - 4;
-		int x0 = imp1.getWidth() / 2;
-		int y0 = imp1.getHeight() / 2;
-		int z0 = imp1.getImageStackSize() / 2;
+
+		double[] sphere1 = new double[4];
+		sphere1[0] = imp1.getWidth() / 2;
+		sphere1[1] = imp1.getHeight() / 2;
+		sphere1[2] = imp1.getImageStackSize() / 2;
+		sphere1[3] = depth * 3 / 4 - 4;
+
 		int[] colorRGB3 = { 150, 150, 150 };
-		MySphere.addSphere(impMapR, impMapG, impMapB, x0, y0, z0, radius, colorRGB3, true);
+		int[] bounds = new int[3];
+		bounds[0] = imp1.getWidth();
+		bounds[1] = imp1.getHeight();
+		bounds[2] = imp1.getImageStackSize();
 
-		radius = 14;
-		x0 = (imp1.getWidth() - radius) / 2;
-		y0 = (imp1.getHeight() - radius) / 2;
-		z0 = (imp1.getImageStackSize() - radius) / 2;
+		MyLog.logVector(sphere1, "sphere1");
+
+		MySphere.addSphere(impMapR, impMapG, impMapB, sphere1, bounds, colorRGB3, true);
+
+		int radius = 10;
+		double[] sphere2 = new double[4];
+		sphere2[0] = (imp1.getWidth() - radius) / 2;
+		sphere2[1] = (imp1.getHeight() - radius) / 2;
+
+		sphere2[0] = 100;
+		sphere2[1] = 150;
+
+		sphere2[2] = 40;
+		sphere2[3] = radius;
+
 		int[] colorRGB = { 150, 150, 0 };
-		MySphere.addSphere(impMapR, impMapG, impMapB, x0, y0, z0, radius, colorRGB, false);
+		MyLog.logVector(bounds, "bounds");
+		MyLog.logVector(sphere2, "sphere2");
+		MySphere.addSphere(impMapR, impMapG, impMapB, sphere2, bounds, colorRGB, false);
 
-		x0 = x0 + 20;
-		y0 = y0 - 20;
 		radius = 20;
-		int[] colorRGB2 = { 100, 10, 200 };
-		MySphere.addSphere(impMapR, impMapG, impMapB, x0, y0, z0, radius, colorRGB2, false);
+		double[] sphere3 = new double[4];
+		sphere3[0] = sphere2[0] + radius;
+		sphere3[1] = sphere2[1] - radius;
+		sphere3[2] = sphere2[2];
+		sphere3[3] = radius;
 
-//		impMapR.show();
-//		impMapG.show();
-//		impMapB.show();
+		int[] colorRGB2 = { 100, 10, 200 };
+		MyLog.logVector(sphere3, "sphere3");
+		MySphere.addSphere(impMapR, impMapG, impMapB, sphere3, bounds, colorRGB2, false);
+
+		impMapR.show();
+		impMapG.show();
+		impMapB.show();
 
 		MySphere.generaMappazzaCombinata(impMapR, impMapG, impMapB, impMapRGB, myColors);
 		impMapRGB.show();
 
 		MyLog.waitHere("==== FINE ====");
+	}
+
+	@Test
+	public final void testVectorizeSphericalSpot() {
+
+		String path1 = "./Data2/HC1-7";
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, false);
+		int demolevel = 0;
+		boolean demo = false;
+		imp1.show();
+		double[] sphere1 = MySphere.centerSphere(imp1, demo);
+		MyLog.logVector(sphere1, "sphere1");
+
+		ImagePlus impMapR = null;
+		ImagePlus impMapG = null;
+		ImagePlus impMapB = null;
+		ImagePlus impMapRGB = null;
+		ImageStack stackRGB = null;
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
+		int depth = imp1.getImageStackSize();
+		int bitdepth = 24;
+		int myColors = 2;
+
+		impMapR = MySphere.generaMappazzaVuota16(width, height, depth, "impMappazzaR");
+		impMapG = MySphere.generaMappazzaVuota16(width, height, depth, "impMappazzaG");
+		impMapB = MySphere.generaMappazzaVuota16(width, height, depth, "impMappazzaB");
+		stackRGB = ImageStack.create(width, height, depth, bitdepth);
+		impMapRGB = new ImagePlus("MAPPAZZA_" + myColors, stackRGB);
+
+		double[] sphere2 = new double[4];
+		sphere2[0] = 120;
+		sphere2[1] = 90;
+		sphere2[2] = 80;
+		sphere2[3] = 4;
+
+		double[] vetpixel = MySphere.vectorizeSphericalSpot(imp1, sphere1, sphere2, demolevel);
+		MyLog.logVector(vetpixel, "vetpixel");
+
+		int[] colorRGB3 = { 0, 100, 100 };
+		int[] bounds = new int[3];
+		bounds[0] = imp1.getWidth();
+		bounds[1] = imp1.getHeight();
+		bounds[2] = imp1.getImageStackSize();
+
+		MySphere.addSphere(impMapR, impMapG, impMapB, sphere2, bounds, colorRGB3, false);
+		MySphere.generaMappazzaCombinata(impMapR, impMapG, impMapB, impMapRGB, myColors);
+
+		impMapR.show();
+		impMapG.show();
+		impMapB.show();
+		impMapRGB.show();
+
+		MyLog.waitHere("==== FINE ====");
+	}
+
+	@Test
+	public final void testBoh() {
+
+		String path1 = ".\\Test4\\17";
+		ImagePlus imp2 = new Opener().openImage(path1);
+		ImageProcessor ip2 = imp2.getProcessor();
+		imp2.show();
+		imp2.setRoi(new OvalRoi(100, 100, 80, 40));
+		Roi roi2 = imp2.getRoi();
+		ImageProcessor impMask = roi2.getMask();
+		byte[] pixels = (byte[]) impMask.getPixels();
+		if (pixels == null)
+			IJ.log("pixels==null");
+
+		byte[] maskarray1 = ip2.getMaskArray();
+		if (maskarray1 == null)
+			IJ.log("maskarray1==null");
+
+		MyLog.waitHere();
 	}
 
 }

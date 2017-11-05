@@ -620,7 +620,7 @@ public class MyFilter {
 	 *            cerchio di ricerca
 	 * @return
 	 */
-	public static double[] positionSearchCircular(ImagePlus imp1, double[] circleData, double diam22, int demolevel) {
+	public static double[] positionSearchCircular1(ImagePlus imp1, double[] circleData, double diam22, int demolevel) {
 
 		Overlay over2 = new Overlay();
 		imp1.deleteRoi();
@@ -657,10 +657,10 @@ public class MyFilter {
 		int yRoi0 = yCenter1 - diam1 / 2;
 		int diamRoi0 = diam1;
 
-		ImageWindow iw1 = null;
 		if (demo) {
-			iw1 = UtilAyv.showImageMaximized(imp2);
+			imp2.show();
 		}
+		ImageWindow iw2 = imp2.getWindow();
 		// marco con un punto il centro del fantoccio
 
 		imp2.setRoi(new OvalRoi(xRoi0, yRoi0, diamRoi0, diamRoi0));
@@ -707,9 +707,135 @@ public class MyFilter {
 			imp2.getRoi().setFillColor(color2);
 			over2.addElement(imp2.getRoi());
 		}
-		if (demo) MyLog.waitHere("center", true, 400);
-		if (iw1 != null)
-			iw1.close();
+		if (demo)
+			MyLog.waitHere("center", true, 400);
+		if (iw2 != null)
+			iw2.close();
+		double[] out = new double[3];
+		out[0] = xmax;
+		out[1] = ymax;
+		out[2] = max1;
+		return out;
+	}
+
+
+	/***
+	 * Cerca l'hotspot all'interno di un cerchio, che rappresenta la slice che
+	 * esamino, verificando che la sfera costituita dalla rotazione di quel
+	 * cerchio sia interna alla sfera fantoccio
+	 * 
+	 * @param imp1
+	 *            immagine sfera
+	 * @param sphere1
+	 *            dati sfera
+	 * @param diam1
+	 *            diametro slice sfera
+	 * @param diam22
+	 *            diametro ricerca
+	 * @param slice
+	 *            slice in esame
+	 * @param demolevel
+	 * @return
+	 */
+	public static double[] positionSearchSphere(ImagePlus imp1, double[] sphere1, double diam1, double diam22,
+			int slice, int demolevel) {
+
+		// double[] spot = MyFilter.positionSearchSphere(imp20, sphere1, diam1,
+		// diamsearch, demolevel);
+		Overlay over2 = new Overlay();
+		imp1.deleteRoi();
+
+		ImagePlus imp2 = imp1.duplicate();
+		imp2.setOverlay(over2);
+
+		int xCenter1 = (int) sphere1[0];
+		int yCenter1 = (int) sphere1[1];
+		int zCenter1 = (int) sphere1[2];
+		int diam0 = (int) sphere1[3];
+
+		int radius2 = (int) diam22 / 2;
+		boolean demo = false;
+		if (demolevel > 0)
+			demo = true;
+		Color color1 = null;
+		Color color2 = null;
+
+		if (demolevel == 1) {
+			color1 = Color.green;
+			color2 = Color.yellow;
+		}
+		if (demolevel == 2) {
+			color1 = Color.red;
+			color2 = Color.yellow;
+		}
+		if (demolevel == 3) {
+			color1 = Color.blue;
+			color2 = Color.yellow;
+		}
+
+		int radius1 = (int) diam1 / 2;
+		// disegno il perimetro del fantoccio
+		int xRoi0 = xCenter1 - radius1;
+		int yRoi0 = yCenter1 - radius1;
+		int diamRoi0 = radius1;
+
+		if (demo) {
+			imp2.show();
+		}
+		ImageWindow iw2 = imp2.getWindow();
+		// marco con un punto il centro del fantoccio
+
+		imp2.setRoi(new OvalRoi(xRoi0, yRoi0, diamRoi0, diamRoi0));
+		if (demo) {
+			imp2.getRoi().setStrokeColor(color2);
+			over2.addElement(imp2.getRoi());
+		}
+
+		// MyLog.waitHere("cerchio esterno");
+
+		// ora faccio la scansione del bounding rectangle del cerchio esterno,
+		// utilizzando il cerchio interno, se risulta che il cerchio interno è
+		// completamente all'interno ne marco il contorno in verde
+
+		int xstart = (int) xCenter1 - radius1 + radius2;
+		int xend = (int) xCenter1 + radius1 - radius2;
+		int ystart = (int) yCenter1 - radius1 + radius2;
+		int yend = (int) yCenter1 + radius1 - radius2;
+		double max1 = -99999;
+		int xmax = 0;
+		int ymax = 0;
+		for (int x2 = xstart; x2 < xend; x2++) {
+			for (int y2 = ystart; y2 < yend; y2++) {
+				if (MyGeometry.isCircleInside(xCenter1, yCenter1, zCenter1, radius1, x2, y2, slice, radius2)) {
+
+					// boolean isCircleInside(int x1, int y1, int z1, int d1,
+					// int x2, int y2, int z2, int d2) {
+					imp2.setRoi(new OvalRoi(x2 - radius2, y2 - radius2, radius2 * 2, radius2 * 2));
+					if (demo) {
+						imp2.getRoi().setStrokeColor(color1);
+						over2.addElement(imp2.getRoi());
+					}
+
+					ImageStatistics is1 = imp2.getStatistics();
+					double med1 = is1.mean;
+					if (med1 > max1) {
+						max1 = med1;
+						xmax = x2;
+						ymax = y2;
+					}
+				}
+			}
+		}
+		if (demo) {
+			imp2.setRoi(new OvalRoi(xmax - radius2, ymax - radius2, radius2 * 2, radius2 * 2));
+			imp2.getRoi().setStrokeColor(color2);
+			imp2.getRoi().setFillColor(color2);
+			over2.addElement(imp2.getRoi());
+		}
+		if (demo)
+			MyLog.waitHere("center", true, 400);
+		if (iw2 != null)
+			iw2.close();
 		double[] out = new double[3];
 		out[0] = xmax;
 		out[1] = ymax;
