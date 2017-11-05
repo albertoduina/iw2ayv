@@ -29,11 +29,9 @@ public class MyStackUtilsTest {
 
 	@Test
 	public final void testImageFromStack() {
-		
-		
+
 		String path = InputOutput.findResource("list1.txt");
-		String[] list1 = InputOutput
-				.readStringArrayFromFile(path);
+		String[] list1 = InputOutput.readStringArrayFromFile(path);
 		ImagePlus imp1 = MyStackUtils.imagesToStack16(list1);
 		int len = imp1.getImageStackSize();
 		assertEquals(16, len);
@@ -47,8 +45,7 @@ public class MyStackUtilsTest {
 
 	@Test
 	public final void testImagesToStack16() {
-		String[] list1 = InputOutput
-				.readStringArrayFromFile("./data/list1.txt");
+		String[] list1 = InputOutput.readStringArrayFromFile("./data/list1.txt");
 		ImagePlus imp1 = MyStackUtils.imagesToStack16(list1);
 		int len = imp1.getImageStackSize();
 		imp1.show();
@@ -58,8 +55,7 @@ public class MyStackUtilsTest {
 
 	@Test
 	public final void testImagesToStack32() {
-		String[] list1 = InputOutput
-				.readStringArrayFromFile("./data/list1.txt");
+		String[] list1 = InputOutput.readStringArrayFromFile("./data/list1.txt");
 		ImagePlus imp1 = MyStackUtils.imagesToStack32(list1);
 		int len = imp1.getImageStackSize();
 		assertEquals(16, len);
@@ -91,8 +87,7 @@ public class MyStackUtilsTest {
 		ImagePlus imp1 = UtilAyv.openImageMaximized(path);
 		// MyLog.waitHere();
 		for (int i1 = 0; i1 < 36; i1++) {
-			ImagePlus imp2 = MyStackUtils.imageFromMosaicWithOffset(imp1, i1,
-					5, 5);
+			ImagePlus imp2 = MyStackUtils.imageFromMosaicWithOffset(imp1, i1, 5, 5);
 			imp2.show();
 			IJ.wait(20);
 		}
@@ -101,8 +96,7 @@ public class MyStackUtilsTest {
 
 	@Test
 	public final void testCompareStacks() {
-		String[] list1 = InputOutput
-				.readStringArrayFromFile("./data/list1.txt");
+		String[] list1 = InputOutput.readStringArrayFromFile("./data/list1.txt");
 		ImagePlus imp1 = MyStackUtils.imagesToStack16(list1);
 		ImagePlus imp2 = MyStackUtils.imagesToStack16(list1);
 
@@ -118,8 +112,7 @@ public class MyStackUtilsTest {
 
 	@Test
 	public final void testStackStatistics() {
-		String[] list1 = InputOutput
-				.readStringArrayFromFile("./data/list1.txt");
+		String[] list1 = InputOutput.readStringArrayFromFile("./data/list1.txt");
 		ImagePlus imp1 = MyStackUtils.imagesToStack16(list1);
 		int len = imp1.getImageStackSize();
 		assertEquals(16, len);
@@ -135,6 +128,18 @@ public class MyStackUtilsTest {
 		for (int i1 = 0; i1 < stat1.length; i1++) {
 			IJ.log("slice= " + (i1 + 1) + " mean= " + stat1[i1].mean);
 		}
+	}
+
+	@Test
+	public final void testStackDiff() {
+		String path1 = "./Data2/HC1-7";
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, false);
+		String path2 = "./Data2/HC2-7";
+		ImagePlus imp2 = UtilAyv.openImageNoDisplay(path2, false);
+
+		ImagePlus impDiff = MyStackUtils.stackDiff(imp1, imp2);
+		MyLog.waitHere();
+
 	}
 
 }

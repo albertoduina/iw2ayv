@@ -8,6 +8,7 @@ import ij.gui.Roi;
 import ij.io.DirectoryChooser;
 import ij.io.Opener;
 import ij.measure.Calibration;
+import ij.plugin.ImageCalculator;
 import ij.process.ImageConverter;
 import ij.process.ImageProcessor;
 import ij.process.ImageStatistics;
@@ -445,6 +446,21 @@ public class MyStackUtils {
 			stat1[i1] = imp1.getStatistics();
 		}
 		return stat1;
+	}
+
+	/***
+	 * Estrazione del valore dei pixel da uno stack a 16 bit e restituzione
+	 * sotto forma di matrice a 3 dimensioni a 32 bit [slice][column[[row]
+	 * 
+	 * @param imp1
+	 *            stack ImagePlus
+	 * @return pixel matrix [slices][height][width]
+	 */
+	public static ImagePlus stackDiff(ImagePlus imp1, ImagePlus imp2) {
+
+		ImageCalculator ic1 = new ImageCalculator();
+		ImagePlus imp3 = ic1.run("Difference create 32-bit stack", imp1, imp2);
+		return imp3;
 	}
 
 }

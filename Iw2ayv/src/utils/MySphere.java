@@ -962,7 +962,8 @@ public class MySphere {
 						appx = x2 + rr - r3.width / 2;
 						aux1 = (double) pixels[offset1 + appx];
 						pixlist.add(aux1);
-						IJ.log("" + appx + ", " + appy + ", " + zz + ", " + aux1);
+						// IJ.log("" + appx + ", " + appy + ", " + zz + ", " +
+						// aux1);
 						// pixels[offset1 + appx] = 10000;
 					}
 				}

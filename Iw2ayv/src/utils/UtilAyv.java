@@ -1073,6 +1073,18 @@ public class UtilAyv {
 		return ip;
 	}
 
+
+	/**
+	 * 
+	 * @param vect1
+	 * @param vect2
+	 * @param precision
+	 * @param msg
+	 * @return
+	* @Deprecated "use ArrayUtils.compareVectors"
+	 */
+	@Deprecated 
+
 	public static boolean compareVectors(double[] vect1, double[] vect2, double precision, String msg) {
 		if ((vect1 == null) || (vect2 == null)) {
 			if (msg.length() > 0) {
@@ -1095,6 +1107,7 @@ public class UtilAyv {
 		return true;
 	}
 
+	@Deprecated 
 	public static boolean compareVectors(float[] vect1, float[] vect2, float precision, String msg) {
 		if ((vect1 == null) || (vect2 == null)) {
 			if (msg.length() > 0) {
@@ -1117,6 +1130,7 @@ public class UtilAyv {
 		return true;
 	}
 
+	@Deprecated 
 	public static boolean compareVectors(int[] vect1, int[] vect2, String msg) {
 		if ((vect1 == null) || (vect2 == null)) {
 			if (msg.length() > 0) {
@@ -1138,6 +1152,7 @@ public class UtilAyv {
 		return true;
 	}
 
+	@Deprecated 
 	public static boolean compareVectors(long[] vect1, long[] vect2, String msg) {
 		if ((vect1 == null) || (vect2 == null)) {
 			if (msg.length() > 0) {
@@ -1159,6 +1174,7 @@ public class UtilAyv {
 		return true;
 	}
 
+	@Deprecated 
 	public static boolean compareVectors(String[] vect1, String[] vect2, String msg) {
 		if ((vect1 == null) || (vect2 == null)) {
 			if (msg.length() > 0) {
@@ -1183,6 +1199,7 @@ public class UtilAyv {
 		return true;
 	}
 
+	@Deprecated 
 	public static boolean compareMatrix(double[][] mat1, double[][] mat2, String msg) {
 		if ((mat1 == null) || (mat2 == null)) {
 			if (msg.length() > 0) {
@@ -1209,6 +1226,7 @@ public class UtilAyv {
 		return true;
 	}
 
+	@Deprecated 
 	public static boolean compareMatrix(float[][] mat1, float[][] mat2, String msg) {
 		if ((mat1 == null) || (mat2 == null)) {
 			if (msg.length() > 0) {
@@ -1235,6 +1253,7 @@ public class UtilAyv {
 		return true;
 	}
 
+	@Deprecated 
 	public static boolean compareMatrix(int[][] mat1, int[][] mat2, String msg) {
 		if ((mat1 == null) || (mat2 == null)) {
 			if (msg.length() > 0) {
@@ -1261,6 +1280,7 @@ public class UtilAyv {
 		return true;
 	}
 
+	@Deprecated 
 	public static boolean compareMatrix(String[][] mat1, String[][] mat2, String msg) {
 		if ((mat1 == null) || (mat2 == null)) {
 			if (msg.length() > 0) {

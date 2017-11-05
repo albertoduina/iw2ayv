@@ -638,5 +638,220 @@ public class ArrayUtils {
 		}
 		return destination;
 	}
+	
+	public static boolean compareVectors(double[] vect1, double[] vect2, double precision, String msg) {
+		if ((vect1 == null) || (vect2 == null)) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Warning vector = null");
+			}
+			return false;
+		}
+		if (vect1.length != vect2.length) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Vectors with different length");
+			}
+			return false;
+		}
+		for (int i1 = 0; i1 < vect1.length; i1++) {
+			double diff = vect1[i1] - vect2[i1];
+			if (Math.abs(diff) > precision) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean compareVectors(float[] vect1, float[] vect2, float precision, String msg) {
+		if ((vect1 == null) || (vect2 == null)) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Warning vector = null");
+			}
+			return false;
+		}
+		if (vect1.length != vect2.length) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Vectors with different length");
+			}
+			return false;
+		}
+		for (int i1 = 0; i1 < vect1.length; i1++) {
+			double diff = vect1[i1] - vect2[i1];
+			if (Math.abs(diff) > precision) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean compareVectors(int[] vect1, int[] vect2, String msg) {
+		if ((vect1 == null) || (vect2 == null)) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Warning vector = null");
+			}
+			return false;
+		}
+		if (vect1.length != vect2.length) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Vectors with different length");
+			}
+			return false;
+		}
+		for (int i1 = 0; i1 < vect1.length; i1++) {
+			if (vect1[i1] != vect2[i1]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean compareVectors(long[] vect1, long[] vect2, String msg) {
+		if ((vect1 == null) || (vect2 == null)) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Warning vector = null");
+			}
+			return false;
+		}
+		if (vect1.length != vect2.length) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Vectors with different length");
+			}
+			return false;
+		}
+		for (int i1 = 0; i1 < vect1.length; i1++) {
+			if (vect1[i1] != vect2[i1]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean compareVectors(String[] vect1, String[] vect2, String msg) {
+		if ((vect1 == null) || (vect2 == null)) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Warning vector = null");
+			}
+			return false;
+		}
+		if (vect1.length != vect2.length) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Vectors with different length");
+			}
+			return false;
+		}
+		for (int i1 = 0; i1 < vect1.length; i1++) {
+			if (!vect1[i1].equals(vect2[i1])) {
+				if (msg.length() > 0) {
+					IJ.log(msg + " At pos " + i1 + " " + vect1[i1] + " differ " + vect2[i1]);
+				}
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean compareMatrix(double[][] mat1, double[][] mat2, String msg) {
+		if ((mat1 == null) || (mat2 == null)) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Warning matrix = null");
+				return false;
+			}
+		}
+		if (mat1.length != mat2.length || mat1[0].length != mat2[0].length) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Matrices with different dimensions");
+				return false;
+			}
+		}
+		for (int i2 = 0; i2 < mat1[0].length; i2++) {
+			for (int i1 = 0; i1 < mat1.length; i1++) {
+				// IJ.log("compare
+				// mat1["+i1+"]["+i2+"]="+mat1[i1][i2]+"\tmat2["+i1+"]["+i2+"]="+mat2[i1][i2]);
+				if (mat1[i1][i2] != mat2[i1][i2]) {
+					IJ.log("compareMatrix difference in " + i1 + "," + i2);
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public static boolean compareMatrix(float[][] mat1, float[][] mat2, String msg) {
+		if ((mat1 == null) || (mat2 == null)) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Warning matrix = null");
+				return false;
+			}
+		}
+		if (mat1.length != mat2.length || mat1[0].length != mat2[0].length) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Matrices with different dimensions");
+				return false;
+			}
+		}
+		for (int i2 = 0; i2 < mat1[0].length; i2++) {
+			for (int i1 = 0; i1 < mat1.length; i1++) {
+				// IJ.log("compare
+				// mat1["+i1+"]["+i2+"]="+mat1[i1][i2]+"\tmat2["+i1+"]["+i2+"]="+mat2[i1][i2]);
+				if (mat1[i1][i2] != mat2[i1][i2]) {
+					IJ.log("compareMatrix difference in " + i1 + "," + i2);
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public static boolean compareMatrix(int[][] mat1, int[][] mat2, String msg) {
+		if ((mat1 == null) || (mat2 == null)) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Warning matrix = null");
+				return false;
+			}
+		}
+		if (mat1.length != mat2.length || mat1[0].length != mat2[0].length) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Matrices with different dimensions");
+				return false;
+			}
+		}
+		for (int i2 = 0; i2 < mat1[0].length; i2++) {
+			for (int i1 = 0; i1 < mat1.length; i1++) {
+				// IJ.log("compare
+				// mat1["+i1+"]["+i2+"]="+mat1[i1][i2]+"\tmat2["+i1+"]["+i2+"]="+mat2[i1][i2]);
+				if (mat1[i1][i2] != mat2[i1][i2]) {
+					IJ.log("compareMatrix difference in " + i1 + "," + i2);
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public static boolean compareMatrix(String[][] mat1, String[][] mat2, String msg) {
+		if ((mat1 == null) || (mat2 == null)) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Warning matrix = null");
+				return false;
+			}
+		}
+		if (mat1.length != mat2.length || mat1[0].length != mat2[0].length) {
+			if (msg.length() > 0) {
+				IJ.log(msg + " Matrices with different dimensions");
+				return false;
+			}
+		}
+		for (int i2 = 0; i2 < mat1[0].length; i2++) {
+			for (int i1 = 0; i1 < mat1.length; i1++) {
+				// IJ.log("compare
+				// mat1["+i1+"]["+i2+"]="+mat1[i1][i2]+"\tmat2["+i1+"]["+i2+"]="+mat2[i1][i2]);
+				if (!mat1[i1][i2].equals(mat2[i1][i2])) {
+					IJ.log("compareMatrix difference in " + i1 + "," + i2);
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 
 }
