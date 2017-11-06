@@ -583,7 +583,7 @@ public class MySphere {
 
 	/**
 	 * Creazione di una immagine RGB su cui plottare i modelli di sfera da noi
-	 * ricavati. Si utilizza l'immagine dello stach fantoccio per ricavarne le
+	 * ricavati. Si utilizza l'immagine dello stacK fantoccio per ricavarne le
 	 * dimensioni per creare il nuovo stackRGB nero
 	 * 
 	 * @param imp1
@@ -602,6 +602,24 @@ public class MySphere {
 		return impMappazzaOUT;
 	}
 
+	/**
+	 * Aggiunge una sfera alle immagini R G e B
+	 * 
+	 * @param impMapR
+	 *            contributo immagine R
+	 * @param impMapG
+	 *            contributo immagine G
+	 * @param impMapB
+	 *            contributo immagine B
+	 * @param sphere
+	 *            dati sfera x,y,x,r
+	 * @param bounds
+	 *            dimensioni immagine esterna
+	 * @param colorRGB
+	 *            colore sfera
+	 * @param surfaceOnly
+	 *            colore solo superficie esterna sfera
+	 */
 	public static void addSphere(ImagePlus impMapR, ImagePlus impMapG, ImagePlus impMapB, double[] sphere, int[] bounds,
 			int[] colorRGB, boolean surfaceOnly) {
 		// public static void addSphere(ImagePlus impMapR, ImagePlus impMapG,
@@ -685,6 +703,20 @@ public class MySphere {
 		}
 	}
 
+	/***
+	 * utilizza le immagini R G e B per mettere i dati in una immagine RGB
+	 * 
+	 * @param impMappazzaR
+	 *            contributo immagine R
+	 * @param impMappazzaG
+	 *            contributo immagine G
+	 * @param impMappazzaB
+	 *            contributo immagine B
+	 * @param impMappazzaRGB
+	 *            immagine risultante RGB
+	 * @param myColors
+	 *            algoritmo calcolo colore
+	 */
 	public static void generaMappazzaCombinata(ImagePlus impMappazzaR, ImagePlus impMappazzaG, ImagePlus impMappazzaB,
 			ImagePlus impMappazzaRGB, int myColors) {
 
@@ -807,11 +839,17 @@ public class MySphere {
 	 * mi darebbe un raggio frazionario
 	 * 
 	 * @param imp1
+	 *            stack immagini
 	 * @param sphere1
-	 * @param demo
+	 *            dati sfera fantoccio
+	 * @param diamsearch
+	 *            diametro della sfera di ricerca
+	 * @param aa
+	 *            stringa per messaggio avanzamento operazione
+	 * @param demolevel
+	 *            per debug
 	 * @return
 	 */
-
 	public static double[] searchCircularSpot(ImagePlus imp1, double[] sphere1, int diamsearch, String aa,
 			int demolevel) {
 
@@ -820,10 +858,10 @@ public class MySphere {
 		ArrayList<Double> zlist = new ArrayList<Double>();
 		ArrayList<Double> maxlist = new ArrayList<Double>();
 
-		int x1 = (int) sphere1[0];
-		int y1 = (int) sphere1[1];
+		// int x1 = (int) sphere1[0];
+		// int y1 = (int) sphere1[1];
 		int z1 = (int) sphere1[2];
-		int d1 = (int) sphere1[3];
+		// int d1 = (int) sphere1[3];
 		int radius = (int) sphere1[3] / 2;
 		boolean demo = false;
 		if (demolevel > 0)
@@ -890,6 +928,11 @@ public class MySphere {
 	}
 
 	/***
+	 * vectorizeSphericalSpot: restituisce i pixel appartenenti ad una sfera
+	 * sotto forma di vettore. Impiega una MASK per definire se un pixel fa
+	 * parte dle cerchio od è esterno. Puo' lavorare sia per immagini a 16 bit
+	 * che per immagini a 32 bit. Unico difetto riscontrato: sovrastima il
+	 * volume della sfera effettiva, rispetto al volume teorico calcolato.
 	 * 
 	 * @param imp1
 	 * @param sphere1
@@ -915,9 +958,9 @@ public class MySphere {
 		int diam2 = (int) sphere2[3];
 		double volume = (4 / 3) * 3.14 * rad2 * rad2 * rad2;
 
-		MyLog.logVector(sphere1, "sphere1_001");
-		MyLog.logVector(sphere2, "sphere2_001");
-		IJ.log("radius= " + rad2 + " volume teorico= " + volume + " voxels");
+		// MyLog.logVector(sphere1, "sphere1_001");
+		// MyLog.logVector(sphere2, "sphere2_001");
+		IJ.log("SFERA radius= " + rad2 + " volume teorico= " + volume + " [voxels]");
 
 		// int xmin = x2 - rad2;
 		// int xmax = xmin + diam2;
@@ -932,9 +975,8 @@ public class MySphere {
 		int dd = 0;
 		for (int zz = zmin; zz < zmax; zz++) {
 			dd = Math.abs(zz - z2);
-			rad3 = Math.sqrt(rad2 * rad2 - dd * dd);
-			// IJ.log("zz= " + zz + " dd= " + dd + " rad3= " + rad3 + " x2= " +
-			// x2 + " y2= " + y2);
+			// rad3 = Math.sqrt(rad2 * rad2 - dd * dd) - 1;
+			rad3 = Math.round(Math.sqrt(rad2 * rad2 - dd * dd) - 0.5);
 			ImagePlus imp2 = MyStackUtils.imageFromStack(imp1, zz + 1);
 			imp2.setRoi(new OvalRoi(x2 - rad3, y2 - rad3, rad3 * 2, rad3 * 2));
 			Roi roi1 = imp2.getRoi();
@@ -982,36 +1024,21 @@ public class MySphere {
 			}
 		}
 		double[] pix = ArrayUtils.arrayListToArrayDouble(pixlist);
+		IJ.log("SFERA volume effettivo pixel restituiti= " + pix.length + " [voxels]");
+
 		imp1.updateAndDraw();
 		return pix;
 	}
 
-	public void demoPixelPertainRoiTest(ImageProcessor ip) {
-		/**
-		 * questo � solo un appunto sui metodi che possiamo utilizzare per
-		 * stabilire se un pixel � all'interno di una ROI.
-		 */
-
-		// byte[] pixels = (byte[]) ip.getPixels();
-		// int width = ip.getWidth();
-		Rectangle r = ip.getRoi();
-		ImageProcessor mask = ip.getMask();
-		for (int y = r.y; y < (r.y + r.height); y++) {
-			for (int x = r.x; x < (r.x + r.width); x++) {
-				if (mask == null || mask.getPixel(x - r.x, y - r.y) != 0) {
-					// ...DO What YOU WISH TO DO
-					/**
-					 * Roi roi = Imp.getRoi(); Rectangle rect = roi.getBounds();
-					 * rx = rect.x; ry = rect.y; w = rect.width; h =
-					 * rect.height; for(int y=ry; y<ry+h; y++) { for(int x=rx;
-					 * x<rx+w; x++) { if(roi.contains(x, y)) {
-					 */
-
-				}
-			}
-		}
-	}
-
+	/***
+	 * Creazione di uno stack ortogonale, fa uso di ortogonalViews (che però
+	 * restituisce singole immagini ortogonali
+	 * 
+	 * @param imp1
+	 * @param direction
+	 * @param demo
+	 * @return
+	 */
 	public static ImagePlus createOrthogonalStack(ImagePlus imp1, int direction, boolean demo) {
 		imp1.show();
 		IJ.run(imp1, "Orthogonal Views", "");

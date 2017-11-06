@@ -138,6 +138,7 @@ public class MyStackUtilsTest {
 		ImagePlus imp2 = UtilAyv.openImageNoDisplay(path2, false);
 
 		ImagePlus impDiff = MyStackUtils.stackDiff(imp1, imp2);
+		impDiff.show();
 		MyLog.waitHere();
 
 	}
