@@ -77,7 +77,7 @@ public class MySphereTest {
 		MyLog.logVector(center, "dati cerchio finali");
 
 		double[] expected = { 136, 131, 113 };
-		assertTrue(UtilAyv.compareVectors(center, expected, 1e-8, "errore comparazione"));
+		assertTrue(ArrayUtils.compareVectors(center, expected, 1e-8, "errore comparazione"));
 
 		MyLog.waitHere("==== FINE ====");
 	}
@@ -105,7 +105,7 @@ public class MySphereTest {
 		MyLog.logVector(center, "dati sfera finali x, y, z, diam");
 
 		double[] expected = { 127, 130, 87, 171 };
-		assertTrue(UtilAyv.compareVectors(center, expected, 1e-8, "errore comparazione"));
+		assertTrue(ArrayUtils.compareVectors(center, expected, 1e-8, "errore comparazione"));
 
 		MyLog.waitHere("==== FINE ====");
 	}
@@ -332,7 +332,7 @@ public class MySphereTest {
 		sphere2[2] = 80;
 		sphere2[3] = 4;
 
-		double[] vetpixel = MySphere.vectorizeSphericalSpot(imp1, sphere1, sphere2, demolevel);
+		double[] vetpixel = MySphere.vectorizeSphericalSpot(imp1, sphere1, sphere2);
 		MyLog.logVector(vetpixel, "vetpixel");
 
 		int[] colorRGB3 = { 0, 100, 100 };
@@ -350,6 +350,46 @@ public class MySphereTest {
 		impMapRGB.show();
 
 		MyLog.waitHere("==== FINE ====");
+	}
+
+	@Test
+	public final void testSimulataGrigio16() {
+
+		String path1 = "./Data2/HC1-7";
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, false);
+		imp1.show();
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
+		int depth = imp1.getImageStackSize();
+		int bitdepth = 24;
+		int myColors = 3;
+		int livello = 2;
+
+		int[] minimiClassi = { 20, 10, -10, -20, -30, -40, -50, -60, -70, -80, -90, -100 };
+		int[] massimiClassi = { 100, 20, 10, -10, -20, -30, -40, -50, -60, -70, -80, -90 };
+
+		ImagePlus impMapR = MySphere.generaMappazzaVuota16(width, height, depth, "impMappazzaR");
+		ImagePlus impMapG = MySphere.generaMappazzaVuota16(width, height, depth, "impMappazzaG");
+		ImagePlus impMapB = MySphere.generaMappazzaVuota16(width, height, depth, "impMappazzaB");
+		ImageStack stackRGB = ImageStack.create(width, height, depth, bitdepth);
+		ImagePlus impMapRGB = new ImagePlus("MAPPAZZA_" + myColors, stackRGB);
+
+		int slice = 0;
+		for (int i1 = 0; i1 < depth; i1++) {
+			slice=i1+1;
+			ImagePlus imp2 = MyStackUtils.imageFromStack(imp1, slice);
+			double mean2 = 50;
+			int colorCoil = 2;
+			int debuglevel = 2;
+			int puntatore = 1;
+
+			MySphere.simulataGrigio16(mean2, imp2, impMapR, impMapG, impMapB, slice, livello, minimiClassi,
+					massimiClassi, colorCoil, myColors, puntatore, debuglevel);
+		}
+		impMapR.show();
+		impMapG.show();
+		impMapB.show();
+		MyLog.waitHere();
 	}
 
 	@Test

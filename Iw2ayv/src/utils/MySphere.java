@@ -459,8 +459,10 @@ public class MySphere {
 
 		over202.addElement(impXZ.getRoi());
 		impXZ.deleteRoi();
-		// impXZ.show();
-		MyLog.waitHere("center sphere  XZ", true, 200);
+		if (demo) {
+			impXZ.show();
+			MyLog.waitHere("center sphere XZ", true, 200);
+		}
 
 		// Ricerca posizione ROI per calcolo uniformita'. Versione con Canny
 		// Edge Detector, da utilizzare per il fantoccio sferico. La coordinata
@@ -476,7 +478,8 @@ public class MySphere {
 			MyLog.waitHere("aaa", true, 100);
 		}
 
-		MyLog.waitHere("bbb", true, 500);
+		if (demo)
+			MyLog.waitHere("bbb", true, 500);
 		Overlay over203 = new Overlay();
 		impYZ.setOverlay(over203);
 		xCenterEXT = outYZ[0];
@@ -492,8 +495,10 @@ public class MySphere {
 		impYZ.getRoi().setFillColor(Color.red);
 		over203.addElement(impYZ.getRoi());
 		impYZ.deleteRoi();
-		// impYZ.show();
-		MyLog.waitHere("center sphere YZ", true, 500);
+		if (demo) {
+			impYZ.show();
+			MyLog.waitHere("center sphere YZ", true, 500);
+		}
 
 		// ===============================
 		// IMMAGINE DI CENTRO DELLA SFERA
@@ -545,9 +550,10 @@ public class MySphere {
 		impXY.getRoi().setFillColor(Color.red);
 		over201.addElement(impXY.getRoi());
 		impXY.deleteRoi();
-
-		// impXY.show();
-		MyLog.waitHere("center sphere xy", true, 500);
+		if (demo) {
+			impXY.show();
+			MyLog.waitHere("center sphere xy", true, 500);
+		}
 
 		// stabiliamo i dati di output
 		double[] out4 = new double[4];
@@ -932,7 +938,9 @@ public class MySphere {
 	 * sotto forma di vettore. Impiega una MASK per definire se un pixel fa
 	 * parte dle cerchio od è esterno. Puo' lavorare sia per immagini a 16 bit
 	 * che per immagini a 32 bit. Unico difetto riscontrato: sovrastima il
-	 * volume della sfera effettiva, rispetto al volume teorico calcolato.
+	 * volume della sfera effettiva, rispetto al volume teorico calcolato. Il
+	 * problema è mitigato togliendo 0.5 oppure 1 (stesso risultato finale) al
+	 * calcolo del raggio della variabile rad3
 	 * 
 	 * @param imp1
 	 * @param sphere1
@@ -942,11 +950,7 @@ public class MySphere {
 	 * @return
 	 */
 
-	public static double[] vectorizeSphericalSpot(ImagePlus imp1, double[] sphere1, double[] sphere2, int demolevel) {
-
-		boolean demo = false;
-		if (demolevel > 0)
-			demo = true;
+	public static double[] vectorizeSphericalSpot(ImagePlus imp1, double[] sphere1, double[] sphere2) {
 
 		ArrayList<Double> pixlist = new ArrayList<Double>();
 
@@ -1003,7 +1007,8 @@ public class MySphere {
 				MyLog.waitHere("maskArray==null");
 
 			// scansiono la mask e trovero' i pixel interessati della immagine
-			// sorgente mediante calcoli
+			// sorgente mediante calcoli per passare dalle coordinate della mask
+			// grande come il boundingRectangle e l'immagine originale
 			int appx = 0;
 			int appy = 0;
 
@@ -1080,6 +1085,242 @@ public class MySphere {
 		Orthogonal_Views.stop();
 		ImagePlus newImpStack = new ImagePlus("INPUT_STACK", newStack);
 		return newImpStack;
+	}
+
+
+	
+	
+	
+	public static void simulataGrigio16(double mean, ImagePlus imp1, ImagePlus impMappazzaR, ImagePlus impMappazzaG,
+			ImagePlus impMappazzaB, int slice, int livello, int[] minimi, int[] massimi, int colorCoil, int myColors,
+			int puntatore, int debuglevel) {
+
+		boolean stampa = false;
+		boolean debug = false;
+		if (debuglevel > 0)
+			debug = true;
+		if (debuglevel > 1)
+			stampa = true;
+
+		if (imp1 == null) {
+			MyLog.waitHere("imp1==null");
+			return;
+		}
+		if (impMappazzaR == null || impMappazzaG == null || impMappazzaB == null) {
+			MyLog.waitHere("impMappazza R,G,B==null");
+			return;
+		}
+
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
+		short[] pixels1 = UtilAyv.truePixels(imp1);
+
+		short[] pixelsMappaR = (short[]) impMappazzaR.getStack().getProcessor(slice).getPixels();
+		short[] pixelsMappaG = (short[]) impMappazzaG.getStack().getProcessor(slice).getPixels();
+		short[] pixelsMappaB = (short[]) impMappazzaB.getStack().getProcessor(slice).getPixels();
+
+		short pixSorgente = 0;
+		int appoggioColore = 0;
+		int posizioneArrayImmagine = 0;
+
+		// stabilisco i livelli di colore per 12 livelli
+		int[] myColor = new int[12];
+		for (int i1 = 0; i1 < 12; i1++) {
+			myColor[i1] = 13 - i1;
+		}
+
+		// colore per pixel piu' alti
+		int colorUP = 1;
+		// colore fuori dal fantoccio
+		int colorOUT = 0;
+
+		if (debug && stampa) {
+			IJ.log("--- livelli di colore possibili --");
+			IJ.log("colorUP= " + colorUP);
+			for (int i1 = 0; i1 < 12; i1++) {
+				IJ.log("classe " + i1 + "  " + myColor[i1]);
+			}
+			IJ.log("colorOUT= " + colorOUT);
+			IJ.log("-------------------");
+		}
+
+		// i limiti delle classi stabilite da UTENT combinatoi con media hotCube
+		double[] myMinimi = new double[livello];
+		double[] myMassimi = new double[livello];
+		for (int i1 = 0; i1 < livello; i1++) {
+			myMinimi[i1] = ((100.0 + (double) minimi[i1]) / 100) * mean;
+			myMassimi[i1] = ((100.0 + (double) massimi[i1]) / 100) * mean;
+		}
+
+		if (debug && stampa) {
+			IJ.log("classi percentuali");
+			for (int i1 = 0; i1 < livello; i1++) {
+				IJ.log("classe " + i1 + " minimo= " + minimi[i1] + "%   massimo= " + massimi[i1] + "%");
+			}
+			IJ.log("classi limiti reali pixel");
+			for (int i1 = 0; i1 < livello; i1++) {
+				IJ.log("classe " + i1 + " minimo= " + myMinimi[i1] + " massimo= " + myMassimi[i1]);
+			}
+		}
+
+		for (int y1 = 0; y1 < height; y1++) {
+			for (int x1 = 0; x1 < width; x1++) {
+				boolean cerca = true;
+				posizioneArrayImmagine = y1 * width + x1;
+				pixSorgente = pixels1[posizioneArrayImmagine];
+
+				for (int i1 = 0; i1 < livello; i1++) {
+					if (cerca && (pixSorgente > myMassimi[i1])) {
+						appoggioColore = colorUP;
+						cerca = false;
+					}
+					if (cerca && (pixSorgente > myMinimi[i1]) && (pixSorgente <= myMassimi[i1])) {
+						appoggioColore = myColor[i1];
+						cerca = false;
+					}
+				}
+				if (cerca) {
+					appoggioColore = colorOUT;
+					cerca = false;
+				}
+
+				if (myColors == 3) {
+
+					switch (colorCoil) {
+					case 1:
+
+						if (appoggioColore > pixelsMappaR[posizioneArrayImmagine])
+
+							pixelsMappaR[posizioneArrayImmagine] = (short) appoggioColore;
+
+						if (debug && (puntatore == posizioneArrayImmagine)) {
+							IJ.log("inMappazzaGrigio16 pixSorgente= " + pixSorgente + " mappaR= "
+									+ pixelsMappaR[posizioneArrayImmagine]);
+						}
+						break;
+					case 2:
+						if (appoggioColore > pixelsMappaG[posizioneArrayImmagine])
+							pixelsMappaG[posizioneArrayImmagine] = (short) appoggioColore;
+						break;
+					case 3:
+						if (appoggioColore > pixelsMappaB[posizioneArrayImmagine])
+							pixelsMappaB[posizioneArrayImmagine] = (short) appoggioColore;
+						break;
+					default:
+						MyLog.waitHere("GULP");
+						break;
+
+					}
+
+				} else {
+
+					switch (colorCoil) {
+					case 1:
+
+						pixelsMappaR[posizioneArrayImmagine] += (short) appoggioColore;
+						if (debug && (puntatore == posizioneArrayImmagine)) {
+							IJ.log("inMappazzaGrigio16 pixSorgente= " + pixSorgente + " mappaR= "
+									+ pixelsMappaR[posizioneArrayImmagine]);
+						}
+						break;
+					case 2:
+						pixelsMappaG[posizioneArrayImmagine] += (short) appoggioColore;
+						break;
+					case 3:
+						pixelsMappaB[posizioneArrayImmagine] += (short) appoggioColore;
+						break;
+					default:
+						MyLog.waitHere("GULP");
+						break;
+
+					}
+				}
+			}
+		}
+		stampa = false;
+		return;
+
+	}
+
+	public static void addSimulata(double meanShere, ImagePlus imp1, ImagePlus impMapR, ImagePlus impMapG, ImagePlus impMapB,
+			double[] sphere, int[] bounds, int[] colorRGB, boolean surfaceOnly) {
+		
+		int radius = (int) sphere[3] / 2;
+		int diameter = (int) sphere[3];
+		int r2 = radius * radius;
+		int r1 = (radius - 1) * (radius - 1);
+		int width = impMapR.getWidth();
+		short auxR = 0;
+		short auxG = 0;
+		short auxB = 0;
+		int x0 = (int) sphere[0];
+		int y0 = (int) sphere[1];
+		int z0 = (int) sphere[2];
+		int x2 = 0;
+		int y2 = 0;
+		int z2 = 0;
+		int xmin = x0 - radius;
+		int xmax = xmin + diameter;
+		int ymin = y0 - radius;
+		int ymax = ymin + diameter;
+		int zmin = z0 - radius;
+		int zmax = zmin + diameter;
+		for (int z1 = zmin; z1 <= zmax; z1++) {
+			if (z1 < 0 || z1 > bounds[2] - 1)
+				continue;
+			int slice = z1 + 1;
+			z2 = z1 - z0;
+			ImageStack isR = impMapR.getStack();
+			ImageStack isG = impMapG.getStack();
+			ImageStack isB = impMapB.getStack();
+
+			short[] pixelsMapR = (short[]) isR.getProcessor(slice).getPixels();
+			short[] pixelsMapG = (short[]) isG.getProcessor(slice).getPixels();
+			short[] pixelsMapB = (short[]) isB.getProcessor(slice).getPixels();
+			for (int y4 = ymin; y4 <= ymax; y4++) {
+				if (y4 < 0 || y4 > bounds[1])
+					continue;
+				y2 = y4 - y0;
+				int offset = y4 * width;
+				for (int x4 = xmin; x4 <= xmax; x4++) {
+					if (x4 < 0 || x4 > bounds[0])
+						continue;
+					x2 = x4 - x0;
+					int aux2 = x2 * x2 + y2 * y2 + z2 * z2;
+					if (surfaceOnly) {
+						if (aux2 <= r2 && aux2 > r1) {
+							auxR = pixelsMapR[offset + x4];
+							auxR += colorRGB[0];
+							pixelsMapR[offset + x4] = auxR;
+							auxG = pixelsMapG[offset + x4];
+							auxG += colorRGB[1];
+							pixelsMapG[offset + x4] = auxG;
+							auxB = pixelsMapB[offset + x4];
+							auxB += colorRGB[2];
+							pixelsMapB[offset + x4] = auxB;
+						}
+
+					} else {
+						if (aux2 <= r2) {
+							auxR = pixelsMapR[offset + x4];
+							auxR += colorRGB[0];
+							pixelsMapR[offset + x4] = auxR;
+							auxG = pixelsMapG[offset + x4];
+							auxG += colorRGB[1];
+							pixelsMapG[offset + x4] = auxG;
+							auxB = pixelsMapB[offset + x4];
+							auxB += colorRGB[2];
+							pixelsMapB[offset + x4] = auxB;
+						}
+					}
+				}
+			}
+			// devo ricaricare l'immagine!
+			isR.setPixels(pixelsMapR, slice);
+			isG.setPixels(pixelsMapG, slice);
+			isB.setPixels(pixelsMapB, slice);
+			impMapR.updateAndDraw();
+		}
 	}
 
 }
