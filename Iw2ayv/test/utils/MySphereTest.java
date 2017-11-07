@@ -292,7 +292,7 @@ public class MySphereTest {
 		impMapG.show();
 		impMapB.show();
 
-		MySphere.generaMappazzaCombinata(impMapR, impMapG, impMapB, impMapRGB, myColors);
+		MySphere.compilaMappazzaCombinata(impMapR, impMapG, impMapB, impMapRGB, myColors);
 		impMapRGB.show();
 
 		MyLog.waitHere("==== FINE ====");
@@ -342,7 +342,7 @@ public class MySphereTest {
 		bounds[2] = imp1.getImageStackSize();
 
 		MySphere.addSphere(impMapR, impMapG, impMapB, sphere2, bounds, colorRGB3, false);
-		MySphere.generaMappazzaCombinata(impMapR, impMapG, impMapB, impMapRGB, myColors);
+		MySphere.compilaMappazzaCombinata(impMapR, impMapG, impMapB, impMapRGB, myColors);
 
 		impMapR.show();
 		impMapG.show();

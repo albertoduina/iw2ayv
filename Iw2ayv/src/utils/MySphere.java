@@ -723,7 +723,7 @@ public class MySphere {
 	 * @param myColors
 	 *            algoritmo calcolo colore
 	 */
-	public static void generaMappazzaCombinata(ImagePlus impMappazzaR, ImagePlus impMappazzaG, ImagePlus impMappazzaB,
+	public static void compilaMappazzaCombinata(ImagePlus impMappazzaR, ImagePlus impMappazzaG, ImagePlus impMappazzaB,
 			ImagePlus impMappazzaRGB, int myColors) {
 
 		double auxR = 0;
@@ -1087,10 +1087,6 @@ public class MySphere {
 		return newImpStack;
 	}
 
-
-	
-	
-	
 	public static void simulataGrigio16(double mean, ImagePlus imp1, ImagePlus impMappazzaR, ImagePlus impMappazzaG,
 			ImagePlus impMappazzaB, int slice, int livello, int[] minimi, int[] massimi, int colorCoil, int myColors,
 			int puntatore, int debuglevel) {
@@ -1187,7 +1183,7 @@ public class MySphere {
 				if (myColors == 3) {
 
 					switch (colorCoil) {
-					case 1:
+					case 0:
 
 						if (appoggioColore > pixelsMappaR[posizioneArrayImmagine])
 
@@ -1198,16 +1194,16 @@ public class MySphere {
 									+ pixelsMappaR[posizioneArrayImmagine]);
 						}
 						break;
-					case 2:
+					case 1:
 						if (appoggioColore > pixelsMappaG[posizioneArrayImmagine])
 							pixelsMappaG[posizioneArrayImmagine] = (short) appoggioColore;
 						break;
-					case 3:
+					case 2:
 						if (appoggioColore > pixelsMappaB[posizioneArrayImmagine])
 							pixelsMappaB[posizioneArrayImmagine] = (short) appoggioColore;
 						break;
 					default:
-						MyLog.waitHere("GULP");
+						MyLog.waitHere("0001 GULP colorCoil== " + colorCoil);
 						break;
 
 					}
@@ -1215,7 +1211,7 @@ public class MySphere {
 				} else {
 
 					switch (colorCoil) {
-					case 1:
+					case 0:
 
 						pixelsMappaR[posizioneArrayImmagine] += (short) appoggioColore;
 						if (debug && (puntatore == posizioneArrayImmagine)) {
@@ -1223,14 +1219,14 @@ public class MySphere {
 									+ pixelsMappaR[posizioneArrayImmagine]);
 						}
 						break;
-					case 2:
+					case 1:
 						pixelsMappaG[posizioneArrayImmagine] += (short) appoggioColore;
 						break;
-					case 3:
+					case 2:
 						pixelsMappaB[posizioneArrayImmagine] += (short) appoggioColore;
 						break;
 					default:
-						MyLog.waitHere("GULP");
+						MyLog.waitHere("0002 GULP colorCoil== " + colorCoil);
 						break;
 
 					}
@@ -1242,9 +1238,9 @@ public class MySphere {
 
 	}
 
-	public static void addSimulata(double meanShere, ImagePlus imp1, ImagePlus impMapR, ImagePlus impMapG, ImagePlus impMapB,
-			double[] sphere, int[] bounds, int[] colorRGB, boolean surfaceOnly) {
-		
+	public static void addSimulata(double meanShere, ImagePlus imp1, ImagePlus impMapR, ImagePlus impMapG,
+			ImagePlus impMapB, double[] sphere, int[] bounds, int[] colorRGB, boolean surfaceOnly) {
+
 		int radius = (int) sphere[3] / 2;
 		int diameter = (int) sphere[3];
 		int r2 = radius * radius;
