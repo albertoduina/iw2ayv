@@ -841,8 +841,8 @@ public class MySphere {
 	/***
 	 * ricerca gli hotspot circolari, slice per slice, restituendo il massimo
 	 * utilizzeremo un diametro dello spot di 14 pixels con volume 153 voxels,
-	 * il diametro di 12 pixels avrebbe volume 113 pixels, il diametro 13 pixels
-	 * mi darebbe un raggio frazionario
+	 * poiche' il diametro di 12 pixels avrebbe volume 113 pixels ed il diametro
+	 * 13 pixels mi darebbe un raggio frazionario
 	 * 
 	 * @param imp1
 	 *            stack immagini
@@ -863,11 +863,7 @@ public class MySphere {
 		ArrayList<Double> ylist = new ArrayList<Double>();
 		ArrayList<Double> zlist = new ArrayList<Double>();
 		ArrayList<Double> maxlist = new ArrayList<Double>();
-
-		// int x1 = (int) sphere1[0];
-		// int y1 = (int) sphere1[1];
 		int z1 = (int) sphere1[2];
-		// int d1 = (int) sphere1[3];
 		int radius = (int) sphere1[3] / 2;
 		boolean demo = false;
 		if (demolevel > 0)
@@ -909,8 +905,6 @@ public class MySphere {
 			ylist.add(spot[1]);
 			zlist.add((double) i1);
 			maxlist.add(spot[2]);
-			// IJ.log("" + spot[0] + ", " + spot[1] + ", " + i1 + ", " +
-			// spot[2]);
 		}
 		double maxval = -99999;
 		double maxx = 0;
@@ -924,7 +918,6 @@ public class MySphere {
 				maxz = zlist.get(i1);
 			}
 		}
-
 		double[] out4 = new double[4];
 		out4[0] = maxx;
 		out4[1] = maxy;
@@ -962,18 +955,11 @@ public class MySphere {
 		int diam2 = (int) sphere2[3];
 		double volume = (4 / 3) * 3.14 * rad2 * rad2 * rad2;
 
-		// MyLog.logVector(sphere1, "sphere1_001");
-		// MyLog.logVector(sphere2, "sphere2_001");
 		IJ.log("SFERA radius= " + rad2 + " volume teorico= " + volume + " [voxels]");
 
-		// int xmin = x2 - rad2;
-		// int xmax = xmin + diam2;
-		// int ymin = y2 - rad2;
-		// int ymax = y2 + diam2;
 		int zmin = z2 - rad2;
 		int zmax = zmin + diam2;
 		int width = imp1.getWidth();
-		// int height = imp1.getHeight();
 		double aux1 = 0;
 		double rad3 = 0;
 		int dd = 0;
@@ -1021,9 +1007,6 @@ public class MySphere {
 						appx = x2 + rr - r3.width / 2;
 						aux1 = (float) buffer[offset1 + appx];
 						pixlist.add(aux1);
-						// IJ.log("" + appx + ", " + appy + ", " + zz + ", " +
-						// aux1);
-						// pixels[offset1 + appx] = 10000;
 					}
 				}
 			}
