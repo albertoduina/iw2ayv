@@ -44,7 +44,7 @@ public class MyFwhm {
 	 * Calcolo valore FWHM
 	 * 
 	 * @param vetUpDwPoints
-	 *            vettore con le coordinate dei pixel sopra e sotto la metà, a
+	 *            vettore con le coordinate dei pixel sopra e sotto la metï¿½, a
 	 *            dx e sx
 	 * @param profile
 	 *            profilo di cui calcolare l'FWHM
@@ -83,7 +83,7 @@ public class MyFwhm {
 		//
 
 		// px2 = px0 + (px1 - px0) / (py1 - py0) * (py2 - py0);
-		double fwhm = (dx - sx) * dimPixel; // NOTA BENE è in pixels
+		double fwhm = (dx - sx) * dimPixel; // NOTA BENE ï¿½ in pixels
 		
 		
 		for (int i1 = 0; i1 < profile.length; i1++) {
@@ -100,7 +100,7 @@ public class MyFwhm {
 	}
 
 	/***
-	 * Posizione del singolo picco (se si vogliono trovare tutti i picchi c'è
+	 * Posizione del singolo picco (se si vogliono trovare tutti i picchi c'ï¿½
 	 * PeakDet (p10rmn_)
 	 * 
 	 * @param profile
@@ -153,7 +153,7 @@ public class MyFwhm {
 	}
 
 	/**
-	 * ricerca dei punti a metà altezza
+	 * ricerca dei punti a metï¿½ altezza
 	 * 
 	 * @param profile1
 	 *            Vettore con il profilo da analizzare
@@ -171,7 +171,7 @@ public class MyFwhm {
 		int upDx = 0;
 		int downDx = 0;
 
-		// calcolo metà altezza
+		// calcolo metï¿½ altezza
 		double half = (max - min) / 2 + min;
 		// parto da sx e percorro il profilo in cerca del primo valore che
 		// supera half
@@ -283,7 +283,7 @@ public class MyFwhm {
 	}
 
 	/***
-	 * 
+	 * distanza tra 2 punti
 	 * @param x0
 	 * @param y0
 	 * @param x1

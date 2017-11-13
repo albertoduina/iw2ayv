@@ -1213,7 +1213,8 @@ public class ImageUtils {
 
 	/**
 	 * Determinazione dei crossing points tra un raggio, di cui si conoscono
-	 * solo due punti e la circonferenza. *
+	 * solo due punti e la circonferenza. 
+	 * https://stackoverflow.com/questions/13053061/circle-line-intersection-points
 	 * 
 	 * @param x0
 	 *            coord x punto 0
@@ -1393,7 +1394,7 @@ public class ImageUtils {
 	}
 
 	/**
-	 * Verifica se un valore � all'interno dei limiti assegnati, con una certa
+	 * Verifica se un valore e' all'interno dei limiti assegnati, con una certa
 	 * tolleranza
 	 * 
 	 * @param x1
