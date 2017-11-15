@@ -1301,5 +1301,67 @@ public class MySphere {
 			impMapR.updateAndDraw();
 		}
 	}
+	
+	public static double[] coord3D(double[] point1, double[] point2, double newZ) {
+
+		double x1 = point1[0];
+		double x2 = point2[0];
+		double y1 = point1[1];
+		double y2 = point2[1];
+		double aux = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2) + Math.pow((point2[2] - point1[2]), 2));
+		double x3 = x1 + newZ * (x2 - x1) / aux;
+		double y3 = y1 + newZ * (y2 - y1) / aux;
+		double z3 = newZ;
+		double[] point3 = new double[3];
+		point3[0] = x3;
+		point3[1] = y3;
+		point3[2] = z3;
+		return point3;
+	}
+
+	public static double[][] getProfile3D(ImagePlus imp1, double[] point1, double[] point2, boolean step) {
+
+		ArrayList<Double> xlist = new ArrayList<Double>();
+		ArrayList<Double> ylist = new ArrayList<Double>();
+		ArrayList<Double> zlist = new ArrayList<Double>();
+		ArrayList<Double> vlist = new ArrayList<Double>();
+		if (imp1 == null) {
+			IJ.error("getProfile3D ricevuto immagine null");
+			return (null);
+		}
+		double[] pointA;
+		double[] pointB;
+		if (point1[2] < point2[2]) {
+			pointA = point1.clone();
+			pointB = point2.clone();
+		} else {
+			pointA = point2.clone();
+			pointB = point1.clone();
+		}
+
+		ImageStack stack = imp1.getImageStack();
+		for (int zz = 1; zz < imp1.getImageStackSize(); zz++) {
+			double[] pointC = coord3D(pointA, pointB, (double) zz);
+			boolean okx = pointC[0] >= 0 && pointC[0] < imp1.getWidth();
+			boolean oky = pointC[1] >= 0 && pointC[1] < imp1.getHeight();
+			if (okx && oky) {
+				double vox = stack.getVoxel((int) pointC[0], (int) pointC[1], (int) pointC[2]);
+				xlist.add(pointC[0]);
+				ylist.add(pointC[1]);
+				zlist.add(pointC[2]);
+				vlist.add(vox);
+				stack.setVoxel((int) pointC[0], (int) pointC[1], (int) pointC[2], 10000);
+			}
+		}
+		double[][] matout = new double[xlist.size()][4];
+		for (int i1 = 0; i1 < xlist.size(); i1++) {
+			matout[i1][0] = xlist.get(i1);
+			matout[i1][1] = ylist.get(i1);
+			matout[i1][2] = zlist.get(i1);
+			matout[i1][3] = vlist.get(i1);
+		}
+		return matout;
+	}
+
 
 }

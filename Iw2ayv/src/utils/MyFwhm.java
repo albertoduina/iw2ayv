@@ -19,8 +19,8 @@ public class MyFwhm {
 	 * @param step
 	 * @return
 	 */
-	public static double[] analyzeProfile(double[] profi1, double dimPixel,
-			String title, boolean invert, boolean step) {
+	public static double[] analyzeProfile(double[] profi1, double dimPixel, String title, boolean invert,
+			boolean step) {
 
 		double[] profi2;
 		if (invert) {
@@ -32,11 +32,13 @@ public class MyFwhm {
 		int[] vetHalfPoint = halfPointSearch(profi2);
 		boolean printPlot = step;
 		double[] out = calcFwhm(vetHalfPoint, profi2, dimPixel, title, printPlot);
-		double fwhm=out[0];
-		double peak = out[1];
-		double[] outFwhm = new double[2];
+		double fwhm = out[0];
+		double peakpos = out[1];
+		double peakval = out[2];
+		double[] outFwhm = new double[3];
 		outFwhm[0] = fwhm;
-		outFwhm[1] = peak;
+		outFwhm[1] = peakpos;
+		outFwhm[2] = peakval;
 		return (outFwhm);
 	}
 
@@ -50,13 +52,14 @@ public class MyFwhm {
 	 *            profilo di cui calcolare l'FWHM
 	 * @return FWHM calcolata in pixels
 	 */
-	public static double[] calcFwhm(int[] vetUpDwPoints, double[] profile,
-			double dimPixel, String title, boolean printPlot) {
+	public static double[] calcFwhm(int[] vetUpDwPoints, double[] profile, double dimPixel, String title,
+			boolean printPlot) {
 
 		double[] a = Tools.getMinMax(profile);
 		double min = a[0];
 		double max = a[1];
-		double peak=0;
+		double peakpos = 0;
+		double peakval = 0;
 
 		// interpolazione lineare sinistra
 		double px0 = vetUpDwPoints[0];
@@ -64,7 +67,7 @@ public class MyFwhm {
 		double py0 = profile[vetUpDwPoints[0]];
 		double py1 = profile[vetUpDwPoints[1]];
 		double py2 = (max - min) / 2.0 + min;
-
+		peakval = py2;
 		double sx = xLinearInterpolation(px0, py0, px1, py1, py2);
 
 		// IJ.log("punto interpolato a sx= " + sx);
@@ -83,15 +86,15 @@ public class MyFwhm {
 		//
 
 		// px2 = px0 + (px1 - px0) / (py1 - py0) * (py2 - py0);
-		double fwhm = (dx - sx) * dimPixel; // NOTA BENE � in pixels
-		
-		
+		double fwhm = (dx - sx) * dimPixel; // NOTA BENE sono in pixels
+
 		for (int i1 = 0; i1 < profile.length; i1++) {
 			if (profile[i1] == min)
-				peak = i1;
+				peakpos = i1;
+			
 		}
 
-		double[] out = { fwhm, peak };
+		double[] out = { fwhm, peakpos, peakval };
 
 		if (printPlot)
 			createPlot(profile, title, vetUpDwPoints, fwhm);
@@ -107,21 +110,20 @@ public class MyFwhm {
 	 *            profilo
 	 * @return posizione x del picco (in pixel)
 	 */
-//	public static double peakPosition(double[] profile) {
-//
-//		double[] a = Tools.getMinMax(profile);
-//		double max = a[1];
-//		double peakX = Double.NaN;
-//		for (int i1 = 0; i1 < profile.length; i1++) {
-//			if (profile[i1] == max)
-//				peakX = i1;
-//		}
-//		return (peakX);
-//	}
+	// public static double peakPosition(double[] profile) {
+	//
+	// double[] a = Tools.getMinMax(profile);
+	// double max = a[1];
+	// double peakX = Double.NaN;
+	// for (int i1 = 0; i1 < profile.length; i1++) {
+	// if (profile[i1] == max)
+	// peakX = i1;
+	// }
+	// return (peakX);
+	// }
 
-	public static void minimalPlot(double[] profi1, int[] upDwPoints,
-			String title, String text1, String text2, double value,
-			boolean verbose) {
+	public static void minimalPlot(double[] profi1, int[] upDwPoints, String title, String text1, String text2,
+			double value, boolean verbose) {
 
 		double[] xcoord1 = new double[profi1.length];
 		for (int i1 = 0; i1 < profi1.length; i1++) {
@@ -139,17 +141,15 @@ public class MyFwhm {
 		plot1.setColor(Color.GREEN);
 		plot1.addPoints(xHalf, yHalf, PlotWindow.LINE);
 
-		double[] xUpDwPoints = { upDwPoints[0], upDwPoints[1], upDwPoints[2],
-				upDwPoints[3] };
-		double[] yUpDwPoints = { profi1[upDwPoints[0]], profi1[upDwPoints[1]],
-				profi1[upDwPoints[2]], profi1[upDwPoints[3]] };
+		double[] xUpDwPoints = { upDwPoints[0], upDwPoints[1], upDwPoints[2], upDwPoints[3] };
+		double[] yUpDwPoints = { profi1[upDwPoints[0]], profi1[upDwPoints[1]], profi1[upDwPoints[2]],
+				profi1[upDwPoints[3]] };
 		plot1.setColor(Color.RED);
 		plot1.addPoints(xUpDwPoints, yUpDwPoints, PlotWindow.CIRCLE);
 		plot1.changeFont(new Font("Arial", Font.PLAIN, 22));
 		double xlabelPosition = 0.05;
 		double ylabelPosition = 0.15;
-		plot1.addLabel(xlabelPosition, ylabelPosition,
-				"fwhm= " + IJ.d2s(value, 2) + " mm");
+		plot1.addLabel(xlabelPosition, ylabelPosition, "fwhm= " + IJ.d2s(value, 2) + " mm");
 	}
 
 	/**
@@ -256,8 +256,7 @@ public class MyFwhm {
 	 * @param x2
 	 * @return
 	 */
-	public static double yLinearInterpolation(double x0, double y0, double x1,
-			double y1, double x2) {
+	public static double yLinearInterpolation(double x0, double y0, double x1, double y1, double x2) {
 
 		double y2 = y1 - ((y1 - y0) * (x1 - x2) / (x1 - x0));
 
@@ -274,8 +273,7 @@ public class MyFwhm {
 	 * @param x2
 	 * @return
 	 */
-	public static double xLinearInterpolation(double x0, double y0, double x1,
-			double y1, double y2) {
+	public static double xLinearInterpolation(double x0, double y0, double x1, double y1, double y2) {
 
 		double x2 = x1 - ((x1 - x0) * (y1 - y2) / (y1 - y0));
 
@@ -284,22 +282,21 @@ public class MyFwhm {
 
 	/***
 	 * distanza tra 2 punti
+	 * 
 	 * @param x0
 	 * @param y0
 	 * @param x1
 	 * @param y1
 	 * @return
 	 */
-	public static double lengthCalculation(double x0, double y0, double x1,
-			double y1) {
+	public static double lengthCalculation(double x0, double y0, double x1, double y1) {
 
 		double len = Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
 
 		return len;
 	}
 
-	public static void createPlot(double profile1[], String title,
-			int[] vetUpDwPoints, double fwhm2) {
+	public static void createPlot(double profile1[], String title, int[] vetUpDwPoints, double fwhm2) {
 
 		double[] a = Tools.getMinMax(profile1);
 		double min = a[0];
@@ -318,8 +315,7 @@ public class MyFwhm {
 		double[] xcoord1 = new double[len1];
 		for (int j = 0; j < len1; j++)
 			xcoord1[j] = j;
-		Plot plot = new Plot("Profilo penetrazione__" + title, "pixel",
-				"valore", xcoord1, profile1);
+		Plot plot = new Plot("Profilo penetrazione__" + title, "pixel", "valore", xcoord1, profile1);
 		plot.setLimits(0, len1, min, max);
 		plot.setLineWidth(1);
 		plot.setColor(Color.blue);
@@ -359,22 +355,18 @@ public class MyFwhm {
 		double ylabel = 0.58;
 
 		plot.addLabel(xlabel, ylabel, title);
-		plot.addLabel(xlabel, ylabel + 0.05,
-				"peak / 2       =     " + IJ.d2s(max / 2, 2));
-		plot.addLabel(xlabel, ylabel + 0.10, "dw_sx     " + vetUpDwPoints[0]
-				+ " =   " + IJ.d2s(profile1[vetUpDwPoints[0]], 2));
-		plot.addLabel(xlabel, ylabel + 0.15, "dw_dx    " + vetUpDwPoints[2]
-				+ " =   " + IJ.d2s(profile1[vetUpDwPoints[2]], 2));
-		plot.addLabel(xlabel, ylabel + 0.20, "up_sx     " + vetUpDwPoints[1]
-				+ " =   " + IJ.d2s(profile1[vetUpDwPoints[1]], 2));
-		plot.addLabel(xlabel, ylabel + 0.25, "up_dx   " + vetUpDwPoints[3]
-				+ " =   " + IJ.d2s(profile1[vetUpDwPoints[3]], 2));
-		plot.addLabel(xlabel, ylabel + 0.30,
-				"interp_sx      =  " + IJ.d2s(sx, 2));
-		plot.addLabel(xlabel, ylabel + 0.35,
-				"interp_dx      =  " + IJ.d2s(dx, 2));
-		plot.addLabel(xlabel, ylabel + 0.40,
-				"fwhm            =  " + IJ.d2s(fwhm2, 2));
+		plot.addLabel(xlabel, ylabel + 0.05, "peak / 2       =     " + IJ.d2s(max / 2, 2));
+		plot.addLabel(xlabel, ylabel + 0.10,
+				"dw_sx     " + vetUpDwPoints[0] + " =   " + IJ.d2s(profile1[vetUpDwPoints[0]], 2));
+		plot.addLabel(xlabel, ylabel + 0.15,
+				"dw_dx    " + vetUpDwPoints[2] + " =   " + IJ.d2s(profile1[vetUpDwPoints[2]], 2));
+		plot.addLabel(xlabel, ylabel + 0.20,
+				"up_sx     " + vetUpDwPoints[1] + " =   " + IJ.d2s(profile1[vetUpDwPoints[1]], 2));
+		plot.addLabel(xlabel, ylabel + 0.25,
+				"up_dx   " + vetUpDwPoints[3] + " =   " + IJ.d2s(profile1[vetUpDwPoints[3]], 2));
+		plot.addLabel(xlabel, ylabel + 0.30, "interp_sx      =  " + IJ.d2s(sx, 2));
+		plot.addLabel(xlabel, ylabel + 0.35, "interp_dx      =  " + IJ.d2s(dx, 2));
+		plot.addLabel(xlabel, ylabel + 0.40, "fwhm            =  " + IJ.d2s(fwhm2, 2));
 		plot.setColor(Color.green);
 		xVetLineHalf[0] = 0;
 		xVetLineHalf[1] = len1;
