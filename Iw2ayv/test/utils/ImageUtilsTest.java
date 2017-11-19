@@ -133,6 +133,26 @@ public class ImageUtilsTest {
 	}
 
 	@Test
+	public final void testCreateStripRGB() {
+
+		ImagePlus aux1 = ImageUtils.createStripRGB(MyColor.myRed());
+		aux1.show();
+		ImagePlus aux2 = ImageUtils.createStripRGB(MyColor.myGreen());
+		aux2.show();
+		ImagePlus aux3 = ImageUtils.createStripRGB(MyColor.myOrange());
+		aux3.show();
+		ImagePlus aux4 = ImageUtils.createStripRGB(MyColor.myYellow());
+		aux4.show();
+		ImagePlus aux5 = ImageUtils.createStripRGB(MyColor.myBlue());
+		aux5.show();
+		ImagePlus aux6 = ImageUtils.createStripRGB(MyColor.myPink());
+		aux6.show();
+
+		MyLog.waitHere();
+
+	}
+
+	@Test
 	public final void testGeneraSimulata12Classi() {
 
 		String path1 = ".\\Test4\\aaa";
@@ -140,12 +160,13 @@ public class ImageUtilsTest {
 		int yCenterRoi = 100;
 		int latoRoi = 50;
 		boolean step = false;
-		boolean verbose = false;
+		boolean verbose = true;
 		boolean test = false;
 
 		ImagePlus imp1 = UtilAyv.openImageMaximized(path1);
 		int[][] aux1 = ImageUtils.generaSimulata12classi(xCenterRoi, yCenterRoi, latoRoi, imp1, "", step, verbose,
 				test);
+		MyLog.waitHere();
 
 	}
 
@@ -159,6 +180,7 @@ public class ImageUtilsTest {
 		int sqR = 50;
 		ImagePlus impSimulata = ImageUtils.simulata12Classi(sqX, sqY, sqR, imp1);
 		UtilAyv.showImageMaximized(impSimulata);
+		MyLog.waitHere();
 	}
 
 	@Test

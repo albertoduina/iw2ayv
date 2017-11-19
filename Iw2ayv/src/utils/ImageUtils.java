@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import ij.IJ;
 import ij.ImagePlus;
+import ij.ImageStack;
 import ij.WindowManager;
 import ij.gui.ImageWindow;
 import ij.gui.NewImage;
@@ -709,6 +710,51 @@ public class ImageUtils {
 		return imp1;
 	}
 
+	static public ImagePlus colorStrips(int[] myColor) {
+
+		// genero una immagine nera
+		int matrix = 256;
+		ImageProcessor ip1 = new ColorProcessor(matrix, matrix);
+		int[] pixels1 = (int[]) ip1.getPixels();
+		ip1.resetMinAndMax();
+		int lato = 0;
+		int gap = 0;
+		int offset = 0;
+		int wi1 = ip1.getStringWidth("-10 +10");
+		int[] a1 = new int[myColor.length];
+
+		if (myColor.length > 5) {
+			ip1.setColor(new Color(220, 220, 220));
+			ip1.setFont(new Font("Arial", Font.TYPE1_FONT, 8));
+		} else {
+			ip1.setColor(new Color(10, 10, 10));
+			ip1.setFont(new Font("Arial", Font.BOLD, 13));
+		}
+
+		ip1.setJustification(ImageProcessor.LEFT_JUSTIFY);
+		ip1.setAntialiasedText(true);
+
+		ImagePlus imp1 = new ImagePlus("Scala colori", ip1);
+		lato = 200;
+		for (int i1 = myColor.length - 1; i1 >= 0; i1--) {
+			lato = (i1 + 1) * 45;
+			gap = (matrix - lato) / 2;
+			for (int y1 = 0; y1 < lato; y1++) {
+				offset = (y1 + gap) * matrix;
+				for (int x1 = 0; x1 < lato; x1++) {
+
+					pixels1[offset + gap + x1] = myColor[i1];
+					a1[i1] = y1 + gap;
+				}
+			}
+		}
+
+		imp1.updateAndRepaintWindow();
+		ip1.resetMinAndMax();
+		imp1.updateImage();
+		return imp1;
+	}
+
 	/**
 	 * Estrae la numerosit� dell classi dalla simulata
 	 * 
@@ -968,7 +1014,7 @@ public class ImageUtils {
 	 * Questo e' il fitCircle preso da ImageJ (ij.plugins.Selection.java, con
 	 * sostituito imp.setRoi a IJ.makeOval. La versione NEW, oltre a impostare
 	 * una ROI circolare sull'immagine, ne restituisce anche i valori numerici:
-	 * coordinate del centro e raggio. 
+	 * coordinate del centro e raggio.
 	 * 
 	 * if selection is closed shape, create a circle with the same area and
 	 * centroid, otherwise use<br>
@@ -1113,7 +1159,7 @@ public class ImageUtils {
 		// l'immagine
 		imp.setRoi(new OvalRoi((int) Math.round(CenterX - radius), (int) Math.round(CenterY - radius),
 				(int) Math.round(2 * radius), (int) Math.round(2 * radius)));
-		
+
 		double[] out = new double[4];
 		out[0] = CenterX;
 		out[1] = CenterY;
@@ -1121,8 +1167,6 @@ public class ImageUtils {
 		out[3] = DET;
 		return out;
 	}
-	
-
 
 	/***
 	 * Liang-Barsky function by Daniel White
@@ -1213,8 +1257,9 @@ public class ImageUtils {
 
 	/**
 	 * Determinazione dei crossing points tra un raggio, di cui si conoscono
-	 * solo due punti e la circonferenza. 
-	 * https://stackoverflow.com/questions/13053061/circle-line-intersection-points
+	 * solo due punti e la circonferenza.
+	 * https://stackoverflow.com/questions/13053061/circle-line-intersection-
+	 * points
 	 * 
 	 * @param x0
 	 *            coord x punto 0
@@ -2147,6 +2192,47 @@ public class ImageUtils {
 		}
 		over1.addElement(imp1.getRoi());
 		imp1.deleteRoi();
+	}
+
+	public static ImagePlus createStripRGB(int[][] colorMap) {
+
+		int width = colorMap.length * 20;
+		int height = colorMap.length * 20;;
+		int slices = 1;
+		String title = "R-G-B";
+		int fill = ImageProcessor.BLACK;
+
+		ImagePlus impOut = NewImage.createRGBImage(title, width, height, slices, fill);
+		ImageProcessor ipOut = impOut.getProcessor();
+		int[] pixelsOut = (int[]) ipOut.getPixels();
+		int offset = 0;
+		int z1 = -1;
+		int w1 = -1;
+		int colorRGB = 0;
+		int stepx = height / colorMap.length;
+		int stepy = height / colorMap.length;
+		// MyLog.waitHere("steps= " + steps + " len=" + colorMap.length);
+
+		for (int y1 = 0; y1 < height; y1++) {
+			if ((y1 % stepy) == 0) {
+				z1++;
+			}
+			offset = y1 * width;
+			for (int x1 = 0; x1 < width; x1++) {
+				if ((x1 % stepx) == 0) {
+					w1++;
+				}
+				if (w1 > colorMap.length - 1)
+					w1 = 0;
+
+				colorRGB = ((colorMap[w1][0] & 0xff) << 16) | ((colorMap[w1][1] & 0xff) << 8)
+						| (colorMap[w1][2] & 0xff);
+				pixelsOut[offset + x1] = colorRGB;
+			}
+		}
+		impOut.resetDisplayRange();
+
+		return impOut;
 	}
 
 }

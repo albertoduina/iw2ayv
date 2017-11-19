@@ -80,10 +80,10 @@ public class MyGenericDialogGrid {
 				return false;
 			}
 			if (gd3.wasOKed()) {
-				ArrayUtils.vetCopy(value3, value2);
+				value3 = value2.clone();
 				vai = true;
 			} else {
-				vai=false;
+				vai = false;
 			}
 		} while (vai);
 

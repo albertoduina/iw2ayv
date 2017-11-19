@@ -297,6 +297,9 @@ public class MySphereTest {
 
 		MyLog.waitHere("==== FINE ====");
 	}
+	
+	
+
 
 	@Test
 	public final void testVectorizeSphericalSpot() {
@@ -391,6 +394,8 @@ public class MySphereTest {
 		impMapB.show();
 		MyLog.waitHere();
 	}
+	
+
 
 	@Test
 	public final void testBoh() {

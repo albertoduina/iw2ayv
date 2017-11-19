@@ -632,13 +632,14 @@ public class ArrayUtils {
 		return vetinvert;
 	}
 
-	public static double[] vetCopy(double[] source, double[] destination) {
-		for (int i1 = 0; i1 < source.length; i1++) {
-			destination[i1] = source[i1];
-		}
-		return destination;
-	}
-	
+	/// grande tavanata galattica! basta fare clone
+	// public static double[] vetCopy(double[] source, double[] destination) {
+	// for (int i1 = 0; i1 < source.length; i1++) {
+	// destination[i1] = source[i1];
+	// }
+	// return destination;
+	// }
+
 	public static boolean compareVectors(double[] vect1, double[] vect2, double precision, String msg) {
 		if ((vect1 == null) || (vect2 == null)) {
 			if (msg.length() > 0) {
@@ -852,6 +853,5 @@ public class ArrayUtils {
 		}
 		return true;
 	}
-
 
 }

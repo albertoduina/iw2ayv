@@ -299,4 +299,6 @@ public class MyConst {
 	public static final int P8_TOKENS4 = 4;
 	public static final double P8_PHANTOM_SIDE = 120.0;
 	public static final double P8_PHANTOM_DIAGONAL = 169.7;
+	// -------------- colors -------------------------------------------
+	
 }

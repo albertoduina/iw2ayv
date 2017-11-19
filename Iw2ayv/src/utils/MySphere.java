@@ -259,10 +259,12 @@ public class MySphere {
 		imp11.deleteRoi();
 		imp11.updateImage();
 
-		double[] out2 = new double[3];
-		out2[0] = xCenterCircle;
-		out2[1] = yCenterCircle;
-		out2[2] = diamCircle;
+		// double[] out2 = new double[3];
+		// out2[0] = xCenterCircle;
+		// out2[1] = yCenterCircle;
+		// out2[2] = diamCircle;
+		double[] out2 = { xCenterCircle, yCenterCircle, diamCircle };
+
 		return out2;
 	}
 
@@ -556,12 +558,13 @@ public class MySphere {
 		}
 
 		// stabiliamo i dati di output
-		double[] out4 = new double[4];
-		out4[0] = outXY[0];
-		out4[1] = outXY[1];
-		out4[2] = centerSlice - 1;
-		out4[3] = outXY[2];
+		// double[] out4 = new double[4];
+		// out4[0] = outXY[0];
+		// out4[1] = outXY[1];
+		// out4[2] = centerSlice - 1;
+		// out4[3] = outXY[2];
 
+		double[] out4 = { outXY[0], outXY[1], (centerSlice - 1), outXY[2] };
 		return out4;
 
 	}
@@ -628,9 +631,6 @@ public class MySphere {
 	 */
 	public static void addSphere(ImagePlus impMapR, ImagePlus impMapG, ImagePlus impMapB, double[] sphere, int[] bounds,
 			int[] colorRGB, boolean surfaceOnly) {
-		// public static void addSphere(ImagePlus impMapR, ImagePlus impMapG,
-		// ImagePlus impMapB, int x0, int y0, int z0,
-		// int diameter, int[] bounds, int[] colorRGB, boolean surfaceOnly) {
 		int radius = (int) sphere[3] / 2;
 		int diameter = (int) sphere[3];
 		int r2 = radius * radius;
@@ -708,6 +708,93 @@ public class MySphere {
 			impMapR.updateAndDraw();
 		}
 	}
+	
+	
+
+
+	/**
+	 * Aggiunge una sfera alle immagini R G e B
+	 * 
+	 * @param impMapR
+	 *            contributo immagine R
+	 * @param impMapG
+	 *            contributo immagine G
+	 * @param impMapB
+	 *            contributo immagine B
+	 * @param sphere
+	 *            dati sfera x,y,x,r
+	 * @param bounds
+	 *            dimensioni immagine esterna
+	 * @param colorRGB
+	 *            colore sfera
+	 * @param surfaceOnly
+	 *            colore solo superficie esterna sfera
+	 */
+	public static void addSphereFilling(ImagePlus impMapR, ImagePlus impMapG, ImagePlus impMapB, double[] sphere,
+			int[] bounds, int[] colorRGB, boolean surfaceOnly) {
+		int radius = (int) sphere[3] / 2;
+		int diameter = (int) sphere[3];
+		int r2 = radius * radius;
+//		int r1 = (radius - 1) * (radius - 1);
+		int width = impMapR.getWidth();
+		short auxR = 0;
+		short auxG = 0;
+		short auxB = 0;
+		int x0 = (int) sphere[0];
+		int y0 = (int) sphere[1];
+		int z0 = (int) sphere[2];
+		int x2 = 0;
+		int y2 = 0;
+		int z2 = 0;
+		int xmin = x0 - radius;
+		int xmax = xmin + diameter;
+		int ymin = y0 - radius;
+		int ymax = ymin + diameter;
+		int zmin = z0 - radius;
+		int zmax = zmin + diameter;
+		for (int z1 = zmin; z1 <= zmax; z1++) {
+			if (z1 < 0 || z1 > bounds[2] - 1)
+				continue;
+			int slice = z1 + 1;
+			z2 = z1 - z0;
+			ImageStack isR = impMapR.getStack();
+			ImageStack isG = impMapG.getStack();
+			ImageStack isB = impMapB.getStack();
+
+			short[] pixelsMapR = (short[]) isR.getProcessor(slice).getPixels();
+			short[] pixelsMapG = (short[]) isG.getProcessor(slice).getPixels();
+			short[] pixelsMapB = (short[]) isB.getProcessor(slice).getPixels();
+			for (int y4 = ymin; y4 <= ymax; y4++) {
+				if (y4 < 0 || y4 > bounds[1])
+					continue;
+				y2 = y4 - y0;
+				int offset = y4 * width;
+				for (int x4 = xmin; x4 <= xmax; x4++) {
+					if (x4 < 0 || x4 > bounds[0])
+						continue;
+					x2 = x4 - x0;
+					int aux2 = x2 * x2 + y2 * y2 + z2 * z2;
+					if (aux2 <= r2) {
+						auxR = pixelsMapR[offset + x4];
+						auxG = pixelsMapG[offset + x4];
+						auxB = pixelsMapB[offset + x4];
+
+						if (auxR == 0 && auxG == 0 && auxB == 0) {
+							pixelsMapR[offset + x4] = (short) colorRGB[0];
+							pixelsMapG[offset + x4] = (short) colorRGB[1];
+							pixelsMapB[offset + x4] = (short) colorRGB[2];
+						}
+					}
+				}
+			}
+			// devo ricaricare l'immagine!
+			isR.setPixels(pixelsMapR, slice);
+			isG.setPixels(pixelsMapG, slice);
+			isB.setPixels(pixelsMapB, slice);
+			impMapR.updateAndDraw();
+		}
+
+	}
 
 	/***
 	 * utilizza le immagini R G e B per mettere i dati in una immagine RGB
@@ -720,11 +807,11 @@ public class MySphere {
 	 *            contributo immagine B
 	 * @param impMappazzaRGB
 	 *            immagine risultante RGB
-	 * @param myColors
+	 * @param algoColors
 	 *            algoritmo calcolo colore
 	 */
 	public static void compilaMappazzaCombinata(ImagePlus impMappazzaR, ImagePlus impMappazzaG, ImagePlus impMappazzaB,
-			ImagePlus impMappazzaRGB, int myColors) {
+			ImagePlus impMappazzaRGB, int algoColors) {
 
 		double auxR = 0;
 		double auxG = 0;
@@ -769,7 +856,7 @@ public class MySphere {
 		double kappaG = 255.0 / largestG;
 		double kappaB = 255.0 / largestB;
 
-		switch (myColors) {
+		switch (algoColors) {
 		case 1:
 			if (largestR == 0)
 				largestR = 1;
@@ -1123,7 +1210,7 @@ public class MySphere {
 			IJ.log("-------------------");
 		}
 
-		// i limiti delle classi stabilite da UTENT combinatoi con media hotCube
+		// i limiti delle classi stabilite da UTENT combinato con media hotCube
 		double[] myMinimi = new double[livello];
 		double[] myMassimi = new double[livello];
 		for (int i1 = 0; i1 < livello; i1++) {
@@ -1142,6 +1229,8 @@ public class MySphere {
 			}
 		}
 
+		int count0 = 0;
+
 		for (int y1 = 0; y1 < height; y1++) {
 			for (int x1 = 0; x1 < width; x1++) {
 				boolean cerca = true;
@@ -1151,6 +1240,8 @@ public class MySphere {
 				for (int i1 = 0; i1 < livello; i1++) {
 					if (cerca && (pixSorgente > myMassimi[i1])) {
 						appoggioColore = colorUP;
+						count0++;
+						IJ.log("colorUP " + count0);
 						cerca = false;
 					}
 					if (cerca && (pixSorgente > myMinimi[i1]) && (pixSorgente <= myMassimi[i1])) {
@@ -1301,7 +1392,7 @@ public class MySphere {
 			impMapR.updateAndDraw();
 		}
 	}
-	
+
 	public static double[] coord3D(double[] point1, double[] point2, double newZ) {
 
 		double x1 = point1[0];
@@ -1350,7 +1441,9 @@ public class MySphere {
 				ylist.add(pointC[1]);
 				zlist.add(pointC[2]);
 				vlist.add(vox);
-				stack.setVoxel((int) pointC[0], (int) pointC[1], (int) pointC[2], 10000);
+				// test posizione segmento £D
+				// stack.setVoxel((int) pointC[0], (int) pointC[1], (int)
+				// pointC[2], 10000);
 			}
 		}
 		double[][] matout = new double[xlist.size()][4];
@@ -1362,6 +1455,5 @@ public class MySphere {
 		}
 		return matout;
 	}
-
 
 }
