@@ -229,7 +229,7 @@ public class MyColor {
 		pink[3][2] = 105;
 		pink[4][0] = 255;
 		pink[4][1] = 77;
-		pink[4][2] = 169;
+		pink[4][2] = 156;
 		pink[5][0] = 255;
 		pink[5][1] = 51;
 		pink[5][2] = 156;//

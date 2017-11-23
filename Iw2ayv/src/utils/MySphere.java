@@ -250,8 +250,10 @@ public class MySphere {
 			imp11.getRoi().setStrokeColor(colore2);
 			over12.addElement(imp11.getRoi());
 			imp11.deleteRoi();
+			imp11.show();
 			// MyLog.waitHere(listaMessaggi(16), debug, timeout1);
 			MyLog.waitHere("--- 004 ---\nsumError= " + sumError + " maxFitError= " + maxFitError);
+
 		}
 
 		over12.clear();
@@ -708,9 +710,6 @@ public class MySphere {
 			impMapR.updateAndDraw();
 		}
 	}
-	
-	
-
 
 	/**
 	 * Aggiunge una sfera alle immagini R G e B
@@ -735,7 +734,7 @@ public class MySphere {
 		int radius = (int) sphere[3] / 2;
 		int diameter = (int) sphere[3];
 		int r2 = radius * radius;
-//		int r1 = (radius - 1) * (radius - 1);
+		// int r1 = (radius - 1) * (radius - 1);
 		int width = impMapR.getWidth();
 		short auxR = 0;
 		short auxG = 0;
@@ -1157,7 +1156,7 @@ public class MySphere {
 		return newImpStack;
 	}
 
-	public static void simulataGrigio16(double mean, ImagePlus imp1, ImagePlus impMappazzaR, ImagePlus impMappazzaG,
+	public static int[] simulataGrigio16(double mean, ImagePlus imp1, ImagePlus impMappazzaR, ImagePlus impMappazzaG,
 			ImagePlus impMappazzaB, int slice, int livello, int[] minimi, int[] massimi, int colorCoil, int myColors,
 			int puntatore, int debuglevel) {
 
@@ -1170,11 +1169,11 @@ public class MySphere {
 
 		if (imp1 == null) {
 			MyLog.waitHere("imp1==null");
-			return;
+			return null;
 		}
 		if (impMappazzaR == null || impMappazzaG == null || impMappazzaB == null) {
 			MyLog.waitHere("impMappazza R,G,B==null");
-			return;
+			return null;
 		}
 
 		int width = imp1.getWidth();
@@ -1228,7 +1227,7 @@ public class MySphere {
 				IJ.log("classe " + i1 + " minimo= " + myMinimi[i1] + " massimo= " + myMassimi[i1]);
 			}
 		}
-
+		int[] pixNumber = new int[livello + 1];
 		int count0 = 0;
 
 		for (int y1 = 0; y1 < height; y1++) {
@@ -1241,16 +1240,19 @@ public class MySphere {
 					if (cerca && (pixSorgente > myMassimi[i1])) {
 						appoggioColore = colorUP;
 						count0++;
+						pixNumber[i1]++;
 						IJ.log("colorUP " + count0);
 						cerca = false;
 					}
 					if (cerca && (pixSorgente > myMinimi[i1]) && (pixSorgente <= myMassimi[i1])) {
+						pixNumber[i1]++;
 						appoggioColore = myColor[i1];
-						cerca = false;
+							cerca = false;
 					}
 				}
 				if (cerca) {
 					appoggioColore = colorOUT;
+					pixNumber[livello]++;
 					cerca = false;
 				}
 
@@ -1308,7 +1310,7 @@ public class MySphere {
 			}
 		}
 		stampa = false;
-		return;
+		return pixNumber;
 
 	}
 
