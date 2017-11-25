@@ -394,7 +394,7 @@ public class MySphereTest {
 			sphere[2] = imp2.getImageStackSize();
 			sphere[3] = 200;
 
-			// MySphere.simulataGrigio16(mean2, imp2, impMapR, impMapG, impMapB,
+			// MySphere.simulataGrigio16(mean2, imp2, impMapR, impMapG, impMapB,verde
 			// slice, livello, minimiClassi,
 			// massimiClassi, colorCoil, myColors, puntatore, debuglevel);
 			MySphere.simulataGrigio16(mean2, imp2, circle, impMapR, impMapG, impMapB, slice, livello, minimiClassi,
