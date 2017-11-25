@@ -262,7 +262,8 @@ public class MyColor {
 		int[][] orange = myOrange();
 		int[][] blue = myBlue();
 		int[][] pink = myPink();
-		int[][] myPanel = new int[red.length][6 * 3];
+
+		int[][] myPanel = new int[red.length][MyColor.colori() * 3];
 
 		for (int i1 = 0; i1 < red.length; i1++) {
 			myPanel[i1][0] = red[i1][0];
@@ -285,7 +286,37 @@ public class MyColor {
 			myPanel[i1][17] = pink[i1][2];
 		}
 
-		return null;
+		return myPanel;
+	}
+
+	public static int[][] coloreSimulata(int colorCoil, int livelli) {
+		int[][] colore1 = MyColor.tavolozza();
+
+		int[][] myColor = new int[livelli][3];
+		int mult = 1;
+		if (livelli == 5)
+			mult = 2;
+
+		for (int i1 = 0; i1 < myColor.length; i1++) {
+			myColor[i1][0] = colore1[i1 * mult][colorCoil * 3 + 0];
+			myColor[i1][1] = colore1[i1 * mult][colorCoil * 3 + 1];
+			myColor[i1][2] = colore1[i1 * mult][colorCoil * 3 + 2];
+		}
+		return myColor;
+	}
+
+	public static int[] coloreSfera(int colorCoil, int livelli) {
+		int[][] colore1 = MyColor.tavolozza();
+		int[] myColor = new int[3];
+
+		myColor[0] = colore1[5][colorCoil * 3 + 0];
+		myColor[1] = colore1[5][colorCoil * 3 + 1];
+		myColor[2] = colore1[5][colorCoil * 3 + 2];
+		return myColor;
+	}
+
+	public static int colori() {
+		return 6;
 	}
 
 }

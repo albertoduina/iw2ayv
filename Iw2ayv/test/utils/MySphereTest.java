@@ -297,9 +297,6 @@ public class MySphereTest {
 
 		MyLog.waitHere("==== FINE ====");
 	}
-	
-	
-
 
 	@Test
 	public final void testVectorizeSphericalSpot() {
@@ -378,24 +375,40 @@ public class MySphereTest {
 		ImagePlus impMapRGB = new ImagePlus("MAPPAZZA_" + myColors, stackRGB);
 
 		int slice = 0;
+		int colorCoil = 0;
 		for (int i1 = 0; i1 < depth; i1++) {
-			slice=i1+1;
+			slice = i1 + 1;
 			ImagePlus imp2 = MyStackUtils.imageFromStack(imp1, slice);
 			double mean2 = 50;
-			int colorCoil = 2;
 			int debuglevel = 2;
 			int puntatore = 1;
 
-			MySphere.simulataGrigio16(mean2, imp2, impMapR, impMapG, impMapB, slice, livello, minimiClassi,
-					massimiClassi, colorCoil, myColors, puntatore, debuglevel);
+			double[] circle = new double[3];
+			circle[0] = width / 2;
+			circle[1] = height / 2;
+			circle[2] = 100;
+
+			double[] sphere = new double[4];
+			sphere[0] = width / 2;
+			sphere[1] = height / 2;
+			sphere[2] = imp2.getImageStackSize();
+			sphere[3] = 200;
+
+			// MySphere.simulataGrigio16(mean2, imp2, impMapR, impMapG, impMapB,
+			// slice, livello, minimiClassi,
+			// massimiClassi, colorCoil, myColors, puntatore, debuglevel);
+			MySphere.simulataGrigio16(mean2, imp2, circle, impMapR, impMapG, impMapB, slice, livello, minimiClassi,
+					massimiClassi, colorCoil, puntatore, debuglevel, sphere);
+
+			colorCoil++;
+			if (colorCoil > 5)
+				colorCoil = 0;
 		}
 		impMapR.show();
 		impMapG.show();
 		impMapB.show();
 		MyLog.waitHere();
 	}
-	
-
 
 	@Test
 	public final void testBoh() {
