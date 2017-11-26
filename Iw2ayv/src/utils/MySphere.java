@@ -252,8 +252,7 @@ public class MySphere {
 			over12.addElement(imp11.getRoi());
 			imp11.deleteRoi();
 			imp11.show();
-			// MyLog.waitHere(listaMessaggi(16), debug, timeout1);
-			MyLog.waitHere("--- 004 ---\nsumError= " + sumError + " maxFitError= " + maxFitError);
+				MyLog.waitHere("--- 004 ---\nsumError= " + sumError + " maxFitError= " + maxFitError);
 
 		}
 
@@ -262,10 +261,6 @@ public class MySphere {
 		imp11.deleteRoi();
 		imp11.updateImage();
 
-		// double[] out2 = new double[3];
-		// out2[0] = xCenterCircle;
-		// out2[1] = yCenterCircle;
-		// out2[2] = diamCircle;
 		double[] out2 = { xCenterCircle, yCenterCircle, diamCircle };
 
 		return out2;
@@ -561,12 +556,6 @@ public class MySphere {
 		}
 
 		// stabiliamo i dati di output
-		// double[] out4 = new double[4];
-		// out4[0] = outXY[0];
-		// out4[1] = outXY[1];
-		// out4[2] = centerSlice - 1;
-		// out4[3] = outXY[2];
-
 		double[] out4 = { outXY[0], outXY[1], (centerSlice - 1), outXY[2] };
 		return out4;
 
@@ -1037,7 +1026,6 @@ public class MySphere {
 		int x2 = (int) sphere2[0];
 		int y2 = (int) sphere2[1];
 		int z2 = (int) sphere2[2];
-		// int d2 = (int) sphere2[3];
 		int rad2 = (int) sphere2[3] / 2;
 		int diam2 = (int) sphere2[3];
 		double volume = (4 / 3) * 3.14 * rad2 * rad2 * rad2;
@@ -1052,7 +1040,6 @@ public class MySphere {
 		int dd = 0;
 		for (int zz = zmin; zz < zmax; zz++) {
 			dd = Math.abs(zz - z2);
-			// rad3 = Math.sqrt(rad2 * rad2 - dd * dd) - 1;
 			rad3 = Math.round(Math.sqrt(rad2 * rad2 - dd * dd) - 0.5);
 			ImagePlus imp2 = MyStackUtils.imageFromStack(imp1, zz + 1);
 			imp2.setRoi(new OvalRoi(x2 - rad3, y2 - rad3, rad3 * 2, rad3 * 2));
@@ -1191,18 +1178,6 @@ public class MySphere {
 		int appoggioColoreB = 0;
 		int posizioneArrayImmagine = 0;
 
-		// int[][] colore1 = MyColor.tavolozza();
-
-		// int[][] myColor = new int[colore1.length][3];
-		// int mult = 1;
-		// for (int i1 = 0; i1 < myColor.length; i1++) {
-		// if (myColor.length == 5)
-		// mult = 2;
-		// myColor[i1][0] = colore1[i1 * mult][colorCoil * 3 + 0];
-		// myColor[i1][1] = colore1[i1 * mult][colorCoil * 3 + 1];
-		// myColor[i1][2] = colore1[i1 * mult][colorCoil * 3 + 2];
-		// }
-
 		int[][] myColor = MyColor.coloreSimulata(colorCoil, livelli);
 
 		// colore per pixel piu' alti
@@ -1284,7 +1259,6 @@ public class MySphere {
 			}
 		}
 		return pixNumber;
-
 	}
 
 	public static int[] simulataGrigio12(double mean, ImagePlus imp1, ImagePlus impMappazzaR, ImagePlus impMappazzaG,

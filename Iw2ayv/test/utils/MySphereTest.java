@@ -361,8 +361,8 @@ public class MySphereTest {
 		int width = imp1.getWidth();
 		int height = imp1.getHeight();
 		int depth = imp1.getImageStackSize();
-		int bitdepth = 24;
-		int myColors = 3;
+//		int bitdepth = 24;
+//		int myColors = 3;
 		int livello = 2;
 
 		int[] minimiClassi = { 20, 10, -10, -20, -30, -40, -50, -60, -70, -80, -90, -100 };
@@ -371,8 +371,8 @@ public class MySphereTest {
 		ImagePlus impMapR = MySphere.generaMappazzaVuota16(width, height, depth, "impMappazzaR");
 		ImagePlus impMapG = MySphere.generaMappazzaVuota16(width, height, depth, "impMappazzaG");
 		ImagePlus impMapB = MySphere.generaMappazzaVuota16(width, height, depth, "impMappazzaB");
-		ImageStack stackRGB = ImageStack.create(width, height, depth, bitdepth);
-		ImagePlus impMapRGB = new ImagePlus("MAPPAZZA_" + myColors, stackRGB);
+//		ImageStack stackRGB = ImageStack.create(width, height, depth, bitdepth);
+//		ImagePlus impMapRGB = new ImagePlus("MAPPAZZA_" + myColors, stackRGB);
 
 		int slice = 0;
 		int colorCoil = 0;
@@ -397,6 +397,7 @@ public class MySphereTest {
 			// MySphere.simulataGrigio16(mean2, imp2, impMapR, impMapG, impMapB,verde
 			// slice, livello, minimiClassi,
 			// massimiClassi, colorCoil, myColors, puntatore, debuglevel);
+			
 			MySphere.simulataGrigio16(mean2, imp2, circle, impMapR, impMapG, impMapB, slice, livello, minimiClassi,
 					massimiClassi, colorCoil, puntatore, debuglevel, sphere);
 
