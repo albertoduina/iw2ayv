@@ -309,9 +309,9 @@ public class MyColor {
 		int[][] colore1 = MyColor.tavolozza();
 		int[] myColor = new int[3];
 
-		myColor[0] = colore1[5][colorCoil * 3 + 0];
-		myColor[1] = colore1[5][colorCoil * 3 + 1];
-		myColor[2] = colore1[5][colorCoil * 3 + 2];
+		myColor[0] = colore1[4][colorCoil * 3 + 0];
+		myColor[1] = colore1[4][colorCoil * 3 + 1];
+		myColor[2] = colore1[4][colorCoil * 3 + 2];
 		return myColor;
 	}
 

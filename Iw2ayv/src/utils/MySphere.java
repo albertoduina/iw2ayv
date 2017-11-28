@@ -252,7 +252,7 @@ public class MySphere {
 			over12.addElement(imp11.getRoi());
 			imp11.deleteRoi();
 			imp11.show();
-				MyLog.waitHere("--- 004 ---\nsumError= " + sumError + " maxFitError= " + maxFitError);
+			MyLog.waitHere("--- 004 ---\nsumError= " + sumError + " maxFitError= " + maxFitError);
 
 		}
 
@@ -702,7 +702,8 @@ public class MySphere {
 	}
 
 	/**
-	 * Aggiunge una sfera alle immagini R G e B
+	 * Aggiunge una sfera alle immagini R G e B, con riempimento che dovrebbe
+	 * riempire di "nebbia" la sfera, sfumando le sfere piu'lontane
 	 * 
 	 * @param impMapR
 	 *            contributo immagine R
@@ -716,11 +717,9 @@ public class MySphere {
 	 *            dimensioni immagine esterna
 	 * @param colorRGB
 	 *            colore sfera
-	 * @param surfaceOnly
-	 *            colore solo superficie esterna sfera
 	 */
 	public static void addSphereFilling(ImagePlus impMapR, ImagePlus impMapG, ImagePlus impMapB, double[] sphere,
-			int[] bounds, int[] colorRGB, boolean surfaceOnly) {
+			int[] bounds, int[] colorRGB) {
 		int radius = (int) sphere[3] / 2;
 		int diameter = (int) sphere[3];
 		int r2 = radius * radius;
@@ -847,15 +846,9 @@ public class MySphere {
 
 		switch (algoColors) {
 		case 1:
-			if (largestR == 0)
-				largestR = 1;
-			kappaR = 255.0 / largestR;
-			if (largestG == 0)
-				largestG = 1;
-			kappaG = 255.0 / largestG;
-			if (largestB == 0)
-				largestB = 1;
-			kappaB = 255.0 / largestB;
+			kappaR = 1;
+			kappaG = 1;
+			kappaB = 1;
 			break;
 		case 2:
 			kappaR = kappa;
