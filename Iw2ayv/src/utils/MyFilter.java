@@ -480,47 +480,47 @@ public class MyFilter {
 		for (int i1 = 5; i1 < width - 5; i1++) {
 			for (int i2 = 5; i2 < height - 5; i2++) {
 				sum121 = 0;
-				offset = (i1 - 5) * width + i2;
+				offset = (i1 - 5) * height + i2;
 				for (int i3 = -5; i3 < 5; i3++) {
 					sum121 = sum121 + (pixels1[offset + i3]);
 				}
-				offset = (i1 - 4) * width + i2;
+				offset = (i1 - 4) * height + i2;
 				for (int i3 = -5; i3 < 5; i3++) {
 					sum121 = sum121 + (pixels1[offset + i3]);
 				}
-				offset = (i1 - 3) * width + i2;
+				offset = (i1 - 3) * height + i2;
 				for (int i3 = -5; i3 < 5; i3++) {
 					sum121 = sum121 + (pixels1[offset + i3]);
 				}
-				offset = (i1 - 2) * width + i2;
+				offset = (i1 - 2) * height + i2;
 				for (int i3 = -5; i3 < 5; i3++) {
 					sum121 = sum121 + (pixels1[offset + i3]);
 				}
-				offset = (i1 - 1) * width + i2;
+				offset = (i1 - 1) * height + i2;
 				for (int i3 = -5; i3 < 5; i3++) {
 					sum121 = sum121 + (pixels1[offset + i3]);
 				}
-				offset = (i1) * width + i2;
+				offset = (i1) * height + i2;
 				for (int i3 = -5; i3 < 5; i3++) {
 					sum121 = sum121 + (pixels1[offset + i3]);
 				}
-				offset = (i1 + 1) * width + i2;
+				offset = (i1 + 1) * height + i2;
 				for (int i3 = -5; i3 < 5; i3++) {
 					sum121 = sum121 + (pixels1[offset + i3]);
 				}
-				offset = (i1 + 2) * width + i2;
+				offset = (i1 + 2) * height + i2;
 				for (int i3 = -5; i3 < 5; i3++) {
 					sum121 = sum121 + (pixels1[offset + i3]);
 				}
-				offset = (i1 + 3) * width + i2;
+				offset = (i1 + 3) * height + i2;
 				for (int i3 = -5; i3 < 5; i3++) {
 					sum121 = sum121 + (pixels1[offset + i3]);
 				}
-				offset = (i1 + 4) * width + i2;
+				offset = (i1 + 4) * height + i2;
 				for (int i3 = -5; i3 < 5; i3++) {
 					sum121 = sum121 + (pixels1[offset + i3]);
 				}
-				offset = (i1 + 5) * width + i2;
+				offset = (i1 + 5) * height + i2;
 				for (int i3 = -5; i3 < 5; i3++) {
 					sum121 = sum121 + (pixels1[offset + i3]);
 				}

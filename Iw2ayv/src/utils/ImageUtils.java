@@ -422,6 +422,7 @@ public class ImageUtils {
 		}
 
 		int width = imp1.getWidth();
+		int height = imp1.getHeight();
 		short[] pixels1 = UtilAyv.truePixels(imp1);
 		//
 		// disegno MROI per calcoli
@@ -445,7 +446,7 @@ public class ImageUtils {
 		double plus10 = mean * MyConst.PLUS_10_PERC;
 		double plus20 = mean * MyConst.PLUS_20_PERC;
 		// genero una immagine nera
-		ImagePlus impSimulata = NewImage.createShortImage("Simulata", width, width, 1, NewImage.FILL_BLACK);
+		ImagePlus impSimulata = NewImage.createShortImage("Simulata", width, height, 1, NewImage.FILL_BLACK);
 		//
 		// nuova immagine simulata vuota
 		//
@@ -458,7 +459,7 @@ public class ImageUtils {
 		short pixSimulata;
 		int posizioneArrayImmagine = 0;
 
-		for (int y = 0; y < width; y++) {
+		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				posizioneArrayImmagine = y * width + x;
 				pixSorgente = pixels1[posizioneArrayImmagine];
@@ -590,7 +591,7 @@ public class ImageUtils {
 		int pixSimulata;
 		int posizioneArrayImmagine = 0;
 
-		for (int y = 0; y < width; y++) {
+		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				posizioneArrayImmagine = y * width + x;
 				pixSorgente = pixels1[posizioneArrayImmagine];
@@ -771,6 +772,7 @@ public class ImageUtils {
 			return (null);
 		}
 		int width = imp1.getWidth();
+		int height = imp1.getHeight();
 
 		ImageProcessor ip1 = imp1.getProcessor();
 		short[] pixels1 = (short[]) ip1.getPixels();
@@ -783,7 +785,7 @@ public class ImageUtils {
 				{ MyConst.LEVEL_1, 0 } };
 		boolean manca = true;
 
-		for (int y1 = 0; y1 < width; y1++) {
+		for (int y1 = 0; y1 < height; y1++) {
 			for (int x1 = 0; x1 < (width); x1++) {
 				offset = y1 * width + x1;
 				pix1 = pixels1[offset];
@@ -2234,6 +2236,13 @@ public class ImageUtils {
 		impOut.resetDisplayRange();
 
 		return impOut;
+	}
+
+	public static void closeImageWindow(ImagePlus imp1) {
+		if (imp1.isVisible()) {
+			ImageWindow iw1 = imp1.getWindow();
+			iw1.close();
+		}
 	}
 
 }
