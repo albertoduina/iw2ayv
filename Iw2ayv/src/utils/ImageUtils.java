@@ -80,7 +80,7 @@ public class ImageUtils {
 		int posizioneArrayImmagine = 0;
 		int colorOUT = ((0 & 0xff) << 16) | ((0 & 0xff) << 8) | (0 & 0xff); // nero
 
-		for (int y = 0; y < width; y++) {
+		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				boolean cerca = true;
 				posizioneArrayImmagine = y * width + x;
@@ -756,7 +756,7 @@ public class ImageUtils {
 	}
 
 	/**
-	 * Estrae la numerosit� dell classi dalla simulata
+	 * Estrae la numerosita' delle classi dalla simulata
 	 * 
 	 * @param imp1
 	 *            immagine simulata da analizzare
@@ -2197,7 +2197,8 @@ public class ImageUtils {
 	public static ImagePlus createStripRGB(int[][] colorMap) {
 
 		int width = colorMap.length * 20;
-		int height = colorMap.length * 20;;
+		int height = colorMap.length * 20;
+		;
 		int slices = 1;
 		String title = "R-G-B";
 		int fill = ImageProcessor.BLACK;
