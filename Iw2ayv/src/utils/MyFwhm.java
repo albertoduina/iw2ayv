@@ -281,7 +281,7 @@ public class MyFwhm {
 	}
 
 	/***
-	 * distanza tra 2 punti
+	 * distanza tra 2 punti.
 	 * 
 	 * @param x0
 	 * @param y0
