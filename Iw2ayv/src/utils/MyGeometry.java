@@ -370,16 +370,16 @@ public class MyGeometry {
 	public static boolean isCircleInside(int x1, int y1, int d1, int x2, int y2, int d2) {
 		double centersDistance = Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
 		double radiusDifference = d1 / 2 - d2 / 2;
-		if (centersDistance < radiusDifference) {
+		if (centersDistance <= radiusDifference) {
 			return true;
 		} else
 			return false;
 	}
 
-	public static boolean isCircleInside(int x1, int y1, int z1, int r1, int x2, int y2, int z2, int r2) {
-		double centersDistance = Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2)+ Math.pow((z1 - z2), 2));
+	public static boolean isSphereInside(int x1, int y1, int z1, int r1, int x2, int y2, int z2, int r2) {
+		double centersDistance = Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2) + Math.pow((z1 - z2), 2));
 		double radiusDifference = r1 - r2;
-		if (centersDistance < radiusDifference) {
+		if (centersDistance <= radiusDifference) {
 			return true;
 		} else
 			return false;

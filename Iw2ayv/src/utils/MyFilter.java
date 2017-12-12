@@ -718,7 +718,6 @@ public class MyFilter {
 		return out;
 	}
 
-
 	/***
 	 * Cerca l'hotspot all'interno di un cerchio, che rappresenta la slice che
 	 * esamino, verificando che la sfera costituita dalla rotazione di quel
@@ -728,17 +727,17 @@ public class MyFilter {
 	 *            immagine sfera
 	 * @param sphere1
 	 *            dati sfera
-	 * @param diam1
+	 * @param diamProjection
 	 *            diametro slice sfera
-	 * @param diam22
+	 * @param diamSearch
 	 *            diametro ricerca
 	 * @param slice
 	 *            slice in esame
 	 * @param demolevel
 	 * @return
 	 */
-	public static double[] positionSearchSphere(ImagePlus imp1, double[] sphere1, double diam1, double diam22,
-			int slice, int demolevel) {
+	public static double[] positionSearchSphere(ImagePlus imp1, double[] sphere1, double diamProjection,
+			double diamSearch, int slice, int demolevel) {
 
 		// double[] spot = MyFilter.positionSearchSphere(imp20, sphere1, diam1,
 		// diamsearch, demolevel);
@@ -751,9 +750,9 @@ public class MyFilter {
 		int xCenter1 = (int) sphere1[0];
 		int yCenter1 = (int) sphere1[1];
 		int zCenter1 = (int) sphere1[2];
-		int diam0 = (int) sphere1[3];
+		// int diam0 = (int) sphere1[3];
 
-		int radius2 = (int) diam22 / 2;
+		int radius2 = (int) diamSearch / 2;
 		boolean demo = false;
 		if (demolevel > 0)
 			demo = true;
@@ -762,7 +761,7 @@ public class MyFilter {
 
 		if (demolevel == 1) {
 			color1 = Color.green;
-			color2 = Color.yellow;
+			color2 = Color.red;
 		}
 		if (demolevel == 2) {
 			color1 = Color.red;
@@ -773,11 +772,11 @@ public class MyFilter {
 			color2 = Color.yellow;
 		}
 
-		int radius1 = (int) diam1 / 2;
 		// disegno il perimetro del fantoccio
-		int xRoi0 = xCenter1 - radius1;
-		int yRoi0 = yCenter1 - radius1;
-		int diamRoi0 = radius1;
+		// int xRoi0 = xCenter1 - radius1;
+		// int yRoi0 = xCenter1 - radius1;
+		int diamProjection0 = (int) diamProjection;
+		int radius1 = (int) diamProjection / 2;
 
 		if (demo) {
 			imp2.show();
@@ -785,28 +784,35 @@ public class MyFilter {
 		ImageWindow iw2 = imp2.getWindow();
 		// marco con un punto il centro del fantoccio
 
-		imp2.setRoi(new OvalRoi(xRoi0, yRoi0, diamRoi0, diamRoi0));
+		imp2.setRoi(new OvalRoi(xCenter1 - diamProjection0 / 2, xCenter1 - diamProjection0 / 2, diamProjection0,
+				diamProjection0));
 		if (demo) {
 			imp2.getRoi().setStrokeColor(color2);
 			over2.addElement(imp2.getRoi());
 		}
+		// MyLog.waitHere("001");
 
 		// MyLog.waitHere("cerchio esterno");
 
 		// ora faccio la scansione del bounding rectangle del cerchio esterno,
-		// utilizzando il cerchio interno, se risulta che il cerchio interno è
-		// completamente all'interno ne marco il contorno in verde
+		// utilizzando il search circle, se risulta che esso e' completamente
+		// all'interno ne marco il contorno in verde
 
-		int xstart = (int) xCenter1 - radius1 + radius2;
-		int xend = (int) xCenter1 + radius1 - radius2;
-		int ystart = (int) yCenter1 - radius1 + radius2;
-		int yend = (int) yCenter1 + radius1 - radius2;
+		// int xstart = (int) xCenter1 - radius1 + radius2;
+		// int xend = (int) xCenter1 + radius1 - radius2;
+		// int ystart = (int) yCenter1 - radius1 + radius2;
+		// int yend = (int) yCenter1 + radius1 - radius2;
+		int xstart = (int) xCenter1 - diamProjection0 / 2;
+		int xend = (int) xCenter1 + diamProjection0 / 2;
+		int ystart = (int) yCenter1 - diamProjection0 / 2;
+		int yend = (int) yCenter1 + diamProjection0 / 2;
 		double max1 = -99999;
 		int xmax = 0;
 		int ymax = 0;
+		boolean found = false;
 		for (int x2 = xstart; x2 < xend; x2++) {
 			for (int y2 = ystart; y2 < yend; y2++) {
-				if (MyGeometry.isCircleInside(xCenter1, yCenter1, zCenter1, radius1, x2, y2, slice, radius2)) {
+				if (MyGeometry.isSphereInside(xCenter1, yCenter1, zCenter1, radius1, x2, y2, slice, radius2)) {
 
 					// boolean isCircleInside(int x1, int y1, int z1, int d1,
 					// int x2, int y2, int z2, int d2) {
@@ -814,6 +820,7 @@ public class MyFilter {
 					if (demo) {
 						imp2.getRoi().setStrokeColor(color1);
 						over2.addElement(imp2.getRoi());
+						// imp2.deleteRoi();
 					}
 
 					ImageStatistics is1 = imp2.getStatistics();
@@ -822,18 +829,22 @@ public class MyFilter {
 						max1 = med1;
 						xmax = x2;
 						ymax = y2;
+						found = true;
 					}
 				}
 			}
 		}
-		if (demo) {
+		if (demo && found) {
 			imp2.setRoi(new OvalRoi(xmax - radius2, ymax - radius2, radius2 * 2, radius2 * 2));
 			imp2.getRoi().setStrokeColor(color2);
 			imp2.getRoi().setFillColor(color2);
 			over2.addElement(imp2.getRoi());
+			imp2.deleteRoi();
 		}
-		if (demo)
-			MyLog.waitHere("center", true, 400);
+		if (demo) {
+			IJ.wait(100);
+			// MyLog.waitHere("center", true, 400);
+		}
 		if (iw2 != null)
 			iw2.close();
 		double[] out = new double[3];
