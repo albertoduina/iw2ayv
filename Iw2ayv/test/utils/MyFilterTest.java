@@ -92,16 +92,6 @@ public class MyFilterTest {
 		assertTrue(UtilAyv.compareVectors(position1, expected, 1e-12, ""));
 	}
 
-	@Test
-	public final void testMaxPosition11x11NEW() {
-
-		String path1 = "./data/C001_testP10";
-		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, true);
-		double[] position1 = MyFilter.maxPosition11x11_NEW(imp1);
-		imp1.setRoi((int) Math.round(position1[0] - 4), (int) Math.round(position1[1] - 4), 7, 7);
-		double[] expected = { 196.0, 78.0, 743.3719008264463 };
-		assertTrue(UtilAyv.compareVectors(position1, expected, 1e-12, ""));
-	}
 
 //	@Test
 //	public final void testMaxPositionGeneric() {

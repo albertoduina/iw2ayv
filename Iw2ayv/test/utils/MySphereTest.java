@@ -354,8 +354,8 @@ public class MySphereTest {
 	}
 	@Test
 	public final void testVectorizeSphericalSpot32() {
-
-		String path1 = "./Data2/IMMAGINE DIFFERENZA.tif";
+		
+		String path1 = "./Data2/HC1-7";
 		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, false);
 		int demolevel = 0;
 		boolean demo = false;
@@ -363,14 +363,19 @@ public class MySphereTest {
 		double[] sphere1 = MySphere.centerSphere(imp1, demo);
 		MyLog.logVector(sphere1, "sphere1");
 
+
+		String path2 = "./Data2/IMMAGINE DIFFERENZA.tif";
+		ImagePlus imp2 = UtilAyv.openImageNoDisplay(path2, false);
+		imp2.show();
+
 		ImagePlus impMapR = null;
 		ImagePlus impMapG = null;
 		ImagePlus impMapB = null;
 		ImagePlus impMapRGB = null;
 		ImageStack stackRGB = null;
-		int width = imp1.getWidth();
-		int height = imp1.getHeight();
-		int depth = imp1.getImageStackSize();
+		int width = imp2.getWidth();
+		int height = imp2.getHeight();
+		int depth = imp2.getImageStackSize();
 		int bitdepth = 24;
 		int myColors = 2;
 
@@ -387,14 +392,14 @@ public class MySphereTest {
 		sphere2[3] = 4;
 
 		boolean paintPixels = false;
-		double[] vetpixel = MySphere.vectorizeSphericalSpot32(imp1, sphere2, paintPixels);
-		MyLog.logVector(vetpixel, "vetpixel");
+		double[] vetpixel2 = MySphere.vectorizeSphericalSpot32(imp2, sphere2, paintPixels);
+		MyLog.logVector(vetpixel2, "vetpixel2");
 
 		int[] colorRGB3 = { 0, 100, 100 };
 		int[] bounds = new int[3];
-		bounds[0] = imp1.getWidth();
-		bounds[1] = imp1.getHeight();
-		bounds[2] = imp1.getImageStackSize();
+		bounds[0] = imp2.getWidth();
+		bounds[1] = imp2.getHeight();
+		bounds[2] = imp2.getImageStackSize();
 
 		MySphere.addSphere(impMapR, impMapG, impMapB, sphere2, bounds, colorRGB3, false);
 		MySphere.compilaMappazzaCombinata(impMapR, impMapG, impMapB, impMapRGB, myColors);
@@ -416,21 +421,12 @@ public class MySphereTest {
 		int width = imp1.getWidth();
 		int height = imp1.getHeight();
 		int depth = imp1.getImageStackSize();
-		// int bitdepth = 24;
-		// int myColors = 3;
 		int livello = 2;
-
 		int[] minimiClassi = { 20, 10, -10, -20, -30, -40, -50, -60, -70, -80, -90, -100 };
 		int[] massimiClassi = { 100, 20, 10, -10, -20, -30, -40, -50, -60, -70, -80, -90 };
-
 		ImagePlus impMapR = MySphere.generaMappazzaVuota16(width, height, depth, "impMappazzaR");
 		ImagePlus impMapG = MySphere.generaMappazzaVuota16(width, height, depth, "impMappazzaG");
 		ImagePlus impMapB = MySphere.generaMappazzaVuota16(width, height, depth, "impMappazzaB");
-		// ImageStack stackRGB = ImageStack.create(width, height, depth,
-		// bitdepth);
-		// ImagePlus impMapRGB = new ImagePlus("MAPPAZZA_" + myColors,
-		// stackRGB);
-
 		int slice = 0;
 		int colorCoil = 0;
 		for (int i1 = 0; i1 < depth; i1++) {
@@ -450,12 +446,6 @@ public class MySphereTest {
 			sphere[1] = height / 2;
 			sphere[2] = imp2.getImageStackSize();
 			sphere[3] = 200;
-
-			// MySphere.simulataGrigio16(mean2, imp2, impMapR, impMapG,
-			// impMapB,verde
-			// slice, livello, minimiClassi,
-			// massimiClassi, colorCoil, myColors, puntatore, debuglevel);
-
 			MySphere.simulataGrigio16(mean2, imp2, circle, impMapR, impMapG, impMapB, slice, livello, minimiClassi,
 					massimiClassi, colorCoil, puntatore, debuglevel, sphere);
 

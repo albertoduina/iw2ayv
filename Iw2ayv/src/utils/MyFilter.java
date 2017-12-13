@@ -12,10 +12,14 @@ import ij.process.ImageStatistics;
 
 public class MyFilter {
 
+	/***
+	 * Ricerca posizione del massimo con una roi 1x1
+	 * 
+	 * @param imp1
+	 * @return
+	 */
 	public static double[] maxPosition1x1(ImagePlus imp1) {
 
-		// ImageStatistics stat1 = imp1.getStatistics();
-		// double max1 = stat1.max;
 		ImageProcessor ip1 = imp1.getProcessor();
 		short[] pixels = (short[]) ip1.getPixels();
 		double max2 = Double.NEGATIVE_INFINITY;
@@ -155,6 +159,7 @@ public class MyFilter {
 	 * @param imp1
 	 * @return
 	 */
+
 	public static double[] maxPosition7x7(ImagePlus imp1) {
 
 		// double startNanoTime = System.nanoTime();
@@ -224,6 +229,7 @@ public class MyFilter {
 	 * @param imp1
 	 * @return
 	 */
+
 	public static double[] maxPosition9x9(ImagePlus imp1) {
 
 		// double startNanoTime = System.nanoTime();
@@ -291,170 +297,6 @@ public class MyFilter {
 		// IJ.log("maxPosition9x9 "
 		// + IJ.d2s(((System.nanoTime() - startNanoTime) / 1000000000.0),
 		// 6) + " seconds");
-		return out;
-	}
-
-	/**
-	 * Ricerca posizione del massimo con una roi 11x11, restituisce le
-	 * coordinate del centro
-	 * 
-	 * @param imp1
-	 * @return
-	 */
-	public static double[] maxPosition11x11_NEW3333333(ImagePlus imp1) {
-		int width = imp1.getWidth();
-		int height = imp1.getHeight();
-		long sum121 = 0;
-		double mean121 = 0;
-		double max121 = 0;
-		int xmax121 = 0;
-		int ymax121 = 0;
-		int offset = 0;
-		int conta = 0;
-		ImageProcessor ip1 = imp1.getProcessor();
-		// MyLog.waitHere("bitDepth= " + imp1.getBitDepth());
-		// if (imp1.getBitDepth() == 16) {
-		short pixels1[] = (short[]) ip1.getPixels();
-		// scansione sulle coordinate del centro roi 11x11
-		for (int i1 = 5; i1 < height - 5; i1++) {
-			for (int i2 = 5; i2 < width - 5; i2++) {
-				sum121 = 0;
-				conta = 0;
-				// mi posiziono sulla riga
-				for (int i4 = -5; i4 < 6; i4++) {
-					offset = (i1 + i4) * width + i2;
-					for (int i3 = -5; i3 < 6; i3++) {
-						sum121 = sum121 + (pixels1[offset + i3]);
-						conta++;
-					}
-				}
-				// MyLog.waitHere("conta= " + conta);
-				mean121 = sum121 / (double) conta;
-				if (mean121 > max121) {
-					max121 = mean121;
-					xmax121 = i2;
-					ymax121 = i1;
-				}
-			}
-		}
-		// } else
-		// return null;
-		if (max121 < 50.0) // filtro per evitare di restitruire il fondo
-			return null;
-		double[] out = new double[3];
-		out[0] = xmax121;
-		out[1] = ymax121;
-		out[2] = max121;
-		return out;
-	}
-
-	public static double[] maxCircularPosition11x11_NEW(ImagePlus imp1) {
-		// double startNanoTime = System.nanoTime();
-		int width = imp1.getWidth();
-		int height = imp1.getHeight();
-		long sum121 = 0;
-		double mean121 = 0;
-		double max121 = 0;
-		int xmax121 = 0;
-		int ymax121 = 0;
-		int offset = 0;
-		int address = 0;
-		int count = 0;
-		if (imp1.getBytesPerPixel() != 2)
-			return null;
-		ImageProcessor ip1 = imp1.getProcessor();
-		short[] pixels1 = (short[]) ip1.getPixels();
-		// scansione sulle coordinate del centro roi 11x11
-		for (int i1 = 5; i1 < height - 5; i1++) {
-			for (int i2 = 5; i2 < width - 5; i2++) {
-				sum121 = 0;
-				count = 0;
-
-				// mi posiziono sulla riga
-				for (int i4 = -5; i4 < 6; i4++) {
-					offset = (i1 + i4) * width + i2;
-					for (int i3 = -5; i3 < 6; i3++) {
-						address = offset + i3;
-						sum121 = sum121 + (pixels1[address]);
-						count++;
-					}
-				}
-				mean121 = sum121 / count;
-				if (count != 121)
-					MyLog.waitHere("count= " + count);
-				if (mean121 > max121) {
-					max121 = mean121;
-					xmax121 = i2;
-					ymax121 = i1;
-				}
-			}
-		}
-
-		if (max121 < 50.0) // filtro per evitare di restitruire il fondo
-			return null;
-
-		double[] out = new double[3];
-		out[0] = xmax121;
-		out[1] = ymax121;
-		out[2] = max121;
-		return out;
-	}
-
-	/**
-	 * Ricerca posizione del massimo con una roi 11x11, restituisce le
-	 * coordinate del centro
-	 * 
-	 * @param imp1
-	 * @return
-	 */
-	public static double[] maxPosition11x11_NEW(ImagePlus imp1) {
-		// double startNanoTime = System.nanoTime();
-		int width = imp1.getWidth();
-		int height = imp1.getHeight();
-		long sum121 = 0;
-		double mean121 = 0;
-		double max121 = 0;
-		int xmax121 = 0;
-		int ymax121 = 0;
-		int offset = 0;
-		int address = 0;
-		int count = 0;
-		if (imp1.getBytesPerPixel() != 2)
-			return null;
-		ImageProcessor ip1 = imp1.getProcessor();
-		short[] pixels1 = (short[]) ip1.getPixels();
-		// scansione sulle coordinate del centro roi 11x11
-		for (int i1 = 5; i1 < height - 5; i1++) {
-			for (int i2 = 5; i2 < width - 5; i2++) {
-				sum121 = 0;
-				count = 0;
-				// mi posiziono sulla riga
-				for (int i4 = -5; i4 < 6; i4++) {
-					offset = (i1 + i4) * width + i2;
-					for (int i3 = -5; i3 < 6; i3++) {
-						address = offset + i3;
-						sum121 = sum121 + (pixels1[address]);
-						count++;
-					}
-				}
-				mean121 = sum121 / count;
-				if (count != 121)
-					MyLog.waitHere("count= " + count);
-				if (mean121 > max121) {
-					max121 = mean121;
-					xmax121 = i2;
-					ymax121 = i1;
-				}
-			}
-		}
-
-		if (max121 < 50.0) // filtro per evitare di restitruire il fondo
-			return null;
-
-		double[] out = new double[3];
-		out[0] = xmax121;
-		out[1] = ymax121;
-		out[2] = max121;
 		return out;
 	}
 
@@ -539,6 +381,64 @@ public class MyFilter {
 		// IJ.log("maxPosition11x11 "
 		// + IJ.d2s(((System.nanoTime() - startNanoTime) / 1000000000.0),
 		// 6) + " seconds");
+		return out;
+	}
+
+	/**
+	 * Ricerca posizione del massimo con una roi 11x11, restituisce le
+	 * coordinate del centro
+	 * 
+	 * @param imp1
+	 * @return
+	 */
+	public static double[] maxPosition11x11_NEW(ImagePlus imp1) {
+		// double startNanoTime = System.nanoTime();
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
+		long sum121 = 0;
+		double mean121 = 0;
+		double max121 = 0;
+		int xmax121 = 0;
+		int ymax121 = 0;
+		int offset = 0;
+		int address = 0;
+		int count = 0;
+		if (imp1.getBytesPerPixel() != 2)
+			return null;
+		ImageProcessor ip1 = imp1.getProcessor();
+		short[] pixels1 = (short[]) ip1.getPixels();
+		// scansione sulle coordinate del centro roi 11x11
+		for (int i1 = 5; i1 < height - 5; i1++) {
+			for (int i2 = 5; i2 < width - 5; i2++) {
+				sum121 = 0;
+				count = 0;
+				// mi posiziono sulla riga
+				for (int i4 = -5; i4 < 6; i4++) {
+					offset = (i1 + i4) * width + i2;
+					for (int i3 = -5; i3 < 6; i3++) {
+						address = offset + i3;
+						sum121 = sum121 + (pixels1[address]);
+						count++;
+					}
+				}
+				mean121 = sum121 / count;
+				if (count != 121)
+					MyLog.waitHere("count= " + count);
+				if (mean121 > max121) {
+					max121 = mean121;
+					xmax121 = i2;
+					ymax121 = i1;
+				}
+			}
+		}
+
+		if (max121 < 50.0) // filtro per evitare di restitruire il fondo
+			return null;
+
+		double[] out = new double[3];
+		out[0] = xmax121;
+		out[1] = ymax121;
+		out[2] = max121;
 		return out;
 	}
 
@@ -790,9 +690,6 @@ public class MyFilter {
 			imp2.getRoi().setStrokeColor(color2);
 			over2.addElement(imp2.getRoi());
 		}
-		// MyLog.waitHere("001");
-
-		// MyLog.waitHere("cerchio esterno");
 
 		// ora faccio la scansione del bounding rectangle del cerchio esterno,
 		// utilizzando il search circle, se risulta che esso e' completamente

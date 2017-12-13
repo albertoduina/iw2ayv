@@ -27,14 +27,16 @@ import ij.process.ImageStatistics;
 
 public class MySphere {
 
-	/**
+	/***
 	 * Ricerca posizione ROI per calcolo uniformita'. Versione con Canny Edge
 	 * Detector. Questa versione è da utilizzare per il fantoccio sferico
-	 *
 	 * 
 	 * @param imp11
-	 *            stack della sfera in input
-	 * @return (x, y, diam)
+	 * @param direction
+	 * @param maxFitError
+	 * @param maxBubbleGapLimit
+	 * @param demo
+	 * @return [x, y diam]
 	 */
 	public static double[] centerCircleCannyEdge(ImagePlus imp11, int direction, double maxFitError,
 			double maxBubbleGapLimit, boolean demo) {
@@ -266,19 +268,18 @@ public class MySphere {
 		return out2;
 	}
 
-	/**
+	/***
 	 * Riceve una ImagePlus derivante da un CannyEdgeDetector con impostata una
 	 * Line, restituisce le coordinate dei 2 picchi, se non sono esattamente 2
 	 * restituisce null.
 	 * 
 	 * @param imp1
-	 * @param dimPixel
-	 * @param title
-	 * @param showProfiles
 	 * @param demo
 	 * @param debug
-	 * @return
+	 * @param timeout
+	 * @return peaks[][]
 	 */
+
 	public static double[][] cannyProfileAnalyzer(ImagePlus imp1, boolean demo, boolean debug, int timeout) {
 
 		double[][] profi3 = MyLine.decomposer(imp1);
@@ -562,6 +563,7 @@ public class MySphere {
 	}
 
 	/***
+	 * genera stack grigio vuoto
 	 * 
 	 * @param width
 	 *            width in pixels
@@ -583,7 +585,7 @@ public class MySphere {
 	}
 
 	/**
-	 * Creazione di una immagine RGB su cui plottare i modelli di sfera da noi
+	 * Creazione uno stack RGB su cui plottare i modelli di sfera da noi
 	 * ricavati. Si utilizza l'immagine dello stacK fantoccio per ricavarne le
 	 * dimensioni per creare il nuovo stackRGB nero
 	 * 
@@ -621,6 +623,7 @@ public class MySphere {
 	 * @param surfaceOnly
 	 *            colore solo superficie esterna sfera
 	 */
+	
 	public static void addSphere(ImagePlus impMapR, ImagePlus impMapG, ImagePlus impMapB, double[] sphere, int[] bounds,
 			int[] colorRGB, boolean surfaceOnly) {
 		int diameter = (int) sphere[3];
@@ -718,6 +721,7 @@ public class MySphere {
 	 * @param colorRGB
 	 *            colore sfera
 	 */
+	
 	public static void addSphereFilling(ImagePlus impMapR, ImagePlus impMapG, ImagePlus impMapB, double[] sphere,
 			int[] bounds, int[] colorRGB) {
 		int radius = (int) sphere[3] / 2;
@@ -798,6 +802,7 @@ public class MySphere {
 	 * @param algoColors
 	 *            algoritmo calcolo colore
 	 */
+	
 	public static void compilaMappazzaCombinata(ImagePlus impMappazzaR, ImagePlus impMappazzaG, ImagePlus impMappazzaB,
 			ImagePlus impMappazzaRGB, int algoColors) {
 
@@ -925,6 +930,7 @@ public class MySphere {
 	 *            per debug
 	 * @return (x,y,z,maxval)
 	 */
+	
 	public static double[] searchCircularSpot(ImagePlus imp1, double[] sphere1, int diamSearch, String aa,
 			int demolevel) {
 
@@ -997,192 +1003,15 @@ public class MySphere {
 	}
 
 	/***
-	 * vectorizeSphericalSpot: restituisce i pixel appartenenti ad una sfera
-	 * sotto forma di vettore. Impiega una MASK per definire se un pixel fa
-	 * parte dle cerchio od è esterno. Puo' lavorare sia per immagini a 16 bit
-	 * che per immagini a 32 bit. Unico difetto riscontrato: sovrastima il
-	 * volume della sfera effettiva, rispetto al volume teorico calcolato. Il
-	 * problema è mitigato togliendo 0.5 oppure 1 (stesso risultato finale) al
-	 * calcolo del raggio della variabile rad3
-	 * 
-	 * @param imp1
-	 * @param sphere1
-	 * @param diamsearch
-	 * @param aa
-	 * @param demolevel
-	 * @return (pixlist)
-	 */
-
-	@Deprecated
-	public static double[] vectorizeSphericalSpot(ImagePlus imp1, double[] sphere1, double[] sphere2) {
-
-		ArrayList<Double> pixlist = new ArrayList<Double>();
-
-		int x2 = (int) sphere2[0];
-		int y2 = (int) sphere2[1];
-		int z2 = (int) sphere2[2];
-		int rad2 = (int) sphere2[3] / 2;
-		int diam2 = (int) sphere2[3];
-		double volume = (4 / 3) * 3.14 * rad2 * rad2 * rad2;
-
-		IJ.log("SFERA radius= " + rad2 + " volume teorico= " + volume + " [voxels]");
-
-		int zmin = z2 - rad2;
-		int zmax = zmin + diam2;
-		int width = imp1.getWidth();
-		double aux1 = 0;
-		double rad3 = 0;
-		int dd = 0;
-		for (int zz = zmin; zz < zmax; zz++) {
-			dd = Math.abs(zz - z2);
-			rad3 = Math.round(Math.sqrt(rad2 * rad2 - dd * dd) - 0.5);
-			ImagePlus imp2 = MyStackUtils.imageFromStack(imp1, zz + 1);
-			imp2.setRoi(new OvalRoi(x2 - rad3, y2 - rad3, rad3 * 2, rad3 * 2));
-			Roi roi1 = imp2.getRoi();
-			Rectangle r3 = roi1.getBounds();
-			ImageProcessor impMask = roi1.getMask();
-			byte[] mask = (byte[]) impMask.getPixels();
-			ImageProcessor ip2 = imp2.getProcessor();
-			float[] buffer = new float[ip2.getPixelCount()];
-			if (ip2.getBitDepth() == 32) {
-				float[] pixels = (float[]) ip2.getPixels();
-				for (int i1 = 0; i1 < pixels.length; i1++) {
-					buffer[i1] = (float) pixels[i1];
-				}
-			} else if (ip2.getBitDepth() == 16) {
-				short[] pixels = (short[]) ip2.getPixels();
-				for (int i1 = 0; i1 < pixels.length; i1++) {
-					buffer[i1] = (float) pixels[i1];
-				}
-			}
-
-			int offset3 = 0;
-			int offset1 = 0;
-			if (mask == null)
-				MyLog.waitHere("maskArray==null");
-
-			// scansiono la mask e trovero' i pixel interessati della immagine
-			// sorgente mediante calcoli per passare dalle coordinate della mask
-			// grande come il boundingRectangle e l'immagine originale
-			int appx = 0;
-			int appy = 0;
-
-			for (int ww = 0; ww < r3.height; ww++) {
-				offset3 = ww * (r3.width);
-				appy = (y2 + ww - r3.height / 2);
-				offset1 = appy * width;
-				for (int rr = 0; rr < r3.width; rr++) {
-					if (mask[offset3 + rr] != 0) {
-						appx = x2 + rr - r3.width / 2;
-						aux1 = (float) buffer[offset1 + appx];
-						pixlist.add(aux1);
-					}
-				}
-			}
-		}
-		double[] pix = ArrayUtils.arrayListToArrayDouble(pixlist);
-		IJ.log("SFERA volume effettivo pixel restituiti= " + pix.length + " [voxels]");
-
-		imp1.updateAndDraw();
-		return pix;
-	}
-
-	/***
-	 * vectorizeSphericalSpot: restituisce i pixel appartenenti ad una sfera
-	 * sotto forma di vettore. Impiega una MASK per definire se un pixel fa
-	 * parte dle cerchio od è esterno. Puo' lavorare sia per immagini a 16 bit
-	 * che per immagini a 32 bit. Unico difetto riscontrato: sovrastima il
-	 * volume della sfera effettiva, rispetto al volume teorico calcolato. Il
-	 * problema è mitigato togliendo 0.5 oppure 1 (stesso risultato finale) al
-	 * calcolo del raggio della variabile rad3
+	 * mette i valori dei pixel, appartenenti alla sfera in un vettore. Se
+	 * richiesto imposta il valore 10000 in tali pixel, una volta utilizzati.
 	 * 
 	 * @param imp1
 	 * @param sphere2
-	 * @return (pixlist)
+	 * @param paintPixels
+	 * @return vettore pixels
 	 */
-
-	// public static double[] vectorizeSphericalSpot3(ImagePlus imp1, double[]
-	// sphere2, boolean paint) {
-	//
-	// ArrayList<Double> pixlist = new ArrayList<Double>();
-	//
-	// int x2 = (int) sphere2[0];
-	// int y2 = (int) sphere2[1];
-	// int z2 = (int) sphere2[2];
-	// int rad2 = (int) sphere2[3] / 2;
-	// int diam2 = (int) sphere2[3];
-	// double volume = (4 / 3) * 3.14 * rad2 * rad2 * rad2;
-	//
-	// IJ.log("SFERA radius= " + rad2 + " volume teorico= " + volume + "
-	// [voxels]");
-	//
-	// int zmin = z2 - rad2;
-	// int zmax = zmin + diam2;
-	// int width = imp1.getWidth();
-	// double aux1 = 0;
-	// double rad3 = 0;
-	// int dd = 0;
-	// for (int zz = zmin; zz < zmax; zz++) {
-	// dd = Math.abs(zz - z2);
-	// rad3 = Math.round(Math.sqrt(rad2 * rad2 - dd * dd) - 0.5);
-	// ImagePlus imp2 = MyStackUtils.imageFromStack(imp1, zz + 1);
-	// imp2.setRoi(new OvalRoi(x2 - rad3, y2 - rad3, rad3 * 2, rad3 * 2));
-	// Roi roi1 = imp2.getRoi();
-	// Rectangle r3 = roi1.getBounds();
-	// ImageProcessor impMask = roi1.getMask();
-	// byte[] mask = (byte[]) impMask.getPixels();
-	// ImageProcessor ip2 = imp2.getProcessor();
-	// float[] buffer = new float[ip2.getPixelCount()];
-	// if (ip2.getBitDepth() == 32) {
-	// float[] pixels = (float[]) ip2.getPixels();
-	// for (int i1 = 0; i1 < pixels.length; i1++) {
-	// buffer[i1] = (float) pixels[i1];
-	// // stack.setVoxel((int) pointC[0], (int) pointC[1], (int)
-	// // pointC[2], 10000);
-	//
-	// }
-	// } else if (ip2.getBitDepth() == 16) {
-	// short[] pixels = (short[]) ip2.getPixels();
-	// for (int i1 = 0; i1 < pixels.length; i1++) {
-	// buffer[i1] = (float) pixels[i1];
-	// }
-	// }
-	//
-	// int offset3 = 0;
-	// int offset1 = 0;
-	// if (mask == null)
-	// MyLog.waitHere("maskArray==null");
-	//
-	// // scansiono la mask e trovero' i pixel interessati della immagine
-	// // sorgente mediante calcoli per passare dalle coordinate della mask
-	// // grande come il boundingRectangle e l'immagine originale
-	// int appx = 0;
-	// int appy = 0;
-	//
-	// for (int yy = 0; yy < r3.height; yy++) {
-	// offset3 = yy * (r3.width);
-	// appy = (y2 + yy - r3.height / 2);
-	// offset1 = appy * width;
-	// for (int xx = 0; xx < r3.width; xx++) {
-	// if (mask[offset3 + xx] != 0) {
-	// appx = x2 + xx - r3.width / 2;
-	// aux1 = (float) buffer[offset1 + appx];
-	// pixlist.add(aux1);
-	// if (paint) {
-	// buffer[offset1 + appx] = 10000;
-	// }
-	// }
-	// }
-	// }
-	// }
-	// double[] pix = ArrayUtils.arrayListToArrayDouble(pixlist);
-	// IJ.log("SFERA volume effettivo pixel restituiti= " + pix.length + "
-	// [voxels]");
-	//
-	// imp1.updateAndDraw();
-	// return pix;
-	// }
-
+	
 	public static double[] vectorizeSphericalSpot16(ImagePlus imp1, double[] sphere2, boolean paintPixels) {
 
 		ArrayList<Double> pixlist = new ArrayList<Double>();
@@ -1261,6 +1090,16 @@ public class MySphere {
 		return pix;
 	}
 
+	/***
+	 * mette i valori dei pixel, appartenenti alla sfera in un vettore. Se
+	 * richiesto imposta il valore 10000 in tali pixel, una volta utilizzati.
+	 * 
+	 * @param imp1
+	 * @param sphere2
+	 * @param paintPixels
+	 * @return vettore pixels
+	 */
+	
 	public static double[] vectorizeSphericalSpot32(ImagePlus imp1, double[] sphere2, boolean paintPixels) {
 
 		ArrayList<Double> pixlist = new ArrayList<Double>();
@@ -1337,131 +1176,6 @@ public class MySphere {
 		imp1.updateAndDraw();
 		return pix;
 	}
-
-	// public static double[] vectorizeSphericalSpot(ImagePlus imp1, double[]
-	// sphere2, boolean paint) {
-	//
-	//
-	// int depth = imp1.getBitDepth();
-	//
-	// ArrayList<Double> pixlist = new ArrayList<Double>();
-	//
-	// MyLog.waitHere("vectorizeSphericalSpot "+depth);
-	//
-	// // MyLog.waitHere("ho ricevuto immagine= " + imp1.getTitle() + " depth=
-	// // " + imp1.getBitDepth() + " byte= "
-	// // + imp1.getBytesPerPixel());
-	//
-	// int x2 = (int) sphere2[0];
-	// int y2 = (int) sphere2[1];
-	// int z2 = (int) sphere2[2];
-	// int rad2 = (int) sphere2[3] / 2;
-	// int diam2 = (int) sphere2[3];
-	// double volume = (4 / 3) * 3.14 * rad2 * rad2 * rad2;
-	//
-	// IJ.log("SFERA radius= " + rad2 + " volume teorico= " + volume + "
-	// [voxels]");
-	//
-	// int zmin = z2 - rad2;
-	// int zmax = zmin + diam2;
-	// int width = imp1.getWidth();
-	// double aux1 = 0;
-	// double radiusProjection = 0;
-	// int distanceFromCenter = 0;
-	//
-	// Overlay over1 = new Overlay();
-	// imp1.setOverlay(over1);
-	//
-	// ImagePlus imp2 = null;
-	// ImageStack stack1 = imp1.getStack();
-	//
-	// for (int zz = zmin; zz < zmax; zz++) {
-	// imp1.setSlice(zz + 1);
-	//
-	// distanceFromCenter = Math.abs(zz - z2);
-	// radiusProjection = Math.round(Math.sqrt(rad2 * rad2 - distanceFromCenter
-	// * distanceFromCenter) - 0.5);
-	// imp2 = MyStackUtils.imageFromStack(imp1, zz + 1);
-	// Overlay over2 = new Overlay();
-	// imp2.setOverlay(over2);
-	// imp2.setRoi(new OvalRoi(x2 - radiusProjection, y2 - radiusProjection,
-	// radiusProjection * 2,
-	// radiusProjection * 2));
-	// imp2.getRoi().setStrokeColor(Color.red);
-	//
-	// over2.addElement(imp2.getRoi());
-	// imp2.show();
-	// Roi roi2 = imp2.getRoi();
-	// Rectangle rect2 = roi2.getBounds();
-	// ImageProcessor impMask2 = roi2.getMask();
-	// byte[] mask2 = (byte[]) impMask2.getPixels();
-	// ImageProcessor ip2 = imp2.getProcessor();
-	// if (depth == 32) {
-	//
-	//
-	// float[] buffer = new float[ip2.getPixelCount()];
-	// float[] buxels32 = null;
-	// short[] buxels16 = null;
-	// if (depth == 32) {
-	// buxels32 = (float[]) stack1.getPixels(zz);
-	//
-	// float[] pixels = (float[]) ip2.getPixels();
-	// for (int i1 = 0; i1 < pixels.length; i1++) {
-	// buffer[i1] = (float) pixels[i1];
-	// }
-	// } else if (depth == 16) {
-	// buxels16 = (short[]) stack1.getPixels(zz);
-	//
-	// short[] pixels = (short[]) ip2.getPixels();
-	// for (int i1 = 0; i1 < pixels.length; i1++) {
-	// buffer[i1] = (float) pixels[i1];
-	// }
-	// }
-	//
-	// int offset3 = 0;
-	// int offset1 = 0;
-	// if (mask2 == null)
-	// MyLog.waitHere("maskArray==null");
-	//
-	// // scansiono la mask e trovero' i pixel interessati della immagine
-	// // sorgente mediante calcoli per passare dalle coordinate della mask
-	// // grande come il boundingRectangle e l'immagine originale
-	// int appx = 0;
-	// int appy = 0;
-	//
-	// for (int yy = 0; yy < rect2.height; yy++) {
-	// offset3 = yy * (rect2.width);
-	// appy = (y2 + yy - rect2.height / 2);
-	// offset1 = appy * width;
-	// for (int xx = 0; xx < rect2.width; xx++) {
-	// if (mask2[offset3 + xx] != 0) {
-	// appx = x2 + xx - rect2.width / 2;
-	// aux1 = (float) buffer[offset1 + appx];
-	// pixlist.add(aux1);
-	// if (paint && depth == 32) {
-	// buxels32[offset1 + appx] = 10000;
-	// } else if (paint && depth == 16) {
-	// buxels16[offset1 + appx] = 10000;
-	// }
-	// }
-	// }
-	// }
-	// short[] buffer2 = new short[buffer.length];
-	// for (int i1 = 0; i1 < buffer.length; i1++) {
-	// buffer2[i1] = (short) buffer[i1];
-	// }
-	//
-	// ip2.setPixels(buffer);
-	// imp1.updateAndDraw();
-	// MyLog.waitHere();
-	// ImageUtils.closeImageWindow(imp2);
-	// }
-	// double[] pix = ArrayUtils.arrayListToArrayDouble(pixlist);
-	// IJ.log("SFERA volume effettivo pixel restituiti= " + pix.length + "
-	// [voxels]");
-	// imp1.updateAndDraw();
-	// return pix;
-	// }
 
 	/***
 	 * Creazione di uno stack ortogonale, fa uso di ortogonalViews (che però
