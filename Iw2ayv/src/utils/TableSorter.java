@@ -187,8 +187,6 @@ public class TableSorter {
 			}
 		}
 
-		// MyLog.logVector(vetIndex, "vetIndex");
-		// MyLog.logVector(vetKey, "vetKey");
 
 		// a questo punto usando vetIndex, posso riordinare la tabella in un
 		// unica passata
@@ -196,8 +194,8 @@ public class TableSorter {
 			for (int i2 = 0; i2 < vetIndex.length; i2++) {
 				tableOut[i2][i1] = tableIn[vetIndex[i2]][i1];
 			}
-			tableOut[0][i1] = "" + i1;
 		}
+
 		return tableOut;
 	}
 
