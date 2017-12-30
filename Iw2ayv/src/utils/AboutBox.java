@@ -19,6 +19,7 @@ import ij.process.*;
  *         Sanitaria _
  * 
  * 
+ * 
  */
 public class AboutBox {
 	static final int SMALL_FONT = 10, MEDIUM_FONT = 14, LARGE_FONT = 18;
