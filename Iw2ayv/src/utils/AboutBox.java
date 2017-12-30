@@ -31,7 +31,7 @@ public class AboutBox {
 		String[] text = new String[lines];
 		text[0] = arg;
 		text[1] = "IW2AYV";
-		text[2] = "2007-2017  Alberto Duina";
+		text[2] = "2007-2018  Alberto Duina";
 		text[3] = "albertoduina@virgilio.it";
 		text[4] = "VERSIONE " + version1;
 		text[5] = "VERSIONE libreria iw2ayv " + MyVersionUtils.getVersion();
@@ -122,7 +122,7 @@ public class AboutBox {
 		text[0] = arg;
 		text[1] = "Azienda Spedali Civili di Brescia";
 		text[2] = "Servizio di Fisica Sanitaria";
-		text[3] = "2007-2017  Alberto Duina";
+		text[3] = "2007-2018  Alberto Duina";
 		text[4] = "albertoduina@virgilio.it";
 		// text[5] = "VERSIONE " + myImplementationVersion(myClass);
 		// text[6] = "VERSIONE libreria iw2ayv " +
@@ -221,7 +221,7 @@ public class AboutBox {
 		int before = arg.length - 1;
 		text[before + 1] = "Azienda Spedali Civili di Brescia";
 		text[before + 2] = "Servizio di Fisica Sanitaria";
-		text[before + 3] = "2007-2017  Alberto Duina";
+		text[before + 3] = "2007-2018  Alberto Duina";
 		text[before + 4] = "albertoduina@virgilio.it";
 		// text[5] = "VERSIONE " + myImplementationVersion(myClass);
 		// text[6] = "VERSIONE libreria iw2ayv " +
@@ -315,7 +315,7 @@ public class AboutBox {
 		text[0] = arg;
 		text[1] = "Azienda Spedali Civili di Brescia";
 		text[2] = "Servizio di Fisica Sanitaria";
-		text[3] = "2007-2017";
+		text[3] = "2007-2018";
 		text[4] = "Luca Berta, Alberto Duina";
 		text[5] = "albertoduina@virgilio.it";
 		text[6] = "VERSIONE " + myImplementationVersion(myClass);
@@ -408,7 +408,7 @@ public class AboutBox {
 		int before = arg.length - 1;
 		text[before + 1] = "Azienda Spedali Civili di Brescia";
 		text[before + 2] = "Servizio di Fisica Sanitaria";
-		// text[before + 3] = "2007-2017 Alberto Duina";
+		// text[before + 3] = "2007-2018 Alberto Duina";
 		// text[before + 4] = "albertoduina@virgilio.it";
 		text[before + 3] = credits1;
 		text[before + 4] = credits2;
@@ -527,7 +527,7 @@ public class AboutBox {
 		text[0] = arg;
 		text[1] = "Azienda Spedali Civili di Brescia";
 		text[2] = "Servizio di Fisica Sanitaria";
-		text[3] = "2007-2017  Alberto Duina";
+		text[3] = "2007-2018  Alberto Duina";
 		text[4] = "albertoduina@virgilio.it";
 		text[5] = "VERSIONE " + myImplementationVersion(myClass);
 
@@ -621,7 +621,7 @@ public class AboutBox {
 		text[0] = arg;
 		text[1] = "Azienda Spedali Civili di Brescia";
 		text[2] = "Servizio di Fisica Sanitaria";
-		text[3] = "2007-2017  Alberto Duina";
+		text[3] = "2007-2018  Alberto Duina";
 		text[4] = "albertoduina@virgilio.it";
 		// text[5] = "VERSIONE " + myImplementationVersion(myClass);
 
