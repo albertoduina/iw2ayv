@@ -12,6 +12,7 @@ import ij.gui.*;
 import ij.process.*;
 
 /***
+ * 
  * About box class, generation and display
  * 
  * @author Alberto Duina - SPEDALI CIVILI DI BRESCIA - Servizio di Fisica
