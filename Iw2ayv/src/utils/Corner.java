@@ -11,6 +11,7 @@ package utils;
 
 /**
  * 2013/06/09 Changed to 'final float' coordinates (WB).
+ * 
  */
 public class Corner implements Comparable<Corner> {
 	
