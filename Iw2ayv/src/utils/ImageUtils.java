@@ -21,6 +21,7 @@ import ij.io.FileSaver;
 import ij.measure.Calibration;
 import ij.measure.Measurements;
 import ij.process.ColorProcessor;
+import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ImageStatistics;
 import ij.process.ShortProcessor;
@@ -819,10 +820,9 @@ public class ImageUtils {
 	}
 
 	/***
-	 * Porta l'immagine in primo piano Pare che questa routine funzioni molto
-	 * meglio delle precedenti. Se, anziche' la ImagePlus si conosce la
-	 * ImageWindow, si puo' utilizzare iw1.getImagePlus() per ottenere la image
-	 * plus "on the fly"
+	 * Porta l'immagine in primo piano Pare che questa routine funzioni molto meglio
+	 * delle precedenti. Se, anziche' la ImagePlus si conosce la ImageWindow, si
+	 * puo' utilizzare iw1.getImagePlus() per ottenere la image plus "on the fly"
 	 * 
 	 * @param iw1
 	 */
@@ -837,10 +837,9 @@ public class ImageUtils {
 	}
 
 	/***
-	 * Porta l'immagine in primo piano Pare che questa routine funzioni molto
-	 * meglio delle precedenti. Se, anzich� la ImagePlus si conosce la
-	 * ImageWindow, si pu� utilizzare iw1.getImagePlus() per ottenere la image
-	 * plus "on the fly"
+	 * Porta l'immagine in primo piano Pare che questa routine funzioni molto meglio
+	 * delle precedenti. Se, anzich� la ImagePlus si conosce la ImageWindow, si
+	 * pu� utilizzare iw1.getImagePlus() per ottenere la image plus "on the fly"
 	 * 
 	 * @param imp1
 	 */
@@ -1014,8 +1013,8 @@ public class ImageUtils {
 
 	/***
 	 * Questo e' il fitCircle preso da ImageJ (ij.plugins.Selection.java, con
-	 * sostituito imp.setRoi a IJ.makeOval. La versione NEW, oltre a impostare
-	 * una ROI circolare sull'immagine, ne restituisce anche i valori numerici:
+	 * sostituito imp.setRoi a IJ.makeOval. La versione NEW, oltre a impostare una
+	 * ROI circolare sull'immagine, ne restituisce anche i valori numerici:
 	 * coordinate del centro e raggio.
 	 * 
 	 * if selection is closed shape, create a circle with the same area and
@@ -1172,9 +1171,9 @@ public class ImageUtils {
 
 	/***
 	 * Liang-Barsky function by Daniel White
-	 * http://www.skytopia.com/project/articles/compsci/clipping.html .This
-	 * function inputs 8 numbers, and outputs 4 new numbers (plus a boolean
-	 * value to say whether the clipped line is drawn at all). //
+	 * http://www.skytopia.com/project/articles/compsci/clipping.html .This function
+	 * inputs 8 numbers, and outputs 4 new numbers (plus a boolean value to say
+	 * whether the clipped line is drawn at all). //
 	 * 
 	 * @param edgeLeft
 	 *            lato sinistro, coordinata minima x = 0
@@ -1258,10 +1257,9 @@ public class ImageUtils {
 	}
 
 	/**
-	 * Determinazione dei crossing points tra un raggio, di cui si conoscono
-	 * solo due punti e la circonferenza.
-	 * https://stackoverflow.com/questions/13053061/circle-line-intersection-
-	 * points
+	 * Determinazione dei crossing points tra un raggio, di cui si conoscono solo
+	 * due punti e la circonferenza.
+	 * https://stackoverflow.com/questions/13053061/circle-line-intersection- points
 	 * 
 	 * @param x0
 	 *            coord x punto 0
@@ -1607,9 +1605,8 @@ public class ImageUtils {
 	}
 
 	/**
-	 * Copied from http://billauer.co.il/peakdet.html Peak Detection using
-	 * MATLAB Author: Eli Billauer Vedi anche
-	 * https://github.com/xuphys/peakdetect
+	 * Copied from http://billauer.co.il/peakdet.html Peak Detection using MATLAB
+	 * Author: Eli Billauer Vedi anche https://github.com/xuphys/peakdetect
 	 * 
 	 * 
 	 * @param profile
@@ -1751,9 +1748,9 @@ public class ImageUtils {
 
 	/**
 	 * Copied from http://billauer.co.il/peakdet.htm Peak Detection using MATLAB
-	 * Author: Eli Billauer Riceve in input un profilo di una linea, costituito
-	 * da una matrice con i valori x, y , z di ogni punto. Restituisce le
-	 * coordinate x, y, z degli eventuali minimi e maximi
+	 * Author: Eli Billauer Riceve in input un profilo di una linea, costituito da
+	 * una matrice con i valori x, y , z di ogni punto. Restituisce le coordinate x,
+	 * y, z degli eventuali minimi e maximi
 	 * 
 	 * @param profile
 	 * @param delta
@@ -1909,10 +1906,10 @@ public class ImageUtils {
 	/**
 	 * esegue l'autoAdjust del contrasto immagine
 	 * 
-	 * Author Terry Wu, Ph.D., University of Minnesota,
-	 * <JavaPlugins@yahoo.com> (from ij.plugin.frame. ContrastAdjuster by Wayne
-	 * Rasband <wayne@codon.nih.gov>)*** modified version *** Alberto Duina -
-	 * Spedali Civili di Brescia - Servizio di Fisica Sanitaria 2006
+	 * Author Terry Wu, Ph.D., University of Minnesota, <JavaPlugins@yahoo.com>
+	 * (from ij.plugin.frame. ContrastAdjuster by Wayne Rasband
+	 * <wayne@codon.nih.gov>)*** modified version *** Alberto Duina - Spedali Civili
+	 * di Brescia - Servizio di Fisica Sanitaria 2006
 	 * 
 	 * 
 	 * @param imp
@@ -2140,8 +2137,8 @@ public class ImageUtils {
 
 	public void demoPixelPertainRoiTest(ImageProcessor ip) {
 		/**
-		 * questo � solo un appunto sui metodi che possiamo utilizzare per
-		 * stabilire se un pixel � all'interno di una ROI.
+		 * questo � solo un appunto sui metodi che possiamo utilizzare per stabilire
+		 * se un pixel � all'interno di una ROI.
 		 */
 
 		// byte[] pixels = (byte[]) ip.getPixels();
@@ -2153,15 +2150,46 @@ public class ImageUtils {
 				if (mask == null || mask.getPixel(x - r.x, y - r.y) != 0) {
 					// ...DO What YOU WISH TO DO
 					/**
-					 * Roi roi = Imp.getRoi(); Rectangle rect = roi.getBounds();
-					 * rx = rect.x; ry = rect.y; w = rect.width; h =
-					 * rect.height; for(int y=ry; y<ry+h; y++) { for(int x=rx;
-					 * x<rx+w; x++) { if(roi.contains(x, y)) {
+					 * Roi roi = Imp.getRoi(); Rectangle rect = roi.getBounds(); rx = rect.x; ry =
+					 * rect.y; w = rect.width; h = rect.height; for(int y=ry; y<ry+h; y++) { for(int
+					 * x=rx; x<rx+w; x++) { if(roi.contains(x, y)) {
 					 */
 
 				}
 			}
 		}
+	}
+
+	public static ImagePlus generaStandardDeviationImage(ImagePlus imp1, int lato) {
+
+		if (imp1 == null) {
+			IJ.error("generaStandardDeviationImage ricevuto null");
+			return (null);
+		}
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
+		short[] pixels1 = UtilAyv.truePixels(imp1);
+		ImageProcessor ip1 = imp1.getProcessor();
+		ImagePlus impSDeviation = NewImage.createFloatImage("devSTimage", width, width, 1, NewImage.FILL_BLACK);
+		FloatProcessor ipSDeviation = (FloatProcessor) impSDeviation.getProcessor();
+		float[] pixelsSDeviation = (float[]) ipSDeviation.getPixels();
+		short pixSorgente = 0;
+		int border = lato / 2;
+		lato = border * 2;
+		short[] vetKernel = new short[lato * lato];
+		ImageStatistics stat1 = null;
+		for (int y1 = border; y1 < height - border; y1++) {
+			for (int x1 = border; x1 < width - border; x1++) {
+				imp1.setRoi(x1, y1, lato, lato);
+				stat1 = imp1.getStatistics();
+				ipSDeviation.putPixelValue(x1, y1, stat1.stdDev);
+			}
+		}
+
+		ipSDeviation.resetMinAndMax();
+		impSDeviation.updateAndDraw();
+		impSDeviation.show();
+		return impSDeviation;
 	}
 
 	/**

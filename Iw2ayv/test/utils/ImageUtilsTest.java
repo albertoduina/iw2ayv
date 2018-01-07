@@ -153,6 +153,17 @@ public class ImageUtilsTest {
 	}
 
 	@Test
+	public final void testGeneraStandardDeviationImage() {
+
+		String path1 = ".\\Test4\\aaa";
+
+		ImagePlus imp1 = UtilAyv.openImageMaximized(path1);
+		ImagePlus SDimage = ImageUtils.generaStandardDeviationImage(imp1, 10);
+		MyLog.waitHere();
+
+	}
+
+	@Test
 	public final void testGeneraSimulata12Classi() {
 
 		String path1 = ".\\Test4\\aaa";
