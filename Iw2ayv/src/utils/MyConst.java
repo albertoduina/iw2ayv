@@ -147,6 +147,11 @@ public class MyConst {
 			"GHOST2", "GHOST3", "GHOST4", "UNIF.INT.%", "BKG", "NUM_CLASS1",
 			"NUM_CLASS2", "NUM_CLASS3", "NUM_CLASS4", "NUM_CLASS5" };
 
+	// ------------ p13rmn -----------------------
+	
+	public static final int P13_LATO_ROI_BACKGROUND = 20;
+	public static final double P13_LATO_ROI = 100;
+
 	// ------------ p12rmn -----------------------
 	public static final int P12_DIAM_PHANTOM = 174;
 	public static final int P12_X_ROI_TESTSIEMENS = 40;

@@ -2015,6 +2015,62 @@ public class ImageUtils {
 	 *            funzionamento passo passo
 	 * @return dati statistici
 	 */
+	public static ImageStatistics backCalc3(int xRoi, int yRoi, int diaRoi, ImagePlus imp, boolean bstep,
+			boolean circular, boolean selftest) {
+
+		ImageStatistics stat = null;
+		boolean redo = false;
+		int i1 = 0;
+		do {
+			i1++;
+			if (imp.isVisible())
+				imp.getWindow().toFront();
+			if (circular)
+				imp.setRoi(new OvalRoi(xRoi, yRoi, diaRoi, diaRoi));
+			else
+				imp.setRoi(xRoi, yRoi, diaRoi, diaRoi);
+
+			ImageUtils.autoAdjust(imp, imp.getProcessor());
+			
+			if (circular)
+				imp.setRoi(new OvalRoi(xRoi, yRoi, diaRoi, diaRoi));
+			else
+				imp.setRoi(xRoi, yRoi, diaRoi, diaRoi);
+			
+
+			if (!selftest) {
+				if (redo) {
+					ButtonMessages.ModelessMsg("ATTENZIONE segnale medio fondo =0 SPOSTARE LA ROI E PREMERE CONTINUA",
+							"CONTINUA");
+
+				} else {
+					ButtonMessages.ModelessMsg("Posizionare ROI fondo e premere CONTINUA", "CONTINUA " + i1);
+				}
+			}
+			stat = imp.getStatistics();
+			if (stat.mean == 0)
+				redo = true;
+			else
+				redo = false;
+			if (bstep)
+				ButtonMessages.ModelessMsg("Segnale medio =" + stat.mean, "CONTINUA");
+		} while (redo);
+		return stat;
+	} // backCalc
+
+	/**
+	 * esegue posizionamento e calcolo roi circolare sul fondo
+	 * 
+	 * @param xRoi
+	 *            coordinata x roi
+	 * @param yRoi
+	 *            coordinata y roi
+	 * @param imp
+	 *            puntatore ImagePlus alla immagine
+	 * @param bstep
+	 *            funzionamento passo passo
+	 * @return dati statistici
+	 */
 	public static ImageStatistics backCalc2(int xRoi, int yRoi, int diaRoi, ImagePlus imp, boolean bstep,
 			boolean circular, boolean selftest) {
 
@@ -2168,27 +2224,21 @@ public class ImageUtils {
 		}
 		int width = imp1.getWidth();
 		int height = imp1.getHeight();
-		short[] pixels1 = UtilAyv.truePixels(imp1);
-		ImageProcessor ip1 = imp1.getProcessor();
 		ImagePlus impSDeviation = NewImage.createFloatImage("devSTimage", width, width, 1, NewImage.FILL_BLACK);
 		FloatProcessor ipSDeviation = (FloatProcessor) impSDeviation.getProcessor();
-		float[] pixelsSDeviation = (float[]) ipSDeviation.getPixels();
-		short pixSorgente = 0;
 		int border = lato / 2;
 		lato = border * 2;
-		short[] vetKernel = new short[lato * lato];
 		ImageStatistics stat1 = null;
 		for (int y1 = border; y1 < height - border; y1++) {
 			for (int x1 = border; x1 < width - border; x1++) {
 				imp1.setRoi(x1, y1, lato, lato);
 				stat1 = imp1.getStatistics();
-				ipSDeviation.putPixelValue(x1, y1, stat1.stdDev);
+				ipSDeviation.putPixelValue(x1 + border, y1 + border, stat1.stdDev);
 			}
 		}
 
 		ipSDeviation.resetMinAndMax();
 		impSDeviation.updateAndDraw();
-		impSDeviation.show();
 		return impSDeviation;
 	}
 
