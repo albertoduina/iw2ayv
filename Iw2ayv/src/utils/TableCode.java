@@ -74,6 +74,37 @@ public class TableCode {
 		// MyLog.waitHere();
 		return sumTableCode;
 	}
+	
+	
+	
+	public static String[][] loadMultipleTableChiaro(String[] pathComplete) {
+		boolean absolute = false;
+		String path = "";
+		String path2 = "";
+		String[][] tableCode1 = null;
+		String[][] tableCode2 = null;
+		String[][] tableCode = null;
+		String[][] sumTableCode = null;
+		for (int i1 = 0; i1 < pathComplete.length; i1++) {
+			path = pathComplete[i1];
+			path2 = InputOutput.findResource(path);
+			if (path2 == null)
+				continue;
+			MyLog.waitHere("path= "+path+"\npath2= "+path2);
+			
+			
+			
+			tableCode1 = new InputOutput().readFile6LIKE(path, absolute);
+			tableCode2 = InputOutput.substCharInMatrix(tableCode1, "*", ";");
+			tableCode = InputOutput.removeColumn(tableCode2, 1);
+
+			sumTableCode = TableUtils.sumMultipleTable(sumTableCode, tableCode);
+		}
+		// MyLog.logMatrix(sumTableCode, "sumTableCode");
+		// MyLog.waitHere();
+		return sumTableCode;
+	}
+
 
 	// public static String[] loadTableUnSaccoBello() {
 	// boolean absolute = false;

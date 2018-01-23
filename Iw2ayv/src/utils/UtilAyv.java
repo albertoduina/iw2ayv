@@ -40,7 +40,9 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
@@ -3152,5 +3154,59 @@ public class UtilAyv {
 			return path1;
 		return path2;
 	}
+
+	
+	public static boolean jarCount(String nome1) {
+		List<File> lista1 = listJars2(new File(ij.Menus.getPlugInsPath()));
+		String[] list = new String[lista1.size()];
+		int j1 = 0;
+		for (File file : lista1) {
+			list[j1++] = file.getName();
+		}
+		int count = 0;
+		for (File file : lista1) {
+			String str = file.getName();
+			if (str.startsWith(nome1)) {
+				count++;
+			}
+		}
+		String msg = "";
+		if (count <1) {
+			IJ.error("ATTENZIONE, manca il file " + nome1 + "xxx.jar");
+		}
+		if (count > 1) {
+			for (File file : lista1) {
+				String str = file.getName();
+				if (str.startsWith(nome1)) {
+					msg = msg + "\n" + file.getPath();
+				}
+			}
+			IJ.error("ATTENZIONE, si vedono versioni multiple del file " + nome1 + "xxx.jar" + msg);
+		}
+		if (count == 1)
+			return true;
+		else
+			return false;
+	}
+	
+	public static List<File> listJars2(File startingDir) {
+		List<File> result = new ArrayList<File>();
+		File[] filesAndDirs = startingDir.listFiles();
+		if (filesAndDirs == null)
+			return null;
+		List<File> filesDirs = Arrays.asList(filesAndDirs);
+		for (File file : filesDirs) {
+			if (!file.isFile()) {
+				List<File> deeperList = listJars2(file);
+				result.addAll(deeperList);
+			} else {
+				if (file.getName().endsWith(".jar")) {
+					result.add(file);
+				}
+			}
+		}
+		return result;
+	}
+
 
 } // UtilAyv
