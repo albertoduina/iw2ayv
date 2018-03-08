@@ -14,6 +14,7 @@ import ij.ImageStack;
 import ij.WindowManager;
 import ij.gui.ImageWindow;
 import ij.gui.Line;
+import ij.gui.NewImage;
 import ij.gui.OvalRoi;
 import ij.gui.Overlay;
 import ij.gui.Plot;
@@ -22,14 +23,17 @@ import ij.gui.PointRoi;
 import ij.gui.Roi;
 import ij.plugin.Duplicator;
 import ij.plugin.Orthogonal_Views;
+import ij.plugin.Stack_Statistics;
 import ij.process.ImageProcessor;
 import ij.process.ImageStatistics;
+import ij.process.StackStatistics;
+import ij.util.Tools;
 
 public class MySphere {
 
 	/***
 	 * Ricerca posizione ROI per calcolo uniformita'. Versione con Canny Edge
-	 * Detector. Questa versione è da utilizzare per il fantoccio sferico
+	 * Detector. Questa versione e' da utilizzare per il fantoccio sferico
 	 * 
 	 * @param imp11
 	 * @param direction
@@ -280,7 +284,7 @@ public class MySphere {
 	 * @return peaks[][]
 	 */
 
-	public static double[][] cannyProfileAnalyzer(ImagePlus imp1, boolean demo, boolean debug, int timeout) {
+	public static double[][] cannyProfileAnalyzer2(ImagePlus imp1, boolean demo, boolean debug, int timeout) {
 
 		double[][] profi3 = MyLine.decomposer(imp1);
 		if (profi3 == null) {
@@ -353,6 +357,98 @@ public class MySphere {
 		if (peaks1[2].length < 2)
 			MyLog.waitHere(
 					"Attenzione trovata una sola intersezione col cerchio, cioe' " + peaks1[2].length + "  VERIFICARE");
+
+		// MyLog.logMatrix(peaks1, "peaks1 " + title);
+
+		return peaks1;
+	}
+
+	/***
+	 * Riceve una ImagePlus derivante da un CannyEdgeDetector con impostata una
+	 * Line, restituisce le coordinate dei picchi, se fossero piu'di 2 restituisce
+	 * null.
+	 * 
+	 * @param imp1
+	 * @param demo
+	 * @param debug
+	 * @param timeout
+	 * @return peaks[][]
+	 */
+
+	public static double[][] cannyProfileAnalyzer(ImagePlus imp1, boolean demo, boolean debug, int timeout) {
+
+		double[][] profi3 = MyLine.decomposer(imp1);
+		if (profi3 == null) {
+			MyLog.waitHere("profi3 == null");
+			return null;
+		}
+		// profi3 dovrebbe avere massimo 2 punti a 255
+
+		int count1 = 0;
+		boolean ready1 = false;
+		double max1 = 0;
+
+		// conteggio dei punti a 255 (max), devono essere 1 oppure 2
+		for (int i1 = 0; i1 < profi3[0].length; i1++) {
+
+			if (profi3[2][i1] > max1) {
+				max1 = profi3[2][i1];
+				ready1 = true;
+			}
+			if ((profi3[2][i1] == 0) && ready1) {
+				max1 = 0;
+				count1++;
+				ready1 = false;
+			}
+		}
+		if (count1 > 2) {
+			if (demo)
+				MyLog.waitHere("trovati un numero di punti diverso superiore a 2, count= " + count1
+						+ " scartiamo questi risultati");
+			return null;
+		}
+
+		double[][] peaks1 = new double[6][count1];
+
+		int count2 = 0;
+		boolean ready2 = false;
+		double max2 = 0;
+
+		for (int i1 = 0; i1 < profi3[0].length; i1++) {
+
+			if (profi3[2][i1] > max2) {
+				peaks1[3][count2] = profi3[0][i1];
+				peaks1[4][count2] = profi3[1][i1];
+				max2 = profi3[2][i1];
+				peaks1[5][count2] = max2;
+
+				ready2 = true;
+			}
+			if ((profi3[2][i1] == 0) && ready2) {
+				max2 = 0;
+				count2++;
+				ready2 = false;
+			}
+		}
+
+		// ----------------------------------------
+		// AGGIUNGO 1 AI PUNTI TROVATI
+		// ---------------------------------------
+
+		for (int i1 = 0; i1 < peaks1.length; i1++) {
+			for (int i2 = 0; i2 < peaks1[0].length; i2++)
+				if (peaks1[i1][i2] > 0)
+					peaks1[i1][i2] = peaks1[i1][i2] + 1;
+		}
+
+		// verifico di avere trovato un max di 2 picchi
+		if (peaks1[2].length > 2)
+			MyLog.waitHere(
+					"Attenzione trovate troppe intersezioni col cerchio, cioe' " + peaks1[2].length + "  VERIFICARE");
+		// if (peaks1[2].length < 2)
+		// MyLog.waitHere(
+		// "Attenzione trovata una sola intersezione col cerchio, cioe' " +
+		// peaks1[2].length + " VERIFICARE");
 
 		// MyLog.logMatrix(peaks1, "peaks1 " + title);
 
@@ -530,9 +626,7 @@ public class MySphere {
 		double outXY[] = MySphere.centerCircleCannyEdge(impXY, direction, maxFitError, maxBubbleGapLimit, false);
 		if (outXY == null) {
 			MyLog.waitHere("--- 009 ---\nout201 null");
-			IJ.log("--- 010 ---\nposition search XYimage xCenterCircle= " + outXY[0] + "yCenterCircle= " + outXY[1]
-					+ "diamCircle= " + outXY[2]);
-			MyLog.waitHere();
+			return null;
 		}
 
 		Overlay over201 = new Overlay();
@@ -585,9 +679,9 @@ public class MySphere {
 	}
 
 	/**
-	 * Creazione uno stack RGB su cui plottare i modelli di sfera da noi
-	 * ricavati. Si utilizza l'immagine dello stacK fantoccio per ricavarne le
-	 * dimensioni per creare il nuovo stackRGB nero
+	 * Creazione uno stack RGB su cui plottare i modelli di sfera da noi ricavati.
+	 * Si utilizza l'immagine dello stacK fantoccio per ricavarne le dimensioni per
+	 * creare il nuovo stackRGB nero
 	 * 
 	 * @param imp1
 	 * @param in1
@@ -623,7 +717,7 @@ public class MySphere {
 	 * @param surfaceOnly
 	 *            colore solo superficie esterna sfera
 	 */
-	
+
 	public static void addSphere(ImagePlus impMapR, ImagePlus impMapG, ImagePlus impMapB, double[] sphere, int[] bounds,
 			int[] colorRGB, boolean surfaceOnly) {
 		int diameter = (int) sphere[3];
@@ -721,7 +815,7 @@ public class MySphere {
 	 * @param colorRGB
 	 *            colore sfera
 	 */
-	
+
 	public static void addSphereFilling(ImagePlus impMapR, ImagePlus impMapG, ImagePlus impMapB, double[] sphere,
 			int[] bounds, int[] colorRGB) {
 		int radius = (int) sphere[3] / 2;
@@ -802,7 +896,7 @@ public class MySphere {
 	 * @param algoColors
 	 *            algoritmo calcolo colore
 	 */
-	
+
 	public static void compilaMappazzaCombinata(ImagePlus impMappazzaR, ImagePlus impMappazzaG, ImagePlus impMappazzaB,
 			ImagePlus impMappazzaRGB, int algoColors) {
 
@@ -913,10 +1007,12 @@ public class MySphere {
 	}
 
 	/***
-	 * ricerca gli hotspot circolari, slice per slice, restituendo il massimo
-	 * utilizzeremo un diametro dello spot di 14 pixels con volume 153 voxels,
-	 * poiche' il diametro di 12 pixels avrebbe volume 113 pixels ed il diametro
-	 * 13 pixels mi darebbe un raggio frazionario
+	 * Ricerca gli hotspot circolari, all'interno di tutto lo stack, slice per
+	 * slice, restituendo il massimo. Utilizzeremo un diametro minimo dello spot di
+	 * 14 pixels con volume 153 voxels, poiche' il diametro di 12 pixels avrebbe
+	 * volume 113 pixels ed il diametro 13 pixels mi darebbe un raggio frazionario.
+	 * In pratica viene utilizzato un diametro di 20, che appare di dimensioni
+	 * ragionevoli
 	 * 
 	 * @param imp1
 	 *            stack immagini
@@ -930,7 +1026,7 @@ public class MySphere {
 	 *            per debug
 	 * @return (x,y,z,maxval)
 	 */
-	
+
 	public static double[] searchCircularSpot(ImagePlus imp1, double[] sphere1, int diamSearch, String aa,
 			int demolevel) {
 
@@ -959,12 +1055,6 @@ public class MySphere {
 
 			if (diamProjection < 0)
 				diamProjection = 0;
-			// if (diamProjection < diamSearch) {
-			// if (demo)
-			// IJ.log("skip");
-			// continue; // se il diametro della sfera è più piccolo del
-			// // diametro di ricerca lasciamo perdere
-			// }
 			double[] out2 = new double[4];
 			out2[0] = sphere1[0];
 			out2[1] = sphere1[1];
@@ -1003,15 +1093,15 @@ public class MySphere {
 	}
 
 	/***
-	 * mette i valori dei pixel, appartenenti alla sfera in un vettore. Se
-	 * richiesto imposta il valore 10000 in tali pixel, una volta utilizzati.
+	 * mette i valori dei pixel, appartenenti alla sfera in un vettore. Se richiesto
+	 * imposta il valore 10000 in tali pixel, una volta utilizzati.
 	 * 
 	 * @param imp1
 	 * @param sphere2
 	 * @param paintPixels
 	 * @return vettore pixels
 	 */
-	
+
 	public static double[] vectorizeSphericalSpot16(ImagePlus imp1, double[] sphere2, boolean paintPixels) {
 
 		ArrayList<Double> pixlist = new ArrayList<Double>();
@@ -1091,15 +1181,15 @@ public class MySphere {
 	}
 
 	/***
-	 * mette i valori dei pixel, appartenenti alla sfera in un vettore. Se
-	 * richiesto imposta il valore 10000 in tali pixel, una volta utilizzati.
+	 * mette i valori dei pixel, appartenenti alla sfera in un vettore. Se richiesto
+	 * imposta il valore 10000 in tali pixel, una volta utilizzati.
 	 * 
 	 * @param imp1
 	 * @param sphere2
 	 * @param paintPixels
 	 * @return vettore pixels
 	 */
-	
+
 	public static double[] vectorizeSphericalSpot32(ImagePlus imp1, double[] sphere2, boolean paintPixels) {
 
 		ArrayList<Double> pixlist = new ArrayList<Double>();
@@ -1669,6 +1759,86 @@ public class MySphere {
 		}
 		over1.addElement(imp1.getRoi());
 		imp1.deleteRoi();
+	}
+
+	public static ImagePlus clearOutsideSphere(ImagePlus imp1, double[] sphere) {
+		imp1.show();
+		ImagePlus imp3 = null;
+		ImageProcessor ip3 = null;
+		int radius = (int) sphere[3] / 2;
+		int diameter = (int) sphere[3];
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
+		int x0 = (int) sphere[0];
+		int y0 = (int) sphere[1];
+		int z0 = (int) sphere[2];
+		int zmin = z0 - radius;
+		int zmax = zmin + diameter;
+		StackStatistics stat1 = new StackStatistics(imp1);
+		double max = stat1.max;
+		ImageStack stack1 = imp1.getStack();
+		double kappa = max / 255.0;
+		MyLog.waitHere("max= " + max+ " kappa= "+kappa);
+
+		ImageStack newStack = new ImageStack(width, height);
+
+		for (int i1 = 1; i1 < stack1.getSize(); i1++) {
+			ImagePlus impScalata = NewImage.createByteImage("Nera", width, width, 1, NewImage.FILL_BLACK);
+			ImageProcessor ipScalata = impScalata.getProcessor();
+			byte[] pixelsScalata = (byte[]) ipScalata.getPixels();
+
+			int slice = i1;
+			imp3 = MyStackUtils.imageFromStack(imp1, slice);
+
+			ip3 = imp3.getProcessor();
+
+			double proj = 0;
+			if (slice >= zmin && slice <= zmax) {
+				proj = projectedDiameter(sphere, slice);
+			} else
+				proj = 0;
+
+			imp3.setRoi(new OvalRoi(x0 - proj / 2, y0 - proj / 2, proj, proj));
+			ip3.fillOutside(imp3.getRoi());
+			short[] pixels3 = (short[]) ip3.getPixels();
+
+			for (int i2 = 1; i2 < pixels3.length; i2++) {
+				double aux2 = pixels3[i2] / kappa;
+				pixelsScalata[i2] = (byte) (Math.round(aux2));
+			}
+			ipScalata.resetMinAndMax();
+			String sliceInfo1 = imp3.getTitle();
+			String sliceInfo2 = (String) imp3.getProperty("Info");
+			// aggiungo i dati header alle singole immagini dello stack
+			if (sliceInfo2 != null)
+				sliceInfo1 += "\n" + sliceInfo2;
+			newStack.addSlice(sliceInfo1, ipScalata);
+		}
+
+		ImagePlus newImpStack = new ImagePlus("sphere", newStack);
+		String sliceInfo3 = imp1.getTitle();
+		sliceInfo3 += "\n" + (String) imp1.getProperty("Info");
+		newImpStack.setProperty("Info", sliceInfo3);
+
+		return newImpStack;
+
+	}
+
+	public static short[] getMinMax(short[] a) {
+		short min = Short.MAX_VALUE;
+		short max = Short.MIN_VALUE;
+		short value;
+		for (int i = 0; i < a.length; i++) {
+			value = a[i];
+			if (value < min)
+				min = value;
+			if (value > max)
+				max = value;
+		}
+		short[] minAndMax = new short[2];
+		minAndMax[0] = (short) min;
+		minAndMax[1] = max;
+		return minAndMax;
 	}
 
 }

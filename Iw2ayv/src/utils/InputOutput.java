@@ -217,7 +217,7 @@ public class InputOutput {
 	 *            path
 	 * @return directory
 	 */
-	public String extractDirectory(String path) {
+	public static String extractDirectory(String path) {
 		int pos = path.lastIndexOf('\\');
 		String dir = path.substring(0, pos);
 		return dir;
@@ -1008,7 +1008,7 @@ public class InputOutput {
 	}
 
 	/***
-	 * Verifica la disponibilit� di una directory
+	 * Verifica la disponibilita' di una directory
 	 * 
 	 * @param name
 	 * @return
@@ -1029,7 +1029,7 @@ public class InputOutput {
 	}
 
 	/***
-	 * Verifica la disponibilit� di un file jar
+	 * Verifica la disponibilita' di un file jar
 	 * 
 	 * @param source
 	 * @return
