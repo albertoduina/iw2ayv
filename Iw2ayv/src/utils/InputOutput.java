@@ -1067,9 +1067,9 @@ public class InputOutput {
 	 */
 	public static boolean isCode(String codice, String[][] tab2) {
 		if (codice == null)
-			IJ.log("codice == null");
+			IJ.log("isCode(codice, tab2) >>> codice == null");
 		if (tab2 == null)
-			IJ.log("tab2 == null");
+			IJ.log("\\isCode(codice, tab2) >>> tab2 == null");
 		boolean trovato = false;
 		for (int i1 = 0; i1 < tab2.length; i1++) {
 			if (codice.compareTo(tab2[i1][0]) == 0)
@@ -1079,7 +1079,7 @@ public class InputOutput {
 	}
 
 	/**
-	 * Estrae al volo un file da un archivio .jar by R�al Gagnon
+	 * Estrae al volo un file da un archivio .jar by Real Gagnon
 	 * (www.rgagnon.com/javadetails/java-0429.html) for correct work in junit
 	 * the source file (ie: test2.jar) must be in the iw2ayv "data" sourceFolder
 	 * 

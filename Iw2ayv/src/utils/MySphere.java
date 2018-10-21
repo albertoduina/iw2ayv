@@ -1778,7 +1778,6 @@ public class MySphere {
 		double max = stat1.max;
 		ImageStack stack1 = imp1.getStack();
 		double kappa = max / 255.0;
-		MyLog.waitHere("max= " + max+ " kappa= "+kappa);
 
 		ImageStack newStack = new ImageStack(width, height);
 
@@ -1800,6 +1799,52 @@ public class MySphere {
 
 			imp3.setRoi(new OvalRoi(x0 - proj / 2, y0 - proj / 2, proj, proj));
 			ip3.fillOutside(imp3.getRoi());
+			short[] pixels3 = (short[]) ip3.getPixels();
+
+			for (int i2 = 1; i2 < pixels3.length; i2++) {
+				double aux2 = pixels3[i2] / kappa;
+				pixelsScalata[i2] = (byte) (Math.round(aux2));
+			}
+			ipScalata.resetMinAndMax();
+			String sliceInfo1 = imp3.getTitle();
+			String sliceInfo2 = (String) imp3.getProperty("Info");
+			// aggiungo i dati header alle singole immagini dello stack
+			if (sliceInfo2 != null)
+				sliceInfo1 += "\n" + sliceInfo2;
+			newStack.addSlice(sliceInfo1, ipScalata);
+		}
+
+		ImagePlus newImpStack = new ImagePlus("sphere", newStack);
+		String sliceInfo3 = imp1.getTitle();
+		sliceInfo3 += "\n" + (String) imp1.getProperty("Info");
+		newImpStack.setProperty("Info", sliceInfo3);
+
+		return newImpStack;
+
+	}
+
+	public static ImagePlus stackNormalize8bit(ImagePlus imp1) {
+		imp1.show();
+		ImagePlus imp3 = null;
+		ImageProcessor ip3 = null;
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
+		StackStatistics stat1 = new StackStatistics(imp1);
+		double max = stat1.max;
+		ImageStack stack1 = imp1.getStack();
+		double kappa = max / 255.0;
+	
+		ImageStack newStack = new ImageStack(width, height);
+
+		for (int i1 = 1; i1 < stack1.getSize(); i1++) {
+			ImagePlus impScalata = NewImage.createByteImage("Nera", width, width, 1, NewImage.FILL_BLACK);
+			ImageProcessor ipScalata = impScalata.getProcessor();
+			byte[] pixelsScalata = (byte[]) ipScalata.getPixels();
+
+			int slice = i1;
+			imp3 = MyStackUtils.imageFromStack(imp1, slice);
+			ip3 = imp3.getProcessor();
+
 			short[] pixels3 = (short[]) ip3.getPixels();
 
 			for (int i2 = 1; i2 < pixels3.length; i2++) {

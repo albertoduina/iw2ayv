@@ -57,7 +57,7 @@ public class ReportStandardInfo {
 
 		//
 		// TODO
-		// posso ottenere i dati dell'immagine, anzich� partendo dalle tabelle e
+		// posso ottenere i dati dell'immagine, anziche' partendo dalle tabelle e
 		// cazzi e mazzi,
 		// semplicemente partendo da imp1 e, per il nome del file andando a
 		// leggere le fileInfo

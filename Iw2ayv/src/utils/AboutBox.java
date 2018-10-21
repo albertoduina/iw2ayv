@@ -19,7 +19,6 @@ import ij.process.*;
  *         Sanitaria _
  * 
  * 
- * 
  */
 
 public class AboutBox {
@@ -61,6 +60,7 @@ public class AboutBox {
 				pixels[offset] = gradient1(paint);
 			}
 		}
+		
 
 		for (int y = h - 1; y > (h / 2) - 1; y--) {
 			for (int x = w - 1; x > (w / 2) - 1; x--) {
