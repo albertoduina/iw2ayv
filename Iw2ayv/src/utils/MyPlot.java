@@ -1,12 +1,10 @@
 package utils;
 
-import ij.IJ;
+import java.awt.Color;
+
 import ij.gui.Plot;
 import ij.gui.PlotWindow;
 import ij.util.Tools;
-
-import java.awt.Color;
-import java.util.ArrayList;
 
 public class MyPlot {
 
