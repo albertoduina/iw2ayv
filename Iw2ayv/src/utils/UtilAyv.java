@@ -497,8 +497,10 @@ public class UtilAyv {
 	}
 
 	public static boolean compareImagesByImageProcessors(ImagePlus imp1, ImagePlus imp2) {
-		if (imp1.getBitDepth() != imp2.getBitDepth())
-			return false;
+		
+		if (imp1.getBitDepth() != imp2.getBitDepth()) {
+			IJ.log("compareImagesByImageProcessors.bit depth difference");
+			return false;}
 		if (imp1.getBitDepth() == 32) {
 			float[] ip1 = (float[]) imp1.getProcessor().getPixels();
 			float[] ip2 = (float[]) imp2.getProcessor().getPixels();
@@ -1909,8 +1911,8 @@ public class UtilAyv {
 
 	public void demoPixelPertainRoiTest(ImageProcessor ip) {
 		/**
-		 * questo � solo un appunto sui metodi che possiamo utilizzare per
-		 * stabilire se un pixel � all'interno di una ROI.
+		 * questo e' solo un appunto sui metodi che possiamo utilizzare per
+		 * stabilire se un pixel e' all'interno di una ROI.
 		 */
 
 		// byte[] pixels = (byte[]) ip.getPixels();

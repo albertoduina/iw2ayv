@@ -159,6 +159,16 @@ public class InputOutput {
 			deletableFile.delete();
 		}
 	}
+	
+	
+	
+	public static void purgeDirectory(File dir) {
+		for (File file: dir.listFiles()) {
+			if (!file.isDirectory())
+				file.delete();	
+		}
+	}
+	
 
 	/**
 	 * Deletes all files and subdirectories under dir. Returns true if all

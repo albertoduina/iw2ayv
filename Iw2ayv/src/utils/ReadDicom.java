@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+
 public class ReadDicom {
 
 	private static final int PIXEL_DATA = 0x7FE00010;
@@ -391,5 +392,58 @@ public class ReadDicom {
 		}
 		return subCoils;
 	}
+
+	
+	/**
+	 * whatManufacturer ricava il nome del costruttore dall'header dell'immagine
+	 * 
+	 * man = 1 SIEMENS man = 2 PHILIPS man = 3 GE man = 4 PICKER
+	 * 
+	 * @param imp1
+	 * @return man
+	 */
+	public static int whatManufacturer(ImagePlus imp1) {
+		String manufacturer1 = ReadDicom
+				.readDicomParameter(imp1, "0008,0070");
+		String manufacturer = "";
+
+		if (manufacturer1.length() > 3) {
+			manufacturer = manufacturer1.substring(0, 2);
+		}
+
+		int man = 0;
+		if (manufacturer.equalsIgnoreCase("SIE")) {
+			man = 1;
+			// MyLog.waitHere("SIEMENS DETECTED");
+		} else if (manufacturer.equalsIgnoreCase("PHI")) {
+			man = 2;
+			// MyLog.waitHere("PHILIPS DETECTED");
+		} else if (manufacturer.equalsIgnoreCase("GE ")) {
+			man = 3;
+			// MyLog.waitHere("GE DETECTED");
+		} else if (manufacturer.equalsIgnoreCase("Pic")) {
+			man = 4;
+		}
+		return man;
+
+	}
+	
+	/***
+	 * Copia i dati header da una ImagePlus ad un altra
+	 * 
+	 * @param imp1
+	 *            immagine a cui aggiungere i dati dicom
+	 * @param imp2
+	 *            immagine da cui copiare dati dicom
+	 * @return immagine risultato con dati dicom
+	 */
+	public static ImagePlus copyDicom(ImagePlus imp1, ImagePlus imp2) {
+		String info = (String) imp2.getProperty("Info");
+		ImagePlus imp3 = imp1.duplicate();
+		if (info != null)
+			imp3.setProperty("Info", info);
+		return imp3;
+	}
+
 
 }

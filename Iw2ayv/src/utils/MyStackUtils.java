@@ -18,11 +18,9 @@ public class MyStackUtils {
 	/**
 	 * estrae una singola slice da uno stack. Estrae anche i dati header
 	 * 
-	 * @param stack
-	 *            stack contenente le slices
-	 * @param slice
-	 *            numero della slice da estrarre, deve partire da 1, non e'
-	 *            ammesso lo 0
+	 * @param stack stack contenente le slices
+	 * @param slice numero della slice da estrarre, deve partire da 1, non e'
+	 *              ammesso lo 0
 	 * @return ImagePlus della slice estratta
 	 */
 	public static ImagePlus imageFromStack(ImagePlus stack, int slice) {
@@ -58,12 +56,45 @@ public class MyStackUtils {
 		return imp;
 	}
 
+	public static ImagePlus imageFromStack(ImagePlus stack, int slice, boolean info) {
+
+		if (stack == null) {
+			IJ.log("imageFromStack.stack== null");
+			return null;
+		}
+		// IJ.log("stack bitDepth= "+stack.getBitDepth());
+		ImageStack imaStack = stack.getImageStack();
+		if (imaStack == null) {
+			IJ.log("imageFromStack.imaStack== null");
+			return null;
+		}
+		if (slice == 0) {
+			IJ.log("imageFromStack.requested slice 0!");
+			return null;
+
+		}
+		if (slice > stack.getStackSize()) {
+			IJ.log("imageFromStack.requested slice > slices!");
+			return null;
+		}
+
+		ImageProcessor ipStack = imaStack.getProcessor(slice);
+
+		String titolo = "** " + slice + " **";
+		// String titolo = imaStack.getShortSliceLabel(slice);
+		String sliceInfo1 = imaStack.getSliceLabel(slice);
+
+		ImagePlus imp = new ImagePlus(titolo, ipStack);
+		if (info) {
+			imp.setProperty("Info", sliceInfo1);
+		}
+		return imp;
+	}
+
 	/**
-	 * Costruisce uno stack di immagini a 16 bit, a partire dal vettore dei
-	 * path.
+	 * Costruisce uno stack di immagini a 16 bit, a partire dal vettore dei path.
 	 * 
-	 * @param path
-	 *            path of image files
+	 * @param path path of image files
 	 * @return ImagePlus with the stack
 	 */
 	public static ImagePlus imagesToStack16(String[] path) {
@@ -138,8 +169,7 @@ public class MyStackUtils {
 	/**
 	 * Costruisce uno stack a 32 bit
 	 * 
-	 * @param path
-	 *            path of image files
+	 * @param path path of image files
 	 * @return ImagePlus with the stack
 	 */
 	public static ImagePlus imagesToStack32(String[] path) {
@@ -154,7 +184,6 @@ public class MyStackUtils {
 				IJ.log("stackBuilder2: image file unavailable?");
 				return null;
 			}
-
 			ImageConverter ic1 = new ImageConverter(imp1);
 			ic1.convertToGray32();
 			ImageProcessor ip1 = imp1.getProcessor();
@@ -167,11 +196,10 @@ public class MyStackUtils {
 	}
 
 	/***
-	 * Estrazione del valore dei pixel da uno stack a 16 bit e restituzione
-	 * sotto forma di matrice a 3 dimensioni a 32 bit [slice][column[[row]
+	 * Estrazione del valore dei pixel da uno stack a 16 bit e restituzione sotto
+	 * forma di matrice a 3 dimensioni a 32 bit [slice][column[[row]
 	 * 
-	 * @param imp1
-	 *            stack ImagePlus
+	 * @param imp1 stack ImagePlus
 	 * @return pixel matrix [slices][height][width]
 	 */
 	public static double[][][] stack16ToMatrix32(ImagePlus imp1) {
@@ -265,11 +293,9 @@ public class MyStackUtils {
 	 * Estrae l'immagine da un mosaico. Attenzione che la prima immagine dovra'
 	 * essere la 0
 	 * 
-	 * @param imp1
-	 *            Immagine mosaic
-	 * @param num2
-	 *            Numero della immagine da estrarre, si parte da 0 in alto a sx
-	 *            e ci si muove prima verso destra
+	 * @param imp1 Immagine mosaic
+	 * @param num2 Numero della immagine da estrarre, si parte da 0 in alto a sx e
+	 *             ci si muove prima verso destra
 	 * @return Immgine estratta
 	 */
 	public static ImagePlus imageFromMosaic(ImagePlus imp1, int num) {
@@ -311,11 +337,9 @@ public class MyStackUtils {
 	 * Estrae l'immagine da un mosaico. Attenzione che la prima immagine dovra'
 	 * essere la 0
 	 * 
-	 * @param imp1
-	 *            Immagine mosaic
-	 * @param num2
-	 *            Numero della immagine da estrarre, si parte da 0 in alto a sx
-	 *            e ci si muove prima verso destra
+	 * @param imp1 Immagine mosaic
+	 * @param num2 Numero della immagine da estrarre, si parte da 0 in alto a sx e
+	 *             ci si muove prima verso destra
 	 * @return Immgine estratta
 	 */
 	public static ImagePlus imageFromMosaic(ImagePlus imp1, int num, int step) {
@@ -361,11 +385,9 @@ public class MyStackUtils {
 	 * farlocca per testare il posizionamento automatico) NON USARE SE NON PER
 	 * CREARE IMMAGINI FARLOCCHE
 	 * 
-	 * @param imp1
-	 *            Immagine mosaic
-	 * @param num2
-	 *            Numero della immagine da estrarre, si parte da 0 in alto a sx
-	 *            e ci si muove prima verso destra
+	 * @param imp1 Immagine mosaic
+	 * @param num2 Numero della immagine da estrarre, si parte da 0 in alto a sx e
+	 *             ci si muove prima verso destra
 	 * @return Immgine estratta
 	 */
 	public static ImagePlus imageFromMosaicWithOffset(ImagePlus imp1, int num, int offX, int offY) {
@@ -421,8 +443,8 @@ public class MyStackUtils {
 	}
 
 	/***
-	 * Restituisce, analogamente a RoiManager le ImageStatistics della Roi per
-	 * ogni immagine dello Stack
+	 * Restituisce, analogamente a RoiManager le ImageStatistics della Roi per ogni
+	 * immagine dello Stack
 	 * 
 	 * @param stack
 	 * @param roi1
@@ -449,11 +471,10 @@ public class MyStackUtils {
 	}
 
 	/***
-	 * Estrazione del valore dei pixel da uno stack a 16 bit e restituzione
-	 * sotto forma di matrice a 3 dimensioni a 32 bit [slice][column[[row]
+	 * Estrazione del valore dei pixel da uno stack a 16 bit e restituzione sotto
+	 * forma di matrice a 3 dimensioni a 32 bit [slice][column[[row]
 	 * 
-	 * @param imp1
-	 *            stack ImagePlus
+	 * @param imp1 stack ImagePlus
 	 * @return pixel matrix [slices][height][width]
 	 */
 	public static ImagePlus stackDiff(ImagePlus imp1, ImagePlus imp2) {

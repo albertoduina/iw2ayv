@@ -26,16 +26,11 @@ public class ReportStandardInfo {
 	/**
 	 * legge un gruppo di informazioni che verranno inserite nella ResultsTable
 	 * 
-	 * @param tabImmagini
-	 *            tabella coi valori di iw2ayv.txt
-	 * @param riga
-	 *            numero di riga passato da sequenze
-	 * @param tabCodici
-	 *            tabella coi valori di codici.txt
-	 * @param version
-	 *            nome del plugin e sua versione
-	 * @param called
-	 *            true se il plugin � stato chiamato da sequenze
+	 * @param tabImmagini tabella coi valori di iw2ayv.txt
+	 * @param riga        numero di riga passato da sequenze
+	 * @param tabCodici   tabella coi valori di codici.txt
+	 * @param version     nome del plugin e sua versione
+	 * @param called      true se il plugin � stato chiamato da sequenze
 	 * @return gruppo informazioni per la ResultsTable
 	 */
 	public static String[][] getStandardInfo(String[][] tabImmagini, int riga, String[][] tabCodici, String version,
@@ -149,8 +144,7 @@ public class ReportStandardInfo {
 	/**
 	 * Lettura di AcqDate di una immagine (Siemens + Philips)
 	 * 
-	 * @param imp1
-	 *            ImagePlus immagine
+	 * @param imp1 ImagePlus immagine
 	 * @return acqDate
 	 */
 	public static String readDate(ImagePlus imp1) {
@@ -163,16 +157,11 @@ public class ReportStandardInfo {
 	/**
 	 * legge un gruppo di informazioni che verranno inserite nella ResultsTable
 	 * 
-	 * @param strRiga
-	 *            tabella coi valori di iw2ayv.txt
-	 * @param imp1
-	 *            ImagePlus
-	 * @param tabCodici
-	 *            tabella coi valori di codici.txt
-	 * @param version
-	 *            nome del plugin e sua versione
-	 * @param called
-	 *            true se il plugin � stato chiamato da sequenze
+	 * @param strRiga   tabella coi valori di iw2ayv.txt
+	 * @param imp1      ImagePlus
+	 * @param tabCodici tabella coi valori di codici.txt
+	 * @param version   nome del plugin e sua versione
+	 * @param called    true se il plugin � stato chiamato da sequenze
 	 * @return gruppo informazioni per la ResultsTable
 	 */
 	public static String[] getSimpleStandardInfo(String path, ImagePlus imp1, String[][] tabCodici, String version,
@@ -184,15 +173,16 @@ public class ReportStandardInfo {
 		}
 		String aux3 = imp1.getTitle();
 
-		// IJ.log("getSimpleStandardInfo.aux3=" + aux3);
+		//		MyLog.waitHere("getSimpleStandardInfo.aux3=" + aux3);
 		String codice;
 		// 2 possibilities: the first 5 letters of filename are the CODE or
 		// if (InputOutput.isCode(aux3.substring(0, 5).trim(), tabCodici))
-		if (InputOutput.isCode(UtilAyv.getFiveLetters(aux3).trim(), tabCodici))
+		if (InputOutput.isCode(UtilAyv.getFiveLetters(aux3).trim(), tabCodici)) {
 			// main possibility: the first 5 letters of the filename are a
 			// recognized code (in codici.txt)
 			codice = UtilAyv.getFiveLetters(aux3).trim();
-		else {
+		//	MyLog.waitHere("prime 5 lettere riconosciute");
+		} else {
 			// or: the code is in the dicomSeriesDescription
 			aux3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
 			if (aux3 == null)
@@ -237,7 +227,7 @@ public class ReportStandardInfo {
 		String coil = ReadDicom.getThisCoil(imp1, reqCoil);
 		if (coil == null) {
 			coil = "null";
-			MyLog.waitHere("coil = null");
+		//	MyLog.waitHere("coil = null");
 		}
 
 		if (coil.equals("MISSING")) {
@@ -260,16 +250,11 @@ public class ReportStandardInfo {
 	/**
 	 * legge un gruppo di informazioni che verranno inserite nella ResultsTable
 	 * 
-	 * @param strRiga
-	 *            tabella coi valori di iw2ayv.txt
-	 * @param imp1
-	 *            ImagePlus
-	 * @param tabCodici
-	 *            tabella coi valori di codici.txt
-	 * @param version
-	 *            nome del plugin e sua versione
-	 * @param called
-	 *            true se il plugin � stato chiamato da sequenze
+	 * @param strRiga   tabella coi valori di iw2ayv.txt
+	 * @param imp1      ImagePlus
+	 * @param tabCodici tabella coi valori di codici.txt
+	 * @param version   nome del plugin e sua versione
+	 * @param called    true se il plugin � stato chiamato da sequenze
 	 * @return gruppo informazioni per la ResultsTable
 	 */
 	public static String[] getSimpleStandardInfo(String path, ImagePlus imp1, String[][] tabCodici,
@@ -432,11 +417,10 @@ public class ReportStandardInfo {
 	}
 
 	/**
-	 * scrive le informazioni raccolte da getStandardInfo2 o getStandardInfo3
-	 * nella ResultsTable
+	 * scrive le informazioni raccolte da getStandardInfo2 o getStandardInfo3 nella
+	 * ResultsTable
 	 * 
-	 * @param info1
-	 *            informazioni da getStandardInfo2
+	 * @param info1 informazioni da getStandardInfo2
 	 * @return ResultsTable del report
 	 */
 	@SuppressWarnings("deprecation")

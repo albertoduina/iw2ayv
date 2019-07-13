@@ -92,7 +92,8 @@ public class TableCode {
 				coil2 = TableCode.getCoil(table, i2);
 				if (code1.equals(code2) && coil1.equals(coil2)) {
 					doppio = true;
-					IJ.log("doppione rilevato tra riga " + i1 + " e riga " + i2);
+					IJ.log("doppione rilevato tra riga " + i1 + " cod1=" +code1+ " coil1="+coil1+ 	
+							" e riga " + i2+ "cod2= "+code2+" coil2= "+coil2);
 				}
 			}
 		}
@@ -159,63 +160,6 @@ public class TableCode {
 		return sumTableCode;
 	}
 
-	// public static String[] loadTableUnSaccoBello() {
-	// boolean absolute = false;
-	//
-	// // URL url1 = new InputOutput().getClass().getClassLoader()
-	// // .getResource(name);
-	//
-	// // JarFile file2 = new JarFile(Con)
-	//
-	// URL url1 = new InputOutput().getClass().getClassLoader()
-	// .getResource("ControlliDoNotRemove.txt");
-	// String path1 = url1.toString();
-	//
-	// int pos = path1.indexOf("!");
-	// MyLog.waitHere("path1= " + path1+ " pos= "+pos);
-	// String path2 = path1.substring(0, pos );
-	// MyLog.waitHere("path2= " + path2);
-	// URL url2 = (URL) path2;
-	//
-	// // CodeSource src = new InputOutput().getClass().getClassLoader()
-	// // .getResource("Sequenze_.class").getProtectionDomain().getCodeSource();
-	// List<String> list = new ArrayList<String>();
-	// // if (src != null) {
-	// // URL jar = src.getLocation();
-	// try {
-	// ZipInputStream zip = new ZipInputStream(path2.openStream());
-	// ZipEntry ze = null;
-	// while ((ze = zip.getNextEntry()) != null) {
-	// String entryName = ze.getName();
-	// // if (entryName.startsWith("p")
-	// // if ( entryName.endsWith(".csv")) {
-	// list.add(entryName);
-	// // }
-	//
-	// }
-	//
-	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	//
-	// String[] vetNames = new String[list.size()];
-	// list.toArray(vetNames);
-	// IJ.log("" + url1);
-	// MyLog.logVector(vetNames, "vetNames");
-	// MyLog.waitHere("list.size= " + list.size());
-	//
-	// return null;
-	// }
-
-	// public static String[][] loadTableCSV(String path) {
-	//
-	// boolean absolute=false;
-	// String[][] tableCode1 = new InputOutput().readFile6LIKE(path, absolute);
-	// String[][] tableCode = InputOutput.removeColumn(tableCode1, 1);
-	//
-	// return tableCode;
-	// }
 
 	public static String getCode(String[][] tableCode, int riga) {
 		if (tableCode == null)

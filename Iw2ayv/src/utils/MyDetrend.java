@@ -18,36 +18,58 @@ public class MyDetrend {
 	 * Effettua un fit POLY2 (2nd Degree Polynomial), utilizzando il fit di ImageJ
 	 * ed avendo come input il vettore tempi ed il vettore dei pixel
 	 * 
-	 * @param vetTempi
+	 * @param vetX
 	 *            vettore dei tempi
-	 * @param vetPixels
+	 * @param vetY
 	 *            vettore dei pixels
 	 * @return vettore detrend
 	 */
-	public static double[] vetDetrend(double[] vetTempi, double[] vetPixels) {
-		if (vetTempi == null) {
-			MyLog.waitHere("vetTempi==null");
+	public static double[] vetDetrend(double[] vetX, double[] vetY) {
+		if (vetX == null) {
+			MyLog.waitHere("vetX==null");
 			MyLog.waitThere("chiamante= ");
 			return null;
 		}
-		if (vetPixels == null) {
-			MyLog.waitHere("vetPixels==null");
+		if (vetY == null) {
+			MyLog.waitHere("vetY==null");
 			MyLog.waitThere("chiamante= ");
 			return null;
 		}
-		double[] vetOut = new double[vetTempi.length];
+		double[] vetOut = new double[vetX.length];
 		// viene effettuato il fit POLYY2
-		CurveFitter cf1 = fitCurve(vetTempi, vetPixels);
+		CurveFitter cf1 = fitCurve(vetX, vetY);
 		// i parametri finali del fit vanno in param1
 		double[] param1 = cf1.getParams();
 
 		// in vetTrend viene ricostruita la curva data dai parametri del fit
-		double[] vetTrend = fitResult(vetTempi, param1);
+		double[] vetTrend = fitResult(vetX, param1);
 		// viene effettuato il DETREND e messo in vetOut
-		for (int i1 = 0; i1 < vetTempi.length; i1++) {
-			vetOut[i1] = vetPixels[i1] - vetTrend[i1];
+		for (int i1 = 0; i1 < vetX.length; i1++) {
+			vetOut[i1] = vetY[i1] - vetTrend[i1];
 		}
 		return vetOut;
+	}
+
+	public static double[] vetTrend(double[] vetX, double[] vetY) {
+		if (vetX == null) {
+			MyLog.waitHere("vetX==null");
+			MyLog.waitThere("chiamante= ");
+			return null;
+		}
+		if (vetY == null) {
+			MyLog.waitHere("vetY==null");
+			MyLog.waitThere("chiamante= ");
+			return null;
+		}
+		double[] vetOut = new double[vetX.length];
+		// viene effettuato il fit POLYY2
+		CurveFitter cf1 = fitCurve(vetX, vetY);
+		// i parametri finali del fit vanno in param1
+		double[] param1 = cf1.getParams();
+
+		// in vetTrend viene ricostruita la curva data dai parametri del fit
+		double[] vetTrend = fitResult(vetX, param1);
+		return vetTrend;
 	}
 
 
