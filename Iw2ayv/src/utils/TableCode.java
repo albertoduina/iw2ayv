@@ -53,8 +53,8 @@ public class TableCode {
 		end = myPart1.lastIndexOf("/");
 		String myPart2 = myPart1.substring(0, end + 1);
 
-		// IJ.log("myString= " + myString + " myPart1= " + myPart1 + " myPart2= " +
-		// myPart2);
+		// MyLog.waitHere("myString= " + myString + " myPart1= " + myPart1 + " myPart2=
+		// " + myPart2);
 
 		File folderToScan = new File(myPart2);
 
@@ -64,13 +64,23 @@ public class TableCode {
 		for (int i1 = 0; i1 < listOfFiles.length; i1++) {
 			if (listOfFiles[i1].isFile()) {
 				target_file = listOfFiles[i1].getName();
-				// IJ.log("" + target_file);
+//				IJ.log("" + target_file);
 				if (target_file.startsWith(part1) && target_file.endsWith(part2)) {
 					list1.add(target_file);
+//					if (target_file.startsWith("codici") && target_file.endsWith(".csv")) {
+//						list1.add(target_file);
+//					}
 				}
 			}
+
 		}
+
+//		MyLog.waitHere();
 		String[] list2 = ArrayUtils.arrayListToArrayString(list1);
+		if (list2.length == 1 ) {} else {
+			MyLog.waitHere("ATTENZIONE: esiste piu' di un file col nome che inizia con 'CODICI' ed estensione '.CSV', cio' non deve succedere MAI, MAI, MAIIIII");	
+		}
+
 		// MyLog.logVector(list2, "list2");
 		// MyLog.waitHere();
 		String[][] table1 = loadMultipleTable2(list2);
@@ -92,8 +102,8 @@ public class TableCode {
 				coil2 = TableCode.getCoil(table, i2);
 				if (code1.equals(code2) && coil1.equals(coil2)) {
 					doppio = true;
-					IJ.log("doppione rilevato tra riga " + i1 + " cod1=" +code1+ " coil1="+coil1+ 	
-							" e riga " + i2+ "cod2= "+code2+" coil2= "+coil2);
+					IJ.log("doppione rilevato tra riga " + i1 + " cod1=" + code1 + " coil1=" + coil1 + " e riga " + i2
+							+ "cod2= " + code2 + " coil2= " + coil2);
 				}
 			}
 		}
@@ -159,7 +169,6 @@ public class TableCode {
 		// MyLog.waitHere();
 		return sumTableCode;
 	}
-
 
 	public static String getCode(String[][] tableCode, int riga) {
 		if (tableCode == null)

@@ -2,7 +2,10 @@ package utils;
 
 import ij.IJ;
 
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TableExpand {
 
@@ -20,6 +23,54 @@ public class TableExpand {
 	
 	
 
+	public String[][] loadTableNew(String part1, String part2) {
+		String target_file; // fileThatYouWantToFilter
+		List<String> list1 = new ArrayList<String>();
+		URL url3 = this.getClass().getClassLoader().getResource("contMensili/Sequenze_.class");
+		String myString = url3.toString();
+		int start = myString.indexOf("plugins");
+		int end = myString.lastIndexOf("!");
+		String myPart1 = myString.substring(start, end);
+		end = myPart1.lastIndexOf("/");
+		String myPart2 = myPart1.substring(0, end + 1);
+
+		// MyLog.waitHere("myString= " + myString + " myPart1= " + myPart1 + " myPart2=
+		// " + myPart2);
+
+		File folderToScan = new File(myPart2);
+
+		File[] listOfFiles = folderToScan.listFiles();
+		// IJ.log("length= " + listOfFiles.length);
+
+		for (int i1 = 0; i1 < listOfFiles.length; i1++) {
+			if (listOfFiles[i1].isFile()) {
+				target_file = listOfFiles[i1].getName();
+//				IJ.log("" + target_file);
+				if (target_file.startsWith(part1) && target_file.endsWith(part2)) {
+					list1.add(target_file);
+//					if (target_file.startsWith("codici") && target_file.endsWith(".csv")) {
+//						list1.add(target_file);
+//					}
+				}
+			}
+
+		}
+		
+		
+		/// qui DEVO avere un solo file, altrimenti qualcosa non va bene.
+		
+
+//		MyLog.waitHere();
+		String[] list2 = ArrayUtils.arrayListToArrayString(list1);
+		if (list2.length == 1 ) {} else {
+			MyLog.waitHere("ATTENZIONE: esiste piu' di un file col nome che inizia con 'EXPAND' ed estensione '.CSV', cio' non deve succedere MAI, MAI, MAIIIII");	
+		}
+			
+		// MyLog.logVector(list2, "list2");
+		// MyLog.waitHere();
+		String[][] table1 = loadTable(list2[0]);
+		return table1;
+	}
 	
 	
 
