@@ -17,6 +17,7 @@ import ij.process.*;
  * 
  * @author Alberto Duina - SPEDALI CIVILI DI BRESCIA - Servizio di Fisica
  *         Sanitaria _
+ *         
  * 
  * 
  */
@@ -36,6 +37,7 @@ public class AboutBox {
 		text[3] = "albertoduina@virgilio.it";
 		text[4] = "VERSIONE " + version1;
 		text[5] = "VERSIONE libreria iw2ayv " + MyVersionUtils.getVersion();
+		
 
 		// VERSION = className + "_build_"
 		// + MyVersion.CURRENT_VERSION

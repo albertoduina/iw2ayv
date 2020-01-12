@@ -10,6 +10,8 @@
 <!-- presenza dell'indispensabile libreria. Idem per         -->
 <!-- qualsiasi altra forma di distribuzione.                 -->
 
+<!--    -->
+
 
 
 <project name="iw2ayv" default="main">
@@ -84,6 +86,13 @@
 
 
 	</target>
+	
+	<tstamp>
+	     <!--format property="time.stamp" pattern="yyyy-MM-dd_HH:mm:ss"/-->
+		<format property="time.stamp" pattern="yyyyMMMdd_HHmm"/>
+	</tstamp>
+	<echo message="tstamp= ${time.stamp}" />		
+
 
 	<target name="compile" description="Compile everything.">
 		<echo message="Eseguo COMPILE" />
@@ -115,13 +124,15 @@
 			<attribute name="Built-By" value="Alberto Duina - iw2ayv" />
 			<attribute name="Main-Class" value="${package}.utils" />
 			<!--attribute name="Implementation-Version" value="${version.num}-b${build.number}" /-->
-			<attribute name="Implementation-Version" value="b${build.number}" />
+			<!--attribute name="Implementation-Version" value="b${build.number}" /-->
+			<attribute name="Implementation-Version" value="${time.stamp}" />
 		</manifest>
 		<copy file="./MANIFEST.MF" todir="${data}" />
 		<copy file="./MANIFEST.MF" todir="${binUtils}" />
 
 		<!-- jar destfile="${output}/iw2ayv_${build.number}.jar" manifest="MANIFEST.MF" -->
-		<jar destfile="${output}/iw2ayv_a${build.number}.jar" manifest="MANIFEST.MF">
+		<jar destfile="${output}/iw2ayv_${time.stamp}.jar" manifest="MANIFEST.MF">
+			<!-- jar destfile="${output}/iw2ayv_a${build.number}.jar" manifest="MANIFEST.MF" -->
 			<fileset dir="${output}" />
 		</jar>
 		<delete failonerror="false" verbose="true">
@@ -156,21 +167,21 @@
 		<echo message="Eseguo cond_INS" />
 		<delete dir="${productDirINSIDE}/iw2ayv" />
 		<mkdir dir="${productDirINSIDE}/iw2ayv" />
-		<copy file="${dist}/iw2ayv_a${build.number}.jar" todir="${productDirINSIDE}/iw2ayv" />
+		<copy file="${dist}/iw2ayv_${time.stamp}.jar" todir="${productDirINSIDE}/iw2ayv" />
 		<!--copy file="${dist}/iw2ayv_.jar" todir="${productDirINSIDE}/iw2ayv" /-->
 	</target>
 	<target name="cond_OLD" depends="init" if="old">
 		<echo message="Eseguo cond_OLD" />
 		<delete dir="${productDirOLD}/iw2ayv" />
 		<mkdir dir="${productDirOLD}/iw2ayv" />
-		<copy file="${dist}/iw2ayv_a${build.number}.jar" todir="${productDirOLD}/iw2ayv" />
+		<copy file="${dist}/iw2ayv_a${time.stamp}.jar" todir="${productDirOLD}/iw2ayv" />
 		<copy file="${pathImageJ}" todir="${productDirOLD}\.." />
 	</target>
 	<target name="cond_WIN7" depends="init" if="win7">
 		<echo message="Eseguo cond_WIN7" />
 		<delete dir="${productDirWIN7}/iw2ayv" />
 		<mkdir dir="${productDirWIN7}/iw2ayv" />
-		<copy file="${dist}/iw2ayv_a${build.number}.jar" todir="${productDirWIN7}/iw2ayv" />
+		<copy file="${dist}/iw2ayv_${time.stamp}.jar" todir="${productDirWIN7}/iw2ayv" />
 		<copy file="${pathImageJ}" todir="${productDirWIN7}\.." />
 	</target>
 	<target name="cond_FIJI" depends="init" if="win7">

@@ -42,6 +42,15 @@ public class TableCode {
 
 	public static int PLUGIN = 11;
 
+	/**
+	 * Carica la tabella CODICI, permettendo di mettere la data all'interno del
+	 * nome. Originariamente da file anche multipli, ora da un singolo file, come da
+	 * messaggio di errore
+	 * 
+	 * @param part1
+	 * @param part2
+	 * @return
+	 */
 	public String[][] loadMultipleTable(String part1, String part2) {
 		String target_file; // fileThatYouWantToFilter
 		List<String> list1 = new ArrayList<String>();
@@ -77,8 +86,10 @@ public class TableCode {
 
 //		MyLog.waitHere();
 		String[] list2 = ArrayUtils.arrayListToArrayString(list1);
-		if (list2.length == 1 ) {} else {
-			MyLog.waitHere("ATTENZIONE: esiste piu' di un file col nome che inizia con 'CODICI' ed estensione '.CSV', cio' non deve succedere MAI, MAI, MAIIIII");	
+		if (list2.length == 1) {
+		} else {
+			MyLog.waitHere(
+					"ATTENZIONE: esiste piu' di un file col nome che inizia con 'CODICI' ed estensione '.CSV', cio' non deve succedere MAI, MAI, MAIIIII");
 		}
 
 		// MyLog.logVector(list2, "list2");
@@ -87,6 +98,45 @@ public class TableCode {
 		return table1;
 	}
 
+	/**
+	 * Estrae il nome del primo file contenente la tabella.
+	 * Introdotto per poter vedere che versione di codicixxx.csv viene utilizzata dall'utente
+	 * 
+	 * @param part1
+	 * @param part2
+	 * @return
+	 */
+	public  String nameTable(String part1, String part2) {
+		String target_file; // fileThatYouWantToFilter
+		List<String> list1 = new ArrayList<String>();
+		URL url3 = this.getClass().getClassLoader().getResource("contMensili/Sequenze_.class");
+		String myString = url3.toString();
+		int start = myString.indexOf("plugins");
+		int end = myString.lastIndexOf("!");
+		String myPart1 = myString.substring(start, end);
+		end = myPart1.lastIndexOf("/");
+		String myPart2 = myPart1.substring(0, end + 1);
+		File folderToScan = new File(myPart2);
+		File[] listOfFiles = folderToScan.listFiles();
+		for (int i1 = 0; i1 < listOfFiles.length; i1++) {
+			if (listOfFiles[i1].isFile()) {
+				target_file = listOfFiles[i1].getName();
+				if (target_file.startsWith(part1) && target_file.endsWith(part2)) {
+					list1.add(target_file);
+				}
+			}
+		}
+		String[] list2 = ArrayUtils.arrayListToArrayString(list1);
+		String nome1 = list2[0];
+		return nome1;
+	}
+
+	/**
+	 * Ricerca di eventuali codici doppi, cosa che non deve accadere.
+	 * 
+	 * @param table
+	 * @return
+	 */
 	public boolean ricercaDoppioni(String[][] table) {
 
 		String code1 = "";
@@ -116,7 +166,6 @@ public class TableCode {
 		String[][] tableCode = InputOutput.removeColumn(tableCode1, 1);
 		MyLog.logMatrix(tableCode, "tableCode");
 		MyLog.waitHere();
-
 		return tableCode;
 	}
 
@@ -136,7 +185,6 @@ public class TableCode {
 			tableCode1 = new InputOutput().readFile6LIKE(path, absolute);
 			tableCode2 = InputOutput.substCharInMatrix(tableCode1, "*", ";");
 			tableCode = InputOutput.removeColumn(tableCode2, 1);
-
 			sumTableCode = TableUtils.sumMultipleTable(sumTableCode, tableCode);
 		}
 		// MyLog.logMatrix(sumTableCode, "sumTableCode");
@@ -158,11 +206,9 @@ public class TableCode {
 			if (path2 == null)
 				continue;
 			MyLog.waitHere("path= " + path + "\npath2= " + path2);
-
 			tableCode1 = new InputOutput().readFile6LIKE(path, absolute);
 			tableCode2 = InputOutput.substCharInMatrix(tableCode1, "*", ";");
 			tableCode = InputOutput.removeColumn(tableCode2, 1);
-
 			sumTableCode = TableUtils.sumMultipleTable(sumTableCode, tableCode);
 		}
 		// MyLog.logMatrix(sumTableCode, "sumTableCode");

@@ -19,6 +19,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,6 +37,32 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class MyLog {
+
+
+	public String nameTable(String part1, String part2) {
+		String target_file; // fileThatYouWantToFilter
+		List<String> list1 = new ArrayList<String>();
+		URL url3 = this.getClass().getClassLoader().getResource("contMensili/Sequenze_.class");
+		String myString = url3.toString();
+		int start = myString.indexOf("plugins");
+		int end = myString.lastIndexOf("!");
+		String myPart1 = myString.substring(start, end);
+		end = myPart1.lastIndexOf("/");
+		String myPart2 = myPart1.substring(0, end + 1);
+		File folderToScan = new File(myPart2);
+		File[] listOfFiles = folderToScan.listFiles();
+		for (int i1 = 0; i1 < listOfFiles.length; i1++) {
+			if (listOfFiles[i1].isFile()) {
+				target_file = listOfFiles[i1].getName();
+				if (target_file.startsWith(part1) && target_file.endsWith(part2)) {
+					list1.add(target_file);
+				}
+			}
+		}
+		String[] list2 = ArrayUtils.arrayListToArrayString(list1);
+		String nome1 = list2[0];
+		return nome1;
+	}
 
 	public static void resultsLog(int[] in1, String title) {
 		if (in1 == null) {
@@ -443,7 +470,7 @@ public class MyLog {
 		}
 		IJ.log("---------------------------------------------");
 	}
-	
+
 	public static void logVectorVertical(short vect[], String nome) {
 		String stri = "";
 		if (vect == null) {
@@ -458,7 +485,7 @@ public class MyLog {
 		}
 		IJ.log("---------------------------------------------");
 	}
-	
+
 	public static void logVectorVertical(int vect[], String nome) {
 		String stri = "";
 		if (vect == null) {
@@ -752,7 +779,8 @@ public class MyLog {
 	public static void trace(String str, boolean trok) {
 
 		if (trok)
-	//		TextWindow tw = new TextWindow("Sequenze", "<-- INIZIO Sequenze -->", 300, 200);
+			// TextWindow tw = new TextWindow("Sequenze", "<-- INIZIO Sequenze -->", 300,
+			// 200);
 
 			IJ.log("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "    " + str);
@@ -904,15 +932,12 @@ public class MyLog {
 	}
 
 	/***
-	 * Il programma mostra un WaitForUserDialog ma, passato il timeout, chiude
-	 * il dialogo, proprio come fosse stato premuto ok
+	 * Il programma mostra un WaitForUserDialog ma, passato il timeout, chiude il
+	 * dialogo, proprio come fosse stato premuto ok
 	 * 
-	 * @param str
-	 *            messtaggio
-	 * @param debug
-	 *            switch di attivazione
-	 * @param timeout
-	 *            millisecondi per il timeout
+	 * @param str     messtaggio
+	 * @param debug   switch di attivazione
+	 * @param timeout millisecondi per il timeout
 	 */
 
 	public static void waitHere(String str, boolean debug, int timeout) {

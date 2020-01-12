@@ -72,6 +72,53 @@ public class TableExpand {
 		return table1;
 	}
 	
+	/**
+	 * Estrae il nome del primo file contenente la tabella.
+	 * Introdotto per poter vedere che versione di expandxxx.csv viene utilizzata dall'utente
+
+	 * @param part1
+	 * @param part2
+	 * @return
+	 */
+	
+	public  String nameTable(String part1, String part2) {
+		String target_file; // fileThatYouWantToFilter
+		List<String> list1 = new ArrayList<String>();
+		URL url3 = this.getClass().getClassLoader().getResource("contMensili/Sequenze_.class");
+		String myString = url3.toString();
+		int start = myString.indexOf("plugins");
+		int end = myString.lastIndexOf("!");
+		String myPart1 = myString.substring(start, end);
+		end = myPart1.lastIndexOf("/");
+		String myPart2 = myPart1.substring(0, end + 1);
+
+		// MyLog.waitHere("myString= " + myString + " myPart1= " + myPart1 + " myPart2=
+		// " + myPart2);
+
+		File folderToScan = new File(myPart2);
+
+		File[] listOfFiles = folderToScan.listFiles();
+		// IJ.log("length= " + listOfFiles.length);
+
+		for (int i1 = 0; i1 < listOfFiles.length; i1++) {
+			if (listOfFiles[i1].isFile()) {
+				target_file = listOfFiles[i1].getName();
+//				IJ.log("" + target_file);
+				if (target_file.startsWith(part1) && target_file.endsWith(part2)) {
+					list1.add(target_file);
+//					if (target_file.startsWith("codici") && target_file.endsWith(".csv")) {
+//						list1.add(target_file);
+//					}
+				}
+			}
+
+		}
+		
+		String[] list2 = ArrayUtils.arrayListToArrayString(list1);
+		String nome1 = list2[0];
+		return nome1;
+	}
+
 	
 
 //	public static String[][] loadTable(String path) {

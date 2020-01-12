@@ -82,6 +82,7 @@ public class ReportStandardInfo {
 		else
 			codice = codice2;
 
+
 		String stationName = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_STATION_NAME);
 		String patName = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_PATIENT_NAME);
 
@@ -173,7 +174,7 @@ public class ReportStandardInfo {
 		}
 		String aux3 = imp1.getTitle();
 
-		//		MyLog.waitHere("getSimpleStandardInfo.aux3=" + aux3);
+		// MyLog.waitHere("getSimpleStandardInfo.aux3=" + aux3);
 		String codice;
 		// 2 possibilities: the first 5 letters of filename are the CODE or
 		// if (InputOutput.isCode(aux3.substring(0, 5).trim(), tabCodici))
@@ -181,7 +182,7 @@ public class ReportStandardInfo {
 			// main possibility: the first 5 letters of the filename are a
 			// recognized code (in codici.txt)
 			codice = UtilAyv.getFiveLetters(aux3).trim();
-		//	MyLog.waitHere("prime 5 lettere riconosciute");
+			// MyLog.waitHere("prime 5 lettere riconosciute");
 		} else {
 			// or: the code is in the dicomSeriesDescription
 			aux3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
@@ -227,7 +228,7 @@ public class ReportStandardInfo {
 		String coil = ReadDicom.getThisCoil(imp1, reqCoil);
 		if (coil == null) {
 			coil = "null";
-		//	MyLog.waitHere("coil = null");
+			// MyLog.waitHere("coil = null");
 		}
 
 		if (coil.equals("MISSING")) {
@@ -462,7 +463,7 @@ public class ReportStandardInfo {
 	}
 
 	/***
-	 * Questa versione aggiornata non utilizza pi� setHeading, ora deprecata
+	 * Questa versione aggiornata non utilizza piu' setHeading, ora deprecata
 	 * 
 	 * @param info1
 	 * @return

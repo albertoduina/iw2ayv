@@ -204,18 +204,12 @@ public class ImageUtils {
 	/**
 	 * Simulated 5 classes image
 	 * 
-	 * @param xRoi
-	 *            x roi coordinate
-	 * @param yRoi
-	 *            y roi coordinate
-	 * @param diamRoi
-	 *            roi diameter
-	 * @param imp
-	 *            original image
-	 * @param step
-	 *            step-by-step mode
-	 * @param test
-	 *            autotest mode
+	 * @param xRoi    x roi coordinate
+	 * @param yRoi    y roi coordinate
+	 * @param diamRoi roi diameter
+	 * @param imp     original image
+	 * @param step    step-by-step mode
+	 * @param test    autotest mode
 	 * @return pixel counts of classes of the simulated image
 	 */
 	public static int[][] generaSimulata5Classi(int xRoi, int yRoi, int diamRoi, ImagePlus imp, String filename,
@@ -303,20 +297,14 @@ public class ImageUtils {
 	/**
 	 * generazione di un immagine simulata, display e salvataggio
 	 * 
-	 * @param xCenterRoi
-	 *            coordinata x roi
-	 * @param yRoi
-	 *            coordinata y roi
-	 * @param diamRoi
-	 *            diametro roi
-	 * @param imp1
-	 *            puntatore ImagePlus alla immagine originale
-	 * @param step
-	 *            funzionamento passo passo
+	 * @param xCenterRoi coordinata x roi
+	 * @param yRoi       coordinata y roi
+	 * @param diamRoi    diametro roi
+	 * @param imp1       puntatore ImagePlus alla immagine originale
+	 * @param step       funzionamento passo passo
 	 * @param verbose
 	 * 
-	 * @param test
-	 *            modo autotest
+	 * @param test       modo autotest
 	 * @return numeriosit� classi simulata
 	 */
 	public static int[][] generaSimulata12classi(int xCenterRoi, int yCenterRoi, int latoRoi, ImagePlus imp1,
@@ -348,24 +336,18 @@ public class ImageUtils {
 	/**
 	 * generazione di un immagine simulata, display e salvataggio
 	 * 
-	 * @param xCenterRoi
-	 *            coordinata x roi
-	 * @param yRoi
-	 *            coordinata y roi
-	 * @param diamRoi
-	 *            diametro roi
-	 * @param imp1
-	 *            puntatore ImagePlus alla immagine originale
-	 * @param step
-	 *            funzionamento passo passo
+	 * @param xCenterRoi coordinata x roi
+	 * @param yRoi       coordinata y roi
+	 * @param diamRoi    diametro roi
+	 * @param imp1       puntatore ImagePlus alla immagine originale
+	 * @param step       funzionamento passo passo
 	 * @param verbose
 	 * 
-	 * @param test
-	 *            modo autotest
-	 * @return numeriosit� classi simulata
+	 * @param test       modo autotest
+	 * @return numeriosita' classi simulata
 	 */
 	public static int[][] generaSimulata12classi(int xCenterRoi, int yCenterRoi, int latoRoi, ImagePlus imp1,
-			String filePath, int mode, int timeout) {
+			String filePath, String aux1, int mode, int timeout) {
 
 		boolean debug = true;
 		if (imp1 == null) {
@@ -396,7 +378,8 @@ public class ImageUtils {
 
 		// MyLog.waitHere("simulata2= "+filePath);
 		if (!test)
-			new FileSaver(impSimulata).saveAsZip(filePath);
+			impSimulata.setTitle(aux1 + "sim");
+		new FileSaver(impSimulata).saveAsZip(filePath);
 
 		return classiSimulata;
 	}
@@ -404,14 +387,10 @@ public class ImageUtils {
 	/**
 	 * Genera l'immagine simulata a 11+1 livelli
 	 * 
-	 * @param imp1
-	 *            immagine da analizzare
-	 * @param sqX
-	 *            coordinata x della Roi centrale
-	 * @param sqY
-	 *            coordinata y della Roi centrale
-	 * @param sqR
-	 *            diametro della Roi centrale
+	 * @param imp1 immagine da analizzare
+	 * @param sqX  coordinata x della Roi centrale
+	 * @param sqY  coordinata y della Roi centrale
+	 * @param sqR  diametro della Roi centrale
 	 * @return immagine simulata a 11+1 livelli
 	 */
 
@@ -518,14 +497,10 @@ public class ImageUtils {
 	/**
 	 * Genera l'immagine simulata a 11+1 livelli
 	 * 
-	 * @param imp1
-	 *            immagine da analizzare
-	 * @param sqX
-	 *            coordinata x della Roi centrale
-	 * @param sqY
-	 *            coordinata y della Roi centrale
-	 * @param sqR
-	 *            diametro della Roi centrale
+	 * @param imp1 immagine da analizzare
+	 * @param sqX  coordinata x della Roi centrale
+	 * @param sqY  coordinata y della Roi centrale
+	 * @param sqR  diametro della Roi centrale
 	 * @return immagine simulata a 11+1 livelli
 	 */
 
@@ -635,14 +610,10 @@ public class ImageUtils {
 	/**
 	 * Genera l'immagine simulata a 11+1 livelli
 	 * 
-	 * @param imp1
-	 *            immagine da analizzare
-	 * @param sqX
-	 *            coordinata x della Roi centrale
-	 * @param sqY
-	 *            coordinata y della Roi centrale
-	 * @param sqR
-	 *            diametro della Roi centrale
+	 * @param imp1 immagine da analizzare
+	 * @param sqX  coordinata x della Roi centrale
+	 * @param sqY  coordinata y della Roi centrale
+	 * @param sqR  diametro della Roi centrale
 	 * @return immagine simulata a 11+1 livelli
 	 */
 
@@ -760,8 +731,7 @@ public class ImageUtils {
 	/**
 	 * Estrae la numerosita' delle classi dalla simulata
 	 * 
-	 * @param imp1
-	 *            immagine simulata da analizzare
+	 * @param imp1 immagine simulata da analizzare
 	 * @return numerosit� delle classi in cui per ogni elemento abbiamo
 	 *         [valore][numerosit�]
 	 */
@@ -1175,22 +1145,14 @@ public class ImageUtils {
 	 * inputs 8 numbers, and outputs 4 new numbers (plus a boolean value to say
 	 * whether the clipped line is drawn at all). //
 	 * 
-	 * @param edgeLeft
-	 *            lato sinistro, coordinata minima x = 0
-	 * @param edgeRight
-	 *            lato destro, coordinata max x = width
-	 * @param edgeBottom
-	 *            lato inferiore, coordinata max y = height
-	 * @param edgeTop
-	 *            lato superiore, coordinata minima y = 0
-	 * @param x0src
-	 *            punto iniziale segmento
-	 * @param y0src
-	 *            punto iniziale segmento
-	 * @param x1src
-	 *            punto finale segmento
-	 * @param y1src
-	 *            punto finale segmento
+	 * @param edgeLeft   lato sinistro, coordinata minima x = 0
+	 * @param edgeRight  lato destro, coordinata max x = width
+	 * @param edgeBottom lato inferiore, coordinata max y = height
+	 * @param edgeTop    lato superiore, coordinata minima y = 0
+	 * @param x0src      punto iniziale segmento
+	 * @param y0src      punto iniziale segmento
+	 * @param x1src      punto finale segmento
+	 * @param y1src      punto finale segmento
 	 * @return
 	 */
 	public static double[] liangBarsky(double edgeLeft, double edgeRight, double edgeBottom, double edgeTop,
@@ -1261,20 +1223,13 @@ public class ImageUtils {
 	 * due punti e la circonferenza.
 	 * https://stackoverflow.com/questions/13053061/circle-line-intersection- points
 	 * 
-	 * @param x0
-	 *            coord x punto 0
-	 * @param y0
-	 *            coord y punto 0
-	 * @param x1
-	 *            coord x punto 1
-	 * @param y1
-	 *            coord y punto 1
-	 * @param xc
-	 *            coord x centro
-	 * @param yc
-	 *            coord y centro
-	 * @param rc
-	 *            raggio
+	 * @param x0 coord x punto 0
+	 * @param y0 coord y punto 0
+	 * @param x1 coord x punto 1
+	 * @param y1 coord y punto 1
+	 * @param xc coord x centro
+	 * @param yc coord y centro
+	 * @param rc raggio
 	 * @return
 	 */
 	public static double[] getCircleLineCrossingPoints(double x0, double y0, double x1, double y1, double xc, double yc,
@@ -1319,18 +1274,12 @@ public class ImageUtils {
 	 * segmento ed i lati del frame. ATTENZIONE: si limita a trovare i punti di
 	 * crossing, non li mette in ordine
 	 * 
-	 * @param x0
-	 *            coordinata X inizio
-	 * @param y0
-	 *            coordinata Y inizio
-	 * @param x1
-	 *            coordinata X fine
-	 * @param y1
-	 *            coordinata Y fine
-	 * @param width
-	 *            larghezza immagine
-	 * @param height
-	 *            altezza immagine
+	 * @param x0     coordinata X inizio
+	 * @param y0     coordinata Y inizio
+	 * @param x1     coordinata X fine
+	 * @param y1     coordinata Y fine
+	 * @param width  larghezza immagine
+	 * @param height altezza immagine
 	 * @return vettore con coordinate clipping points
 	 */
 	public static double[] crossingFrame(double x0, double y0, double x1, double y1, double width, double height) {
@@ -1442,14 +1391,10 @@ public class ImageUtils {
 	 * Verifica se un valore e' all'interno dei limiti assegnati, con una certa
 	 * tolleranza
 	 * 
-	 * @param x1
-	 *            valore calcolato
-	 * @param low
-	 *            limite inferiore
-	 * @param high
-	 *            limite superiore
-	 * @param tolerance
-	 *            tolleranza
+	 * @param x1        valore calcolato
+	 * @param low       limite inferiore
+	 * @param high      limite superiore
+	 * @param tolerance tolleranza
 	 * @return true se il valore � valido (entro i limiti)
 	 */
 	public static boolean isBetween(double x1, double low, double high, double tolerance) {
@@ -1464,16 +1409,11 @@ public class ImageUtils {
 	/**
 	 * Calcolo della distanza tra un punto ed una circonferenza
 	 * 
-	 * @param x1
-	 *            coord. x punto
-	 * @param y1
-	 *            coord. y punto
-	 * @param x2
-	 *            coord. x centro
-	 * @param y2
-	 *            coord. y centro
-	 * @param r2
-	 *            raggio
+	 * @param x1 coord. x punto
+	 * @param y1 coord. y punto
+	 * @param x2 coord. x centro
+	 * @param y2 coord. y centro
+	 * @param r2 raggio
 	 * @return distanza
 	 */
 	public static double pointCirconferenceDistance(int x1, int y1, int x2, int y2, int r2) {
@@ -1609,8 +1549,7 @@ public class ImageUtils {
 	 * Author: Eli Billauer Vedi anche https://github.com/xuphys/peakdetect
 	 * 
 	 * 
-	 * @param profile
-	 *            profilo da analizzare
+	 * @param profile profilo da analizzare
 	 * @param delta
 	 * @return ArrayList con le posizioni del picco minimo e del picco massimo
 	 */
@@ -1912,10 +1851,8 @@ public class ImageUtils {
 	 * di Brescia - Servizio di Fisica Sanitaria 2006
 	 * 
 	 * 
-	 * @param imp
-	 *            ImagePlus da regolare
-	 * @param ip
-	 *            ImageProcessor dell'immagine
+	 * @param imp ImagePlus da regolare
+	 * @param ip  ImageProcessor dell'immagine
 	 * 
 	 */
 	public static void autoAdjust(ImagePlus imp, ImageProcessor ip) {
@@ -1957,14 +1894,10 @@ public class ImageUtils {
 	/**
 	 * esegue posizionamento e calcolo roi circolare sul fondo
 	 * 
-	 * @param xRoi
-	 *            coordinata x roi
-	 * @param yRoi
-	 *            coordinata y roi
-	 * @param imp
-	 *            puntatore ImagePlus alla immagine
-	 * @param bstep
-	 *            funzionamento passo passo
+	 * @param xRoi  coordinata x roi
+	 * @param yRoi  coordinata y roi
+	 * @param imp   puntatore ImagePlus alla immagine
+	 * @param bstep funzionamento passo passo
 	 * @return dati statistici
 	 */
 	public static ImageStatistics backCalc(int xRoi, int yRoi, int diaRoi, ImagePlus imp, boolean bstep,
@@ -2005,14 +1938,10 @@ public class ImageUtils {
 	/**
 	 * esegue posizionamento e calcolo roi circolare sul fondo
 	 * 
-	 * @param xRoi
-	 *            coordinata x roi
-	 * @param yRoi
-	 *            coordinata y roi
-	 * @param imp
-	 *            puntatore ImagePlus alla immagine
-	 * @param bstep
-	 *            funzionamento passo passo
+	 * @param xRoi  coordinata x roi
+	 * @param yRoi  coordinata y roi
+	 * @param imp   puntatore ImagePlus alla immagine
+	 * @param bstep funzionamento passo passo
 	 * @return dati statistici
 	 */
 	public static ImageStatistics backCalc3(int xRoi, int yRoi, int diaRoi, ImagePlus imp, boolean bstep,
@@ -2031,12 +1960,11 @@ public class ImageUtils {
 				imp.setRoi(xRoi, yRoi, diaRoi, diaRoi);
 
 			ImageUtils.autoAdjust(imp, imp.getProcessor());
-			
+
 			if (circular)
 				imp.setRoi(new OvalRoi(xRoi, yRoi, diaRoi, diaRoi));
 			else
 				imp.setRoi(xRoi, yRoi, diaRoi, diaRoi);
-			
 
 			if (!selftest) {
 				if (redo) {
@@ -2061,14 +1989,10 @@ public class ImageUtils {
 	/**
 	 * esegue posizionamento e calcolo roi circolare sul fondo
 	 * 
-	 * @param xRoi
-	 *            coordinata x roi
-	 * @param yRoi
-	 *            coordinata y roi
-	 * @param imp
-	 *            puntatore ImagePlus alla immagine
-	 * @param bstep
-	 *            funzionamento passo passo
+	 * @param xRoi  coordinata x roi
+	 * @param yRoi  coordinata y roi
+	 * @param imp   puntatore ImagePlus alla immagine
+	 * @param bstep funzionamento passo passo
 	 * @return dati statistici
 	 */
 	public static ImageStatistics backCalc2(int xRoi, int yRoi, int diaRoi, ImagePlus imp, boolean bstep,
@@ -2114,12 +2038,9 @@ public class ImageUtils {
 	/**
 	 * evidenzia il fondo, richiede una roi sul fondo
 	 * 
-	 * @param xRoi
-	 *            coordinata x centro
-	 * @param yRoi
-	 *            coordinata y centro
-	 * @param imp1
-	 *            puntatore ImagePlus alla immagine
+	 * @param xRoi coordinata x centro
+	 * @param yRoi coordinata y centro
+	 * @param imp1 puntatore ImagePlus alla immagine
 	 */
 	public static void backgroundEnhancement(int xRoi, int yRoi, int diaRoi, ImagePlus imp1) {
 
@@ -2245,18 +2166,12 @@ public class ImageUtils {
 	/**
 	 * Imposta il colore del pixel di un overlay
 	 * 
-	 * @param imp1
-	 *            image plus a cui è riferito l'overlay
-	 * @param x1
-	 *            coordinata x pixel
-	 * @param y1
-	 *            coordinata y pixel
-	 * @param col1
-	 *            colore 1
-	 * @param col2
-	 *            colorie 2
-	 * @param ok
-	 *            boolean scelta colore
+	 * @param imp1 image plus a cui è riferito l'overlay
+	 * @param x1   coordinata x pixel
+	 * @param y1   coordinata y pixel
+	 * @param col1 colore 1
+	 * @param col2 colorie 2
+	 * @param ok   boolean scelta colore
 	 */
 	public static void setOverlayPixels(ImagePlus imp1, int x1, int y1, Color col1, Color col2, boolean ok) {
 		Overlay over1 = imp1.getOverlay();
