@@ -33,7 +33,7 @@ public class AboutBox {
 		String[] text = new String[lines];
 		text[0] = arg;
 		text[1] = "IW2AYV";
-		text[2] = "2007-2021  Alberto Duina";
+		text[2] = "2007-2021_  Alberto Duina";
 		text[3] = "albertoduina@virgilio.it";
 		text[4] = "VERSIONE " + version1;
 		text[5] = "VERSIONE libreria iw2ayv " + MyVersionUtils.getVersion();
