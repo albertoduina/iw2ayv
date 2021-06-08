@@ -890,6 +890,26 @@ public class UtilAyv {
 		}
 		return imp;
 	}
+	
+	/**
+	 * apre un immagine senza display
+	 * 
+	 * @param path
+	 *            path dell'immagine
+	 * @return puntatore ImagePlus all'immagine
+	 */
+	public static ImagePlus openImageNoDisplay(File nome, boolean verbose) {
+
+		Opener opener = new Opener();
+		ImagePlus imp = opener.openImage(nome.getPath());
+		if (imp == null) {
+			if (verbose)
+				MyLog.waitThere("Immagine " + nome.getPath() + " inesistente o non visualizzabile");
+			return null;
+		}
+		return imp;
+	}
+
 
 	/**
 	 * massimizza una immagine
