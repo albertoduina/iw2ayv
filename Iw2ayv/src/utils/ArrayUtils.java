@@ -46,6 +46,20 @@ public class ArrayUtils {
 		return outIntArr;
 	}
 
+	public static short[] arrayListToArrayShort(List<Short> inArrayList) {
+		short[] outIntArr = new short[inArrayList.size()];
+		int i1 = 0;
+		for (Short n : inArrayList) {
+			outIntArr[i1++] = n;
+		}
+		return outIntArr;
+	}
+
+	
+	
+	
+	
+	
 	public static float[] arrayListToArrayFloat(List<Float> inArrayList) {
 
 		float[] outIntArr = new float[inArrayList.size()];

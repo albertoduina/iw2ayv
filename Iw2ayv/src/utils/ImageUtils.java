@@ -808,8 +808,8 @@ public class ImageUtils {
 
 	/***
 	 * Porta l'immagine in primo piano Pare che questa routine funzioni molto meglio
-	 * delle precedenti. Se, anzich� la ImagePlus si conosce la ImageWindow, si
-	 * pu� utilizzare iw1.getImagePlus() per ottenere la image plus "on the fly"
+	 * delle precedenti. Se, anzich� la ImagePlus si conosce la ImageWindow, si pu�
+	 * utilizzare iw1.getImagePlus() per ottenere la image plus "on the fly"
 	 * 
 	 * @param imp1
 	 */
@@ -2112,10 +2112,32 @@ public class ImageUtils {
 	// imp1.updateImage();
 	// }
 
+	/**
+	 * Esperimento estrazione pixels da una Roi CHISSA'SE VA, CHISSA'SE VA (1971 Raffaella Carrà)
+	 * 
+	 * @param ip1
+	 * @return
+	 */
+	public short[] extractRoiPixels(ImageProcessor ip1) {
+
+		ArrayList<Short> arr1 = new ArrayList<Short>();
+		Rectangle r1 = ip1.getRoi();
+		ImageProcessor mask1 = ip1.getMask();
+		for (int y1 = r1.y; y1 < (r1.y + r1.height); y1++) {
+			for (int x1 = r1.x; x1 < (r1.x + r1.width); x1++) {
+				if (mask1 == null || mask1.getPixel(x1 - r1.x, y1 - r1.y) != 0) {
+					arr1.add((short) ip1.getPixel(x1, y1));
+				}
+			}
+		}
+		short[] out1 = ArrayUtils.arrayListToArrayShort(arr1);
+		return out1;
+	}
+
 	public void demoPixelPertainRoiTest(ImageProcessor ip) {
 		/**
-		 * questo � solo un appunto sui metodi che possiamo utilizzare per stabilire
-		 * se un pixel � all'interno di una ROI.
+		 * questo � solo un appunto sui metodi che possiamo utilizzare per stabilire se
+		 * un pixel � all'interno di una ROI.
 		 */
 
 		// byte[] pixels = (byte[]) ip.getPixels();

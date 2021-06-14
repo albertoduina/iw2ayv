@@ -4,6 +4,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.Line;
 import ij.gui.Plot;
+import ij.gui.PointRoi;
 import ij.gui.PolygonRoi;
 import ij.gui.Roi;
 import ij.gui.WaitForUserDialog;
@@ -69,4 +70,7 @@ public class MyLine {
 		return out1;
 	}
 
+	
+
+	
 }

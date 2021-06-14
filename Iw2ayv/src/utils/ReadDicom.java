@@ -23,7 +23,7 @@ public class ReadDicom {
 
 	/**
 	 * La seguente routine, che si occupa di estrarre dati dall'header delle
-	 * immagini � tratta da QueryDicomHeader.java di Anthony Padua & Daniel
+	 * immagini fu copiata dal QueryDicomHeader.java di Anthony Padua & Daniel
 	 * Barboriak - Duke University Medical Center. *** modified version ***
 	 * Alberto Duina - Spedali Civili di Brescia - Servizio di Fisica Sanitaria
 	 * 2006
