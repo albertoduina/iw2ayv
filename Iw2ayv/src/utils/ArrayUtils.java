@@ -55,11 +55,6 @@ public class ArrayUtils {
 		return outIntArr;
 	}
 
-	
-	
-	
-	
-	
 	public static float[] arrayListToArrayFloat(List<Float> inArrayList) {
 
 		float[] outIntArr = new float[inArrayList.size()];

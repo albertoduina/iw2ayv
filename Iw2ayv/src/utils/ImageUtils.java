@@ -2118,7 +2118,7 @@ public class ImageUtils {
 	 * @param ip1
 	 * @return
 	 */
-	public short[] extractRoiPixels(ImageProcessor ip1) {
+	public short[] extractRoiPixelsShort(ImageProcessor ip1) {
 
 		ArrayList<Short> arr1 = new ArrayList<Short>();
 		Rectangle r1 = ip1.getRoi();
@@ -2131,6 +2131,22 @@ public class ImageUtils {
 			}
 		}
 		short[] out1 = ArrayUtils.arrayListToArrayShort(arr1);
+		return out1;
+	}
+	
+	public float[] extractRoiPixelsFloat(ImageProcessor ip1) {
+
+		ArrayList<Float> arr1 = new ArrayList<Float>();
+		Rectangle r1 = ip1.getRoi();
+		ImageProcessor mask1 = ip1.getMask();
+		for (int y1 = r1.y; y1 < (r1.y + r1.height); y1++) {
+			for (int x1 = r1.x; x1 < (r1.x + r1.width); x1++) {
+				if (mask1 == null || mask1.getPixel(x1 - r1.x, y1 - r1.y) != 0) {
+					arr1.add((float) ip1.getPixel(x1, y1));
+				}
+			}
+		}
+		float[] out1 = ArrayUtils.arrayListToArrayFloat(arr1);
 		return out1;
 	}
 
