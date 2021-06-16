@@ -2113,12 +2113,13 @@ public class ImageUtils {
 	// }
 
 	/**
-	 * Esperimento estrazione pixels da una Roi CHISSA'SE VA, CHISSA'SE VA (1971 Raffaella Carrà)
+	 * Esperimento estrazione pixels da una Roi CHISSA'SE VA, CHISSA'SE VA (1971
+	 * Raffaella Carrà)
 	 * 
 	 * @param ip1
 	 * @return
 	 */
-	public short[] extractRoiPixelsShort(ImageProcessor ip1) {
+	public static short[] extractRoiPixelsShort(ImageProcessor ip1) {
 
 		ArrayList<Short> arr1 = new ArrayList<Short>();
 		Rectangle r1 = ip1.getRoi();
@@ -2133,12 +2134,15 @@ public class ImageUtils {
 		short[] out1 = ArrayUtils.arrayListToArrayShort(arr1);
 		return out1;
 	}
-	
-	public float[] extractRoiPixelsFloat(ImageProcessor ip1) {
+
+	public static float[] extractRoiPixelsFloat(ImageProcessor ip1) {
 
 		ArrayList<Float> arr1 = new ArrayList<Float>();
 		Rectangle r1 = ip1.getRoi();
 		ImageProcessor mask1 = ip1.getMask();
+ 		
+		
+		
 		for (int y1 = r1.y; y1 < (r1.y + r1.height); y1++) {
 			for (int x1 = r1.x; x1 < (r1.x + r1.width); x1++) {
 				if (mask1 == null || mask1.getPixel(x1 - r1.x, y1 - r1.y) != 0) {

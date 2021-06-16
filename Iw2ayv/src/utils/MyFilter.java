@@ -7,6 +7,7 @@ import ij.ImagePlus;
 import ij.gui.ImageWindow;
 import ij.gui.OvalRoi;
 import ij.gui.Overlay;
+import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ImageStatistics;
 
@@ -385,8 +386,8 @@ public class MyFilter {
 	}
 
 	/**
-	 * Ricerca posizione del massimo con una roi 11x11, restituisce le
-	 * coordinate del centro
+	 * Ricerca posizione del massimo con una roi 11x11, restituisce le coordinate
+	 * del centro
 	 * 
 	 * @param imp1
 	 * @return
@@ -509,15 +510,14 @@ public class MyFilter {
 		return out;
 	}
 
+
+
 	/***
 	 * Cerca l'hotspot all'interno di un cerchio posto sull'immagine reale
 	 * 
-	 * @param imp1
-	 *            immagine da analizzare
-	 * @param circleData
-	 *            profilo esterno fantoccio
-	 * @param circleSearch
-	 *            cerchio di ricerca
+	 * @param imp1         immagine da analizzare
+	 * @param circleData   profilo esterno fantoccio
+	 * @param circleSearch cerchio di ricerca
 	 * @return
 	 */
 	public static double[] positionSearchCircular1(ImagePlus imp1, double[] circleData, double diam22, int demolevel) {
@@ -527,6 +527,8 @@ public class MyFilter {
 
 		ImagePlus imp2 = imp1.duplicate();
 		imp2.setOverlay(over2);
+		ImageProcessor ip3 = new FloatProcessor(imp1.getWidth(), imp1.getHeight());
+		ImagePlus imp3 = new ImagePlus("position", ip3);
 
 		int xCenter1 = (int) circleData[0];
 		int yCenter1 = (int) circleData[1];
@@ -598,17 +600,24 @@ public class MyFilter {
 						xmax = x2;
 						ymax = y2;
 					}
+					ip3.putPixelValue(x2, y2, med1);
 				}
 			}
 		}
+		imp3.updateAndDraw();
+		imp3.show();
 		if (demo) {
 			imp2.setRoi(new OvalRoi(xmax - diam2 / 2, ymax - diam2 / 2, diam2, diam2));
 			imp2.getRoi().setStrokeColor(color2);
 			imp2.getRoi().setFillColor(color2);
 			over2.addElement(imp2.getRoi());
 		}
-		if (demo)
-			MyLog.waitHere("center", true, 400);
+		MyLog.waitHere();
+
+		if (demo) {
+			// MyLog.waitHere("center", true, 400);
+			MyLog.waitHere("center", true);
+		}
 		if (iw2 != null)
 			iw2.close();
 		double[] out = new double[3];
@@ -620,19 +629,14 @@ public class MyFilter {
 
 	/***
 	 * Cerca l'hotspot all'interno di un cerchio, che rappresenta la slice che
-	 * esamino, verificando che la sfera costituita dalla rotazione di quel
-	 * cerchio sia interna alla sfera fantoccio
+	 * esamino, verificando che la sfera costituita dalla rotazione di quel cerchio
+	 * sia interna alla sfera fantoccio
 	 * 
-	 * @param imp1
-	 *            immagine sfera
-	 * @param sphere1
-	 *            dati sfera
-	 * @param diamProjection
-	 *            diametro slice sfera
-	 * @param diamSearch
-	 *            diametro ricerca
-	 * @param slice
-	 *            slice in esame
+	 * @param imp1           immagine sfera
+	 * @param sphere1        dati sfera
+	 * @param diamProjection diametro slice sfera
+	 * @param diamSearch     diametro ricerca
+	 * @param slice          slice in esame
 	 * @param demolevel
 	 * @return
 	 */

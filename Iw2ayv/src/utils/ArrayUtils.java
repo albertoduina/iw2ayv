@@ -17,8 +17,7 @@ public class ArrayUtils {
 	/**
 	 * Conversion from arrayList<String> to String[]
 	 * 
-	 * @param inArrayList
-	 *            arrayList input
+	 * @param inArrayList arrayList input
 	 * @return String[] output
 	 */
 	public static String[] arrayListToArrayString(List<String> inArrayList) {
@@ -33,8 +32,7 @@ public class ArrayUtils {
 	/**
 	 * Conversion from arrayList<Integer> to int[]
 	 * 
-	 * @param inArrayList
-	 *            arrayList input
+	 * @param inArrayList arrayList input
 	 * @return String[] output
 	 */
 	public static int[] arrayListToArrayInt(List<Integer> inArrayList) {
@@ -70,11 +68,11 @@ public class ArrayUtils {
 		double[] outIntArr = new double[inArrayList.size()];
 		int i1 = 0;
 		for (Float n : inArrayList) {
-			outIntArr[i1++] = (double)n;
+			outIntArr[i1++] = (double) n;
 		}
 		return outIntArr;
 	}
-	
+
 	public static double[] arrayListToArrayDouble3(List<Integer> inArrayList) {
 
 		double[] outIntArr = new double[inArrayList.size()];
@@ -84,7 +82,7 @@ public class ArrayUtils {
 		}
 		return outIntArr;
 	}
-	
+
 	public static double[] arrayListToArrayDouble(List<Double> inArrayList) {
 
 		double[] outIntArr = new double[inArrayList.size()];
@@ -151,6 +149,7 @@ public class ArrayUtils {
 				max = data[i1];
 			}
 		}
+//		MyLog.waitHere("max= "+max);
 		return max;
 	}
 
@@ -266,12 +265,12 @@ public class ArrayUtils {
 		return pos;
 	}
 
-	public static double vetMin(float[] data) {
+	public static float vetMin(float[] data) {
 		final int n = data.length;
 		if (n < 1) {
 			return Float.NaN;
 		}
-		double min = Float.MAX_VALUE;
+		float min = Float.MAX_VALUE;
 		for (int i1 = 0; i1 < data.length; i1++) {
 			if (data[i1] < min) {
 				min = data[i1];
@@ -286,7 +285,7 @@ public class ArrayUtils {
 		if (n < 1) {
 			return -1;
 		}
-		double min = Float.MAX_VALUE;
+		float min = Float.MAX_VALUE;
 		for (int i1 = 0; i1 < data.length; i1++) {
 			if (data[i1] < min) {
 				min = data[i1];
@@ -429,13 +428,12 @@ public class ArrayUtils {
 	}
 
 	/**
-	 * Calculates the standard deviation of an array of numbers. see Knuth's The
-	 * Art Of Computer Programming Volume II: Seminumerical Algorithms This
-	 * algorithm is slower, but more resistant to error propagation.
+	 * Calculates the standard deviation of an array of numbers. see Knuth's The Art
+	 * Of Computer Programming Volume II: Seminumerical Algorithms This algorithm is
+	 * slower, but more resistant to error propagation.
 	 * 
-	 * @param data
-	 *            Numbers to compute the standard deviation of. Array must
-	 *            contain two or more numbers.
+	 * @param data Numbers to compute the standard deviation of. Array must contain
+	 *             two or more numbers.
 	 * @return standard deviation estimate of population ( to get estimate of
 	 *         sample, use n instead of n-1 in last line )
 	 */

@@ -925,6 +925,9 @@ public class UtilAyv {
 		IJ.wait(20);
 		win.setExtendedState(ImageWindow.MAXIMIZED_BOTH);
 	}
+	
+
+	
 
 	public static ImageWindow showImageMaximized(ImagePlus imp) {
 
@@ -950,7 +953,7 @@ public class UtilAyv {
 		}
 		win = imp.getWindow();
 		win.setBounds(win.getMaximumBounds());
-		win.maximize();
+		win.minimize();
 		win.toFront();
 		// double mag2 = win.getCanvas().getMagnification();
 		// IJ.log("mag2= " + mag2);
