@@ -20,6 +20,21 @@ public class ArrayUtils {
 	 * @param inArrayList arrayList input
 	 * @return String[] output
 	 */
+	public static String[] arrayListToArrayString(ArrayList<String> inArrayList) {
+		Object[] objArr = inArrayList.toArray();
+		String[] outStrArr = new String[objArr.length];
+		for (int i1 = 0; i1 < objArr.length; i1++) {
+			outStrArr[i1] = objArr[i1].toString();
+		}
+		return outStrArr;
+	}
+	
+	/**
+	 * Conversion from arrayList<String> to String[]
+	 * 
+	 * @param inArrayList arrayList input
+	 * @return String[] output
+	 */
 	public static String[] arrayListToArrayString(List<String> inArrayList) {
 		Object[] objArr = inArrayList.toArray();
 		String[] outStrArr = new String[objArr.length];
@@ -28,6 +43,10 @@ public class ArrayUtils {
 		}
 		return outStrArr;
 	}
+
+	
+	
+	
 
 	/**
 	 * Conversion from arrayList<Integer> to int[]
@@ -248,6 +267,27 @@ public class ArrayUtils {
 		}
 		return min;
 	}
+	
+	/**
+	 * Calcola il min di un vettore tralasciando gli zeri
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static double vetMinNotZero(double[] data) {
+		final int n = data.length;
+		if (n < 1) {
+			return Double.NaN;
+		}
+		double min = Double.MAX_VALUE;
+		for (int i1 = 0; i1 < data.length; i1++) {
+			if (data[i1] < min && data[i1]>0) {
+				min = data[i1];
+			}
+		}
+		return min;
+	}
+
 
 	public static int posMin(double[] data) {
 		int pos = -1;

@@ -147,7 +147,7 @@ public class SimplexOptimizer {
 
 	public void setFixedParamAsBoolean(int i, boolean flag) throws Exception {
 		checkMethodIsDefined();
-		mAllParameters[i - 1] = new Boolean(flag);
+		mAllParameters[i - 1] = Boolean.valueOf(flag);
 		mParamTypes[i - 1] = -1;
 	}
 
@@ -159,19 +159,19 @@ public class SimplexOptimizer {
 
 	public void setFixedParamAsDouble(int i, double d) throws Exception {
 		checkMethodIsDefined();
-		mAllParameters[i - 1] = new Double(d);
+		mAllParameters[i - 1] = Double.valueOf(d);
 		mParamTypes[i - 1] = -1;
 	}
 
 	public void setFixedParamAsFloat(int i, float f) throws Exception {
 		checkMethodIsDefined();
-		mAllParameters[i - 1] = new Float(f);
+		mAllParameters[i - 1] = Float.valueOf(f);
 		mParamTypes[i - 1] = -1;
 	}
 
 	public void setFixedParamAsInteger(int i, int j) throws Exception {
 		checkMethodIsDefined();
-		mAllParameters[i - 1] = new Integer(j);
+		mAllParameters[i - 1] = Integer.valueOf(j);
 		mParamTypes[i - 1] = -1;
 	}
 
@@ -181,7 +181,7 @@ public class SimplexOptimizer {
 					"Set modifiable variables to small numbers rather than zero");
 		} else {
 			checkMethodIsDefined();
-			mAllParameters[i - 1] = new Double(d);
+			mAllParameters[i - 1] = Double.valueOf(d);
 			mParamTypes[i - 1] = 1;
 			return;
 		}
@@ -389,7 +389,7 @@ public class SimplexOptimizer {
 		int i = 0;
 		for (int j = 0; j < mAllParameters.length; j++)
 			if (mParamTypes[j] == 1) {
-				mAllParameters[j] = new Double(vertex.getParameter(i));
+				mAllParameters[j] = Double.valueOf(vertex.getParameter(i));
 				i++;
 			}
 

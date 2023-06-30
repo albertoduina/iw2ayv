@@ -238,8 +238,8 @@ public class ImageUtilsTest {
 
 		double[] out = ImageUtils.liangBarsky(edgeLeft, edgeRight, edgeBottom, edgeTop, x0src, y0src, x1src, y1src);
 
-		// MyLog.logVector(out, "out");
-		// MyLog.waitHere();
+		MyLog.logVector(out, "out");
+		MyLog.waitHere();
 		double[] expected = { 36.875, 0.0, 180.3125, 255.0 };
 		assertTrue(UtilAyv.compareVectors(out, expected, 1e-11, ""));
 	}

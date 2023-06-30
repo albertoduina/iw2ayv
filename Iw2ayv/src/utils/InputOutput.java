@@ -1154,7 +1154,7 @@ public class InputOutput {
 	}
 
 	/**
-	 * Estrae al volo un file da un archivio .jar by R�al Gagnon
+	 * Estrae al volo un file da un archivio .jar by Real Gagnon
 	 * (www.rgagnon.com/javadetails/java-0429.html) for correct work in junit
 	 * the source file (ie: test2.jar) must be in the iw2ayv "data" sourceFolder
 	 * 

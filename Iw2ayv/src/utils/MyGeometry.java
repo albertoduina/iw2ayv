@@ -59,7 +59,7 @@ public class MyGeometry {
 	 * @return vettore con parametri equazione
 	 */
 	public static double[] fromPointsToEquLineImplicit(double x0, double y0, double x1, double y1) {
-		// la formula implicita � ax + by + c = 0
+		// la formula implicita e' ax + by + c = 0
 		double[] out = new double[3];
 
 		double a = y0 - y1;
@@ -74,7 +74,7 @@ public class MyGeometry {
 	}
 
 	public static double[] fromPointsToEquCirconferenceImplicit(double cx, double cy, double radius) {
-		// la formula implicita � x^2 + y^2 + ax + by + c = 0
+		// la formula implicita e' x^2 + y^2 + ax + by + c = 0
 		double[] out = new double[3];
 
 		double a = -2 * cx;
@@ -179,9 +179,9 @@ public class MyGeometry {
 	/**
 	 * Rotazione di un segmento
 	 * 
-	 * Probabilmente si pu� usare la AffineTransform di Java, mi mancano le
+	 * Probabilmente si puo' usare la AffineTransform di Java, mi mancano le
 	 * conscenze tecniche e matematiche per capirne la eventuale convenienza e
-	 * modalit� di utilizzo.
+	 * modalita' di utilizzo.
 	 * 
 	 * @param points
 	 *            coordinate degli estremi del segmento [x1][y1][x2][y2]

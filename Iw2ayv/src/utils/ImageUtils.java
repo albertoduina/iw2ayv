@@ -1311,13 +1311,13 @@ public class ImageUtils {
 		double[] clippingPoints = new double[4];
 		int count = 0;
 
-		// ora andr� a calcolare il crossing per i vari lati dell'immagine. Mi
-		// aspetto di avere due soli crossing. Esiste per� un eccezione � il
+		// ora andro' a calcolare il crossing per i vari lati dell'immagine. Mi
+		// aspetto di avere due soli crossing. Esiste pero' un eccezione e' il
 		// caso particolare in cui il crossing avviene esattamente su di un
-		// angolo dell'immagine: in tal caso avr� che is between mi dar� il
+		// angolo dell'immagine: in tal caso avro' che is between mi dara' il
 		// crossing sia per il lato orizzontale che per il lato verticale, per
-		// cui mi trover� con 3 crossing. Nel caso ancora pi� particolare di una
-		// diagonale del quadrato mi trover� con quattro crossing, anzich� due.
+		// cui mi trovero' con 3 crossing. Nel caso ancora piu' particolare di una
+		// diagonale del quadrato mi trovero' con quattro crossing, anziche' due.
 		// ed io devo passare ad imageJ le coordinate di solo due punti.
 
 		// lato superiore
@@ -1507,9 +1507,9 @@ public class ImageUtils {
 
 		xPoints[0] = (float) xPoints1;
 		yPoints[0] = (float) yPoints1;
-		// MyLog.logVector(xPoints, "xPoints");
-		// MyLog.logVector(yPoints, "yPoints");
-		// MyLog.waitHere();
+//		 MyLog.logVector(xPoints1, "xPoints1");
+//		 MyLog.logVector(yPoints1, "yPoints1");
+//		 MyLog.waitHere();
 
 		PointRoi pr1 = new PointRoi(xPoints, yPoints, xPoints.length);
 		pr1.setPointType(2);
@@ -1914,6 +1914,7 @@ public class ImageUtils {
 				imp.setRoi(new OvalRoi(xRoi, yRoi, diaRoi, diaRoi));
 			else
 				imp.setRoi(xRoi, yRoi, diaRoi, diaRoi);
+			imp.getRoi().setStrokeWidth(1.1);
 
 			if (!selftest) {
 				if (redo) {
@@ -2140,9 +2141,7 @@ public class ImageUtils {
 		ArrayList<Float> arr1 = new ArrayList<Float>();
 		Rectangle r1 = ip1.getRoi();
 		ImageProcessor mask1 = ip1.getMask();
- 		
-		
-		
+
 		for (int y1 = r1.y; y1 < (r1.y + r1.height); y1++) {
 			for (int x1 = r1.x; x1 < (r1.x + r1.width); x1++) {
 				if (mask1 == null || mask1.getPixel(x1 - r1.x, y1 - r1.y) != 0) {

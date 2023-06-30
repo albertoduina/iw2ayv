@@ -64,7 +64,7 @@ public class MyGenericDialogGrid {
 		String str = theText;
 		try {
 			str = str.replaceAll("\\s+", "");
-			d = new Double(str);
+			d = Double.valueOf(str);
 		} catch (NumberFormatException e) {
 			d = null;
 		}
@@ -135,7 +135,7 @@ public class MyGenericDialogGrid {
 		String str = theText;
 		try {
 			str = str.replaceAll("\\s+", "");
-			d = new Double(str);
+			d = Double.valueOf(str);
 		} catch (NumberFormatException e) {
 			d = null;
 		}

@@ -15,9 +15,9 @@ import ij.ImagePlus;
  * facente parte del Dicom Toolbox, di Dirk-Jan Kroon
  * "www.mathworks.com/matlabcentral/fileexchange/27941-dicom-toolbox/content/SiemensInfo.m"
  * in essa viene fatta una ricerca all'interno del Siemens Private Tag
- * 0029,1020. Questo Tag, purtroppo per non è conosciuto da ImageJ per cui non è
- * possibile estrarlo automaticamente nè dall'header nè dalle Info. Pertanto la
- * strada è quella di leggere dal file stream
+ * 0029,1020. Questo Tag, purtroppo per non ï¿½ conosciuto da ImageJ per cui non ï¿½
+ * possibile estrarlo automaticamente nï¿½ dall'header nï¿½ dalle Info. Pertanto la
+ * strada ï¿½ quella di leggere dal file stream
  * 
  */
 
@@ -231,7 +231,7 @@ public class ReadAscconv {
 	public static double readDouble(String s1) {
 		double x = 0;
 		try {
-			x = (new Double(s1)).doubleValue();
+			x = Double.valueOf(s1);
 		} catch (Exception e) {
 			// IJ.error("readDouble >> invalid floating point number");
 			// tolto il messaggio per evitare isterismi nell'utenza
@@ -249,7 +249,7 @@ public class ReadAscconv {
 	public static float readFloat(String s1) {
 		float x = 0;
 		try {
-			x = (new Float(s1)).floatValue();
+			x = Float.valueOf(s1);
 		} catch (Exception e) {
 			// IJ.error("readFloat >> invalid floating point number");
 		}
@@ -266,7 +266,7 @@ public class ReadAscconv {
 	public static int readInt(String s1) {
 		int x = 0;
 		try {
-			x = (new Integer(s1)).intValue();
+			x = Integer.valueOf(s1);
 		} catch (Exception e) {
 			// IJ.error(" readInt >> invalid integer number ");
 		}

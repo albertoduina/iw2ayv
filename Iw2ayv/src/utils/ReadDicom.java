@@ -171,7 +171,7 @@ public class ReadDicom {
 	}
 
 	/**
-	 * Ertrae tutte le parti di un parametro Dicom costituito da una stringa
+	 * Estrae tutte le parti di un parametro Dicom costituito da una stringa
 	 * multipla
 	 * 
 	 * @param s1
@@ -196,7 +196,7 @@ public class ReadDicom {
 	public static double readDouble(String s1) {
 		double x = 0;
 		try {
-			x = (new Double(s1)).doubleValue();
+			x =  Double.valueOf(s1);
 		} catch (Exception e) {
 			// IJ.error("readDouble >> invalid floating point number");
 			// tolto il messaggio per evitare isterismi nell'utenza
@@ -214,7 +214,7 @@ public class ReadDicom {
 	public static float readFloat(String s1) {
 		float x = 0;
 		try {
-			x = (new Float(s1)).floatValue();
+			x = Float.valueOf(s1);
 		} catch (Exception e) {
 			// IJ.error("readFloat >> invalid floating point number");
 		}
@@ -231,7 +231,7 @@ public class ReadDicom {
 	public static int readInt(String s1) {
 		int x = 0;
 		try {
-			x = (new Integer(s1)).intValue();
+			x = Integer.valueOf(s1);
 		} catch (Exception e) {
 			// IJ.error(" readInt >> invalid integer number ");
 		}

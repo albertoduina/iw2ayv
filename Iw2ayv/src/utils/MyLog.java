@@ -1,20 +1,7 @@
 package utils;
 
-import ij.IJ;
-import ij.ImagePlus;
-import ij.WindowManager;
-import ij.gui.ImageWindow;
-import ij.gui.MessageDialog;
-import ij.gui.WaitForUserDialog;
-import ij.measure.ResultsTable;
-import ij.process.ColorProcessor;
-import ij.process.ImageProcessor;
-
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Toolkit;
-import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -24,21 +11,25 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import ij.IJ;
+import ij.ImagePlus;
+import ij.WindowManager;
+import ij.gui.WaitForUserDialog;
+import ij.measure.ResultsTable;
 
 public class MyLog {
 
 
+	/**
+	 * 
+	 * @param part1
+	 * @param part2
+	 * @return
+	 */
 	public String nameTable(String part1, String part2) {
 		String target_file; // fileThatYouWantToFilter
 		List<String> list1 = new ArrayList<String>();
@@ -59,11 +50,17 @@ public class MyLog {
 				}
 			}
 		}
-		String[] list2 = ArrayUtils.arrayListToArrayString(list1);
+	String[] list2 = ArrayUtils.arrayListToArrayString(list1);
+//		String[] list2 = ArrayUtils.arrayListToArrayString((ArrayList<String>) list1);
 		String nome1 = list2[0];
 		return nome1;
 	}
 
+	/**
+	 * 
+	 * @param in1
+	 * @param title
+	 */
 	public static void resultsLog(int[] in1, String title) {
 		if (in1 == null) {
 			MyLog.waitThere("Warning input vector " + title + " null");
@@ -78,6 +75,11 @@ public class MyLog {
 		}
 	}
 
+	/**
+	 * 
+	 * @param in1
+	 * @param title
+	 */
 	public static void resultsLog(short[] in1, String title) {
 		if (in1 == null) {
 			MyLog.waitThere("Warning input vector " + title + " null");
@@ -92,6 +94,11 @@ public class MyLog {
 		}
 	}
 
+	/**
+	 * 
+	 * @param in1
+	 * @param title
+	 */
 	public static void resultsLog(double[] in1, String title) {
 		if (in1 == null) {
 			MyLog.waitThere("Warning input vector " + title + " null");
@@ -106,6 +113,11 @@ public class MyLog {
 		}
 	}
 
+	/**
+	 * 
+	 * @param in1
+	 * @param title
+	 */
 	public static void resultsLog(float[] in1, String title) {
 		if (in1 == null) {
 			MyLog.waitThere("Warning input vector " + title + " null");
@@ -120,6 +132,11 @@ public class MyLog {
 		}
 	}
 
+	/**
+	 * 
+	 * @param in1
+	 * @param title
+	 */
 	public static void resultsLog(byte[] in1, String title) {
 		if (in1 == null) {
 			MyLog.waitThere("Warning input vector " + title + " null");
@@ -134,6 +151,14 @@ public class MyLog {
 		}
 	}
 
+	/**
+	 * 
+	 * @param in1
+	 * @param in2
+	 * @param title1
+	 * @param title2
+	 * @param name
+	 */
 	public static void resultsLog2(int[] in1, double[] in2, String title1, String title2, String name) {
 		ResultsTable rt1 = new ResultsTable();
 		for (int i1 = 0; i1 < in1.length; i1++) {
@@ -146,6 +171,12 @@ public class MyLog {
 
 	}
 
+	/**
+	 * 
+	 * @param in1
+	 * @param titles
+	 * @param name
+	 */
 	public static void resultsLogMatrix(String[][] in1, String[] titles, String name) {
 		ResultsTable rt1 = new ResultsTable();
 		// MyLog.waitHere("in1.length= " + in1.length + " in1[0].length= " +
@@ -171,6 +202,12 @@ public class MyLog {
 		return;
 	}
 
+	/**
+	 * 
+	 * @param in1
+	 * @param titles
+	 * @param name
+	 */
 	public static void resultsLogMatrix(double[][] in1, String[] titles, String name) {
 		ResultsTable rt1 = new ResultsTable();
 		// MyLog.waitHere("in1.length= " + in1.length + " in1[0].length= " +
@@ -196,6 +233,11 @@ public class MyLog {
 		return;
 	}
 
+	/**
+	 * 
+	 * @param tmp
+	 * @param title
+	 */
 	public static void logArrayListInteger(List<int[]> tmp, String title) {
 		if (tmp == null) {
 			IJ.log("Warning vector " + title + " = null");
@@ -209,6 +251,11 @@ public class MyLog {
 		}
 	}
 
+	/**
+	 * 
+	 * @param arrList
+	 * @param title
+	 */
 	public static void logArrayList(ArrayList<Double> arrList, String title) {
 		if (arrList == null) {
 			IJ.log("Warning vector " + title + " = null");
@@ -222,6 +269,11 @@ public class MyLog {
 		}
 	}
 
+	/**
+	 * 
+	 * @param arrList
+	 * @param title
+	 */
 	public static void logArrayListInteger(ArrayList<Integer> arrList, String title) {
 		if (arrList == null) {
 			IJ.log("Warning vector " + title + " = null");
@@ -235,6 +287,10 @@ public class MyLog {
 		}
 	}
 
+	/**
+	 * 
+	 * @param arrList
+	 */
 	public static void logArrayList(ArrayList<String> arrList) {
 		if (arrList == null) {
 			IJ.log("Warning vector = null");
@@ -248,6 +304,10 @@ public class MyLog {
 		}
 	}
 
+	/**
+	 * 
+	 * @param arrList
+	 */
 	public static void logArrayListVertical(ArrayList<String> arrList) {
 		if (arrList == null) {
 			IJ.log("Warning vector = null");
@@ -259,6 +319,11 @@ public class MyLog {
 		}
 	}
 
+	/**
+	 * 
+	 * @param matrixTable
+	 * @param title
+	 */
 	public static void logArrayListTable(ArrayList<ArrayList<Double>> matrixTable, String title) {
 		// ArrayList<Double> row1 = new ArrayList<Double>();
 		if (matrixTable == null) {
@@ -278,6 +343,11 @@ public class MyLog {
 		return;
 	}
 
+	/**
+	 * 
+	 * @param matrixTable
+	 * @param title
+	 */
 	public static void logArrayListTable2(ArrayList<ArrayList<String>> matrixTable, String title) {
 		// ArrayList<Double> row1 = new ArrayList<Double>();
 		if (matrixTable == null) {
@@ -948,6 +1018,32 @@ public class MyLog {
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber() + " \n \n";
 
 		if (timeout > 0) {
+			final WaitForUserDialog wfud = new WaitForUserDialog(where + str);
+
+			ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
+			s.schedule(new Runnable() {
+				public void run() {
+					wfud.close();
+					wfud.dispose();
+				}
+			}, timeout, TimeUnit.MILLISECONDS);
+			wfud.setBackground(Color.yellow);
+			wfud.show();
+		} else {
+			final WaitForUserDialog wfud = new WaitForUserDialog(where + str);
+
+			wfud.show();
+		}
+	}
+	
+	public static void waitHere(String str, boolean debug, int timeout, boolean animate) {
+
+		String where = "";
+		if (debug)
+			where = " \nfile=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber() + " \n \n";
+
+		if ((timeout > 0) && animate) {
 			final WaitForUserDialog wfud = new WaitForUserDialog(where + str);
 
 			ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();

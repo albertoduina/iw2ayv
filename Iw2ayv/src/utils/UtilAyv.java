@@ -22,6 +22,7 @@ import ij.process.ImageConverter;
 import ij.process.ImageProcessor;
 import ij.process.ImageStatistics;
 import ij.text.TextWindow;
+import ij.util.DicomTools;
 
 import java.awt.Color;
 import java.awt.Frame;
@@ -88,13 +89,12 @@ public class UtilAyv {
 	/**
 	 * legge un double da una stringa
 	 * 
-	 * @param str
-	 *            stringa in input
+	 * @param str stringa in input
 	 * @return double letto nella stringa
 	 */
 	public static double convertToDouble(String str) {
 		try {
-			Double d = new Double(str);
+			Double d = Double.valueOf(str);
 			return d.doubleValue();
 		} catch (Exception e) {
 			return Double.NaN;
@@ -104,10 +104,8 @@ public class UtilAyv {
 	/**
 	 * stampa di un double con un numero di decimali selezionabile
 	 * 
-	 * @param n1
-	 *            double da stampare
-	 * @param prec
-	 *            precisione
+	 * @param n1   double da stampare
+	 * @param prec precisione
 	 * @return stringa di stampa
 	 */
 	public static String printDoubleDecimals(double n1, int prec) {
@@ -122,10 +120,8 @@ public class UtilAyv {
 	/**
 	 * genera l'immagine differenza pixel-by-pixel
 	 * 
-	 * @param imp1
-	 *            immagine minuendo
-	 * @param imp2
-	 *            immagine sottraendo
+	 * @param imp1 immagine minuendo
+	 * @param imp2 immagine sottraendo
 	 * @return immagine differenza
 	 */
 	public static ImagePlus genImaDifference(ImagePlus imp1, ImagePlus imp2) {
@@ -165,10 +161,8 @@ public class UtilAyv {
 	/**
 	 * genera l'immagine differenza pixel-by-pixel
 	 * 
-	 * @param i1
-	 *            immagine minuendo
-	 * @param i2
-	 *            immagine sottraendo
+	 * @param i1 immagine minuendo
+	 * @param i2 immagine sottraendo
 	 * @return immagine differenza
 	 */
 	public static ImagePlus diffIma(ImagePlus imp1, ImagePlus imp2) {
@@ -194,22 +188,14 @@ public class UtilAyv {
 	 * calcoli per rototraslazione delle coordinate rispetto ad un segmento di
 	 * riferimento
 	 * 
-	 * @param ax
-	 *            coord x inizio segmento di riferimento
-	 * @param ay
-	 *            coord y inizio segmento di riferimento
-	 * @param bx
-	 *            coord x fine segmento di riferimento
-	 * @param by
-	 *            coord y fine segmento di riferimento
-	 * @param cx
-	 *            coordinata x da rototraslare
-	 * @param cy
-	 *            coordinata y da rototraslare
-	 * @param debug1
-	 *            true per debug
-	 * @return msd[0] coordinata x rototraslata, msd[1] coordinata y
-	 *         rototraslata
+	 * @param ax     coord x inizio segmento di riferimento
+	 * @param ay     coord y inizio segmento di riferimento
+	 * @param bx     coord x fine segmento di riferimento
+	 * @param by     coord y fine segmento di riferimento
+	 * @param cx     coordinata x da rototraslare
+	 * @param cy     coordinata y da rototraslare
+	 * @param debug1 true per debug
+	 * @return msd[0] coordinata x rototraslata, msd[1] coordinata y rototraslata
 	 */
 	public static double[] coord2D(double ax, double ay, double bx, double by, double cx, double cy, boolean debug1) {
 		double x1;
@@ -286,8 +272,7 @@ public class UtilAyv {
 	/**
 	 * impostazione di Analyzer SetMeasurements
 	 * 
-	 * @param misure2
-	 *            maschera bits misure da attivare
+	 * @param misure2 maschera bits misure da attivare
 	 * @return le misure selezionate in precedenza
 	 */
 	public static int setMeasure(int misure2) {
@@ -317,16 +302,15 @@ public class UtilAyv {
 	/**
 	 * ripristina in Analyzer SetMeasurements le misure precedenti
 	 * 
-	 * @param misure1
-	 *            misure selezionate in precedenza
+	 * @param misure1 misure selezionate in precedenza
 	 */
 	public static void resetMeasure(int misure1) {
 		Analyzer.setMeasurements(misure1);
 	}
 
 	/**
-	 * chiude tutte le finestre e la ResultsTable, ovvia ad un malfunzionamento
-	 * di CloseAllWindows se viene selezionato RIFAI pi� volte
+	 * chiude tutte le finestre e la ResultsTable, ovvia ad un malfunzionamento di
+	 * CloseAllWindows se viene selezionato RIFAI pi� volte
 	 */
 	public static void cleanUp() {
 
@@ -357,8 +341,8 @@ public class UtilAyv {
 	}
 
 	/**
-	 * chiude tutte le finestre e la ResultsTable, ovvia ad un malfunzionamento
-	 * di CloseAllWindows se viene selezionato RIFAI pi� volte
+	 * chiude tutte le finestre e la ResultsTable, ovvia ad un malfunzionamento di
+	 * CloseAllWindows se viene selezionato RIFAI pi� volte
 	 */
 	public static void cleanUp2() {
 
@@ -372,8 +356,7 @@ public class UtilAyv {
 	/**
 	 * estrae da una stringa delle preferenze di ImageJ i dati, separati da ;
 	 * 
-	 * @param xData
-	 *            stringa preferenze
+	 * @param xData stringa preferenze
 	 * @return vettore coi dati decodificati
 	 */
 	public static int[] getPos(String xData) {
@@ -434,8 +417,7 @@ public class UtilAyv {
 	/**
 	 * estrae i tokens dallo string tokenizer
 	 * 
-	 * @param st
-	 *            string tokenizer con i dati
+	 * @param st string tokenizer con i dati
 	 * @return il token estratto (a ogni chiamata viene letto il token via via
 	 *         successivo)
 	 */
@@ -464,11 +446,9 @@ public class UtilAyv {
 	}
 
 	/**
-	 * estrae il valore reale dei pixels dalle immagini calibrate e non
-	 * calibrate
+	 * estrae il valore reale dei pixels dalle immagini calibrate e non calibrate
 	 * 
-	 * @param imp
-	 *            immagine da cui estrarre il valore dei pixels
+	 * @param imp immagine da cui estrarre il valore dei pixels
 	 * @return array contenente il valore reale dei pixels
 	 */
 	public static short[] truePixels(ImagePlus imp) {
@@ -497,10 +477,11 @@ public class UtilAyv {
 	}
 
 	public static boolean compareImagesByImageProcessors(ImagePlus imp1, ImagePlus imp2) {
-		
+
 		if (imp1.getBitDepth() != imp2.getBitDepth()) {
 			IJ.log("compareImagesByImageProcessors.bit depth difference");
-			return false;}
+			return false;
+		}
 		if (imp1.getBitDepth() == 32) {
 			float[] ip1 = (float[]) imp1.getProcessor().getPixels();
 			float[] ip2 = (float[]) imp2.getProcessor().getPixels();
@@ -581,13 +562,12 @@ public class UtilAyv {
 	}
 
 	/**
-	 * Calculates the standard deviation of an array of numbers. see Knuth's The
-	 * Art Of Computer Programming Volume II: Seminumerical Algorithms This
-	 * algorithm is slower, but more resistant to error propagation.
+	 * Calculates the standard deviation of an array of numbers. see Knuth's The Art
+	 * Of Computer Programming Volume II: Seminumerical Algorithms This algorithm is
+	 * slower, but more resistant to error propagation.
 	 * 
-	 * @param data
-	 *            Numbers to compute the standard deviation of. Array must
-	 *            contain two or more numbers.
+	 * @param data Numbers to compute the standard deviation of. Array must contain
+	 *             two or more numbers.
 	 * @return standard deviation estimate of population ( to get estimate of
 	 *         sample, use n instead of n-1 in last line )
 	 * @deprecated see ArrayUtils.vetSdKnuth
@@ -792,8 +772,7 @@ public class UtilAyv {
 	/**
 	 * selezione di un immagine da parte dell'utilizzatore
 	 * 
-	 * @param message
-	 *            messaggio per l'utilizzatore
+	 * @param message messaggio per l'utilizzatore
 	 * @return path dell'immagine selezionata
 	 */
 	public static String imageSelection(String message) {
@@ -813,8 +792,7 @@ public class UtilAyv {
 	/**
 	 * selezione di un immagine da parte dell'utilizzatore
 	 * 
-	 * @param message
-	 *            messaggio per l'utilizzatore
+	 * @param message messaggio per l'utilizzatore
 	 * @return path dell'immagine selezionata
 	 */
 	public static String imageSelection(String message, String defaultDirectory) {
@@ -836,8 +814,7 @@ public class UtilAyv {
 	/**
 	 * apre e mostra una immagine ingrandita
 	 * 
-	 * @param path
-	 *            path dell'immagine da mostrare
+	 * @param path path dell'immagine da mostrare
 	 * @return puntatore ImagePlus all'immagine
 	 */
 	public static ImagePlus openImageMaximized(String path) {
@@ -855,8 +832,7 @@ public class UtilAyv {
 	/**
 	 * apre e mostra una immagine
 	 * 
-	 * @param path
-	 *            path dell'immagine da mostrare
+	 * @param path path dell'immagine da mostrare
 	 * @return puntatore ImagePlus all'immagine
 	 */
 	public static ImagePlus openImageNormal(String path) {
@@ -875,8 +851,7 @@ public class UtilAyv {
 	/**
 	 * apre un immagine senza display
 	 * 
-	 * @param path
-	 *            path dell'immagine
+	 * @param path path dell'immagine
 	 * @return puntatore ImagePlus all'immagine
 	 */
 	public static ImagePlus openImageNoDisplay(String path, boolean verbose) {
@@ -890,12 +865,11 @@ public class UtilAyv {
 		}
 		return imp;
 	}
-	
+
 	/**
 	 * apre un immagine senza display
 	 * 
-	 * @param path
-	 *            path dell'immagine
+	 * @param path path dell'immagine
 	 * @return puntatore ImagePlus all'immagine
 	 */
 	public static ImagePlus openImageNoDisplay(File nome, boolean verbose) {
@@ -910,12 +884,10 @@ public class UtilAyv {
 		return imp;
 	}
 
-
 	/**
 	 * massimizza una immagine
 	 * 
-	 * @param imp
-	 *            puntatore ImagePlus all'immagine
+	 * @param imp puntatore ImagePlus all'immagine
 	 */
 	public static void showImageMaximized2(ImagePlus imp) {
 		imp.show();
@@ -925,9 +897,6 @@ public class UtilAyv {
 		IJ.wait(20);
 		win.setExtendedState(ImageWindow.MAXIMIZED_BOTH);
 	}
-	
-
-	
 
 	public static ImageWindow showImageMaximized(ImagePlus imp) {
 
@@ -953,7 +922,7 @@ public class UtilAyv {
 		}
 		win = imp.getWindow();
 		win.setBounds(win.getMaximumBounds());
-		win.minimize();
+		win.maximize();
 		win.toFront();
 		// double mag2 = win.getCanvas().getMagnification();
 		// IJ.log("mag2= " + mag2);
@@ -985,10 +954,8 @@ public class UtilAyv {
 	/**
 	 * menu selezione manuale
 	 * 
-	 * @param version
-	 *            stringa con la versione
-	 * @param type
-	 *            stringa con la dicitura
+	 * @param version stringa con la versione
+	 * @param type    stringa con la dicitura
 	 * @return tasto selezionato
 	 */
 	public static int userSelectionManual1(String version, String type) {
@@ -1002,10 +969,8 @@ public class UtilAyv {
 	/**
 	 * menu selezione manuale
 	 * 
-	 * @param version
-	 *            stringa con la versione
-	 * @param type
-	 *            stringa con la dicitura
+	 * @param version stringa con la versione
+	 * @param type    stringa con la dicitura
 	 * @return tasto selezionato
 	 */
 	public static int userSelectionManual2(String version, String type, int preset) {
@@ -1020,10 +985,8 @@ public class UtilAyv {
 	/**
 	 * menu selezione manuale
 	 * 
-	 * @param version
-	 *            stringa con la versione
-	 * @param type
-	 *            stringa con la dicitura
+	 * @param version stringa con la versione
+	 * @param type    stringa con la dicitura
 	 * @return tasto selezionato
 	 */
 	public static int userSelectionManual(String version, String type) {
@@ -1052,10 +1015,8 @@ public class UtilAyv {
 	/**
 	 * menu selezione automatica
 	 * 
-	 * @param version
-	 *            stringa con la versione
-	 * @param type
-	 *            stringa con la dicitura
+	 * @param version stringa con la versione
+	 * @param type    stringa con la dicitura
 	 * @return tasto selezionato
 	 */
 	public static int userSelectionAuto(String version, String type) {
@@ -1067,10 +1028,8 @@ public class UtilAyv {
 	/**
 	 * menu selezione automatica
 	 * 
-	 * @param version
-	 *            stringa con la versione
-	 * @param type
-	 *            stringa con la dicitura
+	 * @param version stringa con la versione
+	 * @param type    stringa con la dicitura
 	 * @return tasto selezionato
 	 */
 	public static int userSelectionAuto(String version, String type, String code, String coil, int riga, int length) {
@@ -1100,7 +1059,6 @@ public class UtilAyv {
 		return ip;
 	}
 
-
 	/**
 	 * 
 	 * @param vect1
@@ -1108,9 +1066,9 @@ public class UtilAyv {
 	 * @param precision
 	 * @param msg
 	 * @return
-	* @Deprecated "use ArrayUtils.compareVectors"
+	 * @Deprecated "use ArrayUtils.compareVectors"
 	 */
-	@Deprecated 
+	@Deprecated
 
 	public static boolean compareVectors(double[] vect1, double[] vect2, double precision, String msg) {
 		if ((vect1 == null) || (vect2 == null)) {
@@ -1134,7 +1092,7 @@ public class UtilAyv {
 		return true;
 	}
 
-	@Deprecated 
+	@Deprecated
 	public static boolean compareVectors(float[] vect1, float[] vect2, float precision, String msg) {
 		if ((vect1 == null) || (vect2 == null)) {
 			if (msg.length() > 0) {
@@ -1157,7 +1115,7 @@ public class UtilAyv {
 		return true;
 	}
 
-	@Deprecated 
+	@Deprecated
 	public static boolean compareVectors(int[] vect1, int[] vect2, String msg) {
 		if ((vect1 == null) || (vect2 == null)) {
 			if (msg.length() > 0) {
@@ -1179,7 +1137,7 @@ public class UtilAyv {
 		return true;
 	}
 
-	@Deprecated 
+	@Deprecated
 	public static boolean compareVectors(long[] vect1, long[] vect2, String msg) {
 		if ((vect1 == null) || (vect2 == null)) {
 			if (msg.length() > 0) {
@@ -1201,7 +1159,7 @@ public class UtilAyv {
 		return true;
 	}
 
-	@Deprecated 
+	@Deprecated
 	public static boolean compareVectors(String[] vect1, String[] vect2, String msg) {
 		if ((vect1 == null) || (vect2 == null)) {
 			if (msg.length() > 0) {
@@ -1226,7 +1184,7 @@ public class UtilAyv {
 		return true;
 	}
 
-	@Deprecated 
+	@Deprecated
 	public static boolean compareMatrix(double[][] mat1, double[][] mat2, String msg) {
 		if ((mat1 == null) || (mat2 == null)) {
 			if (msg.length() > 0) {
@@ -1253,7 +1211,7 @@ public class UtilAyv {
 		return true;
 	}
 
-	@Deprecated 
+	@Deprecated
 	public static boolean compareMatrix(float[][] mat1, float[][] mat2, String msg) {
 		if ((mat1 == null) || (mat2 == null)) {
 			if (msg.length() > 0) {
@@ -1280,7 +1238,7 @@ public class UtilAyv {
 		return true;
 	}
 
-	@Deprecated 
+	@Deprecated
 	public static boolean compareMatrix(int[][] mat1, int[][] mat2, String msg) {
 		if ((mat1 == null) || (mat2 == null)) {
 			if (msg.length() > 0) {
@@ -1307,7 +1265,7 @@ public class UtilAyv {
 		return true;
 	}
 
-	@Deprecated 
+	@Deprecated
 	public static boolean compareMatrix(String[][] mat1, String[][] mat2, String msg) {
 		if ((mat1 == null) || (mat2 == null)) {
 			if (msg.length() > 0) {
@@ -1748,10 +1706,10 @@ public class UtilAyv {
 	}
 
 	/**
-	 * Saves this ResultsTable as a tab or comma delimited text file. The table
-	 * is saved as a CSV (comma-separated values) file if 'path' ends with
-	 * ".csv". Displays a file save dialog if 'path' is empty or null. Does
-	 * nothing if the table is empty.
+	 * Saves this ResultsTable as a tab or comma delimited text file. The table is
+	 * saved as a CSV (comma-separated values) file if 'path' ends with ".csv".
+	 * Displays a file save dialog if 'path' is empty or null. Does nothing if the
+	 * table is empty.
 	 */
 	public static void mySaveAs2(String path) throws IOException {
 
@@ -1773,10 +1731,10 @@ public class UtilAyv {
 	}
 
 	/**
-	 * Saves this ResultsTable as a tab or comma delimited text file. The table
-	 * is saved as a CSV (comma-separated values) file if 'path' ends with
-	 * ".csv". Displays a file save dialog if 'path' is empty or null. Does
-	 * nothing if the table is empty.
+	 * Saves this ResultsTable as a tab or comma delimited text file. The table is
+	 * saved as a CSV (comma-separated values) file if 'path' ends with ".csv".
+	 * Displays a file save dialog if 'path' is empty or null. Does nothing if the
+	 * table is empty.
 	 */
 	public static void mySaveAs(String path, ResultsTable rt) throws IOException {
 
@@ -1824,8 +1782,7 @@ public class UtilAyv {
 	/**
 	 * Vectorize the ResutlsTable
 	 * 
-	 * @param rt1
-	 *            results table
+	 * @param rt1 results table
 	 * @return
 	 */
 	public static int[][] vectorizeResults2(ResultsTable rt1) {
@@ -1848,8 +1805,7 @@ public class UtilAyv {
 	/**
 	 * Vectorize the ResutlsTable
 	 * 
-	 * @param rt1
-	 *            results table
+	 * @param rt1 results table
 	 * @return
 	 */
 	public static double[] vectorizeResults(ResultsTable rt1) {
@@ -1872,8 +1828,7 @@ public class UtilAyv {
 	/**
 	 * Vectorize the ResutlsTable
 	 * 
-	 * @param rt1
-	 *            results table
+	 * @param rt1 results table
 	 * @return
 	 */
 	public static double[] vectorizeResultsNew(ResultsTable rt1) {
@@ -1896,8 +1851,7 @@ public class UtilAyv {
 	/**
 	 * Vectorize the ResutlsTable
 	 * 
-	 * @param rt1
-	 *            results table
+	 * @param rt1 results table
 	 * @return
 	 */
 	public static double[] vectorizeResultsMultiple(ResultsTable rt1, int columns) {
@@ -1934,8 +1888,8 @@ public class UtilAyv {
 
 	public void demoPixelPertainRoiTest(ImageProcessor ip) {
 		/**
-		 * questo e' solo un appunto sui metodi che possiamo utilizzare per
-		 * stabilire se un pixel e' all'interno di una ROI.
+		 * questo e' solo un appunto sui metodi che possiamo utilizzare per stabilire se
+		 * un pixel e' all'interno di una ROI.
 		 */
 
 		// byte[] pixels = (byte[]) ip.getPixels();
@@ -1947,10 +1901,9 @@ public class UtilAyv {
 				if (mask == null || mask.getPixel(x - r.x, y - r.y) != 0) {
 					// ...DO What YOU WISH TO DO
 					/**
-					 * Roi roi = Imp.getRoi(); Rectangle rect = roi.getBounds();
-					 * rx = rect.x; ry = rect.y; w = rect.width; h =
-					 * rect.height; for(int y=ry; y<ry+h; y++) { for(int x=rx;
-					 * x<rx+w; x++) { if(roi.contains(x, y)) {
+					 * Roi roi = Imp.getRoi(); Rectangle rect = roi.getBounds(); rx = rect.x; ry =
+					 * rect.y; w = rect.width; h = rect.height; for(int y=ry; y<ry+h; y++) { for(int
+					 * x=rx; x<rx+w; x++) { if(roi.contains(x, y)) {
 					 */
 
 				}
@@ -1964,9 +1917,9 @@ public class UtilAyv {
 	}
 
 	/**
-	 * progettato per le SymphonyTim per ovviare al fatto che quando si fa un
-	 * save uncombined non viene scritto il parametro dicom relativo alla
-	 * receiver coil (software syngo MR B17 )
+	 * progettato per le SymphonyTim per ovviare al fatto che quando si fa un save
+	 * uncombined non viene scritto il parametro dicom relativo alla receiver coil
+	 * (software syngo MR B17 )
 	 * 
 	 * @param path1
 	 * @return restituisce la sigla della bobina utilizzata
@@ -2092,14 +2045,10 @@ public class UtilAyv {
 	/**
 	 * Verifica se un valore calcolato � nei limiti assegnati
 	 * 
-	 * @param signal
-	 *            valore calcolato
-	 * @param low
-	 *            limite inferiore accettabilit�
-	 * @param high
-	 *            limite superiore accettabilit�
-	 * @param title
-	 *            stringa con nome valore
+	 * @param signal valore calcolato
+	 * @param low    limite inferiore accettabilit�
+	 * @param high   limite superiore accettabilit�
+	 * @param title  stringa con nome valore
 	 * @return true se accettato
 	 */
 	public static int checkLimits(double signal, double low, double high, String title) {
@@ -2269,17 +2218,17 @@ public class UtilAyv {
 	}
 
 	/**
-	 * Test sulle immagini ricevute in automatico da Sequenze. In caso di
-	 * problemi viene dato un messaggio esplicativo e restituito false. Vengono
-	 * eseguiti i seguenti controlli sul gruppo di righe (e quindi di immagini)
-	 * passate al plugin. I controlli effettuati sono: verifica che le immagini
-	 * siano acquisite tutte dalla stessa sequenza. Verifica che tutte le
-	 * immagini siano acquisite dalla stessa bobina (oppure MISSIONG). Verifiche
-	 * sugli echi delle immagini: Caso singola immagine p4, p6, p8: non ne devo
-	 * passare pi� di una. Caso due immagini p3, p10 e p12: due sole immagini
-	 * acquisite una di seguito all'altra con lo stesso eco. Caso di p5 e p10 e
-	 * p11 quattro immagini, due gruppi di due echi diversi, acquisiti uno dopo
-	 * l'altro il primo eco deve essere inferiore al secondo eco
+	 * Test sulle immagini ricevute in automatico da Sequenze. In caso di problemi
+	 * viene dato un messaggio esplicativo e restituito false. Vengono eseguiti i
+	 * seguenti controlli sul gruppo di righe (e quindi di immagini) passate al
+	 * plugin. I controlli effettuati sono: verifica che le immagini siano acquisite
+	 * tutte dalla stessa sequenza. Verifica che tutte le immagini siano acquisite
+	 * dalla stessa bobina (oppure MISSIONG). Verifiche sugli echi delle immagini:
+	 * Caso singola immagine p4, p6, p8: non ne devo passare pi� di una. Caso due
+	 * immagini p3, p10 e p12: due sole immagini acquisite una di seguito all'altra
+	 * con lo stesso eco. Caso di p5 e p10 e p11 quattro immagini, due gruppi di due
+	 * echi diversi, acquisiti uno dopo l'altro il primo eco deve essere inferiore
+	 * al secondo eco
 	 * 
 	 * @param vetRiga
 	 * @param iw2ayvTable
@@ -2430,17 +2379,17 @@ public class UtilAyv {
 	}
 
 	/**
-	 * Test sulle immagini ricevute in automatico da Sequenze. In caso di
-	 * problemi viene dato un messaggio esplicativo e restituito false. Vengono
-	 * eseguiti i seguenti controlli sul gruppo di righe (e quindi di immagini)
-	 * passate al plugin. I controlli effettuati sono: verifica che le immagini
-	 * siano acquisite tutte dalla stessa sequenza. Verifica che tutte le
-	 * immagini siano acquisite dalla stessa bobina (oppure MISSIONG). Verifiche
-	 * sugli echi delle immagini: Caso singola immagine p4, p6, p8: non ne devo
-	 * passare pi� di una. Caso due immagini p3, p10 e p12: due sole immagini
-	 * acquisite una di seguito all'altra con lo stesso eco. Caso di p5 e p10 e
-	 * p11 quattro immagini, due gruppi di due echi diversi, acquisiti uno dopo
-	 * l'altro il primo eco deve essere inferiore al secondo eco
+	 * Test sulle immagini ricevute in automatico da Sequenze. In caso di problemi
+	 * viene dato un messaggio esplicativo e restituito false. Vengono eseguiti i
+	 * seguenti controlli sul gruppo di righe (e quindi di immagini) passate al
+	 * plugin. I controlli effettuati sono: verifica che le immagini siano acquisite
+	 * tutte dalla stessa sequenza. Verifica che tutte le immagini siano acquisite
+	 * dalla stessa bobina (oppure MISSIONG). Verifiche sugli echi delle immagini:
+	 * Caso singola immagine p4, p6, p8: non ne devo passare pi� di una. Caso due
+	 * immagini p3, p10 e p12: due sole immagini acquisite una di seguito all'altra
+	 * con lo stesso eco. Caso di p5 e p10 e p11 quattro immagini, due gruppi di due
+	 * echi diversi, acquisiti uno dopo l'altro il primo eco deve essere inferiore
+	 * al secondo eco
 	 * 
 	 * @param vetRiga
 	 * @param iw2ayvTable
@@ -2521,7 +2470,7 @@ public class UtilAyv {
 
 		switch (sel) {
 		case 1:
-			// questo � il caso della singola immagine p4, p6, p8
+			// questo e' il caso della singola immagine p4, p6, p8
 			if (vetRiga.length != 1) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
 						+ "errore sul numero parametri ricevuti da Sequenze \n" + "previsti= 1 reali= " + stampa,
@@ -2531,7 +2480,7 @@ public class UtilAyv {
 			break;
 
 		case 2:
-			// questo � il caso tipico di p3, p10 e p12
+			// questo e' il caso tipico di p3, p10 e p12
 			// due sole immagini acquisite una di seguito all'altra.
 			// hanno lo stesso eco
 			if (vetRiga.length != 2) {
@@ -2553,7 +2502,7 @@ public class UtilAyv {
 			break;
 		case 3:
 
-			// questo � il caso tipico di p5 e p10 e p11
+			// questo e' il caso tipico di p5 e p10 e p11
 			// quattro immagini, due gruppi di due echi diversi, acquisiti uno
 			// dopo l'altro
 			// il primo eco deve essere inferiore al secondo eco
@@ -2589,7 +2538,7 @@ public class UtilAyv {
 
 		case 4:
 
-			// questo � il caso tipico di p3 e p10 e p12, nell'ipotetico caso di
+			// questo e' il caso tipico di p3 e p10 e p12, nell'ipotetico caso di
 			// quattro immagini
 			if (vetRiga.length != 4) {
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
@@ -2619,14 +2568,101 @@ public class UtilAyv {
 	/**
 	 * checkImages2 effettua il controllo di coerenza delle immagini
 	 *
-	 * @param path1
-	 *            path prima immagine
-	 * @param path2
-	 *            path seconda immagine
+	 * @param path1 path prima immagine
+	 * @param path2 path seconda immagine
 	 * @param debug
 	 * @return
 	 */
 	public static boolean checkImages2(String path1, String path2, boolean debug) {
+
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, true);
+		ImagePlus imp2 = UtilAyv.openImageNoDisplay(path2, true);
+		boolean discosta = false;
+
+		String series1 = DicomTools.getTag(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
+		String position1 = DicomTools.getTag(imp1, MyConst.DICOM_IMAGE_POSITION);
+		String position1x = ReadDicom.readSubstring(position1, 1);
+		double pos1x = ReadDicom.readDouble(position1x);
+		String position1y = ReadDicom.readSubstring(position1, 2);
+		double pos1y = ReadDicom.readDouble(position1y);
+		String position1z = ReadDicom.readSubstring(position1, 3);
+		double pos1z = ReadDicom.readDouble(position1z);
+
+		String location1 = DicomTools.getTag(imp1, MyConst.DICOM_SLICE_LOCATION);
+		double loc1 = ReadDicom.readDouble(location1);
+
+		String echo1a = DicomTools.getTag(imp1, MyConst.DICOM_ECHO_TIME);
+		int echo1 = ReadDicom.readInt(echo1a);
+
+		String series2 = DicomTools.getTag(imp2, MyConst.DICOM_SERIES_DESCRIPTION);
+		String position2 = DicomTools.getTag(imp2, MyConst.DICOM_IMAGE_POSITION);
+		String position2x = ReadDicom.readSubstring(position2, 1);
+		double pos2x = ReadDicom.readDouble(position2x);
+		String position2y = ReadDicom.readSubstring(position2, 2);
+		double pos2y = ReadDicom.readDouble(position2y);
+		String position2z = ReadDicom.readSubstring(position2, 3);
+		double pos2z = ReadDicom.readDouble(position2z);
+
+		String location2 = DicomTools.getTag(imp2, MyConst.DICOM_SLICE_LOCATION);
+		double loc2 = ReadDicom.readDouble(location2);
+
+		String echo2a = DicomTools.getTag(imp2, MyConst.DICOM_ECHO_TIME);
+		int echo2 = ReadDicom.readInt(echo2a);
+
+		if (!series1.equals(series2)) {
+			MyLog.waitHere("ATTENZIONE: stai per analizzare immagini di serie diverse: /n" + series1
+					+ " differerisce da /n" + series2);
+		}
+
+		double tolerance=0.01;    // metto un centesimo di millimetro
+		if (myOutTolerance(pos1x, pos2x, tolerance) || myOutTolerance(pos1y, pos2y, tolerance)
+				|| myOutTolerance(pos1z, pos2z, tolerance)) {
+			discosta = true;
+			MyLog.waitHere("ATTENZIONE: stai per analizzare immagini con differenti posizioni: /n" + position1
+					+ " differisce da /n" + position2);
+		}
+		if (myOutTolerance(loc1, loc2, tolerance)) {
+			discosta = true;
+			MyLog.waitHere("ATTENZIONE: stai per analizzare slices con differente location: /n" + location1
+					+ " differisce da /n" + location2);
+		}
+		if (echo1 != echo2) {
+			discosta = true;
+			MyLog.waitHere("ATTENZIONE: stai per analizzare slices con differente echo time: /n" + echo1
+					+ " differisce da /n" + echo2);
+		}
+
+		String coil1 = ReadDicom.getAllCoils(imp1);
+		String coil2 = ReadDicom.getAllCoils(imp2);
+		if (!coil1.equals(coil2)) {
+			discosta = true;
+			MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+					+ "la descrizione delle sequenze ricevute e'differente per le bobine utilizzate: " + coil1
+					+ "   <>    " + coil2, debug);
+			return false;
+		}
+
+		if (discosta) {
+			int res = ButtonMessages.ModalMsg(
+					"ATTENZIONE se si preme CONTINUA ELABORAZIONE i risultati possono essere fuori specifiche!!",
+					"CONTINUA ELABORAZIONE", "SALTA A IMMAGINE SUCCESSIVA");
+
+			if (res == 1)
+				return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * checkImages2alfa effettua il controllo di coerenza delle immagini
+	 *
+	 * @param path1 path prima immagine
+	 * @param path2 path seconda immagine
+	 * @param debug
+	 * @return
+	 */
+	public static boolean checkImages2alfa(String path1, String path2, boolean debug) {
 
 		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, true);
 		ImagePlus imp2 = UtilAyv.openImageNoDisplay(path2, true);
@@ -2637,6 +2673,7 @@ public class UtilAyv {
 		for (int i1 = 0; i1 < vetString.length; i1++) {
 			String item1 = ReadDicom.readDicomParameter(imp1, vetString[i1]);
 			String item2 = ReadDicom.readDicomParameter(imp2, vetString[i1]);
+
 			if (!item1.equals(item2)) {
 
 				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
@@ -2667,10 +2704,8 @@ public class UtilAyv {
 	/**
 	 * checkImages3 effettua il controllo di coerenza delle immagini
 	 *
-	 * @param path1
-	 *            path prima immagine
-	 * @param path2
-	 *            path seconda immagine
+	 * @param path1 path prima immagine
+	 * @param path2 path seconda immagine
 	 * @param debug
 	 * @return
 	 */
@@ -2976,18 +3011,12 @@ public class UtilAyv {
 	/**
 	 * Calcolo delle distanza minima tra due circonferenze esterne
 	 * 
-	 * @param x1
-	 *            coordinata x cerchio 1
-	 * @param y1
-	 *            coordinata y cerchio 1
-	 * @param r1
-	 *            raggio cerchio 1
-	 * @param x2
-	 *            coordinata x cerchio 2
-	 * @param y2
-	 *            coordinata y cerchio 2
-	 * @param r2
-	 *            raggio cerchio 2
+	 * @param x1 coordinata x cerchio 1
+	 * @param y1 coordinata y cerchio 1
+	 * @param r1 raggio cerchio 1
+	 * @param x2 coordinata x cerchio 2
+	 * @param y2 coordinata y cerchio 2
+	 * @param r2 raggio cerchio 2
 	 * @return distanza minima tra i cechi
 	 */
 	public static int criticalDistanceCalculation(int x1, int y1, int r1, int x2, int y2, int r2) {
@@ -3180,7 +3209,6 @@ public class UtilAyv {
 		return path2;
 	}
 
-	
 	public static boolean jarCount(String nome1) {
 		List<File> lista1 = listJars2(new File(ij.Menus.getPlugInsPath()));
 		String[] list = new String[lista1.size()];
@@ -3196,7 +3224,7 @@ public class UtilAyv {
 			}
 		}
 		String msg = "";
-		if (count <1) {
+		if (count < 1) {
 			IJ.error("ATTENZIONE, manca il file " + nome1 + "xxx.jar");
 		}
 		if (count > 1) {
@@ -3213,7 +3241,7 @@ public class UtilAyv {
 		else
 			return false;
 	}
-	
+
 	public static List<File> listJars2(File startingDir) {
 		List<File> result = new ArrayList<File>();
 		File[] filesAndDirs = startingDir.listFiles();
@@ -3233,5 +3261,13 @@ public class UtilAyv {
 		return result;
 	}
 
+	public static boolean myOutTolerance(double in1, double in2, double tolerance) {
+
+		double diff = Math.abs(in1 - in2);
+		if (diff > tolerance)
+			return true;
+		else
+			return false;
+	}
 
 } // UtilAyv
