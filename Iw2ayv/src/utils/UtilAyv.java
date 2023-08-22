@@ -173,11 +173,20 @@ public class UtilAyv {
 		return imp3;
 	}
 
-	public static String getFiveLetters(String codice1) {
+	public static String getFiveLetters(String seriesDescription) {
 
 		String codice;
-		if (codice1.length() >= 5) {
-			codice = codice1.substring(0, 5).trim();
+		String blob1 = "DelRe";
+		int len1=seriesDescription.length();
+		
+		if (len1 >= 5) {
+			codice = seriesDescription.substring(0, 5).trim();
+			// la seguente modifica permette di leggere le ultime 5 lettere dei codici che
+			// iniziano con "DelRe", modifica per il CAE (11/08/2023)- non dovrebbe
+			// intervenire in nessun altro caso			
+			if (codice.equalsIgnoreCase(blob1)) {
+				codice = seriesDescription.substring(len1 - 5, len1);
+			}
 		} else {
 			codice = "_xxx_";
 		}
