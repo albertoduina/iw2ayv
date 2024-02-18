@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-
 public class ReadDicom {
 
 	private static final int PIXEL_DATA = 0x7FE00010;
@@ -24,15 +23,12 @@ public class ReadDicom {
 	/**
 	 * La seguente routine, che si occupa di estrarre dati dall'header delle
 	 * immagini fu copiata dal QueryDicomHeader.java di Anthony Padua & Daniel
-	 * Barboriak - Duke University Medical Center. *** modified version ***
-	 * Alberto Duina - Spedali Civili di Brescia - Servizio di Fisica Sanitaria
-	 * 2006
+	 * Barboriak - Duke University Medical Center. *** modified version *** Alberto
+	 * Duina - Spedali Civili di Brescia - Servizio di Fisica Sanitaria 2006
 	 * 
-	 * @param imp
-	 *            immagine di cui leggere l'header
-	 * @param userInput
-	 *            stringa di 9 caratteri contenente "group,element"
-	 *            esempio:"0020,0013"
+	 * @param imp       immagine di cui leggere l'header
+	 * @param userInput stringa di 9 caratteri contenente "group,element"
+	 *                  esempio:"0020,0013"
 	 * @return stringa col valore del parametro
 	 */
 	public static String readDicomParameter(ImagePlus imp, String userInput) {
@@ -84,8 +80,7 @@ public class ReadDicom {
 			MyLog.trace("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "file="
 					+ Thread.currentThread().getStackTrace()[3].getFileName() + " " + " line="
-					+ Thread.currentThread().getStackTrace()[3].getLineNumber()  , true);
-
+					+ Thread.currentThread().getStackTrace()[3].getLineNumber(), true);
 
 //			IJ.error("readDicomParameter WARNING!! Header is null.");
 			attribute = null;
@@ -150,10 +145,8 @@ public class ReadDicom {
 	/**
 	 * estrae una parte di parametro dicom costituito da una stringa multipla
 	 * 
-	 * @param s1
-	 *            stringa multipla
-	 * @param number
-	 *            selezione parte da restituire
+	 * @param s1     stringa multipla
+	 * @param number selezione parte da restituire
 	 * @return stringa con la parte selezionata
 	 */
 	public static String readSubstring(String s1, int number) {
@@ -189,14 +182,13 @@ public class ReadDicom {
 	/**
 	 * legge un valore double da una stringa
 	 * 
-	 * @param s1
-	 *            stringa input
+	 * @param s1 stringa input
 	 * @return valore double letto in s1
 	 */
 	public static double readDouble(String s1) {
 		double x = 0;
 		try {
-			x =  Double.valueOf(s1);
+			x = Double.valueOf(s1);
 		} catch (Exception e) {
 			// IJ.error("readDouble >> invalid floating point number");
 			// tolto il messaggio per evitare isterismi nell'utenza
@@ -207,8 +199,7 @@ public class ReadDicom {
 	/**
 	 * legge un valore float da una stringa
 	 * 
-	 * @param s1
-	 *            stringa input
+	 * @param s1 stringa input
 	 * @return valore float letto in s1
 	 */
 	public static float readFloat(String s1) {
@@ -224,8 +215,7 @@ public class ReadDicom {
 	/**
 	 * legge un valore integer da una stringa
 	 * 
-	 * @param s1
-	 *            stringa input
+	 * @param s1 stringa input
 	 * @return valore integer letto in s1
 	 */
 	public static int readInt(String s1) {
@@ -242,8 +232,7 @@ public class ReadDicom {
 	 * filtra i file non dicom e/o non contenenti pixel_data (per ovviare al
 	 * problema dei dicom reports che in imagej danno un out of memory error
 	 * 
-	 * @param fileName1
-	 *            path del file da validare
+	 * @param fileName1 path del file da validare
 	 * @return true se � un immagine valida
 	 */
 	public static boolean isDicomOld(String fileName1) {
@@ -323,9 +312,24 @@ public class ReadDicom {
 		return codice;
 	}
 
+	public static String getAllCoils(ImagePlus imp1) {
+
+		String total1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL1);
+		String total2 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL2);
+		String total = "MISSING";
+		if (total1.equals("MISSING") == false)
+			total = total1;
+		if (total2.equals("MISSING") == false)
+			total = total2;
+		return total;
+
+	}
+
 	public static String getFirstCoil(ImagePlus imp1) {
 
-		String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
+		
+		String total = ReadDicom.getAllCoils(imp1);
+
 		int i1 = total.indexOf(";");
 		String coil = "";
 		if (i1 == -1) {
@@ -340,8 +344,7 @@ public class ReadDicom {
 	 * getThisCoil
 	 * 
 	 * @param imp1
-	 * @param vetCoils
-	 *            vettore coi le coils di cui verificare la presenza
+	 * @param vetCoils vettore coi le coils di cui verificare la presenza
 	 * @return
 	 */
 	public static String getThisCoil(ImagePlus imp1, String[] vetCoils) {
@@ -350,7 +353,10 @@ public class ReadDicom {
 			// MyLog.waitHere("null1");
 			return null;
 		}
-		String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
+		
+		String total = ReadDicom.getAllCoils(imp1);
+
+		// String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
 		// MyLog.waitHere("total= " + total);
 
 		String[] listCoils = splitCoils(total);
@@ -376,11 +382,11 @@ public class ReadDicom {
 		return null;
 	}
 
-	public static String getAllCoils(ImagePlus imp1) {
-
-		String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
-		return total;
-	}
+//	public static String getAllCoils(ImagePlus imp1) {
+//
+//		String total = ReadDicom.getPrivateCoil(imp1);
+//		return total;
+//	}
 
 	public static String[] splitCoils(String multiCoil) {
 		String[] subCoils;
@@ -393,7 +399,6 @@ public class ReadDicom {
 		return subCoils;
 	}
 
-	
 	/**
 	 * whatManufacturer ricava il nome del costruttore dall'header dell'immagine
 	 * 
@@ -403,8 +408,7 @@ public class ReadDicom {
 	 * @return man
 	 */
 	public static int whatManufacturer(ImagePlus imp1) {
-		String manufacturer1 = ReadDicom
-				.readDicomParameter(imp1, "0008,0070");
+		String manufacturer1 = ReadDicom.readDicomParameter(imp1, "0008,0070");
 		String manufacturer = "";
 
 		if (manufacturer1.length() > 3) {
@@ -427,14 +431,12 @@ public class ReadDicom {
 		return man;
 
 	}
-	
+
 	/***
 	 * Copia i dati header da una ImagePlus ad un altra
 	 * 
-	 * @param imp1
-	 *            immagine a cui aggiungere i dati dicom
-	 * @param imp2
-	 *            immagine da cui copiare dati dicom
+	 * @param imp1 immagine a cui aggiungere i dati dicom
+	 * @param imp2 immagine da cui copiare dati dicom
 	 * @return immagine risultato con dati dicom
 	 */
 	public static ImagePlus copyDicom(ImagePlus imp1, ImagePlus imp2) {
@@ -444,6 +446,5 @@ public class ReadDicom {
 			imp3.setProperty("Info", info);
 		return imp3;
 	}
-
 
 }

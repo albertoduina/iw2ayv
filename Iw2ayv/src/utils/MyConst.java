@@ -54,7 +54,8 @@ public class MyConst {
 	public static final String DICOM_COLUMNS = "0028,0011";
 	public static final String DICOM_PIXEL_SPACING = "0028,0030";
 	public static final String DICOM_PIXEL_REPRESENTATION = "0028,0103";
-	public static final String DICOM_COIL = "0051,100F";
+	public static final String DICOM_COIL1 = "0051,100F";
+	public static final String DICOM_COIL2 = "0021,114F";
 	public static final double PLUS_20_PERC = 1.2;
 	public static final double PLUS_10_PERC = 1.1;
 	public static final double MINUS_10_PERC = 0.9;
