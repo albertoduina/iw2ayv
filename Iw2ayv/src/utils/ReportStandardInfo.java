@@ -82,7 +82,6 @@ public class ReportStandardInfo {
 		else
 			codice = codice2;
 
-
 		String stationName = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_STATION_NAME);
 		String patName = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_PATIENT_NAME);
 
@@ -230,6 +229,7 @@ public class ReportStandardInfo {
 			coil = "null";
 			// MyLog.waitHere("coil = null");
 		}
+
 
 		if (coil.equals("MISSING")) {
 			coil = new UtilAyv().kludge(path);

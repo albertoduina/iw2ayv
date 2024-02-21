@@ -356,6 +356,19 @@ public class ReadDicom {
 		
 		String total = ReadDicom.getAllCoils(imp1);
 
+		// #################################################################
+		// MODIFICA 190224
+		// ---------------------------------
+		// IJ.log("total1= " + total);
+		total = total.replace("BAL;BAR;BCL;BCR", "BAL+BAR+BCL+BCR");
+		total = total.replace("BL;BR", "BL+BR");
+		total = total.replace("PL;PR", "PL+PR");
+		// IJ.log("total2= " + total);
+		// MyLog.waitHere();
+		// #################################################################
+
+		
+		
 		// String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
 		// MyLog.waitHere("total= " + total);
 
