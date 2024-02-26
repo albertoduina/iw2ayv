@@ -1747,6 +1747,10 @@ public class UtilAyv {
 	 */
 	public static void mySaveAs(String path, ResultsTable rt) throws IOException {
 
+		if (rt==null) {
+			MyLog.waitHere("NO_SAVE table null!");
+			return;
+		}
 		if (rt.getCounter() == 0) {
 			MyLog.waitHere("NO_SAVE table empty!");
 			return;

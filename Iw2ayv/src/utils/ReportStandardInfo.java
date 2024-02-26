@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+
 public class ReportStandardInfo {
 
 	// private final static String DICOM_SERIES_DESCRIPTION = "0008,103E";
@@ -500,5 +501,98 @@ public class ReportStandardInfo {
 	public static int getStandardInfoLength() {
 		return simpleHeader.length;
 	}
+	
+	public static ResultsTable abortResultTable_P10(String[] info11, double slicePosition11) {
+
+		ResultsTable rt11 = ResultsTable.getResultsTable();
+		rt11.reset();
+
+		String t11 = "TESTO";
+		String s12 = "VALORE";
+		String s13 = "roi_x";
+		String s14 = "roi_y";
+		String s15 = "roi_b";
+		String s16 = "roi_h";
+		rt11 = ReportStandardInfo.putSimpleStandardInfoRT_new(info11);
+		rt11.showRowNumbers(true);
+		for (int i1 = 0; i1 < 5; i1++) {
+			rt11.incrementCounter();
+			rt11.addValue(t11, "dummy_10");
+			rt11.addValue(s12, "----");
+			rt11.addValue(s13, "----");
+			rt11.addValue(s14, "----");
+			rt11.addValue(s15, "----");
+			rt11.addValue(s16, "----");
+		}
+		rt11.incrementCounter();
+		rt11.addValue(t11, "Pos");
+		rt11.addValue(s12, slicePosition11);
+		rt11.addValue(s13, 0);
+		rt11.addValue(s14, 0);
+		rt11.addValue(s15, 0);
+		rt11.addValue(s16, 0);
+		
+		for (int i1 = 0; i1 < 12; i1++) {
+			rt11.incrementCounter();
+			rt11.addValue(t11, "dummy");
+			rt11.addValue(s12, "----");
+			rt11.addValue(s13, "----");
+			rt11.addValue(s14, "----");
+			rt11.addValue(s15, "----");
+			rt11.addValue(s16, "----");
+		}
+
+		
+
+		return rt11;
+	}
+	
+	public static ResultsTable abortResultTable_P12(String[] info11, double slicePosition11) {
+
+		ResultsTable rt11 = ResultsTable.getResultsTable();
+		rt11.reset();
+
+		String t11 = "TESTO";
+		String s12 = "VALORE";
+		String s13 = "roi_x";
+		String s14 = "roi_y";
+		String s15 = "roi_b";
+		String s16 = "roi_h";
+		rt11 = ReportStandardInfo.putSimpleStandardInfoRT_new(info11);
+		rt11.showRowNumbers(true);
+		for (int i1 = 0; i1 < 5; i1++) {
+			rt11.incrementCounter();
+			rt11.addValue(t11, "dummy_12");
+			rt11.addValue(s12, "----");
+			rt11.addValue(s13, "----");
+			rt11.addValue(s14, "----");
+			rt11.addValue(s15, "----");
+			rt11.addValue(s16, "----");
+		}
+		rt11.incrementCounter();
+		rt11.addValue(t11, "Pos");
+		rt11.addValue(s12, slicePosition11);
+		rt11.addValue(s13, 0);
+		rt11.addValue(s14, 0);
+		rt11.addValue(s15, 0);
+		rt11.addValue(s16, 0);
+		
+		for (int i1 = 0; i1 < 5; i1++) {
+			rt11.incrementCounter();
+			rt11.addValue(t11, "dummy");
+			rt11.addValue(s12, "----");
+			rt11.addValue(s13, "----");
+			rt11.addValue(s14, "----");
+			rt11.addValue(s15, "----");
+			rt11.addValue(s16, "----");
+		}
+
+		return rt11;
+	}
+
+	
+	
+	
+	
 
 }

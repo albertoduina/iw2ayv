@@ -18,11 +18,11 @@ import java.util.concurrent.TimeUnit;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.WindowManager;
+import ij.gui.NonBlockingGenericDialog;
 import ij.gui.WaitForUserDialog;
 import ij.measure.ResultsTable;
 
 public class MyLog {
-
 
 	/**
 	 * 
@@ -50,7 +50,7 @@ public class MyLog {
 				}
 			}
 		}
-	String[] list2 = ArrayUtils.arrayListToArrayString(list1);
+		String[] list2 = ArrayUtils.arrayListToArrayString(list1);
 //		String[] list2 = ArrayUtils.arrayListToArrayString((ArrayList<String>) list1);
 		String nome1 = list2[0];
 		return nome1;
@@ -772,6 +772,26 @@ public class MyLog {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n \n" + str).show();
 	}
 
+	public static boolean waitHereModeless(String str20) {
+
+//		new ij.gui.NonBlockingGenericDialog("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+//				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n \n" + str20).showDialog();
+
+		NonBlockingGenericDialog nonBlockingGenericDialog = new NonBlockingGenericDialog("Action Required");
+//		nonBlockingGenericDialog.addMessage("Confirmation Dialog");
+//			nonBlockingGenericDialog.setFont(defaultFont);
+		nonBlockingGenericDialog.addMessage(("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " "
+				+ " line=" + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n") + str20);
+		nonBlockingGenericDialog.setCancelLabel("ANNULLA");
+		nonBlockingGenericDialog.showDialog();
+		if (nonBlockingGenericDialog.wasCanceled()) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
 	public static void waitHere(String str, boolean debug) {
 		if (debug) {
 			IJ.beep();
@@ -1035,7 +1055,7 @@ public class MyLog {
 			wfud.show();
 		}
 	}
-	
+
 	public static void waitHere(String str, boolean debug, int timeout, boolean animate) {
 
 		String where = "";

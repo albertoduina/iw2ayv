@@ -362,7 +362,10 @@ public class ReadDicom {
 		// IJ.log("total1= " + total);
 		total = total.replace("BAL;BAR;BCL;BCR", "BAL+BAR+BCL+BCR");
 		total = total.replace("BL;BR", "BL+BR");
-		total = total.replace("PL;PR", "PL+PR");
+		total = total.replace("PL1;PR1", "PL1+PR1");
+		total = total.replace("PL2;PR2", "PL2+PR2");
+		total = total.replace("PL3;PR3", "PL3+PR3");
+		total = total.replace("PL4;PR4", "PL4+PR4");
 		// IJ.log("total2= " + total);
 		// MyLog.waitHere();
 		// #################################################################
