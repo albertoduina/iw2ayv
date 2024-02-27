@@ -6,6 +6,7 @@ import ij.ImageStack;
 import ij.Prefs;
 import ij.WindowManager;
 import ij.gui.ImageWindow;
+import ij.gui.NonBlockingGenericDialog;
 import ij.gui.OvalRoi;
 import ij.gui.Overlay;
 import ij.gui.PointRoi;
@@ -1604,6 +1605,32 @@ public class UtilAyv {
 	}
 
 	public static Polygon selectionPointsClick(ImagePlus imp1, String messageLabel, String buttonLabel) {
+
+		String oldTool = IJ.getToolName();
+		imp1.killRoi();
+		IJ.setTool("multi");
+		
+		// ButtonMessages.ModelessMsg(messageLabel, buttonLabel);
+		NonBlockingGenericDialog nonBlockingGenericDialog = new NonBlockingGenericDialog("Action Required");
+		nonBlockingGenericDialog.addMessage(messageLabel);
+		nonBlockingGenericDialog.setOKLabel(buttonLabel);
+		nonBlockingGenericDialog.setCancelLabel("ANNULLA");
+		nonBlockingGenericDialog.centerDialog(true);
+		nonBlockingGenericDialog.setAlwaysOnTop(true);
+		nonBlockingGenericDialog.showDialog();
+		
+		if (nonBlockingGenericDialog.wasCanceled()) {
+			return null;
+		} 
+		if (imp1.getRoi() == null)
+			return null;
+
+		Polygon p1 = imp1.getRoi().getPolygon();
+
+		IJ.setTool(oldTool);
+		return p1;
+	}
+	public static Polygon selectionPointsClick2(ImagePlus imp1, String messageLabel, String buttonLabel) {
 
 		String oldTool = IJ.getToolName();
 		imp1.killRoi();
