@@ -655,9 +655,16 @@ public class ReportStandardInfo {
 		// P6 (FWHM) dovrebbe generare 29 righe totali, le standardinfo occupano le
 		// prime 8 righe
 
+		int num = 1;
+		if (info11[0].equals("BTMA_") || info11[0].equals("HTMA_")) {
+			num = 15;
+		}
+
+//		MyLog.waitHere("num= " + num);
+
 		ResultsTable rt11 = ResultsTable.getResultsTable();
 		String t11 = "TESTO";
-		String s12 = "VALORE";
+		String s12 = "SLICE";
 		String s13 = "roi_x";
 		String s14 = "roi_y";
 		String s15 = "roi_b";
@@ -667,23 +674,37 @@ public class ReportStandardInfo {
 		rt11 = ReportStandardInfo.putSimpleStandardInfoRT_new(info11);
 		rt11.showRowNumbers(true);
 
-		for (int i1 = 0; i1 < nFrames; i1++) {
-			rt11.addValue(t11, " slicePos");
-			for (int j1 = 0; j1 < nFrames; j1++) {
-				rt11.addValue(s12, UtilAyv.convertToDouble(slicePosition11[j1]));
+		for (int i1 = 0; i1 < num; i1++) {
+			rt11.addValue(t11, " SLICE");
+			for (int j1 = 0; j1 < num; j1++) {
+				rt11.addValue(s12 + j1, "---");
 			}
 		}
+		rt11.addValue(s13, "---");
+		rt11.addValue(s14, "---");
+		rt11.addValue(s15, "---");
+		rt11.addValue(s16, "---");
+
+
 		for (int i2 = 0; i2 < 20; i2++) {
 			rt11.incrementCounter();
-			for (int i1 = 0; i1 < nFrames; i1++) {
-				rt11.addValue(t11, "dummy06");
-				rt11.addValue(s12, "----");
-				rt11.addValue(s13, "----");
-				rt11.addValue(s14, "----");
-				rt11.addValue(s15, "----");
-				rt11.addValue(s16, "----");
+			rt11.addValue(t11, "dummy06");
+			for (int j1 = 0; j1 < num; j1++) {
+				rt11.addValue(s12 + j1, "----");
 			}
 		}
+
+//		for (int i2 = 0; i2 < 20; i2++) {
+//			rt11.incrementCounter();
+//			for (int i1 = 0; i1 < num; i1++) {
+//				rt11.addValue(t11, "dummy06");
+//				rt11.addValue(s12, "----");
+//				rt11.addValue(s13, "----");
+//				rt11.addValue(s14, "----");
+//				rt11.addValue(s15, "----");
+//				rt11.addValue(s16, "----");
+//			}
+//		}
 		return rt11;
 	}
 
@@ -817,15 +838,14 @@ public class ReportStandardInfo {
 		String s16 = "roi_h";
 		rt11 = ReportStandardInfo.putSimpleStandardInfoRT_new(info11);
 		rt11.showRowNumbers(true);
-		
+
 		rt11.addValue(t11, "dummy10");
 		rt11.addValue(s12, "----");
 		rt11.addValue(s13, "----");
 		rt11.addValue(s14, "----");
 		rt11.addValue(s15, "----");
 		rt11.addValue(s16, "----");
-		
-		
+
 		for (int i1 = 0; i1 < 5; i1++) {
 			rt11.incrementCounter();
 			rt11.addValue(t11, "dummy10");
@@ -851,10 +871,11 @@ public class ReportStandardInfo {
 		}
 		return rt11;
 	}
-	
+
 	public static ResultsTable abortResultTable_P11(String[] info11) {
 
-		// P11 (unif piatta auto) dovrebbe generare 26 righe totali, le standardinfo occupano le
+		// P11 (unif piatta auto) dovrebbe generare 26 righe totali, le standardinfo
+		// occupano le
 		// prime 8 righe
 
 		ResultsTable rt11 = ResultsTable.getResultsTable();
@@ -887,7 +908,6 @@ public class ReportStandardInfo {
 		}
 		return rt11;
 	}
-
 
 	public static ResultsTable abortResultTable_P12(String[] info11, double slicePosition11) {
 
