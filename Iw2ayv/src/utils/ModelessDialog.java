@@ -112,6 +112,7 @@ public class ModelessDialog extends Dialog implements ActionListener {
 		strDue = due;
 		strTre = tre;
 		strQuattro = quattro;
+		strCinque = "none";
 
 		MultiLineLabel mll = new MultiLineLabel(question);
 		mll.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -147,6 +148,8 @@ public class ModelessDialog extends Dialog implements ActionListener {
 		strUno = uno;
 		strDue = due;
 		strTre = tre;
+		strQuattro = "none";
+		strCinque = "none";
 
 		MultiLineLabel mll = new MultiLineLabel(question);
 		mll.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -175,6 +178,9 @@ public class ModelessDialog extends Dialog implements ActionListener {
 		super(new Frame(), modal);
 		strUno = uno;
 		strDue = due;
+		strTre = "none";
+		strQuattro = "none";
+		strCinque = "none";
 
 		MultiLineLabel mll = new MultiLineLabel(question);
 		mll.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -200,6 +206,10 @@ public class ModelessDialog extends Dialog implements ActionListener {
 	public ModelessDialog(String question, String uno, boolean modal) {
 		super(new Frame(), modal);
 		strUno = uno;
+		strDue = "none";
+		strTre = "none";
+		strQuattro = "none";
+		strCinque = "none";
 
 		MultiLineLabel mll = new MultiLineLabel(question);
 		mll.setFont(new Font("Dialog", Font.PLAIN, 12));

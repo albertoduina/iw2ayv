@@ -178,13 +178,13 @@ public class UtilAyv {
 
 		String codice;
 		String blob1 = "DelRe";
-		int len1=seriesDescription.length();
-		
+		int len1 = seriesDescription.length();
+
 		if (len1 >= 5) {
 			codice = seriesDescription.substring(0, 5).trim();
 			// la seguente modifica permette di leggere le ultime 5 lettere dei codici che
 			// iniziano con "DelRe", modifica per il CAE (11/08/2023)- non dovrebbe
-			// intervenire in nessun altro caso			
+			// intervenire in nessun altro caso
 			if (codice.equalsIgnoreCase(blob1)) {
 				codice = seriesDescription.substring(len1 - 5, len1);
 			}
@@ -1604,12 +1604,12 @@ public class UtilAyv {
 		return;
 	}
 
-	public static Polygon selectionPointsClick(ImagePlus imp1, String messageLabel, String buttonLabel) {
+	public static Polygon selectionPointsClick3(ImagePlus imp1, String messageLabel, String buttonLabel) {
 
 		String oldTool = IJ.getToolName();
 		imp1.killRoi();
 		IJ.setTool("multi");
-		
+
 		// ButtonMessages.ModelessMsg(messageLabel, buttonLabel);
 		NonBlockingGenericDialog nonBlockingGenericDialog = new NonBlockingGenericDialog("Action Required");
 		nonBlockingGenericDialog.addMessage(messageLabel);
@@ -1618,10 +1618,10 @@ public class UtilAyv {
 		nonBlockingGenericDialog.centerDialog(true);
 		nonBlockingGenericDialog.setAlwaysOnTop(true);
 		nonBlockingGenericDialog.showDialog();
-		
+
 		if (nonBlockingGenericDialog.wasCanceled()) {
 			return null;
-		} 
+		}
 		if (imp1.getRoi() == null)
 			return null;
 
@@ -1630,12 +1630,15 @@ public class UtilAyv {
 		IJ.setTool(oldTool);
 		return p1;
 	}
-	public static Polygon selectionPointsClick2(ImagePlus imp1, String messageLabel, String buttonLabel) {
+
+	public static Polygon selectionPointsClick(ImagePlus imp1, String messageLabel, String buttonLabel) {
 
 		String oldTool = IJ.getToolName();
 		imp1.killRoi();
 		IJ.setTool("multi");
-		ButtonMessages.ModelessMsg(messageLabel, buttonLabel);
+		int resp = ButtonMessages.ModelessMsg(messageLabel, buttonLabel, "ANNULLA");
+		if (resp == 1)
+			return null;
 		if (imp1.getRoi() == null)
 			return null;
 
@@ -1774,7 +1777,7 @@ public class UtilAyv {
 	 */
 	public static void mySaveAs(String path, ResultsTable rt) throws IOException {
 
-		if (rt==null) {
+		if (rt == null) {
 			MyLog.waitHere("NO_SAVE table null!");
 			return;
 		}
@@ -2654,7 +2657,7 @@ public class UtilAyv {
 					+ " differerisce da /n" + series2);
 		}
 
-		double tolerance=0.01;    // metto un centesimo di millimetro
+		double tolerance = 0.01; // metto un centesimo di millimetro
 		if (myOutTolerance(pos1x, pos2x, tolerance) || myOutTolerance(pos1y, pos2y, tolerance)
 				|| myOutTolerance(pos1z, pos2z, tolerance)) {
 			discosta = true;
