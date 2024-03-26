@@ -58,17 +58,19 @@ public class TableCode {
 		String myString = url3.toString();
 		int start = myString.indexOf("plugins");
 		int end = myString.lastIndexOf("!");
+		// MyLog.waitHere("start=" + start + " end1= " + end + "myString=" + myString);
+
 		String myPart1 = myString.substring(start, end);
 		end = myPart1.lastIndexOf("/");
 		String myPart2 = myPart1.substring(0, end + 1);
+		//MyLog.waitHere("end2= " + end);
 
-		// MyLog.waitHere("myString= " + myString + " myPart1= " + myPart1 + " myPart2=
-		// " + myPart2);
+		//IJ.log("myString= " + myString + " myPart1= " + myPart1 + " myPart2=" + myPart2);
 
 		File folderToScan = new File(myPart2);
 
 		File[] listOfFiles = folderToScan.listFiles();
-		// IJ.log("length= " + listOfFiles.length);
+		// MyLog.waitHere("listOfFiles length= " + listOfFiles.length);
 
 		for (int i1 = 0; i1 < listOfFiles.length; i1++) {
 			if (listOfFiles[i1].isFile()) {
@@ -84,7 +86,7 @@ public class TableCode {
 
 		}
 
-//		MyLog.waitHere();
+		// MyLog.waitHere();
 		String[] list2 = ArrayUtils.arrayListToArrayString(list1);
 		if (list2.length == 1) {
 		} else {
@@ -99,14 +101,14 @@ public class TableCode {
 	}
 
 	/**
-	 * Estrae il nome del primo file contenente la tabella.
-	 * Introdotto per poter vedere che versione di codicixxx.csv viene utilizzata dall'utente
+	 * Estrae il nome del primo file contenente la tabella. Introdotto per poter
+	 * vedere che versione di codicixxx.csv viene utilizzata dall'utente
 	 * 
 	 * @param part1
 	 * @param part2
 	 * @return
 	 */
-	public  String nameTable(String part1, String part2) {
+	public String nameTable(String part1, String part2) {
 		String target_file; // fileThatYouWantToFilter
 		List<String> list1 = new ArrayList<String>();
 		URL url3 = this.getClass().getClassLoader().getResource("contMensili/Sequenze_.class");
