@@ -518,24 +518,24 @@ public class ReportStandardInfo {
 		rt11.showRowNumbers(true);
 
 		rt11.addValue(t11, "dummy02");
-		rt11.addValue(s12, "----");
-		rt11.addValue(s13, "----");
-		rt11.addValue(s14, "----");
-		rt11.addValue(s15, "----");
-		rt11.addValue(s16, "----");
+		rt11.addValue(s12, "xxxx");
+		rt11.addValue(s13, "xxxx");
+		rt11.addValue(s14, "xxxx");
+		rt11.addValue(s15, "xxxx");
+		rt11.addValue(s16, "xxxx");
 
 		for (int i2 = 0; i2 < 11; i2++) {
 			rt11.incrementCounter();
 			rt11.addValue(t11, "dummy02");
-			rt11.addValue(s12, "----");
-			rt11.addValue(s13, "----");
-			rt11.addValue(s14, "----");
-			rt11.addValue(s15, "----");
-			rt11.addValue(s16, "----");
+			rt11.addValue(s12, "xxxx");
+			rt11.addValue(s13, "xxxx");
+			rt11.addValue(s14, "xxxx");
+			rt11.addValue(s15, "xxxx");
+			rt11.addValue(s16, "xxxx");
 		}
 
-//		rt11.show("AbortResultTable_P2");
-//		MyLog.waitHere("AbortResultTable_P2");
+	//	rt11.show("AbortResultTable_P2");
+	//	MyLog.waitHere("AbortResultTable_P2");
 
 		return rt11;
 	}
@@ -559,20 +559,20 @@ public class ReportStandardInfo {
 		rt11.showRowNumbers(true);
 
 		rt11.addValue(t11, "dummy03");
-		rt11.addValue(s12, "----");
-		rt11.addValue(s13, "----");
-		rt11.addValue(s14, "----");
-		rt11.addValue(s15, "----");
-		rt11.addValue(s16, "----");
+		rt11.addValue(s12, "xxxx");
+		rt11.addValue(s13, "xxxx");
+		rt11.addValue(s14, "xxxx");
+		rt11.addValue(s15, "xxxx");
+		rt11.addValue(s16, "xxxx");
 
 		for (int i2 = 0; i2 < 14; i2++) {
 			rt11.incrementCounter();
 			rt11.addValue(t11, "dummy03");
-			rt11.addValue(s12, "----");
-			rt11.addValue(s13, "----");
-			rt11.addValue(s14, "----");
-			rt11.addValue(s15, "----");
-			rt11.addValue(s16, "----");
+			rt11.addValue(s12, "xxxx");
+			rt11.addValue(s13, "xxxx");
+			rt11.addValue(s14, "xxxx");
+			rt11.addValue(s15, "xxxx");
+			rt11.addValue(s16, "xxxx");
 		}
 		return rt11;
 	}
@@ -595,20 +595,20 @@ public class ReportStandardInfo {
 		rt11.showRowNumbers(true);
 
 		rt11.addValue(t11, "dummy04");
-		rt11.addValue(s12, "----");
-		rt11.addValue(s13, "----");
-		rt11.addValue(s14, "----");
-		rt11.addValue(s15, "----");
-		rt11.addValue(s16, "----");
+		rt11.addValue(s12, "xxxx");
+		rt11.addValue(s13, "xxxx");
+		rt11.addValue(s14, "xxxx");
+		rt11.addValue(s15, "xxxx");
+		rt11.addValue(s16, "xxxx");
 
 		for (int i2 = 0; i2 < 7; i2++) {
 			rt11.incrementCounter();
 			rt11.addValue(t11, "dummy04");
-			rt11.addValue(s12, "----");
-			rt11.addValue(s13, "----");
-			rt11.addValue(s14, "----");
-			rt11.addValue(s15, "----");
-			rt11.addValue(s16, "----");
+			rt11.addValue(s12, "xxxx");
+			rt11.addValue(s13, "xxxx");
+			rt11.addValue(s14, "xxxx");
+			rt11.addValue(s15, "xxxx");
+			rt11.addValue(s16, "xxxx");
 		}
 		return rt11;
 	}
@@ -632,20 +632,20 @@ public class ReportStandardInfo {
 		rt11.showRowNumbers(true);
 
 		rt11.addValue(t11, "dummy05");
-		rt11.addValue(s12, "----");
-		rt11.addValue(s13, "----");
-		rt11.addValue(s14, "----");
-		rt11.addValue(s15, "----");
-		rt11.addValue(s16, "----");
+		rt11.addValue(s12, "xxxx");
+		rt11.addValue(s13, "xxxx");
+		rt11.addValue(s14, "xxxx");
+		rt11.addValue(s15, "xxxx");
+		rt11.addValue(s16, "xxxx");
 
 		for (int i2 = 0; i2 < 17; i2++) {
 			rt11.incrementCounter();
 			rt11.addValue(t11, "dummy05");
-			rt11.addValue(s12, "----");
-			rt11.addValue(s13, "----");
-			rt11.addValue(s14, "----");
-			rt11.addValue(s15, "----");
-			rt11.addValue(s16, "----");
+			rt11.addValue(s12, "xxxx");
+			rt11.addValue(s13, "xxxx");
+			rt11.addValue(s14, "xxxx");
+			rt11.addValue(s15, "xxxx");
+			rt11.addValue(s16, "xxxx");
 		}
 		return rt11;
 	}
@@ -690,7 +690,7 @@ public class ReportStandardInfo {
 			rt11.incrementCounter();
 			rt11.addValue(t11, "dummy06");
 			for (int j1 = 0; j1 < num; j1++) {
-				rt11.addValue(s12 + j1, "----");
+				rt11.addValue(s12 + j1, "xxxx");
 			}
 		}
 
@@ -698,11 +698,11 @@ public class ReportStandardInfo {
 //			rt11.incrementCounter();
 //			for (int i1 = 0; i1 < num; i1++) {
 //				rt11.addValue(t11, "dummy06");
-//				rt11.addValue(s12, "----");
-//				rt11.addValue(s13, "----");
-//				rt11.addValue(s14, "----");
-//				rt11.addValue(s15, "----");
-//				rt11.addValue(s16, "----");
+//				rt11.addValue(s12, "xxxx");
+//				rt11.addValue(s13, "xxxx");
+//				rt11.addValue(s14, "xxxx");
+//				rt11.addValue(s15, "xxxx");
+//				rt11.addValue(s16, "xxxx");
 //			}
 //		}
 		return rt11;
@@ -731,20 +731,20 @@ public class ReportStandardInfo {
 		rt11.showRowNumbers(true);
 
 		rt11.addValue(t11, "dummy07");
-		rt11.addValue(s12, "----");
-		rt11.addValue(s13, "----");
-		rt11.addValue(s14, "----");
-		rt11.addValue(s15, "----");
-		rt11.addValue(s16, "----");
+		rt11.addValue(s12, "xxxx");
+		rt11.addValue(s13, "xxxx");
+		rt11.addValue(s14, "xxxx");
+		rt11.addValue(s15, "xxxx");
+		rt11.addValue(s16, "xxxx");
 
 		for (int i1 = 0; i1 < 37; i1++) {
 			rt11.incrementCounter();
 			rt11.addValue(t11, "dummy07");
-			rt11.addValue(s12, "----");
-			rt11.addValue(s13, "----");
-			rt11.addValue(s14, "----");
-			rt11.addValue(s15, "----");
-			rt11.addValue(s16, "----");
+			rt11.addValue(s12, "xxxx");
+			rt11.addValue(s13, "xxxx");
+			rt11.addValue(s14, "xxxx");
+			rt11.addValue(s15, "xxxx");
+			rt11.addValue(s16, "xxxx");
 		}
 
 		return rt11;
@@ -777,11 +777,11 @@ public class ReportStandardInfo {
 		for (int i1 = 0; i1 < 7; i1++) {
 			rt11.incrementCounter();
 			rt11.addValue(t1, "dummy08");
-			rt11.addValue(s2, "----");
-			rt11.addValue(s3, "----");
-			rt11.addValue(s4, "----");
-			rt11.addValue(s5, "----");
-			rt11.addValue(s6, "----");
+			rt11.addValue(s2, "xxxx");
+			rt11.addValue(s3, "xxxx");
+			rt11.addValue(s4, "xxxx");
+			rt11.addValue(s5, "xxxx");
+			rt11.addValue(s6, "xxxx");
 		}
 		return rt11;
 	}
@@ -804,20 +804,20 @@ public class ReportStandardInfo {
 		rt11.showRowNumbers(true);
 
 		rt11.addValue(t11, "dummy09");
-		rt11.addValue(s12, "----");
-		rt11.addValue(s13, "----");
-		rt11.addValue(s14, "----");
-		rt11.addValue(s15, "----");
-		rt11.addValue(s16, "----");
+		rt11.addValue(s12, "xxxx");
+		rt11.addValue(s13, "xxxx");
+		rt11.addValue(s14, "xxxx");
+		rt11.addValue(s15, "xxxx");
+		rt11.addValue(s16, "xxxx");
 
 		for (int i2 = 0; i2 < 6; i2++) {
 			rt11.incrementCounter();
 			rt11.addValue(t11, "dummy09");
-			rt11.addValue(s12, "----");
-			rt11.addValue(s13, "----");
-			rt11.addValue(s14, "----");
-			rt11.addValue(s15, "----");
-			rt11.addValue(s16, "----");
+			rt11.addValue(s12, "xxxx");
+			rt11.addValue(s13, "xxxx");
+			rt11.addValue(s14, "xxxx");
+			rt11.addValue(s15, "xxxx");
+			rt11.addValue(s16, "xxxx");
 		}
 		return rt11;
 	}
@@ -840,20 +840,20 @@ public class ReportStandardInfo {
 		rt11.showRowNumbers(true);
 
 		rt11.addValue(t11, "dummy10");
-		rt11.addValue(s12, "----");
-		rt11.addValue(s13, "----");
-		rt11.addValue(s14, "----");
-		rt11.addValue(s15, "----");
-		rt11.addValue(s16, "----");
+		rt11.addValue(s12, "xxxx");
+		rt11.addValue(s13, "xxxx");
+		rt11.addValue(s14, "xxxx");
+		rt11.addValue(s15, "xxxx");
+		rt11.addValue(s16, "xxxx");
 
 		for (int i1 = 0; i1 < 5; i1++) {
 			rt11.incrementCounter();
 			rt11.addValue(t11, "dummy10");
-			rt11.addValue(s12, "----");
-			rt11.addValue(s13, "----");
-			rt11.addValue(s14, "----");
-			rt11.addValue(s15, "----");
-			rt11.addValue(s16, "----");
+			rt11.addValue(s12, "xxxx");
+			rt11.addValue(s13, "xxxx");
+			rt11.addValue(s14, "xxxx");
+			rt11.addValue(s15, "xxxx");
+			rt11.addValue(s16, "xxxx");
 		}
 
 		rt11.incrementCounter();
@@ -863,11 +863,11 @@ public class ReportStandardInfo {
 		for (int i1 = 0; i1 < 12; i1++) {
 			rt11.incrementCounter();
 			rt11.addValue(t11, "dummy_10");
-			rt11.addValue(s12, "----");
-			rt11.addValue(s13, "----");
-			rt11.addValue(s14, "----");
-			rt11.addValue(s15, "----");
-			rt11.addValue(s16, "----");
+			rt11.addValue(s12, "xxxx");
+			rt11.addValue(s13, "xxxx");
+			rt11.addValue(s14, "xxxx");
+			rt11.addValue(s15, "xxxx");
+			rt11.addValue(s16, "xxxx");
 		}
 		return rt11;
 	}
@@ -891,20 +891,20 @@ public class ReportStandardInfo {
 		rt11.showRowNumbers(true);
 
 		rt11.addValue(t11, "dummy11");
-		rt11.addValue(s12, "----");
-		rt11.addValue(s13, "----");
-		rt11.addValue(s14, "----");
-		rt11.addValue(s15, "----");
-		rt11.addValue(s16, "----");
+		rt11.addValue(s12, "xxxx");
+		rt11.addValue(s13, "xxxx");
+		rt11.addValue(s14, "xxxx");
+		rt11.addValue(s15, "xxxx");
+		rt11.addValue(s16, "xxxx");
 
 		for (int i2 = 0; i2 < 17; i2++) {
 			rt11.incrementCounter();
 			rt11.addValue(t11, "dummy11");
-			rt11.addValue(s12, "----");
-			rt11.addValue(s13, "----");
-			rt11.addValue(s14, "----");
-			rt11.addValue(s15, "----");
-			rt11.addValue(s16, "----");
+			rt11.addValue(s12, "xxxx");
+			rt11.addValue(s13, "xxxx");
+			rt11.addValue(s14, "xxxx");
+			rt11.addValue(s15, "xxxx");
+			rt11.addValue(s16, "xxxx");
 		}
 		return rt11;
 	}
@@ -926,13 +926,13 @@ public class ReportStandardInfo {
 		rt11 = ReportStandardInfo.putSimpleStandardInfoRT_new(info11);
 		rt11.showRowNumbers(true);
 		for (int i1 = 0; i1 < 8; i1++) {
-			rt11.incrementCounter();
 			rt11.addValue(t11, "dummy12");
-			rt11.addValue(s12, "----");
-			rt11.addValue(s13, "----");
-			rt11.addValue(s14, "----");
-			rt11.addValue(s15, "----");
-			rt11.addValue(s16, "----");
+			rt11.addValue(s12, "xxxx");
+			rt11.addValue(s13, "xxxx");
+			rt11.addValue(s14, "xxxx");
+			rt11.addValue(s15, "xxxx");
+			rt11.addValue(s16, "xxxx");
+			rt11.incrementCounter();
 		}
 		rt11.incrementCounter();
 		rt11.addValue(t11, "Pos");
@@ -943,13 +943,13 @@ public class ReportStandardInfo {
 		rt11.addValue(s16, 0);
 
 		for (int i1 = 0; i1 < 5; i1++) {
-			rt11.incrementCounter();
 			rt11.addValue(t11, "dummy12");
-			rt11.addValue(s12, "----");
-			rt11.addValue(s13, "----");
-			rt11.addValue(s14, "----");
-			rt11.addValue(s15, "----");
-			rt11.addValue(s16, "----");
+			rt11.addValue(s12, "xxxx");
+			rt11.addValue(s13, "xxxx");
+			rt11.addValue(s14, "xxxx");
+			rt11.addValue(s15, "xxxx");
+			rt11.addValue(s16, "xxxx");
+			rt11.incrementCounter();
 		}
 		return rt11;
 	}

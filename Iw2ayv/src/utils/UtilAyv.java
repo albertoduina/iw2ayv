@@ -1636,7 +1636,7 @@ public class UtilAyv {
 		String oldTool = IJ.getToolName();
 		imp1.killRoi();
 		IJ.setTool("multi");
-		int resp = ButtonMessages.ModelessMsg(messageLabel, buttonLabel, "ANNULLA");
+		int resp = ButtonMessages.ModelessMsg(messageLabel, buttonLabel, "<ANNULLA>");
 		if (resp == 1)
 			return null;
 		if (imp1.getRoi() == null)
