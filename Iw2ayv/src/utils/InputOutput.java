@@ -19,6 +19,9 @@ import java.io.Reader;
 import java.io.StreamTokenizer;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
@@ -41,8 +44,7 @@ public class InputOutput {
 	/**
 	 * Trova un file risorsa, partendo dal nome del file.
 	 * 
-	 * @param name
-	 *            nome del file
+	 * @param name nome del file
 	 * @return path del file
 	 */
 	public static String findResource(String name) {
@@ -56,13 +58,12 @@ public class InputOutput {
 	}
 
 	/**
-	 * Trova un file risorsa, partendo dal nome del file contenente wildcards.
-	 * Per fare questo occorre conoscere il nome di ALMENO una delle risorse. A
-	 * questo punto si manipola il path trovato, in modo da poter trovare i nomi
-	 * completi delle altre risorse.
+	 * Trova un file risorsa, partendo dal nome del file contenente wildcards. Per
+	 * fare questo occorre conoscere il nome di ALMENO una delle risorse. A questo
+	 * punto si manipola il path trovato, in modo da poter trovare i nomi completi
+	 * delle altre risorse.
 	 * 
-	 * @param name
-	 *            nome del file
+	 * @param name nome del file
 	 * @return path del file
 	 */
 	public static String findUnknownResource(String knownName, String wildcardName) {
@@ -80,9 +81,8 @@ public class InputOutput {
 	}
 
 	/**
-	 * ricerca dei file csv, se il file esiste lo lascia stare, altrimenti lo
-	 * estrae dal file jar. NOTA BENE: non ho trovato come farne la prova in
-	 * junit
+	 * ricerca dei file csv, se il file esiste lo lascia stare, altrimenti lo estrae
+	 * dal file jar. NOTA BENE: non ho trovato come farne la prova in junit
 	 * 
 	 * @param fileName
 	 * @return
@@ -140,8 +140,8 @@ public class InputOutput {
 
 	/**
 	 * Copied from
-	 * www.coderanch.com/t/278095/Streams/java/Wildcard-delete-File-Object
-	 * Author Edwin Dalorzo
+	 * www.coderanch.com/t/278095/Streams/java/Wildcard-delete-File-Object Author
+	 * Edwin Dalorzo
 	 */
 	public static void deleteMultipleFiles(File dir, final String ext) {
 
@@ -159,29 +159,26 @@ public class InputOutput {
 			deletableFile.delete();
 		}
 	}
-	
-	
-	
+
 	public static void purgeDirectory(File dir) {
-		for (File file: dir.listFiles()) {
+		for (File file : dir.listFiles()) {
 			if (!file.isDirectory())
-				file.delete();	
+				file.delete();
 		}
 	}
-	
 
 	/**
-	 * Deletes all files and subdirectories under dir. Returns true if all
-	 * deletions were successful. If a deletion fails, the method stops
-	 * attempting to delete and returns false.
-	 * http://javaalmanac.com/egs/java.io/DeleteDir.html
+	 * Deletes all files and subdirectories under dir. Returns true if all deletions
+	 * were successful. If a deletion fails, the method stops attempting to delete
+	 * and returns false. http://javaalmanac.com/egs/java.io/DeleteDir.html
 	 */
 	public static boolean deleteDir(File dir) {
 
 		// if (!dir.exists()) MyLog.waitHere("non esiste la dir");
-		if (!dir.exists())
-			MyLog.waitThere("non esiste la dir");
-
+		if (!dir.exists()) {
+			// MyLog.waitThere("non esiste la dir");
+			return true;
+		}
 		if (dir.isDirectory()) {
 			String[] children = dir.list();
 			for (int i1 = 0; i1 < children.length; i1++) {
@@ -221,10 +218,27 @@ public class InputOutput {
 	}
 
 	/**
+	 * Create a directory; all ancestor directories must exist
+	 * http://javaalmanac.com/egs/java.io/DeleteDir.html
+	 * 
+	 * @param dir
+	 * @return booleano true se ok
+	 */
+	public static boolean createDirMultiple(String dir) {
+
+		try {
+			Path path = Paths.get(dir);
+			Files.createDirectories(path);
+		} catch (IOException e) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * separa il nome directory dal path
 	 * 
-	 * @param path
-	 *            path
+	 * @param path path
 	 * @return directory
 	 */
 	public static String extractDirectory(String path) {
@@ -236,8 +250,7 @@ public class InputOutput {
 	/**
 	 * separa il filename dal path
 	 * 
-	 * @param path
-	 *            path
+	 * @param path path
 	 * @return filename
 	 */
 	public String extractFileName(String path) {
@@ -249,11 +262,10 @@ public class InputOutput {
 
 	// ###############################################################################
 	/**
-	 * legge e carica in memoria il file VERSIONE BASE. Legge anche i file
-	 * contenuti in un file JAR
+	 * legge e carica in memoria il file VERSIONE BASE. Legge anche i file contenuti
+	 * in un file JAR
 	 * 
-	 * @param fileName
-	 *            path del file
+	 * @param fileName path del file
 	 * @return
 	 */
 	public ArrayList<String> readFileGeneric(String fileName, boolean absolute) {
@@ -283,11 +295,10 @@ public class InputOutput {
 	}
 
 	/***
-	 * legge e carica in memoria il file. Legge anche i file contenuti in un
-	 * file JAR
+	 * legge e carica in memoria il file. Legge anche i file contenuti in un file
+	 * JAR
 	 * 
-	 * @param fileName
-	 *            nome del file
+	 * @param fileName nome del file
 	 * @return tabella col contenuto del file
 	 */
 	public ArrayList<ArrayList<String>> readFile3LIKE(String fileName) {
@@ -409,8 +420,7 @@ public class InputOutput {
 	 * commenti e/o informazioni non desiderate dai file di risorsa
 	 * 
 	 * @param in
-	 * @param salta
-	 *            numero della colonna (parte da 0)
+	 * @param salta numero della colonna (parte da 0)
 	 * @return
 	 */
 	public static String[][] removeColumn(String[][] in, int salta) {
@@ -1069,10 +1079,8 @@ public class InputOutput {
 	/**
 	 * verifica codice
 	 * 
-	 * @param codice
-	 *            codice da verificare
-	 * @param tab2
-	 *            tabella contenente codici.txt
+	 * @param codice codice da verificare
+	 * @param tab2   tabella contenente codici.txt
 	 * @return true se il codice esiste
 	 */
 	public static boolean isCode(String codice, String[][] tab2) {
@@ -1090,19 +1098,16 @@ public class InputOutput {
 
 	/**
 	 * Estrae al volo un file da un archivio .jar by Real Gagnon
-	 * (www.rgagnon.com/javadetails/java-0429.html) for correct work in junit
-	 * the source file (ie: test2.jar) must be in the iw2ayv "data" sourceFolder
+	 * (www.rgagnon.com/javadetails/java-0429.html) for correct work in junit the
+	 * source file (ie: test2.jar) must be in the iw2ayv "data" sourceFolder
 	 * 
 	 * 
 	 * 
 	 * 
-	 * @param source
-	 *            il nome del file jar es: "test2.jar"
-	 * @param object
-	 *            il nome del file da estrarre es: "BT2A_testP6"
-	 * @param dest
-	 *            la directory di destinazione es: "./Test2/" in caso di
-	 *            eccezioni stampa lo stack trace
+	 * @param source il nome del file jar es: "test2.jar"
+	 * @param object il nome del file da estrarre es: "BT2A_testP6"
+	 * @param dest   la directory di destinazione es: "./Test2/" in caso di
+	 *               eccezioni stampa lo stack trace
 	 */
 
 	public void extractFromJAR(String source, String object, String dest) {
@@ -1155,19 +1160,16 @@ public class InputOutput {
 
 	/**
 	 * Estrae al volo un file da un archivio .jar by Real Gagnon
-	 * (www.rgagnon.com/javadetails/java-0429.html) for correct work in junit
-	 * the source file (ie: test2.jar) must be in the iw2ayv "data" sourceFolder
+	 * (www.rgagnon.com/javadetails/java-0429.html) for correct work in junit the
+	 * source file (ie: test2.jar) must be in the iw2ayv "data" sourceFolder
 	 * 
 	 * 
 	 * 
 	 * 
-	 * @param source
-	 *            il nome del file jar es: "test2.jar"
-	 * @param object
-	 *            il nome del file da estrarre es: "BT2A_testP6"
-	 * @param dest
-	 *            la directory di destinazione es: "./Test2/" in caso di
-	 *            eccezioni stampa lo stack trace
+	 * @param source il nome del file jar es: "test2.jar"
+	 * @param object il nome del file da estrarre es: "BT2A_testP6"
+	 * @param dest   la directory di destinazione es: "./Test2/" in caso di
+	 *               eccezioni stampa lo stack trace
 	 */
 
 	public long extractFromJAR2(String source, String object, String dest) {

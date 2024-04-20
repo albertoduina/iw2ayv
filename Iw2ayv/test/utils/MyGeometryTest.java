@@ -90,7 +90,7 @@ public class MyGeometryTest {
 
 
 		double dist= MyGeometry.pointToLineDistance(x1,y1,x2,y2,xp,yp);
-		MyLog.waitHere("distanza calcolata= "+dist+" fatto a manina mi dà 50.2 pixels");
+		MyLog.waitHere("distanza calcolata= "+dist+" fatto a manina mi dï¿½ 50.2 pixels");
 		
 	}
 

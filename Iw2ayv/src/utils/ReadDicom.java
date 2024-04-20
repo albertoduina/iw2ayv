@@ -233,7 +233,7 @@ public class ReadDicom {
 	 * problema dei dicom reports che in imagej danno un out of memory error
 	 * 
 	 * @param fileName1 path del file da validare
-	 * @return true se � un immagine valida
+	 * @return true se e' un immagine valida
 	 */
 	public static boolean isDicomOld(String fileName1) {
 		int totalFileLen = 0;

@@ -53,7 +53,7 @@ public class MyPlot {
 	}
 
 	/**
-	 * Attenzione che in questa versione la struttura della matrice è
+	 * Attenzione che in questa versione la struttura della matrice ï¿½
 	 * completamente cambiata
 	 * 
 	 * @param profile
@@ -84,7 +84,7 @@ public class MyPlot {
 	}
 
 	/**
-	 * Attenzione che in questa versione la struttura della matrice è
+	 * Attenzione che in questa versione la struttura della matrice ï¿½
 	 * completamente cambiata
 	 * 
 	 * @param profile

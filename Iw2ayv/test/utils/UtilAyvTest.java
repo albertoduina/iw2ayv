@@ -298,7 +298,7 @@ public class UtilAyvTest {
 	public final void testCompareDoubleWithTolerance2() {
 		/*
 		 * durante i test ho notato che il test fallisce (o meglio non ottengo
-		 * la stampa del valore introdotto) se utilizzo più di 13 digits,
+		 * la stampa del valore introdotto) se utilizzo piï¿½ di 13 digits,
 		 * dovrebbero invece essere dai 14 ai 17 BOH??????
 		 */
 		double num1 = 234.5555555555556D;

@@ -193,6 +193,62 @@ public class UtilAyv {
 		}
 		return codice;
 	}
+	
+	/**
+	 * 
+	 * @param vetReference sono le coordinate dei punti estremi del segmento di
+	 *                     riferimento verticale, posizionato dall'operatruce
+	 * @param cx           coordinata x da rototraslare
+	 * @param cy           coordinata y da rototraslare
+	 * @param debug1       attiva stampe di debug
+	 * @return msd[0] coordinata x rototraslata, msd[1] coordinata y rototraslata
+	 */
+
+	public static double[] coord2D2(double[] vetReference, double cx, double cy, boolean debug1, double ottusangolo) {
+		double x1;
+		double y1;
+		double msd[];
+
+		double angle1 = Math.atan((vetReference[1] - vetReference[3]) / (vetReference[0] - vetReference[2]));
+		if (debug1) {
+			IJ.log("-------- vetReference --------");
+			IJ.log("vetReference[0]= " + vetReference[0] + " vetReference[1]= " + vetReference[1]);
+			IJ.log("vetReference[2]= " + vetReference[2] + " vetReference[3]= " + vetReference[3]);
+			IJ.log("-------- input --------");
+			IJ.log("CX= " + cx + " CY= " + cy);
+			IJ.log("-------- coord2D2 --------");
+			IJ.log("angolo= " + Math.toDegrees(angle1) + "  sin= " + Math.sin(angle1));
+			IJ.log("angolo= " + Math.toDegrees(angle1) + "  cos= " + Math.cos(angle1));
+			IJ.log("-------- OTTUSANGOLO --------");
+			IJ.log("REFERENCE ANGLE= " + Math.toDegrees(ottusangolo));
+			IJ.log("REFERENCE ANGLE= " + ottusangolo);
+			IJ.log("--------------------------");
+		}
+
+		String aux="";
+		
+		if (Math.sin(angle1) < 0) {
+			aux="MENO";
+			x1 = -cx * Math.sin(angle1) - cy * Math.cos(angle1) + vetReference[0];
+			y1 = cx * Math.cos(angle1) - cy * Math.sin(angle1) + vetReference[1];
+		} else {
+			aux="PIU";
+			x1 = cx * Math.sin(angle1) + cy * Math.cos(angle1) + vetReference[0];
+			y1 = -cx * Math.cos(angle1) + cy * Math.sin(angle1) + vetReference[1];
+		}
+
+		msd = new double[2];
+		msd[0] = x1;
+		msd[1] = y1;
+		if (debug1) {
+			IJ.log(aux);
+			IJ.log("coord2D output cx= " + cx + "  cy= " + cy + "  x1= " + x1 + "  y1= " + y1);
+			IJ.log("--------------------------");
+		}
+
+		return msd;
+	} // coord2D
+
 
 	/**
 	 * calcoli per rototraslazione delle coordinate rispetto ad un segmento di
@@ -239,18 +295,24 @@ public class UtilAyv {
 		return msd;
 	} // coord2D
 
+	/**
+	 * 
+	 * @param vetReference sono le coordinate dei punti estremi del segmento di
+	 *                     riferimento verticale, posizionato dall'operatruce
+	 * @param cx coordinata x da rototraslare
+	 * @param cy coordinata y da rototraslare
+	 * @param debug1 attiva stampe di debug
+	 * @return  msd[0] coordinata x rototraslata, msd[1] coordinata y rototraslata
+	 */
+
 	public static double[] coord2D2(double[] vetReference, double cx, double cy, boolean debug1) {
 		double x1;
 		double y1;
 		double msd[];
 
 		double angle1 = Math.atan((vetReference[1] - vetReference[3]) / (vetReference[0] - vetReference[2]));
-		// double decimalAngle = Math.toDegrees(angle1);
-		// IJ.log("decimalAngle= "+IJ.d2s(decimalAngle,3));
-
 		if (debug1) {
 			IJ.log("-------- coord2D2 --------");
-
 			IJ.log("angolo= " + Math.toDegrees(angle1) + "  sin= " + Math.sin(angle1));
 			IJ.log("angolo= " + Math.toDegrees(angle1) + "  cos= " + Math.cos(angle1));
 		}
@@ -917,7 +979,7 @@ public class UtilAyv {
 		}
 		ImageWindow win = imp.getWindow();
 		if (win != null) {
-			MyLog.waitThere("immagine gia' visualizzata !");
+	//		MyLog.waitThere("immagine gia' visualizzata !");
 		} else {
 			imp.show();
 			do {
@@ -3312,5 +3374,9 @@ public class UtilAyv {
 		else
 			return false;
 	}
+	
+
+
+
 
 } // UtilAyv

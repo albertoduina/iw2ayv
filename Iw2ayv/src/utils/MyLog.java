@@ -771,8 +771,9 @@ public class MyLog {
 		new WaitForUserDialog("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n \n" + str).show();
 	}
-
-	public static boolean waitHereModeless(String str20) {
+	
+	
+	public static boolean waitHereModeless1(String str20) {
 
 //		new ij.gui.NonBlockingGenericDialog("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
 //				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n \n" + str20).showDialog();
@@ -782,7 +783,23 @@ public class MyLog {
 //			nonBlockingGenericDialog.setFont(defaultFont);
 		nonBlockingGenericDialog.addMessage(("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " "
 				+ " line=" + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n") + str20);
-		nonBlockingGenericDialog.setCancelLabel("ANNULLA");
+		nonBlockingGenericDialog.setCancelLabel("<ANNULLA>");
+		nonBlockingGenericDialog.showDialog();
+		if (nonBlockingGenericDialog.wasCanceled()) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+
+	public static boolean waitHereModeless(String str20) {
+
+		NonBlockingGenericDialog nonBlockingGenericDialog = new NonBlockingGenericDialog("Action Required");
+		nonBlockingGenericDialog.addMessage(("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " "
+				+ " line=" + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n") + str20);
+		nonBlockingGenericDialog.setCancelLabel("<ANNULLA>");
 		nonBlockingGenericDialog.showDialog();
 		if (nonBlockingGenericDialog.wasCanceled()) {
 			return true;

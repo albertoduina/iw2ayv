@@ -43,6 +43,7 @@ public class MyConst {
 	public static final String DICOM_IMAGING_FREQUENCY = "0018,0084";
 	public static final String DICOM_SPACING_BETWEEN_SLICES = "0018,0088";
 	public static final String DICOM_PHASE_ENCODING_STEPS = "0018,0089";
+	public static final String DICOM_RECEIVING_COIL = "0018,1250";
 	public static final String DICOM_IMAGES_IN_MOSAIC = "0019,100A";
 	public static final String DICOM_SERIES_NUMBER = "0020,0011";
 	public static final String DICOM_ACQUISITION_NUMBER = "0020,0012";

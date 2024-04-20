@@ -18,26 +18,18 @@ public class ButtonMessages {
 	/**
 	 * messaggio non modale, overloaded con numero pulsanti variabile da 5 a 1
 	 * 
-	 * @param sMsg
-	 *            messaggio da mostrare
-	 * @param sUno
-	 *            stringa per il puls di destra = 1
-	 * @param sDue
-	 *            stringa puls 2
-	 * @param sTre
-	 *            stringa puls 3
-	 * @param sQuattro
-	 *            stringa puls 4
-	 * @param sCinque
-	 *            stringa puls 5
+	 * @param sMsg     messaggio da mostrare
+	 * @param sUno     stringa per il puls di destra = 1
+	 * @param sDue     stringa puls 2
+	 * @param sTre     stringa puls 3
+	 * @param sQuattro stringa puls 4
+	 * @param sCinque  stringa puls 5
 	 * @return numero pulsante premuto (il dx vale sempre 1)
 	 */
-	public static int ModelessMsg(String sMsg, String sUno, String sDue,
-			String sTre, String sQuattro, String sCinque) {
+	public static int ModelessMsg(String sMsg, String sUno, String sDue, String sTre, String sQuattro, String sCinque) {
 		int iRetcode;
 		Frame f = new Frame();
-		ModelessDialog query = new ModelessDialog(sMsg, sUno, sDue, sTre,
-				sQuattro, sCinque);
+		ModelessDialog query = new ModelessDialog(sMsg, sUno, sDue, sTre, sQuattro, sCinque);
 		query.setVisible(true);
 		query.setAlwaysOnTop(true);
 		iRetcode = query.answer();
@@ -45,12 +37,11 @@ public class ButtonMessages {
 		return iRetcode;
 	}
 
-	public static int ModelessMsg2(String sMsg, String sUno, String sDue,
-			String sTre, String sQuattro, String sCinque, int preset) {
+	public static int ModelessMsg2(String sMsg, String sUno, String sDue, String sTre, String sQuattro, String sCinque,
+			int preset) {
 		int iRetcode;
 		Frame f = new Frame();
-		ModelessDialog query = new ModelessDialog(sMsg, sUno, sDue, sTre,
-				sQuattro, sCinque);
+		ModelessDialog query = new ModelessDialog(sMsg, sUno, sDue, sTre, sQuattro, sCinque);
 		query.setVisible(true);
 		query.setAlwaysOnTop(true);
 		if ((preset >= 0) && (preset <= 5)) {
@@ -63,12 +54,10 @@ public class ButtonMessages {
 		return iRetcode;
 	}
 
-	public static int ModelessMsg(String sMsg, String sUno, String sDue,
-			String sTre, String sQuattro) {
+	public static int ModelessMsg(String sMsg, String sUno, String sDue, String sTre, String sQuattro) {
 		int iRetcode;
 		Frame f = new Frame();
-		ModelessDialog query = new ModelessDialog(sMsg, sUno, sDue, sTre,
-				sQuattro);
+		ModelessDialog query = new ModelessDialog(sMsg, sUno, sDue, sTre, sQuattro);
 		query.setVisible(true);
 		query.setAlwaysOnTop(true);
 		iRetcode = query.answer();
@@ -76,8 +65,7 @@ public class ButtonMessages {
 		return iRetcode;
 	}
 
-	public static int ModelessMsg(String sMsg, String sUno, String sDue,
-			String sTre) {
+	public static int ModelessMsg(String sMsg, String sUno, String sDue, String sTre) {
 		int iRetcode;
 		Frame f = new Frame();
 		ModelessDialog query = new ModelessDialog(sMsg, sUno, sDue, sTre);
@@ -98,14 +86,13 @@ public class ButtonMessages {
 		f.dispose();
 		return iRetcode;
 	}
-	
-	
+
 	public static int ModelessMsg(String sMsg, String sUno, String sDue, int preset, int timeout) {
 		int iRetcode;
 		Frame f = new Frame();
 		ModelessDialog query = new ModelessDialog(sMsg, sUno, sDue);
 		if (preset > 0) {
-			query.setJbuttonAutomatico(2);
+			query.setJbuttonAutomatico(preset);
 			query.setTimeout(100);
 		}
 
@@ -115,7 +102,6 @@ public class ButtonMessages {
 		f.dispose();
 		return iRetcode;
 	}
-
 
 	public static int ModelessMsg(String sMsg, String sUno) {
 		int iRetcode;
@@ -128,13 +114,13 @@ public class ButtonMessages {
 		return iRetcode;
 	}
 
-	public static int ModelessMsg(String sMsg, String sUno, int preset,
-			int timeout) {
+
+	public static int ModelessMsg(String sMsg, String sUno, int preset, int timeout) {
 		int iRetcode;
 		Frame f = new Frame();
 		ModelessDialog query = new ModelessDialog(sMsg, sUno);
 		if (preset > 0) {
-			query.setJbuttonAutomatico(2);
+			query.setJbuttonAutomatico(preset);
 			query.setTimeout(100);
 		}
 		query.setVisible(true);
@@ -143,13 +129,12 @@ public class ButtonMessages {
 		f.dispose();
 		return iRetcode;
 	}
-	
+
 //	public static int ModelessMsg(String string, String string2,
 //			String string3, int preset, int timeout) {
 //		// TODO Auto-generated method stub
 //		return 0;
 //	}
-
 
 	// private ModelessDialog ModelessMsg(String sMsg) {
 	// ModelessDialog query = new ModelessDialog(sMsg);
@@ -169,18 +154,13 @@ public class ButtonMessages {
 	/**
 	 * messaggio modale, overloaded con numero pulsanti variabile da 5 a 1
 	 * 
-	 * @param sMsg
-	 *            messaggio da mostrare
-	 * @param sUno
-	 *            stringa per il puls di destra = 1
-	 * @param sDue
-	 *            stringa puls 2
-	 * @param sTre
-	 *            stringa puls 3
+	 * @param sMsg messaggio da mostrare
+	 * @param sUno stringa per il puls di destra = 1
+	 * @param sDue stringa puls 2
+	 * @param sTre stringa puls 3
 	 * @return numero pulsante premuto (il dx vale sempre 1)
 	 */
-	public static int ModalMsg(String sMsg, String sUno, String sDue,
-			String sTre) {
+	public static int ModalMsg(String sMsg, String sUno, String sDue, String sTre) {
 		int iRetcode;
 		Frame f = new Frame();
 		ModelessDialog query = new ModelessDialog(sMsg, sUno, sDue, sTre, true);
@@ -212,6 +192,5 @@ public class ButtonMessages {
 		f.dispose();
 		return iRetcode;
 	}
-
 
 }

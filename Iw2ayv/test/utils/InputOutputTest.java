@@ -180,59 +180,59 @@ public class InputOutputTest {
 
 	@Test
 	public final void testIsCommentTrue() {
-		String riga = "// Questo è un commento";
+		String riga = "// Questo ï¿½ un commento";
 		boolean result = InputOutput.isComment(riga);
 		assertTrue("fallito riconoscimento commento", result);
 	}
 
 	@Test
 	public final void testIsCommentFalse() {
-		String riga = "Questo NON è un commento";
+		String riga = "Questo NON ï¿½ un commento";
 		boolean result = InputOutput.isComment(riga);
 		assertFalse("fallito riconoscimento NON commento", result);
 	}
 
 	@Test
 	public final void testStripSlashComment() {
-		String riga = "Questo programma è/ una// grandissima stronzata";
+		String riga = "Questo programma ï¿½/ una// grandissima stronzata";
 		String result = InputOutput.stripSlashComment(riga);
 		// System.out.printf("\nresult= " + result);
-		assertTrue(result.equals("Questo programma è/ una"));
+		assertTrue(result.equals("Questo programma ï¿½/ una"));
 	}
 
 	@Test
 	public final void testStripSlashCommentInesistent() {
-		String riga = "Questo programma è/ una/ grandissima stronzata";
+		String riga = "Questo programma ï¿½/ una/ grandissima stronzata";
 		String result = InputOutput.stripSlashComment(riga);
 		// System.out.printf("\nresult= " + result);
 		assertTrue(result
-				.equals("Questo programma è/ una/ grandissima stronzata"));
+				.equals("Questo programma ï¿½/ una/ grandissima stronzata"));
 	}
 
 	@Test
 	public final void testStripComment() {
-		String riga = "Questo programma è una /* grandissima */stronzata";
+		String riga = "Questo programma ï¿½ una /* grandissima */stronzata";
 		String result = InputOutput.stripComment(riga);
 		// System.out.printf("\nresult= " + result);
-		assertTrue(result.equals("Questo programma è una stronzata"));
+		assertTrue(result.equals("Questo programma ï¿½ una stronzata"));
 
 	}
 
 	@Test
 	public final void testStripCommentInexistent() {
-		String riga = "Questo programma è una grandissima */stronzata";
+		String riga = "Questo programma ï¿½ una grandissima */stronzata";
 		String result = InputOutput.stripComment(riga);
 		// System.out.printf("\nresult= " + result);
 		assertTrue(result
-				.equals("Questo programma è una grandissima */stronzata"));
+				.equals("Questo programma ï¿½ una grandissima */stronzata"));
 	}
 
 	@Test
 	public final void testStripAllComments() {
-		String riga = "Questo /*programma*/ è /*una*/ cagata /* bellissimo*/ molto //cagoso";
+		String riga = "Questo /*programma*/ ï¿½ /*una*/ cagata /* bellissimo*/ molto //cagoso";
 		String result = InputOutput.stripAllComments(riga);
 		// System.out.printf("\nresult= " + result);
-		assertTrue(result.equals("Questo  è  cagata  molto "));
+		assertTrue(result.equals("Questo  ï¿½  cagata  molto "));
 
 	}
 
