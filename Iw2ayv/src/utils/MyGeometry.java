@@ -16,17 +16,12 @@ import ij.process.ImageStatistics;
 public class MyGeometry {
 
 	/**
-	 * Trasformazione delle coordinate dei punti in equazione esplicita della
-	 * retta
+	 * Trasformazione delle coordinate dei punti in equazione esplicita della retta
 	 * 
-	 * @param x0
-	 *            coordinata X inizio
-	 * @param y0
-	 *            coordinata Y inizio
-	 * @param x1
-	 *            coordinata X fine
-	 * @param y1
-	 *            coordinata Y fine
+	 * @param x0 coordinata X inizio
+	 * @param y0 coordinata Y inizio
+	 * @param x1 coordinata X fine
+	 * @param y1 coordinata Y fine
 	 * @return vettore con parametri equazione
 	 */
 	public static double[] fromPointsToEquLineExplicit(double x0, double y0, double x1, double y1) {
@@ -34,10 +29,24 @@ public class MyGeometry {
 		// in cui m e' detta anche slope (pendenza) e b intercept (intercetta)
 		// non puo' rappresentare rette verticali
 		double[] out = new double[2];
+		double m = 0;
+		double b = 0;
+		boolean hor = Double.compare(y0, y1) == 0; // se le coordinate y sono uguali abbiamo retta orizzontale
+		boolean ver = Double.compare(x0, x1) == 0; // se le coordinate x sono uguali abbiamo retta verticale
 
-		double m = (y1 - y0) / (x1 - x0);
+		IJ.log("x0= " + x0 + " y0= " + y0 + " x1= " + x1 + " y1= " + y1);
+		IJ.log("hor= "+hor+ " ver= "+ver);
 
-		double b = y0 - m * x0;
+		if (hor) {
+			MyLog.waitHere("RETTA ORIZZONTALE, CASO PARTICOLARE");
+			m = 0;
+			b = y0;
+		} else if (ver) {
+			MyLog.waitHere("RETTA VERTICALE NON HA EQUAZIONE ESPLICITA !!");
+		} else {
+			m = (y1 - y0) / (x1 - x0);
+			b = y0 - m * x0;
+		}
 
 		out[0] = m;
 		out[1] = b;
@@ -45,17 +54,12 @@ public class MyGeometry {
 	}
 
 	/**
-	 * Trasformazione delle coordinate dei punti in equazione implicita della
-	 * retta
+	 * Trasformazione delle coordinate dei punti in equazione implicita della retta
 	 * 
-	 * @param x0
-	 *            coordinata X inizio
-	 * @param y0
-	 *            coordinata Y inizio
-	 * @param x1
-	 *            coordinata X fine
-	 * @param y1
-	 *            coordinata Y fine
+	 * @param x0 coordinata X inizio
+	 * @param y0 coordinata Y inizio
+	 * @param x1 coordinata X fine
+	 * @param y1 coordinata Y fine
 	 * @return vettore con parametri equazione
 	 */
 	public static double[] fromPointsToEquLineImplicit(double x0, double y0, double x1, double y1) {
@@ -92,22 +96,14 @@ public class MyGeometry {
 	 * calcoli per rototraslazione delle coordinate rispetto ad un segmento di
 	 * riferimento
 	 * 
-	 * @param ax
-	 *            coord x inizio segmento di riferimento
-	 * @param ay
-	 *            coord y inizio segmento di riferimento
-	 * @param bx
-	 *            coord x fine segmento di riferimento
-	 * @param by
-	 *            coord y fine segmento di riferimento
-	 * @param cx
-	 *            coordinata x da rototraslare
-	 * @param cy
-	 *            coordinata y da rototraslare
-	 * @param debug1
-	 *            true per debug
-	 * @return msd[0] coordinata x rototraslata, msd[1] coordinata y
-	 *         rototraslata
+	 * @param ax     coord x inizio segmento di riferimento
+	 * @param ay     coord y inizio segmento di riferimento
+	 * @param bx     coord x fine segmento di riferimento
+	 * @param by     coord y fine segmento di riferimento
+	 * @param cx     coordinata x da rototraslare
+	 * @param cy     coordinata y da rototraslare
+	 * @param debug1 true per debug
+	 * @return msd[0] coordinata x rototraslata, msd[1] coordinata y rototraslata
 	 */
 	public static double[] coord2D(double ax, double ay, double bx, double by, double cx, double cy, boolean debug1) {
 		double x1;
@@ -183,10 +179,8 @@ public class MyGeometry {
 	 * conscenze tecniche e matematiche per capirne la eventuale convenienza e
 	 * modalita' di utilizzo.
 	 * 
-	 * @param points
-	 *            coordinate degli estremi del segmento [x1][y1][x2][y2]
-	 * @param angdeg
-	 *            angolo di rotazione decimale
+	 * @param points coordinate degli estremi del segmento [x1][y1][x2][y2]
+	 * @param angdeg angolo di rotazione decimale
 	 * @return coordinate segmento rotato (o arrotato) [x1][y1][ax][ay]
 	 */
 	public static double[] rotateSegment(double points[], double angdeg) {
@@ -218,14 +212,10 @@ public class MyGeometry {
 	/**
 	 * Distanza tra due punti
 	 * 
-	 * @param ax
-	 *            starting point coordinata x
-	 * @param ay
-	 *            starting point coordinata y
-	 * @param bx
-	 *            end point coordinata x
-	 * @param by
-	 *            end point coordinata y
+	 * @param ax starting point coordinata x
+	 * @param ay starting point coordinata y
+	 * @param bx end point coordinata x
+	 * @param by end point coordinata y
 	 * @return
 	 */
 	public static double pointsDistance(double ax, double ay, double bx, double by) {
@@ -243,18 +233,12 @@ public class MyGeometry {
 	/**
 	 * Distanza di un punto da un segmento
 	 * 
-	 * @param x1
-	 *            coordinata inizio segmento
-	 * @param y1
-	 *            coordinata inizio segmento
-	 * @param x2
-	 *            coordinata fine segmento
-	 * @param y2
-	 *            coordinata fine segmento
-	 * @param xp
-	 *            coordinata punto
-	 * @param yp
-	 *            coordinata punto
+	 * @param x1 coordinata inizio segmento
+	 * @param y1 coordinata inizio segmento
+	 * @param x2 coordinata fine segmento
+	 * @param y2 coordinata fine segmento
+	 * @param xp coordinata punto
+	 * @param yp coordinata punto
 	 * @return distanza
 	 */
 	public static double pointToLineDistance(double x1, double y1, double x2, double y2, double xp, double yp) {
@@ -272,12 +256,9 @@ public class MyGeometry {
 	/***
 	 * rotazione di un punto
 	 * 
-	 * @param x1
-	 *            punto da ruotare coordinata x
-	 * @param y1
-	 *            punto da ruotare coordinata y
-	 * @param angoloDec
-	 *            angolo di rotazione
+	 * @param x1        punto da ruotare coordinata x
+	 * @param y1        punto da ruotare coordinata y
+	 * @param angoloDec angolo di rotazione
 	 * @return coordinate punto dopo rotazione [x2], [y2]
 	 */
 	public static double[] rotatePoint(double x1, double y1, double angoloDec) {
@@ -296,16 +277,11 @@ public class MyGeometry {
 	/***
 	 * traslazione e rotazione di un punto
 	 * 
-	 * @param rotx
-	 *            centro di rotazione coordinata x
-	 * @param roty
-	 *            centro di rotazione coordinata y
-	 * @param pointx
-	 *            punto da ruotare coordinata x
-	 * @param pointy
-	 *            punto da ruotare coordinata y
-	 * @param angoloDec
-	 *            angolo di rotazione
+	 * @param rotx      centro di rotazione coordinata x
+	 * @param roty      centro di rotazione coordinata y
+	 * @param pointx    punto da ruotare coordinata x
+	 * @param pointy    punto da ruotare coordinata y
+	 * @param angoloDec angolo di rotazione
 	 * @return coordinate punto dopo rotazione [0]x, [1]y
 	 */
 	public static double[] traslateRotatePoint(double rotx, double roty, double pointx, double pointy,
@@ -343,13 +319,11 @@ public class MyGeometry {
 	}
 
 	/**
-	 * From www.sunshine2k.de/coding/PointOnLine/PointOnLine.html. Calculates
-	 * the dot product of two 2D vectors / points.
+	 * From www.sunshine2k.de/coding/PointOnLine/PointOnLine.html. Calculates the
+	 * dot product of two 2D vectors / points.
 	 * 
-	 * @param p1
-	 *            first point used as vector
-	 * @param p2
-	 *            second point used as vector
+	 * @param p1 first point used as vector
+	 * @param p2 second point used as vector
 	 * @return dotProduct of vectors
 	 */
 	private static double dotProduct(Point p1, Point p2) {

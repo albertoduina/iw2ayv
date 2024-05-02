@@ -1219,6 +1219,63 @@ public class ImageUtils {
 	}
 
 	/**
+	 * trova l'intersezione tra due linee delle quali si conoscono due punti ognuna,
+	 * purche'non parallele
+	 * 
+	 * @param ax1 coordinata x primo punto prima linea
+	 * @param ay1 coordinata y primo punto prima linea
+	 * @param ax2 coordinata x secondo punto prima linea
+	 * @param ay2 coordinata y secondo punto prima linea
+	 * @param bx1 coordinata x primo punto seconda linea
+	 * @param by1 coordinata y primo punto seconda linea
+	 * @param bx2 coordinata x secondo punto seconda linea
+	 * @param by2 coordinata y secondo punto seconda linea
+	 * @return
+	 */
+	public static double[] findLineIntersection(double ax1, double ay1, double ax2, double ay2, double bx1, double by1,
+			double bx2, double by2) {
+
+		// in out1 ottengo i valori di a,b,c da sostituire nella equazione
+		// esplicita della retta, nella forma y = mx + b
+		double[] out1 = MyGeometry.fromPointsToEquLineExplicit(ax1, ay1, ax2, ay2);
+		double m1 = out1[0];
+		double b1 = out1[1];
+		IJ.log("---------MyGeometry.fromPointsToEquLineExplicit----------");
+		IJ.log("ax1= " + ax1 + " ay1= " + ay1 + " ax2= " + ax2 + " ay2= " + ay2);
+		IJ.log(" y = " + m1 + " * x + " + b1);
+
+		// idem per out2 per il secondo segmento
+		double[] out2 = MyGeometry.fromPointsToEquLineExplicit(bx1, by1, bx2, by2);
+		double m2 = out2[0];
+		double b2 = out2[1];
+		IJ.log("---------MyGeometry.fromPointsToEquLineExplicit----------");
+		IJ.log("bx1= " + bx1 + " by1= " + by1 + " bx2= " + bx2 + " by2= " + by2);
+		IJ.log(" y = " + m2 + " * x + " + b2);
+		IJ.log("---------------------------------------------------------");
+
+		if ((m1 - m2) == 0) {
+			MyLog.waitHere("BELANDI, il segmento INCLINATO è parallelo all'asse X, CONDOGLIANZE");
+			return null;
+		}
+
+		double aux1 = b1 - b2;
+		double aux2 = m2 - m1;
+		IJ.log("aux1= " + aux1 + " aux2= " + aux2);
+
+		double crossX = aux1 / aux2;
+		IJ.log("crossX= " + crossX);
+
+		double crossY = (m1 * crossX + b1);
+		IJ.log("crossY= " + crossY);
+
+		double[] out3 = new double[2];
+		out3[0] = crossX;
+		out3[1] = crossY;
+
+		return out3;
+	}
+
+	/**
 	 * Determinazione dei crossing points tra un raggio, di cui si conoscono solo
 	 * due punti e la circonferenza.
 	 * https://stackoverflow.com/questions/13053061/circle-line-intersection- points
@@ -1550,7 +1607,7 @@ public class ImageUtils {
 	 * 
 	 * 
 	 * @param profile profilo da analizzare
-	 * @param delta
+	 * @param delta   valore di discriminazione
 	 * @return ArrayList con le posizioni del picco minimo e del picco massimo
 	 */
 	public static ArrayList<ArrayList<Double>> peakDet(double[][] profile, double delta) {
@@ -1618,11 +1675,11 @@ public class ImageUtils {
 	}
 
 	/***
-	 * per intercambiabilit� con peakDet2 restituisco un ArrayList<ArrayList<>>
+	 * per intercambiabilita' con peakDet2 restituisco un ArrayList<ArrayList<>>
 	 * anche se mi propongo di trovare solo UN massimo e basta
 	 * 
-	 * @param profile
-	 * @param delta
+	 * @param profile profilo da analizzare
+	 * @param delta   valore di discriminazione
 	 * @return
 	 */
 
@@ -1691,8 +1748,8 @@ public class ImageUtils {
 	 * una matrice con i valori x, y , z di ogni punto. Restituisce le coordinate x,
 	 * y, z degli eventuali minimi e maximi
 	 * 
-	 * @param profile
-	 * @param delta
+	 * @param profile profilo da analizzare
+	 * @param delta   valore di discriminazione
 	 * @return
 	 */
 	public static ArrayList<ArrayList<Double>> peakDet2(double[][] profile, double delta) {
