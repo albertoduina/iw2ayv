@@ -164,7 +164,7 @@ public class ProfileUtilsTest {
 	}
 
 	@Test
-	public final void testPotatura() {
+	public final void testRimuoviPicco() {
 
 		double[] profile1 = readProfile(path1, number);
 
@@ -196,7 +196,7 @@ public class ProfileUtilsTest {
 		outy[0] = profile2[out[0]];
 		outy[1] = profile2[out[1]];
 
-		ArrayList<ArrayList<Double>> arrprofile3 = ProfileUtils.potatura(profile1, out[0], out[1]);
+		ArrayList<ArrayList<Double>> arrprofile3 = ProfileUtils.rimuoviPicco(profile1, out[0], out[1], true);
 		double[] xprofile3 = ArrayUtils.arrayListToArrayDouble(arrprofile3.get(0));
 		double[] yprofile3 = ArrayUtils.arrayListToArrayDouble(arrprofile3.get(1));
 

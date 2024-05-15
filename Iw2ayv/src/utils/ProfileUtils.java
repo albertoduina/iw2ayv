@@ -56,6 +56,74 @@ public class ProfileUtils {
 	}
 
 	/**
+	 * calcolo della derivata prima fatto MALE
+	 * 
+	 * @param profile1
+	 * @return
+	 */
+	public static double[] derivataPrima(double profile1[]) {
+
+		int len1 = profile1.length;
+
+		double[] profileOut = new double[len1];
+		for (int i1 = 1; i1 < len1 - 1; i1++)
+
+			profileOut[i1] = -0.5 * profile1[i1 - 1] + 0.5 * profile1[i1 + 1];
+		profileOut[0] = profileOut[1];
+		profileOut[len1 - 1] = profileOut[len1 - 2];
+
+		return profileOut;
+	}
+
+	/**
+	 * calcolo della derivata prima fatto MALE
+	 * 
+	 * @param profile1
+	 * @return
+	 */
+	public static double[][] derivataPrima(double profile1[][]) {
+
+		double[] profileX = decodeX(profile1);
+		double[] profileY = decodeY(profile1);
+		int len1 = profile1.length;
+		double[] profileOut = new double[len1];
+
+		for (int i1 = 1; i1 < len1 - 1; i1++) {
+			profileOut[i1] = -0.5 * profileY[i1 - 1] + 0.5 * profileY[i1 + 1];
+		}
+		profileOut[0] = profileOut[1];
+		profileOut[len1 - 1] = profileOut[len1 - 2];
+
+		double[][] deriveOut = encode(profileX, profileOut);
+
+		return deriveOut;
+	}
+
+	/**
+	 * calcolo della derivata seconda fatto MALE
+	 * 
+	 * @param profile4smooth array su cui eseguire l'operazione
+	 */
+	public static double[][] derivataSeconda(double[][] profile1) {
+
+		int len1 = profile1.length;
+		double[][] profile11 = profile1.clone();
+		double[] profileX = decodeX(profile11);
+		double[] profileY = decodeY(profile11);
+		double[] profileOut = new double[len1];
+
+		for (int i1 = 1; i1 < profileY.length - 1; i1++)
+			profileOut[i1] = 1 * profileY[i1 - 1] - 2 * profileY[i1] + 1 * profileY[i1 + 1];
+		profileOut[0] = profileOut[1];
+		profileOut[len1 - 1] = profileOut[len1 - 2];
+
+		double[][] deriveOut = encode(profileX, profileY);
+
+		return deriveOut;
+
+	}
+
+	/**
 	 * differentialQuotientDerivative VEDI:
 	 * http://www.labcognition.com/onlinehelp/en/derivative.htm#
 	 * Differential_Quotient_Derivative_Algorithm
@@ -121,39 +189,43 @@ public class ProfileUtils {
 	}
 
 	/**
-	 * potatura: elimina i dati contenuti entro due limiti, accorciando l'array
-	 * datoi
+	 * La routine rimuove tutti i punti del picco sia dalle coordinate y che quelle
+	 * x pertanto restituisce un ArrayList<ArrayList<Double>> con un buco, nel senso
+	 * che la coordinata x[sinistra] e' seguita dalla coordinata x[destra], lo
+	 * stesso Sragionamento vale per y
 	 * 
-	 * @param profile1
-	 * @param uno
-	 * @param due
+	 * @param profile1 profilo completo
+	 * @param sinistra limite sx picco
+	 * @param destra   limite dx picco
+	 * @param step
 	 * @return
 	 */
-	public static ArrayList<ArrayList<Double>> potatura(double[] profile1, int uno, int due) {
+	public static ArrayList<ArrayList<Double>> rimuoviPicco(double[] profile1, int sinistra, int destra, boolean step) {
+
+		// in precedenza la routine era chiamata potatura (e non si capiva che
+		// cazzabubbola facesse)
+
+		// a questo punto devo rimuovere dal profilo tutti i punti tra sinistra e destra
+		// del picco, utilizzo ArrayList <PER SEMPLICITA'> :)
+		if ((destra - sinistra) <= 0)
+			MyLog.waitHere("deve essere POSITIVO");
+		if ((destra | sinistra) == 0)
+			MyLog.waitHere("deve essere >0");
+		if ((destra | sinistra) == profile1.length)
+			MyLog.waitHere("deve essere < length");
 
 		ArrayList<ArrayList<Double>> arrprofile2 = new ArrayList<ArrayList<Double>>();
-		ArrayList<Double> arrx = new ArrayList<Double>();
 		ArrayList<Double> arry = new ArrayList<Double>();
-		// mi cautelo contro i punti passati al rovescio
-		int lower = 0;
-		int upper = 0;
-		if (due > uno) {
-			lower = uno;
-			upper = due;
-		} else {
-			lower = due;
-			upper = uno;
-		}
-		for (int i1 = 0; i1 <= lower; i1++) {
-			arrx.add((double) i1);
-			arry.add(profile1[i1]);
-		}
-		for (int i1 = upper; i1 < profile1.length; i1++) {
-			arrx.add((double) i1);
-			arry.add(profile1[i1]);
+		ArrayList<Double> arrx = new ArrayList<Double>();
+		for (int i1 = 0; i1 < profile1.length; i1++) {
+			if (i1 <= sinistra || i1 >= destra) {
+				arrx.add((double) i1);
+				arry.add(profile1[i1]);
+			}
 		}
 		arrprofile2.add(arrx);
 		arrprofile2.add(arry);
+
 		return arrprofile2;
 	}
 
@@ -161,8 +233,7 @@ public class ProfileUtils {
 	 * Copied from http://billauer.co.il/peakdet.htm Peak Detection using MATLAB
 	 * Author: Eli Billauer
 	 * 
-	 * @param profile
-	 *            profilo da analizzare
+	 * @param profile profilo da analizzare
 	 * @param delta
 	 * @return ArrayList con le posizioni del picco minimo e del picco massimo
 	 */
@@ -253,8 +324,7 @@ public class ProfileUtils {
 	 * Copied from http://billauer.co.il/peakdet.htm Peak Detection using MATLAB
 	 * Author: Eli Billauer
 	 * 
-	 * @param profile
-	 *            profilo da analizzare
+	 * @param profile profilo da analizzare
 	 * @param delta
 	 * @return ArrayList con le posizioni del picco minimo e del picco massimo
 	 */
@@ -462,9 +532,9 @@ public class ProfileUtils {
 
 	/**
 	 * Copied from http://billauer.co.il/peakdet.htm Peak Detection using MATLAB
-	 * Author: Eli Billauer Riceve in input un profilo di una linea, costituito
-	 * da una matrice con i valori x, y , z di ogni punto. Restituisce le
-	 * coordinate x, y, z degli eventuali minimi e maximi
+	 * Author: Eli Billauer Riceve in input un profilo di una linea, costituito da
+	 * una matrice con i valori x, y , z di ogni punto. Restituisce le coordinate x,
+	 * y, z degli eventuali minimi e maximi
 	 * 
 	 * @param profile
 	 * @param delta
@@ -584,10 +654,8 @@ public class ProfileUtils {
 	 * Dati i parametri di una curva ed un vettore x, calcola i corrispondenti
 	 * valori di y per 3 parametri (curva)
 	 * 
-	 * @param vetX
-	 *            vettore delle ascisse
-	 * @param para
-	 *            parametri della curva
+	 * @param vetX vettore delle ascisse
+	 * @param para parametri della curva
 	 * @return vettore delle ordinate
 	 */
 	public static double[] fitResult3(double[] vetX, double[] para) {
@@ -605,10 +673,8 @@ public class ProfileUtils {
 	 * Dati i parametri di una curva ed un vettore x, calcola i corrispondenti
 	 * valori di y per 2 parametri (retta)
 	 * 
-	 * @param vetX
-	 *            vettore delle ascisse
-	 * @param para
-	 *            parametri della linea
+	 * @param vetX vettore delle ascisse
+	 * @param para parametri della linea
 	 * @return vettore delle ordinate
 	 */
 
@@ -623,6 +689,11 @@ public class ProfileUtils {
 		return out;
 	}
 
+	/**
+	 * 
+	 * @param profile1
+	 * @return
+	 */
 	public static double[] squareSmooth2(double[] profile1) {
 
 		double[] profile2 = new double[profile1.length];
@@ -633,6 +704,11 @@ public class ProfileUtils {
 		return profile2;
 	}
 
+	/**
+	 * 
+	 * @param profile1
+	 * @return
+	 */
 	public static double[] squareSmooth3(double[] profile1) {
 
 		double[] profile2 = new double[profile1.length];
@@ -645,6 +721,11 @@ public class ProfileUtils {
 		return profile2;
 	}
 
+	/**
+	 * 
+	 * @param profile1
+	 * @return
+	 */
 	public static double[] triangleSmooth3(double[] profile1) {
 
 		double[] profile2 = new double[profile1.length];
@@ -658,8 +739,7 @@ public class ProfileUtils {
 	}
 
 	/*
-	 * effettua la ricerca dei due zero crossings della derivata seconda del
-	 * profilo
+	 * effettua la ricerca dei due zero crossings della derivata seconda del profilo
 	 */
 	public static double[] zeroCrossings(double[][] profile) {
 
@@ -668,15 +748,14 @@ public class ProfileUtils {
 
 		return null;
 	}
-	
+
 	/**
 	 * calcolo spessore di strato effettivo, apportando le correzioni per
 	 * inclinazione e tilt (cio' che veniva effettuato dal foglio Excel)
 	 * 
 	 * @param R1
 	 * @param R2
-	 * @param sTeor
-	 *            spessore teorico
+	 * @param sTeor spessore teorico
 	 * @return spessore dello strato
 	 */
 	public static double[] spessStrato(double R1, double R2, double sTeor, double dimPix2) {
@@ -705,5 +784,38 @@ public class ProfileUtils {
 		return spessArray;
 	}
 
+	public static double[][] encode(double[] profiX, double[] profiY) {
+		double[][] out2 = new double[profiX.length][2];
+		for (int i1 = 0; i1 < profiX.length; i1++) {
+			out2[i1][0] = profiX[i1];
+			out2[i1][1] = profiY[i1];
+		}
+		return out2;
+	}
+
+	public static double[][] encode(double[] profiY) {
+		double[][] out2 = new double[profiY.length][2];
+		for (int i1 = 0; i1 < profiY.length; i1++) {
+			out2[i1][0] = (double) i1;
+			out2[i1][1] = profiY[i1];
+		}
+		return out2;
+	}
+
+	public static double[] decodeX(double[][] in1) {
+		double[] out2 = new double[in1.length];
+		for (int i1 = 0; i1 < in1.length; i1++) {
+			out2[i1] = in1[i1][0];
+		}
+		return out2;
+	}
+
+	public static double[] decodeY(double[][] in1) {
+		double[] out2 = new double[in1.length];
+		for (int i1 = 0; i1 < in1.length; i1++) {
+			out2[i1] = in1[i1][1];
+		}
+		return out2;
+	}
 
 }
