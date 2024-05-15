@@ -17,6 +17,7 @@ import ij.process.*;
  * 
  * @author Alberto Duina - SPEDALI CIVILI DI BRESCIA - Servizio di Fisica
  *         Sanitaria _
+ *      
  *         
  * 
  * 
@@ -44,6 +45,8 @@ public class AboutBox {
 		// + "_iw2ayv_build_"
 		// + MyVersionUtils.CURRENT_VERSION;
 
+		
+		
 		int w = 150, h = 150;
 		ImageProcessor ip = new ColorProcessor(w, h);
 		int[] pixels = (int[]) ip.getPixels();
