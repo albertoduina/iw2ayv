@@ -15,6 +15,7 @@ import ij.gui.Line;
 import ij.gui.NewImage;
 import ij.gui.OvalRoi;
 import ij.gui.Overlay;
+import ij.gui.Plot;
 import ij.gui.PointRoi;
 import ij.gui.Roi;
 import ij.io.FileSaver;
@@ -24,6 +25,7 @@ import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ImageStatistics;
 import ij.process.ShortProcessor;
+import ij.util.Tools;
 
 public class ProfileUtils {
 
@@ -66,21 +68,13 @@ public class ProfileUtils {
 		int len1 = profile1.length;
 
 		double[] profileOut = new double[len1];
-		for (int i1 = 1; i1 < len1 - 1; i1++)
-
+		for (int i1 = 1; i1 < len1 - 1; i1++) {
 			profileOut[i1] = -0.5 * profile1[i1 - 1] + 0.5 * profile1[i1 + 1];
-		profileOut[0] = profileOut[1];
-		profileOut[len1 - 1] = profileOut[len1 - 2];
+		}
 
 		return profileOut;
 	}
 
-	/**
-	 * calcolo della derivata prima fatto MALE
-	 * 
-	 * @param profile1
-	 * @return
-	 */
 	public static double[][] derivataPrima(double profile1[][]) {
 
 		double[] profileX = decodeX(profile1);
@@ -91,20 +85,18 @@ public class ProfileUtils {
 		for (int i1 = 1; i1 < len1 - 1; i1++) {
 			profileOut[i1] = -0.5 * profileY[i1 - 1] + 0.5 * profileY[i1 + 1];
 		}
-		profileOut[0] = profileOut[1];
-		profileOut[len1 - 1] = profileOut[len1 - 2];
-
 		double[][] deriveOut = encode(profileX, profileOut);
 
 		return deriveOut;
 	}
 
 	/**
-	 * calcolo della derivata seconda fatto MALE
+	 * calcolo della derivata seconda fatto MALE ESALTA ECCESSIVAMENTE IL FONDO MALE
+	 * MALE MALE
 	 * 
 	 * @param profile4smooth array su cui eseguire l'operazione
 	 */
-	public static double[][] derivataSeconda(double[][] profile1) {
+	public static double[][] derivataSeconda_FATTA_MALE(double[][] profile1) {
 
 		int len1 = profile1.length;
 		double[][] profile11 = profile1.clone();
@@ -113,11 +105,11 @@ public class ProfileUtils {
 		double[] profileOut = new double[len1];
 
 		for (int i1 = 1; i1 < profileY.length - 1; i1++)
-			profileOut[i1] = 1 * profileY[i1 - 1] - 2 * profileY[i1] + 1 * profileY[i1 + 1];
+			profileOut[i1] = profileY[i1 - 1] - 2 * profileY[i1] + profileY[i1 + 1];
 		profileOut[0] = profileOut[1];
 		profileOut[len1 - 1] = profileOut[len1 - 2];
 
-		double[][] deriveOut = encode(profileX, profileY);
+		double[][] deriveOut = encode(profileX, profileOut);
 
 		return deriveOut;
 
@@ -128,10 +120,14 @@ public class ProfileUtils {
 	 * http://www.labcognition.com/onlinehelp/en/derivative.htm#
 	 * Differential_Quotient_Derivative_Algorithm
 	 * 
+	 * PURTROPPO DALLE PROVE LE DUE DERIVATE SONO APPARENTEMENTE IDENTICHE, SALVO
+	 * PRIMO ED ULTIMO PIXEL (MAGARI NON MI SONO ACCORTO CHE LE ISTRUZIONI SI
+	 * EQUIVALGONO) PERCIO' SEMPLICEMENTE ACCANTONO LA DQD
+	 * 
 	 * @param profile1
 	 * @return
 	 */
-	public static double[] differentialQuotientDerivative(double[] profile1) {
+	public static double[] derivataDQD(double[] profile1) {
 
 		double[] profile2 = new double[profile1.length];
 		double slope1 = 0;
@@ -150,19 +146,44 @@ public class ProfileUtils {
 			slope3 = (slope1 + slope2) / 2;
 			profile2[i1] = slope3;
 		}
-		// MyLog.logVectorVertical(profile2, "profile2");
-		// MyLog.waitHere();
 		// metto l'ultimo pixel uguale al penultimo
 		profile2[profile2.length - 1] = profile2[profile2.length - 3];
 		profile2[profile2.length - 2] = profile2[profile2.length - 3];
-		// profile2[profile2.length - 3] = profile2[profile2.length - 4];
 		profile2[0] = profile2[1];
-		// MyLog.logVectorVertical(profile2, "profile2 corretto");
-		// MyLog.waitHere();
 		return profile2;
 	}
 
-	public static int[] wedgeLimitsAfterDQD(double[] profile1, double threshold) {
+	public static double[][] derivataDQD(double[][] profile3) {
+
+		double[] profileX = ProfileUtils.decodeX(profile3);
+		double[] profileY = ProfileUtils.decodeY(profile3);
+
+		double[] profile2 = new double[profileY.length];
+		double slope1 = 0;
+		double slope2 = 0;
+		double slope3 = 0;
+
+		for (int i1 = 1; i1 < profileY.length - 1; i1++) {
+			double x2 = i1;
+			double y2 = profileY[i1];
+			double x1 = i1 - 1;
+			double y1 = profileY[i1 - 1];
+			slope1 = (y2 - y1) / (x2 - x1);
+			double x3 = i1 + 1;
+			double y3 = profileY[i1 + 1];
+			slope2 = (y3 - y2) / (x3 - x2);
+			slope3 = (slope1 + slope2) / 2;
+			profile2[i1] = slope3;
+		}
+		// metto l'ultimo pixel uguale al penultimo
+		profile2[profile2.length - 1] = profile2[profile2.length - 3];
+		profile2[profile2.length - 2] = profile2[profile2.length - 3];
+		profile2[0] = profile2[1];
+		double[][] out = ProfileUtils.encode(profileX, profile2);
+		return out;
+	}
+
+	public static int[] localizzatoreDopoDQD(double[] profile1, double threshold) {
 		int start = 0;
 		int end = 0;
 		int[] out = new int[2];
@@ -190,9 +211,9 @@ public class ProfileUtils {
 
 	/**
 	 * La routine rimuove tutti i punti del picco sia dalle coordinate y che quelle
-	 * x pertanto restituisce un ArrayList<ArrayList<Double>> con un buco, nel senso
-	 * che la coordinata x[sinistra] e' seguita dalla coordinata x[destra], lo
-	 * stesso Sragionamento vale per y
+	 * x pertanto restituisce una matrice profilo con un buco, nel senso che la
+	 * coordinata x[sinistra] e' seguita dalla coordinata x[destra], lo stesso
+	 * Sragionamento vale per y
 	 * 
 	 * @param profile1 profilo completo
 	 * @param sinistra limite sx picco
@@ -200,13 +221,14 @@ public class ProfileUtils {
 	 * @param step
 	 * @return
 	 */
-	public static ArrayList<ArrayList<Double>> rimuoviPicco(double[] profile1, int sinistra, int destra, boolean step) {
 
+	public static double[][] peakRemover(double[][] profile1, int sinistra, int destra, boolean step) {
 		// in precedenza la routine era chiamata potatura (e non si capiva che
 		// cazzabubbola facesse)
-
-		// a questo punto devo rimuovere dal profilo tutti i punti tra sinistra e destra
-		// del picco, utilizzo ArrayList <PER SEMPLICITA'> :)
+		//
+		// a questo punto devo rimuovere dal profilo tutti i punti interni tra sinistra
+		// e destra del picco, utilizzo ArrayList <PER SEMPLICITA'> :)
+		//
 		if ((destra - sinistra) <= 0)
 			MyLog.waitHere("deve essere POSITIVO");
 		if ((destra | sinistra) == 0)
@@ -214,19 +236,23 @@ public class ProfileUtils {
 		if ((destra | sinistra) == profile1.length)
 			MyLog.waitHere("deve essere < length");
 
+		double[] profileX = ProfileUtils.decodeX(profile1);
+		double[] profileY = ProfileUtils.decodeY(profile1);
+
 		ArrayList<ArrayList<Double>> arrprofile2 = new ArrayList<ArrayList<Double>>();
-		ArrayList<Double> arry = new ArrayList<Double>();
-		ArrayList<Double> arrx = new ArrayList<Double>();
+		ArrayList<Double> arrY = new ArrayList<Double>();
+		ArrayList<Double> arrX = new ArrayList<Double>();
 		for (int i1 = 0; i1 < profile1.length; i1++) {
 			if (i1 <= sinistra || i1 >= destra) {
-				arrx.add((double) i1);
-				arry.add(profile1[i1]);
+				arrX.add(profileX[i1]);
+				arrY.add(profileY[i1]);
 			}
 		}
-		arrprofile2.add(arrx);
-		arrprofile2.add(arry);
+		double[] profileX2 = ArrayUtils.arrayListToArrayDouble(arrX);
+		double[] profileY2 = ArrayUtils.arrayListToArrayDouble(arrY);
+		double[][] profile2 = ProfileUtils.encode(profileX2, profileY2);
 
-		return arrprofile2;
+		return profile2;
 	}
 
 	/**
@@ -392,70 +418,94 @@ public class ProfileUtils {
 		return matout;
 	}
 
-	public static double zeroCrossing(double[][] profile, double xpoint1, double xpoint2) {
+	/**
+	 * Analizzo la derivata seconda per trovare i due zerocrossing al limite del
+	 * picco
+	 * 
+	 * @param profile
+	 * @param xpoint1
+	 * @param xpoint2
+	 * @return
+	 */
+	public static int[] zeroCrossing(double[][] derivata2, String thisfirst, String thissecond, String thisthird,
+			int thiscontaxx, boolean thisSpy, boolean thisStep) {
 
-		// IJ.log("xpoint1= " + xpoint1 + " xpoint2= " + xpoint2);
-		// IJ.log("profile.length= " + profile.length + " profile[0].length= " +
-		// profile[0].length);
-
-		double xsopra = 0;
-		double xsotto = 0;
-		double ysopra = 0;
-		double ysotto = 0;
-		double ypoint = 0;
-		boolean cercasotto = false;
-		boolean cercasopra = false;
-		// desidero che xpoint1 sia inferiore a xpoint2
-		double swap = 0;
-		if (xpoint2 < xpoint1) {
-			swap = xpoint1;
-			xpoint1 = xpoint2;
-			xpoint2 = swap;
-		}
-
-		// MyLog.waitHere();
-		// cerco le coordinate x sopra e sotto lo zero di y
-		fuori: {
-			for (int i1 = (int) xpoint1; i1 < (int) xpoint2; i1++) {
-				ypoint = profile[i1][1];
-				if (!(cercasotto && cercasopra)) {
-					if (ypoint > 0) {
-						xsopra = i1;
-						ysopra = profile[i1][1];
-						cercasotto = true;
-					}
-					if (ypoint < 0) {
-						xsotto = i1;
-						ysotto = profile[i1][1];
-						cercasopra = true;
-					}
-				}
-				if (ypoint > 0) {
-					xsopra = i1;
-					ysopra = profile[i1][1];
-					if (cercasopra)
-						break fuori;
-				}
-				if (ypoint < 0) {
-					xsotto = i1;
-					ysotto = profile[i1][1];
-					if (cercasotto)
-						break fuori;
-				}
-
+		double[] profi2X = ProfileUtils.decodeX(derivata2);
+		double[] profi2Y = ProfileUtils.decodeY(derivata2);
+		double[] minMax2 = Tools.getMinMax(profi2Y);
+		int max2 = 9999;
+		double zeroSX_X = 9999;
+		double zeroSX_Y = 9999;
+		double zeroDX_X = 9999;
+		double zeroDX_Y = 9999;
+		boolean negativo = false;
+		for (int i1 = 0; i1 < profi2Y.length; i1++) {
+			if (profi2Y[i1] == minMax2[1]) {
+				max2 = (int) profi2X[i1];
+				break;
 			}
 		}
-		// interpolazione lineare ricerca coordinata effettiva zero
+		negativo = false;
+		for (int i1 = max2; i1 >= 0; i1--) {
+			if (profi2Y[i1] < 0) {
+				negativo = true;
+			}
+			if ((profi2Y[i1] >= 0) && negativo) {
+				zeroSX_X = profi2X[i1];
+				zeroSX_Y = profi2Y[i1];
+				if (thisStep)
+					IJ.log("zeroCross1 ad i1= " + i1 + " zeroSX_X= " + zeroSX_X + " zeroSX_Y= " + zeroSX_Y);
+				break;
+			}
+		}
+		negativo = false;
+		for (int i1 = max2; i1 < profi2Y.length; i1++) {
+			if (profi2Y[i1] < 0) {
+				negativo = true;
+			}
+			if ((profi2Y[i1] >= 0) && negativo) {
+				zeroDX_X = profi2X[i1];
+				zeroDX_Y = profi2Y[i1];
+				if (thisStep)
+					IJ.log("zeroCross2 ad i1= " + i1 + " zeroDX_X= " + zeroDX_X + " zeroDX_Y= " + zeroDX_Y);
+				break;
+			}
+		}
 
-		// double xzero = (xsopra - xsotto) / (ysopra - ysotto);
-		// double xzero = xsotto + ((ysotto - 0) / (ysotto - ysopra)) * (xsopra
-		// - xsotto);
-		double xzero = linearInterpolation(xsopra, ysopra, xsotto, ysotto, 0);
-		// IJ.log("xsotto= " + xsotto + " ysotto= " + ysotto + " xsopra= " +
-		// xsopra + " ysopra= " + ysopra);
-		// MyLog.waitHere("xzero= " + xzero);
-		return xzero;
+		double[] pointsX = new double[2];
+		double[] pointsY = new double[2];
+		pointsX[0] = zeroSX_X;
+		pointsX[1] = zeroDX_X;
+		pointsY[0] = zeroSX_Y;
+		pointsY[1] = zeroDX_Y;
 
+		if (thisStep) {
+			String thisname = "Q001 - DERIVATA SECONDA CON ZEROCROSSINGS EVIDENZIATI";
+			Plot plot14 = MyPlot.plot1points(derivata2, pointsX, pointsY, thisname);
+			ImagePlus imp14 = plot14.show().getImagePlus();
+			if (thisSpy)
+				saveDebugImage(imp14, thisfirst, thissecond, thisname, thiscontaxx, thisSpy);
+			MyLog.waitHere(thisname);
+		}
+
+		int[] out = new int[2];
+		out[0] = (int) zeroSX_X;
+		out[1] = (int) zeroDX_X;
+
+		return out;
+
+	}
+
+	public static void saveDebugImage(ImagePlus imp1, String first, String second, String name, int thiscontaxx,
+			boolean spy) {
+		ImagePlus impS3 = imp1.flatten();
+		String newName = first + second + "\\" + name + "@" + IJ.pad(thiscontaxx++, 3) + ".jpg";
+		FileSaver fs = new FileSaver(impS3);
+		// FileSaver.setJpegQuality(100);
+		if (spy) {
+			// MyLog.waitHere("salvo " + newName);
+			fs.saveAsJpeg(newName);
+		}
 	}
 
 	public static double linearInterpolation(double xa, double ya, double xb, double yb, double yc) {
@@ -741,7 +791,7 @@ public class ProfileUtils {
 	/*
 	 * effettua la ricerca dei due zero crossings della derivata seconda del profilo
 	 */
-	public static double[] zeroCrossings(double[][] profile) {
+	public static double[] zeroCrossings_CANCELLABILE(double[][] profile) {
 
 		double delta = 0.5;
 		ArrayList<ArrayList<Double>> out1 = peakDet(profile, delta);
@@ -784,6 +834,13 @@ public class ProfileUtils {
 		return spessArray;
 	}
 
+	/**
+	 * permette di riunire i profili X ed Y in una matrice (array a due dimensioni)
+	 * 
+	 * @param profiX
+	 * @param profiY
+	 * @return
+	 */
 	public static double[][] encode(double[] profiX, double[] profiY) {
 		double[][] out2 = new double[profiX.length][2];
 		for (int i1 = 0; i1 < profiX.length; i1++) {
@@ -793,6 +850,13 @@ public class ProfileUtils {
 		return out2;
 	}
 
+	/**
+	 * crea un profilo X continuo che parte da 0 e lo unisce all'Y in una matrice
+	 * (array a due dimensioni)
+	 * 
+	 * @param profiY
+	 * @return
+	 */
 	public static double[][] encode(double[] profiY) {
 		double[][] out2 = new double[profiY.length][2];
 		for (int i1 = 0; i1 < profiY.length; i1++) {
@@ -802,6 +866,12 @@ public class ProfileUtils {
 		return out2;
 	}
 
+	/**
+	 * estrae il profilo X dalla matrice
+	 * 
+	 * @param in1
+	 * @return
+	 */
 	public static double[] decodeX(double[][] in1) {
 		double[] out2 = new double[in1.length];
 		for (int i1 = 0; i1 < in1.length; i1++) {
@@ -810,12 +880,67 @@ public class ProfileUtils {
 		return out2;
 	}
 
+	/**
+	 * estrae il profilo Y dalla matrice
+	 * 
+	 * @param in1
+	 * @return
+	 */
 	public static double[] decodeY(double[][] in1) {
 		double[] out2 = new double[in1.length];
 		for (int i1 = 0; i1 < in1.length; i1++) {
 			out2[i1] = in1[i1][1];
 		}
 		return out2;
+	}
+
+	public static double[][] smooth(double[][] profile1) {
+
+		double[] profileY = ProfileUtils.decodeY(profile1);
+		for (int i1 = 1; i1 < profileY.length - 1; i1++)
+			profileY[i1] = (profileY[i1 - 1] + profileY[i1] + profileY[i1 + 1]) / 3.0;
+		double[][] profileOut = ProfileUtils.encode(ProfileUtils.decodeX(profile1), profileY);
+
+		return profileOut;
+	}
+
+	public static double[] smooth(double[] profile1) {
+
+		double[] profile2 = profile1.clone();
+
+		for (int i1 = 1; i1 < profile2.length - 1; i1++)
+			profile2[i1] = (profile2[i1 - 1] + profile2[i1] + profile2[i1 + 1]) / 3.0;
+
+		return profile2;
+	}
+
+	/**
+	 * effettua lo smooth del segnale con una media mobile su 5 pixel. Taglia i
+	 * pixel ai bordi
+	 * 
+	 * @param in1
+	 * @return
+	 */
+	public static double[][] smooth5(double[][] profile1) {
+
+		int len = profile1.length;
+		double[] profiY = ProfileUtils.decodeY(profile1);
+
+		ArrayList<Double> arrX = new ArrayList<Double>();
+		ArrayList<Double> arrY = new ArrayList<Double>();
+		double aux1 = 0;
+
+		for (int i1 = 2; i1 < len - 3; i1++) {
+			aux1 = (profiY[i1 - 2] + profiY[i1 - 1] + profiY[i1] + profiY[i1 + 1] + profiY[i1 + 2]) / 5;
+			arrX.add((double) i1);
+			arrY.add(aux1);
+		}
+
+		double[] smoothX = ArrayUtils.arrayListToArrayDouble(arrX);
+		double[] smoothY = ArrayUtils.arrayListToArrayDouble(arrY);
+		double[][] smoothProfile = ProfileUtils.encode(smoothX, smoothY);
+
+		return smoothProfile;
 	}
 
 }

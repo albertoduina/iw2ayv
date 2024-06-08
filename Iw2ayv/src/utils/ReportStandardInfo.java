@@ -239,11 +239,13 @@ public class ReportStandardInfo {
 
 		aux3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
 		String[] reqCoil = getRequestedCoil2(UtilAyv.getFiveLetters(aux3).trim(), tabCodici);
-
 		String coilElement = ReadDicom.getThisCoil(imp1, reqCoil);
+//		MyLog.logVector(reqCoil, "reqCoil");
+//		IJ.log("coilElement= "+coilElement);
+//		MyLog.waitHere();
 		if (coilElement == null) {
 			coilElement = "null";
-			// MyLog.waitHere("coil = null");
+//			MyLog.waitHere("coil = null");
 		}
 
 		if (coilElement.equals("MISSING")) {

@@ -154,6 +154,7 @@ public class MyPlot {
 		plot.setColor(Color.red);
 		plot.setLineWidth(2);
 		plot.addPoints(xpoints, ypoints, Plot.CIRCLE);
+		plot.setLimitsToFit(true);
 		plot.show();
 
 		return plot;
@@ -178,6 +179,7 @@ public class MyPlot {
 		plot.setColor(Color.red);
 		plot.setLineWidth(2);
 		plot.addPoints(xpoints, ypoints, Plot.CIRCLE);
+		plot.setLimitsToFit(true);
 		plot.show();
 
 		return plot;
@@ -205,7 +207,7 @@ public class MyPlot {
 
 		plot.setColor(Color.red);
 		plot.add("line", xcoord, profile1);
-
+		// plot.setLimitsToFit(true);
 		return plot;
 
 	}
@@ -218,7 +220,7 @@ public class MyPlot {
 
 		plot.setColor(Color.red);
 		plot.add("line", ProfileUtils.decodeX(profile1), ProfileUtils.decodeY(profile1));
-
+		plot.setLimitsToFit(true);
 		return plot;
 
 	}
@@ -253,6 +255,7 @@ public class MyPlot {
 		plot.add("line", xcoord, profile1);
 		plot.setColor(Color.blue);
 		plot.add("line", xcoord, profile2);
+		plot.setLimitsToFit(true);
 		plot.show();
 		return plot;
 	}
@@ -267,6 +270,7 @@ public class MyPlot {
 		plot.add("line", ProfileUtils.decodeX(profile1), ProfileUtils.decodeY(profile1));
 		plot.setColor(Color.blue);
 		plot.add("line", ProfileUtils.decodeX(profile2), ProfileUtils.decodeY(profile2));
+		plot.setLimitsToFit(true);
 		plot.show();
 		return plot;
 	}
@@ -280,7 +284,13 @@ public class MyPlot {
 	 * @param sTitolo
 	 * @return
 	 */
+
 	public static Plot plot1points(double[] profile1, double[] xpoints2, double[] ypoints2, String sTitolo) {
+		Plot plot1 = plot1points(profile1, xpoints2, ypoints2, sTitolo, 0);
+		return plot1;
+	}
+
+	public static Plot plot1points(double[] profile1, double[] xpoints2, double[] ypoints2, String sTitolo, int flags) {
 
 		int len1 = profile1.length;
 		double[] xcoord = new double[len1];
@@ -288,7 +298,7 @@ public class MyPlot {
 			xcoord[i1] = (double) i1;
 		}
 
-		Plot plot = new Plot(sTitolo, "pixel", "valore");
+		Plot plot = new Plot(sTitolo, "pixel", "valore", flags);
 		plot.setColor(Color.black);
 		plot.addLabel(0.01, 0.99, sTitolo);
 
@@ -298,14 +308,13 @@ public class MyPlot {
 		plot.setColor(Color.blue);
 		plot.addPoints(xpoints2, ypoints2, Plot.CIRCLE);
 		plot.setLineWidth(1);
-
+		plot.setLimitsToFit(true);
 		plot.show();
 		return plot;
 	}
-	
+
 	public static Plot plot1points(double[][] profile1, double[] xpoints2, double[] ypoints2, String sTitolo) {
 
-	
 		Plot plot = new Plot(sTitolo, "pixel", "valore");
 		plot.setColor(Color.black);
 		plot.addLabel(0.01, 0.99, sTitolo);
@@ -316,7 +325,7 @@ public class MyPlot {
 		plot.setColor(Color.blue);
 		plot.addPoints(xpoints2, ypoints2, Plot.CIRCLE);
 		plot.setLineWidth(1);
-
+		plot.setLimitsToFit(true);
 		plot.show();
 		return plot;
 	}
@@ -357,6 +366,5 @@ public class MyPlot {
 		plot.show();
 		return plot;
 	}
-
 
 }

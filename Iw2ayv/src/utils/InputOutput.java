@@ -619,6 +619,43 @@ public class InputOutput {
 		}
 		return vetResult;
 	}
+	
+	/***
+	 * Legge i dati da un file e li restituisce come double matrix
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	public static double[][] readDoubleMatrixFromFileTwo(String fileName) {
+		ArrayList<ArrayList<String>> vetList = new ArrayList<ArrayList<String>>();
+		int rows = 0;
+		int columns = 0;
+
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(fileName));
+			String str = "";
+			while ((str = in.readLine()) != null) {
+				rows++;
+				// qui ho la linea, ora devo separare i tokens
+				ArrayList<String> arrList1 = readStringArrayListFromString(str);
+				columns = arrList1.size();
+				vetList.add(arrList1);
+			}
+			in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// ora trasferiamo tutto nel vettore
+		double[][] vetResult = new double[rows][2];
+
+		for (int row = 0; row < rows; row++) {
+			ArrayList<String> stringRiga = vetList.get(row);
+			vetResult[row][0] = ReadDicom.readDouble(stringRiga.get(1));
+			vetResult[row][1] = ReadDicom.readDouble(stringRiga.get(2));
+		}
+		return vetResult;
+	}
+
 
 	/***
 	 * Legge i dati da un file e li restituisce come float matrix

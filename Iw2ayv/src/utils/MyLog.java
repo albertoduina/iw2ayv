@@ -389,7 +389,7 @@ public class MyLog {
 				for (int i2 = 0; i2 < columns; i2++) {
 					stri += mat[i1][i2] + ",  ";
 				}
-				IJ.log(stri);
+				IJ.log("" + i1 + ",  " + stri);
 			}
 		}
 		IJ.log("---------------------------------------------");
@@ -751,10 +751,11 @@ public class MyLog {
 	}
 
 	public static String qui() {
-		String out = ("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
-				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + " class="
-				+ Thread.currentThread().getStackTrace()[2].getClassName() + " method="
-				+ Thread.currentThread().getStackTrace()[2].getMethodName() + "\n \n");
+		String out = ("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " line="
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber());
+//		+ " class="
+//				+ Thread.currentThread().getStackTrace()[2].getClassName() + " method="
+//				+ Thread.currentThread().getStackTrace()[2].getMethodName());
 		return out;
 	}
 
@@ -771,8 +772,7 @@ public class MyLog {
 		new WaitForUserDialog("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n \n" + str).show();
 	}
-	
-	
+
 	public static boolean waitHereModeless1(String str20) {
 
 //		new ij.gui.NonBlockingGenericDialog("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
@@ -792,7 +792,6 @@ public class MyLog {
 		}
 
 	}
-
 
 	public static boolean waitHereModeless(String str20) {
 
@@ -928,6 +927,13 @@ public class MyLog {
 			IJ.beep();
 			new WaitForUserDialog(str).show();
 		}
+	}
+
+	public static void method() {
+		StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+		StackTraceElement e = stacktrace[1];// coz 0th will be getStackTrace so 1st
+		String methodName = e.getMethodName();
+		MyLog.waitHere(methodName);
 	}
 
 	public static void caller() {
