@@ -37,6 +37,14 @@ public class ProfileUtils {
 											// serve anche se segnalato
 											// inutilizzato
 
+	public static double[] autoprofile(int len) {
+		double[] profile = new double[len];
+		for (int i1 = 0; i1 < len; i1++)
+			profile[i1] = (double) i1;
+
+		return profile;
+	}
+
 	public static double[] readLine(ImagePlus imp1, double c2x, double c2y, double d2x, double d2y) {
 		Line.setWidth(11);
 		imp1.setRoi(new Line(c2x, c2y, d2x, d2y));
