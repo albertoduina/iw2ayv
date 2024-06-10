@@ -348,6 +348,13 @@ public class InputOutput {
 		return matrixTable;
 	}
 
+	/**
+	 * Utilizzato da ContMensili.Sequenze
+	 * 
+	 * @param fileName
+	 * @param absolute
+	 * @return
+	 */
 	public String[][] readFile6LIKE(String fileName, boolean absolute) {
 
 		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
