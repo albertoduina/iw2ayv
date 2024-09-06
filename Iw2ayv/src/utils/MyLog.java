@@ -929,11 +929,11 @@ public class MyLog {
 		}
 	}
 
-	public static void method() {
+	public static String method() {
 		StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
-		StackTraceElement e = stacktrace[1];// coz 0th will be getStackTrace so 1st
+		StackTraceElement e = stacktrace[2];// coz 0th will be getStackTrace so 1st
 		String methodName = e.getMethodName();
-		MyLog.waitHere(methodName);
+		return methodName;
 	}
 
 	public static void caller() {

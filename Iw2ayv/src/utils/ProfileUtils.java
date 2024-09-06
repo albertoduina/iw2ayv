@@ -83,6 +83,13 @@ public class ProfileUtils {
 		return profileOut;
 	}
 
+	/**
+	 * Calcolo derivata prima NOTA BENE, per evitare di avere zero al primo ed
+	 * ultimo pixel, li metto uguali al pixel adiacente
+	 * 
+	 * @param profile1
+	 * @return
+	 */
 	public static double[][] derivataPrima(double profile1[][]) {
 
 		double[] profileX = decodeX(profile1);
@@ -93,9 +100,64 @@ public class ProfileUtils {
 		for (int i1 = 1; i1 < len1 - 1; i1++) {
 			profileOut[i1] = -0.5 * profileY[i1 - 1] + 0.5 * profileY[i1 + 1];
 		}
+		profileOut[0] = profileOut[1];
+		profileOut[len1 - 1] = profileOut[len1 - 2];
+
 		double[][] deriveOut = encode(profileX, profileOut);
 
 		return deriveOut;
+	}
+
+	/***
+	 * Utilizzato per trovare i limiti del picco (dove la derivata prima tende a
+	 * svicolare)
+	 * 
+	 * @param profile1
+	 * @return
+	 */
+	public static double[][] limitiOggettoDerivataPrima(double primaderivata[][]) {
+
+		double[] profileX = decodeX(primaderivata);
+		double[] profileY = decodeY(primaderivata);
+		int len1 = profileX.length;
+
+		// come prima cosa ottengo min e max del profilo derivata1
+		double valmin = ArrayUtils.vetMin(profileY);
+		double valmax = ArrayUtils.vetMax(profileY);
+		// ottengo anche l'indice di min e max
+		int indexmin = ArrayUtils.posMin(profileY);
+		int indexmax = ArrayUtils.posMax(profileY);
+		// ottengo la posizione reale su X per min e max
+		int posmin = (int) profileX[indexmin];
+		int posmax = (int) profileX[indexmax];
+
+		MyLog.waitHere("posmin= " + posmin + " posmax= " + posmax);
+
+		if (posmin > posmax) {
+			MyLog.waitHere("BLEAH");
+		}
+
+		double val1 = -9999;
+		double val2 = -9999;
+		for (int i1 = indexmin; i1 > 0; i1--) {
+			val1 = profileY[i1];
+			if (val1 > val2) {
+				val2 = val1;
+			} else {
+				
+				
+			}
+
+		}
+		
+		
+		
+		
+		for (int i1 = indexmax; i1 < len1; i1++) {
+			// ********************************
+		}
+
+		return null;
 	}
 
 	/**
@@ -435,8 +497,8 @@ public class ProfileUtils {
 	 * @param xpoint2
 	 * @return
 	 */
-	public static int[] zeroCrossing(double[][] derivata2, String thisfirst, String thissecond, String thisthird,
-			int thiscontaxx, boolean thisSpy, boolean thisStep) {
+	public static int[] zeroCrossing(double[][] derivata2, String thisdir, String thisthird, int thiscontaxx,
+			boolean thisSpy, boolean thisStep) {
 
 		double[] profi2X = ProfileUtils.decodeX(derivata2);
 		double[] profi2Y = ProfileUtils.decodeY(derivata2);
@@ -447,6 +509,8 @@ public class ProfileUtils {
 		double zeroDX_X = 9999;
 		double zeroDX_Y = 9999;
 		boolean negativo = false;
+
+		MyLog.waitHere("POTACASSO");
 		for (int i1 = 0; i1 < profi2Y.length; i1++) {
 			if (profi2Y[i1] == minMax2[1]) {
 				max2 = (int) profi2X[i1];
@@ -487,12 +551,12 @@ public class ProfileUtils {
 		pointsY[0] = zeroSX_Y;
 		pointsY[1] = zeroDX_Y;
 
+		thisStep = true;
+
 		if (thisStep) {
 			String thisname = "Q001 - DERIVATA SECONDA CON ZEROCROSSINGS EVIDENZIATI";
 			Plot plot14 = MyPlot.plot1points(derivata2, pointsX, pointsY, thisname);
 			ImagePlus imp14 = plot14.show().getImagePlus();
-			if (thisSpy)
-				saveDebugImage(imp14, thisfirst, thissecond, thisname, thiscontaxx, thisSpy);
 			MyLog.waitHere(thisname);
 		}
 
@@ -949,6 +1013,38 @@ public class ProfileUtils {
 		double[][] smoothProfile = ProfileUtils.encode(smoothX, smoothY);
 
 		return smoothProfile;
+	}
+
+	/**
+	 * NON TESTATA Deviazione standard mobile
+	 * 
+	 * @param profile1 profilo di input
+	 * @param lag      lunghezza della sdMobile
+	 * @return
+	 */
+	public static double[][] devStanMobile(double[][] profile1, int lag) {
+
+		int len = profile1.length;
+		double[] profiY = ProfileUtils.decodeY(profile1);
+		double[] interY = new double[lag];
+
+		ArrayList<Double> arrX = new ArrayList<Double>();
+		ArrayList<Double> arrY = new ArrayList<Double>();
+
+		for (int i1 = 0; i1 < len - lag; i1++) {
+			for (int i2 = 0; i2 < lag; i2++) {
+				interY[i2] = profiY[i1 + i2];
+			}
+			double sd1 = ArrayUtils.vetSd(interY);
+			arrX.add((double) i1);
+			arrY.add(sd1);
+		}
+
+		double[] outX = ArrayUtils.arrayListToArrayDouble(arrX);
+		double[] outY = ArrayUtils.arrayListToArrayDouble(arrY);
+		double[][] outProfile = ProfileUtils.encode(outX, outY);
+
+		return outProfile;
 	}
 
 }
