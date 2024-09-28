@@ -68,22 +68,22 @@ public class MyMsg {
 
 	public static void msgTestPassed() {
 		ButtonMessages.ModelessMsg(
-				"Il test su immagini campione E' STATO SUPERATO", "CONTINUA");
+				"MyMsg >> Il test su immagini campione E' STATO SUPERATO", "CONTINUA");
 	}
 
 	public static void msgTestFault() {
-		ButtonMessages.ModelessMsg("Il test su immagini campione E' FALLITO",
+		ButtonMessages.ModelessMsg("MyMsg >> Il test su immagini campione E' FALLITO",
 				"CONTINUA");
 	}
 
 	public static void msgParamError() {
-		ButtonMessages.ModelessMsg(" >> ERRORE PARAMETRI CHIAMATA", "CHIUDI");
+		ButtonMessages.ModelessMsg("MyMsg >> ERRORE PARAMETRI CHIAMATA", "CHIUDI");
 	}
 
 	public static boolean msgStandalone() {
 		ButtonMessages
 				.ModelessMsg(
-						"Fine programma, in modo STAND-ALONE salvare ADESSO, A MANO la finestra Risultati, dopo di che premere CONTINUA",
+						"MyMsg >> Fine programma, in modo STAND-ALONE salvare ADESSO, A MANO la finestra Risultati, dopo di che premere CONTINUA",
 						"CONTINUA");
 		return true;
 	}

@@ -193,7 +193,7 @@ public class UtilAyv {
 		}
 		return codice;
 	}
-	
+
 	/**
 	 * 
 	 * @param vetReference sono le coordinate dei punti estremi del segmento di
@@ -225,14 +225,14 @@ public class UtilAyv {
 			IJ.log("--------------------------");
 		}
 
-		String aux="";
-		
+		String aux = "";
+
 		if (Math.sin(angle1) < 0) {
-			aux="MENO";
+			aux = "MENO";
 			x1 = -cx * Math.sin(angle1) - cy * Math.cos(angle1) + vetReference[0];
 			y1 = cx * Math.cos(angle1) - cy * Math.sin(angle1) + vetReference[1];
 		} else {
-			aux="PIU";
+			aux = "PIU";
 			x1 = cx * Math.sin(angle1) + cy * Math.cos(angle1) + vetReference[0];
 			y1 = -cx * Math.cos(angle1) + cy * Math.sin(angle1) + vetReference[1];
 		}
@@ -248,7 +248,6 @@ public class UtilAyv {
 
 		return msd;
 	} // coord2D
-
 
 	/**
 	 * calcoli per rototraslazione delle coordinate rispetto ad un segmento di
@@ -299,10 +298,10 @@ public class UtilAyv {
 	 * 
 	 * @param vetReference sono le coordinate dei punti estremi del segmento di
 	 *                     riferimento verticale, posizionato dall'operatruce
-	 * @param cx coordinata x da rototraslare
-	 * @param cy coordinata y da rototraslare
-	 * @param debug1 attiva stampe di debug
-	 * @return  msd[0] coordinata x rototraslata, msd[1] coordinata y rototraslata
+	 * @param cx           coordinata x da rototraslare
+	 * @param cy           coordinata y da rototraslare
+	 * @param debug1       attiva stampe di debug
+	 * @return msd[0] coordinata x rototraslata, msd[1] coordinata y rototraslata
 	 */
 
 	public static double[] coord2D2(double[] vetReference, double cx, double cy, boolean debug1) {
@@ -979,7 +978,7 @@ public class UtilAyv {
 		}
 		ImageWindow win = imp.getWindow();
 		if (win != null) {
-	//		MyLog.waitThere("immagine gia' visualizzata !");
+			// MyLog.waitThere("immagine gia' visualizzata !");
 		} else {
 			imp.show();
 			do {
@@ -1718,10 +1717,6 @@ public class UtilAyv {
 		Polygon p1 = pRoi.getPolygon();
 		return p1;
 	}
-	
-	
-	
-	
 
 	/**
 	 * 
@@ -2688,8 +2683,12 @@ public class UtilAyv {
 		ImagePlus imp2 = UtilAyv.openImageNoDisplay(path2, true);
 		boolean discosta = false;
 
-		String series1 = DicomTools.getTag(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
-		String position1 = DicomTools.getTag(imp1, MyConst.DICOM_IMAGE_POSITION);
+//		String series1 = DicomTools.getTag(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
+		String series1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
+
+//		String position1 = DicomTools.getTag(imp1, MyConst.DICOM_IMAGE_POSITION);
+		String position1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_IMAGE_POSITION);
+//		MyLog.waitHere("series1= "+series1+"\nECCOLA CAZZO position1= " + position1);
 		String position1x = ReadDicom.readSubstring(position1, 1);
 		double pos1x = ReadDicom.readDouble(position1x);
 		String position1y = ReadDicom.readSubstring(position1, 2);
@@ -2697,14 +2696,18 @@ public class UtilAyv {
 		String position1z = ReadDicom.readSubstring(position1, 3);
 		double pos1z = ReadDicom.readDouble(position1z);
 
-		String location1 = DicomTools.getTag(imp1, MyConst.DICOM_SLICE_LOCATION);
+//		String location1 = DicomTools.getTag(imp1, MyConst.DICOM_SLICE_LOCATION);
+		String location1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SLICE_LOCATION);
 		double loc1 = ReadDicom.readDouble(location1);
 
-		String echo1a = DicomTools.getTag(imp1, MyConst.DICOM_ECHO_TIME);
+//		String echo1a = DicomTools.getTag(imp1, MyConst.DICOM_ECHO_TIME);
+		String echo1a = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ECHO_TIME, MyConst.DICOM_EFFECTIVE_ECHO_TIME);
 		int echo1 = ReadDicom.readInt(echo1a);
 
-		String series2 = DicomTools.getTag(imp2, MyConst.DICOM_SERIES_DESCRIPTION);
-		String position2 = DicomTools.getTag(imp2, MyConst.DICOM_IMAGE_POSITION);
+//		String series2 = DicomTools.getTag(imp2, MyConst.DICOM_SERIES_DESCRIPTION);
+//		String position2 = DicomTools.getTag(imp2, MyConst.DICOM_IMAGE_POSITION);
+		String series2 = ReadDicom.readDicomParameter(imp2, MyConst.DICOM_SERIES_DESCRIPTION);
+		String position2 = ReadDicom.readDicomParameter(imp2, MyConst.DICOM_IMAGE_POSITION);
 		String position2x = ReadDicom.readSubstring(position2, 1);
 		double pos2x = ReadDicom.readDouble(position2x);
 		String position2y = ReadDicom.readSubstring(position2, 2);
@@ -2712,10 +2715,12 @@ public class UtilAyv {
 		String position2z = ReadDicom.readSubstring(position2, 3);
 		double pos2z = ReadDicom.readDouble(position2z);
 
-		String location2 = DicomTools.getTag(imp2, MyConst.DICOM_SLICE_LOCATION);
+//		String location2 = DicomTools.getTag(imp2, MyConst.DICOM_SLICE_LOCATION);
+		String location2 = ReadDicom.readDicomParameter(imp2, MyConst.DICOM_SLICE_LOCATION);
 		double loc2 = ReadDicom.readDouble(location2);
 
-		String echo2a = DicomTools.getTag(imp2, MyConst.DICOM_ECHO_TIME);
+//		String echo2a = DicomTools.getTag(imp2, MyConst.DICOM_ECHO_TIME);
+		String echo2a = ReadDicom.readDicomParameter(imp2, MyConst.DICOM_ECHO_TIME, MyConst.DICOM_EFFECTIVE_ECHO_TIME);
 		int echo2 = ReadDicom.readInt(echo2a);
 
 		if (!series1.equals(series2)) {
@@ -2824,6 +2829,7 @@ public class UtilAyv {
 		ImagePlus imp2 = UtilAyv.openImageNoDisplay(path2, true);
 		ImagePlus imp11 = UtilAyv.openImageNoDisplay(path11, true);
 		ImagePlus imp21 = UtilAyv.openImageNoDisplay(path21, true);
+		boolean ko = false;
 
 		String[] vetString = { MyConst.DICOM_SERIES_DESCRIPTION, MyConst.DICOM_IMAGE_POSITION,
 				MyConst.DICOM_SLICE_LOCATION };
@@ -2842,12 +2848,27 @@ public class UtilAyv {
 			}
 		}
 
-		String eco1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ECHO_TIME);
-		String eco2 = ReadDicom.readDicomParameter(imp2, MyConst.DICOM_ECHO_TIME);
-		String eco11 = ReadDicom.readDicomParameter(imp11, MyConst.DICOM_ECHO_TIME);
-		String eco21 = ReadDicom.readDicomParameter(imp21, MyConst.DICOM_ECHO_TIME);
+		// String eco1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ECHO_TIME);
 
-		if (!(eco1.equals(eco2)) && (eco11.equals(eco21)) || (!(Integer.parseInt(eco1) < Integer.parseInt(eco11)))) {
+//		String eco1 = UtilAyv.readEco(imp1);
+//		String eco2 = UtilAyv.readEco(imp2);
+//		String eco11 = UtilAyv.readEco(imp11);
+//		String eco21 = UtilAyv.readEco(imp21);
+
+		String eco1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ECHO_TIME, MyConst.DICOM_EFFECTIVE_ECHO_TIME);
+		String eco2 = ReadDicom.readDicomParameter(imp2, MyConst.DICOM_ECHO_TIME, MyConst.DICOM_EFFECTIVE_ECHO_TIME);
+		String eco11 = ReadDicom.readDicomParameter(imp11, MyConst.DICOM_ECHO_TIME, MyConst.DICOM_EFFECTIVE_ECHO_TIME);
+		String eco21 = ReadDicom.readDicomParameter(imp21, MyConst.DICOM_ECHO_TIME, MyConst.DICOM_EFFECTIVE_ECHO_TIME);
+
+		if (eco1 == null || eco2 == null || eco11 == null || eco21 == null) {
+			MyLog.waitThere("Problema lettura ECO TIME da almeno una immagine: \n" + "i tempi di eco sono irregolari  "
+					+ eco1 + "  " + eco2 + "  " + eco11 + "  " + eco21, debug);
+
+			return false;
+		}
+
+		if (!(eco1.equals(eco2)) && (eco11.equals(eco21))
+				|| (!(Double.parseDouble(eco1) < Double.parseDouble(eco11)))) {
 
 			MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n" + "i tempi di eco sono irregolari  " + eco1
 					+ "  " + eco2 + "  " + eco11 + "  " + eco21, debug);
@@ -2879,6 +2900,20 @@ public class UtilAyv {
 		return true;
 
 	}
+
+//	public static String readEco(ImagePlus imp1) {
+//
+//		String eco1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ECHO_TIME);
+//		String eco2 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_EFFECTIVE_ECHO_TIME);
+//		String eco3;
+//		if (isNumeric(eco1))
+//			eco3 = eco1;
+//		else if (isNumeric(eco2))
+//			eco3 = eco2;
+//		else
+//			eco3 = null;
+//		return eco3;
+//	}
 
 	/**
 	 * Ricerca posizione del fondo
@@ -3378,9 +3413,5 @@ public class UtilAyv {
 		else
 			return false;
 	}
-	
-
-
-
 
 } // UtilAyv

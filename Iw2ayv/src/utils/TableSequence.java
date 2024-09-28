@@ -107,7 +107,7 @@ public class TableSequence {
 			return true;
 		} else {
 			MyLog.waitHere("errore larghezza iw2ayvTable = " + table[0].length
-					+ " anzich� " + COLUMNS);
+					+ " anziche' " + COLUMNS);
 			return false;
 		}
 	}

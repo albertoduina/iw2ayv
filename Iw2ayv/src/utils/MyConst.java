@@ -30,6 +30,7 @@ public class MyConst {
 	public static String DICOM_ACQUISITION_DATE = "0008,0022";
 	public static String DICOM_IMAGE_DATE = "0008,0023";
 	// public static final String DICOM_ACQTIME = "0008,0032";
+	public static final String DICOM_SOP_CLASS_UID = "0008,0016";
 	public static final String DICOM_ACQUISITION_TIME = "0008,0032";
 	public static final String DICOM_IMATIME = "0008,0033";
 	public static final String DICOM_MANUFACTURER = "0008,0070";
@@ -39,6 +40,7 @@ public class MyConst {
 	public static final String DICOM_SLICE_THICKNESS = "0018,0050";
 	public static final String DICOM_REPETITION_TIME = "0018,0080";
 	public static final String DICOM_ECHO_TIME = "0018,0081";
+	public static final String DICOM_EFFECTIVE_ECHO_TIME = "0018,9082";
 	public static final String DICOM_INVERSION_TIME = "0018,0082";
 	public static final String DICOM_IMAGING_FREQUENCY = "0018,0084";
 	public static final String DICOM_SPACING_BETWEEN_SLICES = "0018,0088";
@@ -55,6 +57,8 @@ public class MyConst {
 	public static final String DICOM_COLUMNS = "0028,0011";
 	public static final String DICOM_PIXEL_SPACING = "0028,0030";
 	public static final String DICOM_PIXEL_REPRESENTATION = "0028,0103";
+	public static final String DICOM_B_VALUE = "0019,100C";
+	public static final String DICOM_SEQUENCE_NAME = "0018,0024";
 	public static final String DICOM_COIL1 = "0051,100F";
 	public static final String DICOM_COIL2 = "0021,114F";
 	public static final double PLUS_20_PERC = 1.2;
@@ -257,5 +261,6 @@ public class MyConst {
 	public static final double P19_LATO_LUNGO_ROI = 300;
 	public static final double P19_LATO_CORTO_ROI = 150;
 	// ---------------------------------------------------
+	public static final int P16_ROI_LIMIT = 10;
 
 }

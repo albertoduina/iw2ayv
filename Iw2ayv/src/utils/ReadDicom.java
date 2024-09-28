@@ -118,6 +118,118 @@ public class ReadDicom {
 		}
 	}
 
+	/***
+	 * Questa modifica permette di leggere due TAG, uno per le immagini RMN salvate
+	 * in modalita' normale ed il secondo per le immagini salvate in modalita'
+	 * ENHANCED
+	 * 
+	 * @param header
+	 * @param userInput1
+	 * @param userInput2
+	 * @return
+	 */
+	public static String readDicomParameter(String header, String userInput1, String userInput2) {
+		// N.B. userInput => 9 characs [group,element] in format: xxxx,xxxx (es:
+		// "0020,0013")
+		// boolean bAbort;
+		String attribute = "???";
+		String value = "???";
+		if (header != null) {
+
+			int first = header.indexOf(userInput1);
+			int second = header.indexOf(userInput2);
+			MyLog.waitHere("first= " + first + " second= " + second);
+
+			int idx1 = header.indexOf(userInput1);
+			int idx2 = header.indexOf(":", idx1);
+			int idx3 = header.indexOf("\n", idx2);
+			if (idx1 >= 0 && idx2 >= 0 && idx3 >= 0) {
+				try {
+					attribute = header.substring(idx1 + 9, idx2);
+					attribute = attribute.trim();
+					value = header.substring(idx2 + 1, idx3);
+					value = value.trim();
+					return (value);
+				} catch (Throwable e) { // Anything else
+					MyLog.here("value PROBLEM");
+					return (value);
+				}
+			} else {
+				attribute = "MISSING";
+				return (attribute);
+			}
+		} else {
+			return (null);
+		}
+	}
+
+	public static String readDicomParameter(ImagePlus imp, String userInput1, String userInput2) {
+		// N.B. userInput => 9 characs [group,element] in format: xxxx,xxxx (es:
+		// "0020,0013")
+		// boolean bAbort;
+		String attribute = "???";
+		String value = "???";
+		if (imp == null)
+			return ("");
+		int currSlice = imp.getCurrentSlice();
+		ImageStack stack = imp.getStack();
+		// int sSize = stack.getSize();
+		// String sLabel = stack.getSliceLabel(currSlice);
+		// String iLabel = (String) imp.getProperty("Info");
+		// IJ.log("-------------------------");
+		// IJ.log("sSize= "+sSize);
+		// IJ.log("sLabel= "+sLabel);
+		// IJ.log("iLabel= "+iLabel);
+		// MyLog.waitHere();
+
+		String header = stack.getSize() > 1 ? stack.getSliceLabel(currSlice) : (String) imp.getProperty("Info");
+
+		if (header != null) {
+
+			int uno = header.indexOf(userInput1);
+			int due = header.indexOf(userInput2);
+			String userInput = "";
+
+			if (due > 0)
+				userInput = userInput2;
+			else
+				userInput = userInput1;
+
+			int idx1 = header.indexOf(userInput);
+			int idx2 = header.indexOf(":", idx1);
+			int idx3 = header.indexOf("\n", idx2);
+			if (idx1 >= 0 && idx2 >= 0 && idx3 >= 0) {
+				try {
+					attribute = header.substring(idx1 + 9, idx2);
+					attribute = attribute.trim();
+					value = header.substring(idx2 + 1, idx3);
+					value = value.trim();
+					return (value);
+				} catch (Throwable e) { // Anything else
+					MyLog.here("value PROBLEM");
+					return (value);
+				}
+			} else {
+				attribute = "MISSING";
+				return (attribute);
+			}
+		} else {
+			String aux1 = (String) imp.getProperty("Info");
+			// MyLog.waitThere("aux1= " + aux1);
+
+			IJ.log("" + imp.getTitle());
+			MyLog.trace("readDicomParameter WARNING!! Header is null.", true);
+			MyLog.trace("file=" + Thread.currentThread().getStackTrace()[2].getFileName() + " " + " line="
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "file="
+					+ Thread.currentThread().getStackTrace()[3].getFileName() + " " + " line="
+					+ Thread.currentThread().getStackTrace()[3].getLineNumber(), true);
+
+//			IJ.error("readDicomParameter WARNING!! Header is null.");
+			attribute = null;
+			return (attribute);
+		}
+	}
+
 	public static boolean hasHeader(ImagePlus imp) {
 		if (imp == null)
 			return false;
@@ -150,6 +262,7 @@ public class ReadDicom {
 	 * @return stringa con la parte selezionata
 	 */
 	public static String readSubstring(String s1, int number) {
+//		MyLog.waitHere("stringa del casso= "+s1);
 		StringTokenizer st = new StringTokenizer(s1, "\\ ");
 		int nTokens = st.countTokens();
 		String substring = "ERROR";
@@ -297,6 +410,26 @@ public class ReadDicom {
 	}
 
 	/***
+	 * Testa se e' un file dicom ed e' un immagine visualizzabile
+	 * 
+	 * @param fileName1
+	 * @return
+	 */
+	public static boolean isDicomEnhanced(ImagePlus imp1) {
+		// IJ.redirectErrorMessages();
+		String sopClassUID = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SOP_CLASS_UID);
+		String MRimageStorage = "1.2.840.10008.5.1.4.1.1.4";
+		String EnhancedMRimageStorage = "1.2.840.10008.5.1.4.1.1.4.1";
+		if (sopClassUID.equals(MRimageStorage)) {
+			return false;
+		} else if (sopClassUID.equals(EnhancedMRimageStorage)) {
+			return true;
+		}
+		MyLog.waitHere("ATTENZIONE il TAG DICOM " + MyConst.DICOM_SOP_CLASS_UID + " ha un valore inatteso");
+		return false;
+	}
+
+	/***
 	 * Legge il codice dall'header Dicom
 	 * 
 	 * @param imp1
@@ -327,7 +460,6 @@ public class ReadDicom {
 
 	public static String getFirstCoil(ImagePlus imp1) {
 
-		
 		String total = ReadDicom.getAllCoils(imp1);
 
 		int i1 = total.indexOf(";");
@@ -353,7 +485,7 @@ public class ReadDicom {
 			// MyLog.waitHere("null1");
 			return null;
 		}
-		
+
 		String total = ReadDicom.getAllCoils(imp1);
 
 		// #################################################################
@@ -370,8 +502,6 @@ public class ReadDicom {
 		// MyLog.waitHere();
 		// #################################################################
 
-		
-		
 		// String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
 		// MyLog.waitHere("total= " + total);
 

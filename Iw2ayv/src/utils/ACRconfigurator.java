@@ -2,9 +2,16 @@ package utils;
 
 import ij.Prefs;
 
+
 public class ACRconfigurator {
 
-
+/***
+ * aaaa
+ * 
+ * @param key
+ * @param default1
+ * @return
+ */
 	public static int readPreferences(String key, int default1) {
 		int value = (int) (Prefs.getDouble(".prefer." + key, default1));
 		return value;
@@ -37,6 +44,7 @@ public class ACRconfigurator {
 
 	public static void writePreferences(String key, String value) {
 		Prefs.set("prefer." + key, value);
+		
 		return;
 	}
 
