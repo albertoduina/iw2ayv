@@ -177,7 +177,7 @@ public class ReportStandardInfo {
 	 * @param imp1      ImagePlus
 	 * @param tabCodici tabella coi valori di codici.txt
 	 * @param version   nome del plugin e sua versione
-	 * @param called    true se il plugin � stato chiamato da sequenze
+	 * @param called    true se il plugin e' stato chiamato da sequenze
 	 * @return gruppo informazioni per la ResultsTable
 	 */
 	public static String[] getSimpleStandardInfo(String path, ImagePlus imp1, String[][] tabCodici, String version,

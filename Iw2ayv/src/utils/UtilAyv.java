@@ -383,8 +383,8 @@ public class UtilAyv {
 	 * chiude tutte le finestre e la ResultsTable, ovvia ad un malfunzionamento di
 	 * CloseAllWindows se viene selezionato RIFAI pi� volte
 	 */
-	public static void cleanUp() {
 
+	public static void cleanUp() {
 		if (WindowManager.getFrame("Results") != null) {
 			IJ.selectWindow("Results");
 			IJ.run("Clear Results");
