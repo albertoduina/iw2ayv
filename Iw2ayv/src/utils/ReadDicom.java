@@ -10,8 +10,10 @@ import ij.plugin.DICOM;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 public class ReadDicom {
@@ -19,6 +21,7 @@ public class ReadDicom {
 	private static final int PIXEL_DATA = 0x7FE00010;
 	private static final int NON_IMAGE = 0x7FE10010;
 	private static final int BINARY_DATA = 0x7FE11010;
+	public int location;
 
 	/**
 	 * La seguente routine, che si occupa di estrarre dati dall'header delle
@@ -35,6 +38,7 @@ public class ReadDicom {
 		// N.B. userInput => 9 characs [group,element] in format: xxxx,xxxx (es:
 		// "0020,0013")
 		// boolean bAbort;
+
 		String attribute = "???";
 		String value = "???";
 		if (imp == null)
@@ -51,6 +55,8 @@ public class ReadDicom {
 		// MyLog.waitHere();
 
 		String header = stack.getSize() > 1 ? stack.getSliceLabel(currSlice) : (String) imp.getProperty("Info");
+//		IJ.log(header);
+//		MyLog.waitHere();
 
 		if (header != null) {
 			int idx1 = header.indexOf(userInput);
@@ -445,17 +451,22 @@ public class ReadDicom {
 		return codice;
 	}
 
+	/// prova del 20250223
+
 	public static String getAllCoils(ImagePlus imp1) {
 
 		String total1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL1);
 		String total2 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL2);
+		String total3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL3);
 		String total = "MISSING";
 		if (total1.equals("MISSING") == false)
 			total = total1;
 		if (total2.equals("MISSING") == false)
 			total = total2;
+		if (total3.equals("MISSING") == false) {
+			total = total3;
+		}
 		return total;
-
 	}
 
 	public static String getFirstCoil(ImagePlus imp1) {
@@ -592,5 +603,139 @@ public class ReadDicom {
 			imp3.setProperty("Info", info);
 		return imp3;
 	}
+	
+	
+	/***
+	 * Questo workaround deriva da ReadAscconv e va utilizzato per leggere parametri
+	 * dell'header ignorati da ImageJ, solitamente legati all'incauto passaggio
+	 * delle immagini attraverso i PACS. (CAPRE, CAPRE, CAPRE ....)
+	 * 
+	 * @param path1
+	 * @param ricerca
+	 * @return
+	 */
+
+	public static String piedeDiPorco(String fileName1, String tag) {
+		int len1;
+		
+		
+		
+		byte[] x1 = hexStringToByteArray(tag);
+		String out1 = "";
+
+		try {
+			BufferedInputStream f1 = new BufferedInputStream(new FileInputStream(fileName1));
+			len1 = f1.available();
+			byte[] buffer1 = new byte[len1];
+			f1.read(buffer1, 0, len1); // get copy of entire file as byte[]
+			f1.close();
+
+			// cerco in buffer1 il tag di fine header, serve per evitare di sconfinare nei
+			// byte dei pixel immagine
+			byte[] y1 = new byte[4];
+			y1[0] = (byte) 0xE0;
+			y1[1] = (byte) 0x7F;
+			y1[2] = (byte) 0x10;
+			y1[3] = (byte) 0x00;
+			int offset1 = localizeHexWord(buffer1, y1, buffer1.length);
+			int offset2 = localizeHexWord(buffer1, x1, offset1);
+
+			short len2 = Short.parseShort(byte2hex(buffer1[offset2 + 4]), 16);
+			offset2 = offset2 + 8;
+
+			byte[] buffer2 = new byte[len2];
+
+			for (int i1 = 0; i1 < len2; i1++) {
+				buffer2[i1] = buffer1[offset2 + i1];
+			}
+
+			out1 = new String(buffer2);
+
+			/// IJ.log("output >>> " + out1);
+
+		} catch (Exception e) {
+			IJ.showMessage("piedeDiPorco>>> ", "Exception " + "\n \n\"" + e.getMessage() + "\"");
+		}
+		return out1;
+	}
+
+	public static int localizeHexWord(byte[] bImage, byte[] what, int limit) {
+		int conta = 0;
+		int locazione = 0;
+
+		// IJ.log("what =" + byte2hex(what[0]) + byte2hex(what[1])
+		// + byte2hex(what[2]) + byte2hex(what[3]));
+
+		for (int i1 = 0; i1 < limit - 4; i1++) {
+
+			if (bImage[i1 + 0] == what[0] && bImage[i1 + 1] == what[1] && bImage[i1 + 2] == what[2]
+					&& bImage[i1 + 3] == what[3]) {
+				locazione = i1;
+				conta++;
+				// IJ.log("conta=" + conta + " locazione=" + locazione);
+				break;
+			}
+		}
+
+		if (conta > 0) {
+			return locazione;
+		} else {
+			return -1; // non trovato
+		}
+	}
+
+	public static String byte2hex(byte by) {
+		char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+		char[] buf2 = new char[2];
+		buf2[1] = hexDigits[by & 0xf];
+		by >>>= 4;
+		buf2[0] = hexDigits[by & 0xf];
+		return new String(buf2);
+	} // end byte2hex
+
+	public static final byte[] short2Byte(short s) {
+		byte[] out = new byte[2];
+
+		out[0] = (byte) ((s >>> 8) & 0xFF);
+		out[1] = (byte) ((s >>> 0) & 0xFF);
+
+		return out;
+	}
+
+	/***
+	 * conversione da string hexto byte array s1 deve essere di lunghezza pari
+	 * 
+	 * @param s1
+	 * @return
+	 */
+	public static byte[] hexStringToByteArray(String s2) {
+		String s1= s2.replace(",","");
+		int len = s1.length();
+		byte[] data = new byte[len / 2];
+		for (int i1 = 0; i1 < len; i1 += 2) {
+			data[i1 / 2] = (byte) ((Character.digit(s1.charAt(i1), 16) << 4) + Character.digit(s1.charAt(i1 + 1), 16));
+		}
+		return data;
+
+	}
+
+	public static String getString(BufferedInputStream bo, int start, int len) throws IOException {
+
+		// IJ.log("entro in getString");
+		int pos = 1;
+		// IJ.log("getString 001");
+		byte[] buf = new byte[len];
+		// IJ.log("getString 002");
+		int size = bo.available();
+		// IJ.log("getString 003");
+		while (pos < len) {
+			int count = bo.read(buf, pos, len);
+			pos += count;
+		}
+
+		return new String(buf);
+	}
+
+
 
 }

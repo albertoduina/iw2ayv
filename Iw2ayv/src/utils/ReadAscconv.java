@@ -15,9 +15,9 @@ import ij.ImagePlus;
  * facente parte del Dicom Toolbox, di Dirk-Jan Kroon
  * "www.mathworks.com/matlabcentral/fileexchange/27941-dicom-toolbox/content/SiemensInfo.m"
  * in essa viene fatta una ricerca all'interno del Siemens Private Tag
- * 0029,1020. Questo Tag, purtroppo per non � conosciuto da ImageJ per cui non �
- * possibile estrarlo automaticamente n� dall'header n� dalle Info. Pertanto la
- * strada � quella di leggere dal file stream
+ * 0029,1020. Questo Tag, purtroppo per non viene riconosciuto da ImageJ per cui non diviene
+ * possibile estrarlo automaticamente  dall'header o dalle Info. Pertanto la
+ * strada risulta quella di leggere dal file stream
  * 
  */
 

@@ -95,7 +95,7 @@ public class TableSequenceTest {
 		String CODE_FILE = "./data/iw2ayv.txt";
 		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
 		String risultato = TableSequence.getRow(strTabella, 2);
-		assertEquals("la row non è corretta", "2", risultato);
+		assertEquals("la row non ï¿½ corretta", "2", risultato);
 	}
 	
 	/**
@@ -107,7 +107,7 @@ public class TableSequenceTest {
 		String CODE_FILE = "./data/iw2ayv.txt";
 		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
 		String risultato = TableSequence.getPath(strTabella, 2);
-		assertEquals("il path non è corretto", "C:\\Dati\\cdqaera020811\\Study_1_20110802\\Series_34_BUSS_se_15b130_sag\\34_1331_BC_BUSS_", risultato);
+		assertEquals("il path non e' corretto", "C:\\Dati\\cdqaera020811\\Study_1_20110802\\Series_34_BUSS_se_15b130_sag\\34_1331_BC_BUSS_", risultato);
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class TableSequenceTest {
 		String CODE_FILE = "./data/iw2ayv.txt";
 		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
 		String risultato = TableSequence.getCode(strTabella, 2);
-		assertEquals("il codice non è corretto", "BUSS_", risultato);
+		assertEquals("il codice non e' corretto", "BUSS_", risultato);
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class TableSequenceTest {
 		String CODE_FILE = "./data/iw2ayv.txt";
 		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
 		String risultato = TableSequence.getCoil(strTabella, 2);
-		assertEquals("la Coil non è corretta ", "BC", risultato);
+		assertEquals("la Coil non e' corretta ", "BC", risultato);
 	}
 
 	@Test
@@ -139,7 +139,7 @@ public class TableSequenceTest {
 		String CODE_FILE = "./data/iw2ayv.txt";
 		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
 		String risultato = TableSequence.getEcho(strTabella, 2);
-		assertEquals("L'echo non è corretto", "20", risultato);
+		assertEquals("L'echo non e' corretto", "20", risultato);
 	}
 	
 	@Test
@@ -147,7 +147,7 @@ public class TableSequenceTest {
 		String CODE_FILE = "./data/iw2ayv.txt";
 		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
 		String risultato = TableSequence.getDirez(strTabella, 2);
-		assertEquals("La direz non è corretta", "x", risultato);
+		assertEquals("La direz non e' corretta", "x", risultato);
 	}
 	
 	@Test
@@ -155,7 +155,7 @@ public class TableSequenceTest {
 		String CODE_FILE = "./data/iw2ayv.txt";
 		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
 		String risultato = TableSequence.getProfond(strTabella, 2);
-		assertEquals("La profond non è corretta", "x", risultato);
+		assertEquals("La profond non e' corretta", "x", risultato);
 	}
 
 	/**
@@ -167,7 +167,7 @@ public class TableSequenceTest {
 		String CODE_FILE = "./data/iw2ayv.txt";
 		String[][] strTabella = new TableSequence().loadTable(CODE_FILE);
 		String risultato = TableSequence.getDone(strTabella, 2);
-		assertEquals("il fatto non è corretto", "1", risultato);
+		assertEquals("il fatto non e' corretto", "1", risultato);
 	}
 
 	@Test

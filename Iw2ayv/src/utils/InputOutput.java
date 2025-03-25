@@ -323,6 +323,15 @@ public class InputOutput {
 		return matrixTable;
 	}
 
+	/**
+	 * QUI SI VERIFICA IL PROBLEMA DEL 05 FEBBRAIO 2025 PRATICAMENTE SEQUENZE NON
+	 * ELABORA NULLA. FATTO ALCUNE PROVE POICHE' SEMBRAVA LEGATO ALLA VERSIONE DI
+	 * IMAGEJ MA ADESSO HO DUBBI ANCHE SU QUELLO
+	 * 
+	 * @param fileName
+	 * @param absolute
+	 * @return
+	 */
 	public ArrayList<ArrayList<String>> readFile5LIKE(String fileName, boolean absolute) {
 		ArrayList<ArrayList<String>> matrixTable = new ArrayList<ArrayList<String>>();
 		ArrayList<String> arr1 = readFileGeneric(fileName, absolute);
@@ -335,16 +344,32 @@ public class InputOutput {
 				ArrayList<String> row1 = new ArrayList<String>();
 				String result = InputOutput.stripAllComments(riga);
 				String[] splitted = splitStringGeneric(result, "#");
+
+				// -------------------------
+				//MyLog.logVector(splitted, "splitted");
+				//MyLog.waitHere();
+				// -------------------------
+
 				for (int i2 = 0; i2 < splitted.length; i2++) {
 					row1.add(splitted[i2]);
 				}
 				ArrayList<String> row2 = new ArrayList<String>();
+//				for (int i2 = 1; i2 < splitted.length; i2++) {
+//					row2.add(row1.get(i2));
+//				}
+
+				// 2025 feb 06 qui sotto lascio 1 ma non capisco cosa ci sia di diverso
+				// MA PORCACCIA MISERIA, AVEVO USATO # NEL NOME CARTELLA ECCO DA DOVE VENIVA
+				// TUTTO IL CASINO !!!!!
+
 				for (int i2 = 1; i2 < splitted.length; i2 += 2) {
 					row2.add(row1.get(i2));
 				}
 				matrixTable.add(row2);
 			}
 		}
+//		MyLog.logArrayListTable2(matrixTable, "matrix");
+//		MyLog.waitHere();
 		return matrixTable;
 	}
 
@@ -626,7 +651,7 @@ public class InputOutput {
 		}
 		return vetResult;
 	}
-	
+
 	/***
 	 * Legge i dati da un file e li restituisce come double matrix
 	 * 
@@ -662,7 +687,6 @@ public class InputOutput {
 		}
 		return vetResult;
 	}
-
 
 	/***
 	 * Legge i dati da un file e li restituisce come float matrix

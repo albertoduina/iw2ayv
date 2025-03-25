@@ -62,6 +62,7 @@ public class MyConst {
 	public static final String DICOM_SEQUENCE_NAME = "0018,0024";
 	public static final String DICOM_COIL1 = "0051,100F";
 	public static final String DICOM_COIL2 = "0021,114F";
+	public static final String DICOM_COIL3 = "0021,104F";
 	public static final double PLUS_20_PERC = 1.2;
 	public static final double PLUS_10_PERC = 1.1;
 	public static final double MINUS_10_PERC = 0.9;

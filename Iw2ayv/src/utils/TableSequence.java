@@ -50,15 +50,15 @@ public class TableSequence {
 	public static int COIL = 3;
 
 	public static int IMA_PASS = 4;
-	
+
 	public static int IMA_ORDER = 5;
-	
+
 	public static int IMA_INCREMENT = 6;
-	
+
 	public static int SPARE_1 = 7;
-	
+
 	public static int SPARE_2 = 8;
-	
+
 	public static int SPARE_3 = 9;
 
 	public static int SERIE = 10;
@@ -84,17 +84,18 @@ public class TableSequence {
 	/***
 	 * Carica la tabella in memoria leggendo il file su disco
 	 * 
-	 * @param path
-	 *            path del file iw2ayv.txt
+	 * @param path path del file iw2ayv.txt
 	 * @return tabella con i dati
 	 */
 	public String[][] loadTable(String path) {
 
 		// IJ.log("TableSequence.loadTable riceve=" + path);
-		ArrayList<ArrayList<String>> tableArray = new InputOutput()
-				.readFile5LIKE(path, true);
-		String[][] sequenceTable = new InputOutput()
-				.fromArrayListToStringTable(tableArray);
+		ArrayList<ArrayList<String>> tableArray = new InputOutput().readFile5LIKE(path, true);
+
+//		MyLog.logArrayListTable2(tableArray, "titolo");
+//		MyLog.waitHere();
+
+		String[][] sequenceTable = new InputOutput().fromArrayListToStringTable(tableArray);
 
 		return sequenceTable;
 	}
@@ -106,8 +107,7 @@ public class TableSequence {
 		if (table[0].length == COLUMNS) {
 			return true;
 		} else {
-			MyLog.waitHere("errore larghezza iw2ayvTable = " + table[0].length
-					+ " anziche' " + COLUMNS);
+			MyLog.waitHere("errore larghezza iw2ayvTable = " + table[0].length + " anziche' " + COLUMNS);
 			return false;
 		}
 	}
@@ -115,8 +115,7 @@ public class TableSequence {
 	/***
 	 * Conta le righe del file iw2ayv.txt
 	 * 
-	 * @param path
-	 *            path del file iw2ayv.txt
+	 * @param path path del file iw2ayv.txt
 	 * @return numero di righe
 	 */
 	public static int countRows(String path) {
@@ -172,37 +171,36 @@ public class TableSequence {
 			return null;
 		return strTabella[riga][IMA_PASS];
 	}
-	
+
 	public static String getImaGroup(String[][] strTabella, int riga) {
 		if (strTabella == null)
 			return null;
 		return strTabella[riga][IMA_ORDER];
 	}
-	
-	
+
 	public static String getImaIncrement(String[][] strTabella, int riga) {
 		if (strTabella == null)
 			return null;
 		return strTabella[riga][IMA_INCREMENT];
 	}
-	
+
 	public static String getSpare_1(String[][] strTabella, int riga) {
 		if (strTabella == null)
 			return null;
 		return strTabella[riga][SPARE_1];
 	}
-	
+
 	public static String getSpare_2(String[][] strTabella, int riga) {
 		if (strTabella == null)
 			return null;
 		return strTabella[riga][SPARE_2];
 	}
-	
+
 	public static String getSpare_3(String[][] strTabella, int riga) {
 		if (strTabella == null)
 			return null;
 		return strTabella[riga][SPARE_3];
-	}	
+	}
 
 	public static String getNumSerie(String[][] strTabella, int riga) {
 		if (strTabella == null)
@@ -280,16 +278,12 @@ public class TableSequence {
 	/***
 	 * Scrive un vettore in una colonna della tabella
 	 * 
-	 * @param inTable
-	 *            tabella su cui scrivere
-	 * @param strData
-	 *            vettore coi dati
-	 * @param column
-	 *            numero della colonna su cui scrivere
+	 * @param inTable tabella su cui scrivere
+	 * @param strData vettore coi dati
+	 * @param column  numero della colonna su cui scrivere
 	 * @return tabella
 	 */
-	public static String[][] writeColumn(String[][] inTable, String[] strData,
-			int column) {
+	public static String[][] writeColumn(String[][] inTable, String[] strData, int column) {
 		if (inTable == null)
 			return null;
 		if (strData == null)
@@ -304,10 +298,8 @@ public class TableSequence {
 	/***
 	 * Crea una tabella vuota
 	 * 
-	 * @param righe
-	 *            numero di righe
-	 * @param colonne
-	 *            numero di colonne
+	 * @param righe   numero di righe
+	 * @param colonne numero di colonne
 	 * @return tabella vuota
 	 */
 	public static String[][] createEmptyTable(int righe, int colonne) {
@@ -318,10 +310,8 @@ public class TableSequence {
 	/**
 	 * Scrive la tabella su disco nel file iw2ayv.txt
 	 * 
-	 * @param path
-	 *            path su cui scrivere
-	 * @param strTabella
-	 *            tabella da scrivere
+	 * @param path       path su cui scrivere
+	 * @param strTabella tabella da scrivere
 	 * @return true se scritto con successo
 	 */
 	public boolean writeTable(String path, String[][] strTabella) {
@@ -332,33 +322,23 @@ public class TableSequence {
 			return false;
 		}
 		if (strTabella[ROW].length != COLUMNS) {
-			MyLog.waitHere("scriviTabella Error on strTabella length "
-					+ strTabella[ROW].length + " invece di " + COLUMNS);
+			MyLog.waitHere(
+					"scriviTabella Error on strTabella length " + strTabella[ROW].length + " invece di " + COLUMNS);
 			return false;
 		}
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(path));
 			if (bw != null) {
 				while (j1 < strTabella.length) {
-					rigaCompleta = "R#" + strTabella[j1][ROW] + "#FILE#"
-							+ strTabella[j1][PATH] + "#COD#"
-							+ strTabella[j1][CODE] + "#COIL#"
-							+ strTabella[j1][COIL] + "#PASS#"
-							+ strTabella[j1][IMA_PASS] + "#ORD#"
-							+ strTabella[j1][IMA_ORDER] + "#INCR#"
-							+ strTabella[j1][IMA_INCREMENT] + "#SP1#"
-							+ strTabella[j1][SPARE_1] + "#SP2#"
-							+ strTabella[j1][SPARE_2] + "#SP3#"
-							+ strTabella[j1][SPARE_3] + "#SER#"
-							+ strTabella[j1][SERIE] + "#ACQ#"
-							+ strTabella[j1][ACQ] + "#IMA#"
-							+ strTabella[j1][IMA] + "#TIME#"
-							+ strTabella[j1][TIME] + "#ECHO#"
-							+ strTabella[j1][ECHO] + "#POSIZ#"
-							+ strTabella[j1][POSIZ] + "#DIREZ#"
-							+ strTabella[j1][DIREZ] + "#PROF#"
-							+ strTabella[j1][PROFOND] + "#DONE#"
-							+ strTabella[j1][DONE] + "#\n";
+					rigaCompleta = "R#" + strTabella[j1][ROW] + "#FILE#" + strTabella[j1][PATH] + "#COD#"
+							+ strTabella[j1][CODE] + "#COIL#" + strTabella[j1][COIL] + "#PASS#"
+							+ strTabella[j1][IMA_PASS] + "#ORD#" + strTabella[j1][IMA_ORDER] + "#INCR#"
+							+ strTabella[j1][IMA_INCREMENT] + "#SP1#" + strTabella[j1][SPARE_1] + "#SP2#"
+							+ strTabella[j1][SPARE_2] + "#SP3#" + strTabella[j1][SPARE_3] + "#SER#"
+							+ strTabella[j1][SERIE] + "#ACQ#" + strTabella[j1][ACQ] + "#IMA#" + strTabella[j1][IMA]
+							+ "#TIME#" + strTabella[j1][TIME] + "#ECHO#" + strTabella[j1][ECHO] + "#POSIZ#"
+							+ strTabella[j1][POSIZ] + "#DIREZ#" + strTabella[j1][DIREZ] + "#PROF#"
+							+ strTabella[j1][PROFOND] + "#DONE#" + strTabella[j1][DONE] + "#\n";
 					j1++;
 					bw.write(rigaCompleta, 0, rigaCompleta.length());
 				}

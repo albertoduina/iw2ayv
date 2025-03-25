@@ -2841,7 +2841,7 @@ public class UtilAyv {
 			String item21 = ReadDicom.readDicomParameter(imp21, vetString[i1]);
 			if (!(item1.equals(item2) && item1.equals(item11) && item1.equals(item21))) {
 
-				MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+				MyLog.waitThere("checkImages4 Problema sui dati ricevuti in AUTOMATICO: \n"
 						+ "la descrizione delle sequenze ricevute e'differente " + vetString[i1] + "  " + item1
 						+ "   <>    " + item2 + "   <>    " + item11 + "   <>    " + item21, debug);
 				return false;
@@ -2861,17 +2861,17 @@ public class UtilAyv {
 		String eco21 = ReadDicom.readDicomParameter(imp21, MyConst.DICOM_ECHO_TIME, MyConst.DICOM_EFFECTIVE_ECHO_TIME);
 
 		if (eco1 == null || eco2 == null || eco11 == null || eco21 == null) {
-			MyLog.waitThere("Problema lettura ECO TIME da almeno una immagine: \n" + "i tempi di eco sono irregolari  "
+			MyLog.waitThere("checkImages4 Problema lettura ECO TIME da almeno una immagine: \n" + "i tempi di eco sono irregolari  "
 					+ eco1 + "  " + eco2 + "  " + eco11 + "  " + eco21, debug);
 
 			return false;
 		}
 
 		if (!(eco1.equals(eco2)) && (eco11.equals(eco21))
-				|| (!(Double.parseDouble(eco1) < Double.parseDouble(eco11)))) {
+				|| (!(Double.parseDouble(eco1) < Double.parseDouble(eco2)))) {
 
-			MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n" + "i tempi di eco sono irregolari  " + eco1
-					+ "  " + eco2 + "  " + eco11 + "  " + eco21, debug);
+			MyLog.waitThere("checkImages4 Problema sui dati ricevuti in AUTOMATICO: \n" + "i tempi di eco sono irregolari  " + eco1
+					+ "  " + eco2 + "  " + eco11 + "  " + eco21+ " >>> "+Double.parseDouble(eco1)+ " >>> "+Double.parseDouble(eco11), debug);
 			return false;
 		}
 
@@ -2891,7 +2891,7 @@ public class UtilAyv {
 
 		{
 
-			MyLog.waitThere("Problema sui dati ricevuti in AUTOMATICO: \n"
+			MyLog.waitThere("checkImages4 Problema sui dati ricevuti in AUTOMATICO: \n"
 					+ "la descrizione delle sequenze ricevute e'differente per le bobine utilizzate: " + coil1
 					+ "   <>    " + coil2, debug);
 			return false;

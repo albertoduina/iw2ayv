@@ -244,12 +244,13 @@ public class ReportStandardInfo {
 //		IJ.log("coilElement= "+coilElement);
 //		MyLog.waitHere();
 		if (coilElement == null) {
-			coilElement = "null";
+			coilElement = ReadDicom.piedeDiPorco(path, "2100,4F10");
 //			MyLog.waitHere("coil = null");
 		}
 
 		if (coilElement.equals("MISSING")) {
-			coilElement = new UtilAyv().kludge(path);
+			// coilElement = new UtilAyv().kludge(path);
+			coilElement = ReadDicom.piedeDiPorco(path, "2100,4F10");
 		}
 		
 		//-------< 2024_04_17 >----------------------
