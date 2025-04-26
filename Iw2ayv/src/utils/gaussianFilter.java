@@ -1,21 +1,5 @@
 package utils;
 
-
-
-import java.awt.*;
-import java.awt.image.*;
-import java.applet.*;
-import java.net.*;
-import java.io.*;
-import java.lang.Math;
-import java.util.*;
- 
- // additional stuff for swing
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.JApplet;
-import javax.imageio.*;
-
 public class gaussianFilter {
 
 		double[] input;

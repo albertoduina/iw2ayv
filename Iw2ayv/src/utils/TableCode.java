@@ -1,20 +1,13 @@
 package utils;
 
-import ij.IJ;
-
 import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
-import com.sun.tools.javac.code.Attribute.Array;
+import ij.IJ;
+
+// import com.sun.tools.javac.code.Attribute.Array;
 
 public class TableCode {
 
