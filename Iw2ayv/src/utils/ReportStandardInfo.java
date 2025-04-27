@@ -240,9 +240,15 @@ public class ReportStandardInfo {
 		aux3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
 		String[] reqCoil = getRequestedCoil2(UtilAyv.getFiveLetters(aux3).trim(), tabCodici);
 		String coilElement = ReadDicom.getThisCoil(imp1, reqCoil);
-//		MyLog.logVector(reqCoil, "reqCoil");
-//		IJ.log("coilElement= "+coilElement);
-//		MyLog.waitHere();
+		String coilElement2 = ReadDicom.piedeDiPorco(path, "2100,4F10");
+		String coilElement3 = ReadDicom.piedeDiPorco(path, "2100,4F11");
+		
+		
+		// MyLog.logVector(reqCoil, "reqCoil");
+		// IJ.log("coilElement1= "+coilElement);
+		// IJ.log("coilElement2= "+coilElement2);
+		// IJ.log("coilElement3= "+coilElement3);
+		// MyLog.waitHere();
 		if (coilElement == null) {
 			coilElement = ReadDicom.piedeDiPorco(path, "2100,4F10");
 //			MyLog.waitHere("coil = null");
