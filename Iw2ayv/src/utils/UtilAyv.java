@@ -2816,23 +2816,27 @@ public class UtilAyv {
 	}
 
 	/**
-	 * checkImages3 effettua il controllo di coerenza delle immagini
+	 * checkImages4 effettua il controllo di coerenza delle immagini
 	 *
-	 * @param path1 path prima immagine
-	 * @param path2 path seconda immagine
-	 * @param debug
+	 * @param path1  // prima acquisizione primo eco (commento 2025)
+	 * @param path2  // seconda acquisizione primo eco (commento 2025)
+	 * @param path11 // prima acquisizione secondo eco (commento 2025)
+	 * @param path21 // seconda acquisizione secondo eco (commento 2025)
+	 * @param debug	 // abilita lo stop in caso di messaggio
 	 * @return
 	 */
 	public static boolean checkImages4(String path1, String path2, String path11, String path21, boolean debug) {
 
-		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, true);
-		ImagePlus imp2 = UtilAyv.openImageNoDisplay(path2, true);
-		ImagePlus imp11 = UtilAyv.openImageNoDisplay(path11, true);
-		ImagePlus imp21 = UtilAyv.openImageNoDisplay(path21, true);
-		boolean ko = false;
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, true);		// prima acquisizione primo eco (commento 2025)
+		ImagePlus imp2 = UtilAyv.openImageNoDisplay(path2, true);		// seconda acquisizione primo eco (commento 2025)
+		ImagePlus imp11 = UtilAyv.openImageNoDisplay(path11, true);		// prima acquisizione secondo eco (commento 2025)
+		ImagePlus imp21 = UtilAyv.openImageNoDisplay(path21, true);		// seconda acquisizione secondo eco (commento 2025)
 
 		String[] vetString = { MyConst.DICOM_SERIES_DESCRIPTION, MyConst.DICOM_IMAGE_POSITION,
 				MyConst.DICOM_SLICE_LOCATION };
+
+		// Effettuo il controllo confrontando DESCRIPTION, POSITION e LOCATION per tutte
+		// e quattro le immagini di input
 
 		for (int i1 = 0; i1 < vetString.length; i1++) {
 			String item1 = ReadDicom.readDicomParameter(imp1, vetString[i1]);
@@ -2840,7 +2844,6 @@ public class UtilAyv {
 			String item11 = ReadDicom.readDicomParameter(imp11, vetString[i1]);
 			String item21 = ReadDicom.readDicomParameter(imp21, vetString[i1]);
 			if (!(item1.equals(item2) && item1.equals(item11) && item1.equals(item21))) {
-
 				MyLog.waitThere("checkImages4 Problema sui dati ricevuti in AUTOMATICO: \n"
 						+ "la descrizione delle sequenze ricevute e'differente " + vetString[i1] + "  " + item1
 						+ "   <>    " + item2 + "   <>    " + item11 + "   <>    " + item21, debug);
@@ -2848,30 +2851,30 @@ public class UtilAyv {
 			}
 		}
 
-		// String eco1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ECHO_TIME);
-
-//		String eco1 = UtilAyv.readEco(imp1);
-//		String eco2 = UtilAyv.readEco(imp2);
-//		String eco11 = UtilAyv.readEco(imp11);
-//		String eco21 = UtilAyv.readEco(imp21);
-
 		String eco1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ECHO_TIME, MyConst.DICOM_EFFECTIVE_ECHO_TIME);
 		String eco2 = ReadDicom.readDicomParameter(imp2, MyConst.DICOM_ECHO_TIME, MyConst.DICOM_EFFECTIVE_ECHO_TIME);
 		String eco11 = ReadDicom.readDicomParameter(imp11, MyConst.DICOM_ECHO_TIME, MyConst.DICOM_EFFECTIVE_ECHO_TIME);
 		String eco21 = ReadDicom.readDicomParameter(imp21, MyConst.DICOM_ECHO_TIME, MyConst.DICOM_EFFECTIVE_ECHO_TIME);
-
+		// Effettuo il controllo sugli echi delle quattro immagini, essi devono essere
+		// innanzitutto leggibili
 		if (eco1 == null || eco2 == null || eco11 == null || eco21 == null) {
-			MyLog.waitThere("checkImages4 Problema lettura ECO TIME da almeno una immagine: \n" + "i tempi di eco sono irregolari  "
-					+ eco1 + "  " + eco2 + "  " + eco11 + "  " + eco21, debug);
+			MyLog.waitThere(
+					"checkImages4 Problema lettura ECO TIME da almeno una immagine: \n"
+							+ "i tempi di eco sono irregolari  " + eco1 + "  " + eco2 + "  " + eco11 + "  " + eco21,
+					debug);
 
 			return false;
 		}
+		// Effettuo il controllo sugli echi delle quattro immagini, essi devono essere
+		// eco1=eco2 e poi eco 11=eco21
+		// inoltre eco1<eco2 MA QUI E'SBAGLIATO, CHE XXXZZO HO SCRITTO ????????
+		//if (!(eco1.equals(eco2)) && (eco11.equals(eco21)) || (!(Double.parseDouble(eco1) < Double.parseDouble(eco2)))) {
+		// corretto il 160525
+			if (!(eco1.equals(eco2)) && (eco11.equals(eco21)) || (!(Double.parseDouble(eco1) < Double.parseDouble(eco11)))) {
 
-		if (!(eco1.equals(eco2)) && (eco11.equals(eco21))
-				|| (!(Double.parseDouble(eco1) < Double.parseDouble(eco2)))) {
-
-			MyLog.waitThere("checkImages4 Problema sui dati ricevuti in AUTOMATICO: \n" + "i tempi di eco sono irregolari  " + eco1
-					+ "  " + eco2 + "  " + eco11 + "  " + eco21+ " >>> "+Double.parseDouble(eco1)+ " >>> "+Double.parseDouble(eco11), debug);
+			MyLog.waitThere("checkImages4 Problema sui dati ricevuti in AUTOMATICO: \n"
+					+ "i tempi di eco sono irregolari  " + eco1 + "  " + eco2 + "  " + eco11 + "  " + eco21 + " >>> "
+					+ Double.parseDouble(eco1) + " >>> " + Double.parseDouble(eco11), debug);
 			return false;
 		}
 
@@ -2887,10 +2890,10 @@ public class UtilAyv {
 		String coil2 = ReadDicom.getAllCoils(imp2);
 		String coil11 = ReadDicom.getAllCoils(imp11);
 		String coil21 = ReadDicom.getAllCoils(imp21);
+		// Effettuo il controllo che le immaginio siano tutte prese con la stessa bobina
 		if (!(coil1.equals(coil2) || coil1.equals(coil11) || coil1.equals(coil21)))
 
 		{
-
 			MyLog.waitThere("checkImages4 Problema sui dati ricevuti in AUTOMATICO: \n"
 					+ "la descrizione delle sequenze ricevute e'differente per le bobine utilizzate: " + coil1
 					+ "   <>    " + coil2, debug);
@@ -2901,19 +2904,6 @@ public class UtilAyv {
 
 	}
 
-//	public static String readEco(ImagePlus imp1) {
-//
-//		String eco1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_ECHO_TIME);
-//		String eco2 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_EFFECTIVE_ECHO_TIME);
-//		String eco3;
-//		if (isNumeric(eco1))
-//			eco3 = eco1;
-//		else if (isNumeric(eco2))
-//			eco3 = eco2;
-//		else
-//			eco3 = null;
-//		return eco3;
-//	}
 
 	/**
 	 * Ricerca posizione del fondo
