@@ -11,6 +11,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -649,6 +651,9 @@ public class ReadDicom {
 				buffer2[i1] = buffer1[offset2 + i1];
 			}
 
+			// double val2=ByteBuffer.wrap(buffer2).order(ByteOrder.LITTLE_ENDIAN).getDouble());
+			
+			
 			out1 = new String(buffer2);
 
 			/// IJ.log("output >>> " + out1);
