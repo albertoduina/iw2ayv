@@ -1,6 +1,7 @@
 package utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import ij.IJ;
 
@@ -37,8 +38,8 @@ public class TableSorter {
 	}
 
 	/**
-	 * Effettua il bubble sort della tabella delle sequenze, utilizza
-	 * l'algoritmo bubblesort
+	 * Effettua il bubble sort della tabella delle sequenze, utilizza l'algoritmo
+	 * bubblesort
 	 * 
 	 * @param tableIn
 	 * @return
@@ -82,8 +83,8 @@ public class TableSorter {
 	}
 
 	/**
-	 * Effettua il bubble sort della tabella delle sequenze, utilizza
-	 * l'algoritmo bubblesort
+	 * Effettua il bubble sort della tabella delle sequenze, utilizza l'algoritmo
+	 * bubblesort
 	 * 
 	 * @param tableIn
 	 * @return
@@ -104,7 +105,7 @@ public class TableSorter {
 			bubblesort1[i1] = Long.parseLong(acqTime);
 		}
 		for (int i1 = 0; i1 < tableOut.length; i1++) {
-			String numIma = TableSequence.getNumIma(tableOut, i1);
+			String numIma = TableSequence.getIma(tableOut, i1);
 			bubblesort2[i1] = ReadDicom.readInt(numIma);
 		}
 
@@ -145,7 +146,9 @@ public class TableSorter {
 		return tableOut;
 	}
 
-	public static String[][] minsort(String[][] tableIn, int key) {
+	public static String[][] minsortDouble(String[][] tableIn, int key, String msg) {
+
+		// MyLog.waitHere("minsortDouble " + msg + " key= " + key);
 
 		String[][] tableOut = new TableUtils().duplicateTable(tableIn);
 		double[] vetKey = new double[tableIn.length];
@@ -154,7 +157,7 @@ public class TableSorter {
 		for (int i1 = 0; i1 < tableOut.length; i1++) {
 			String strKey = TableSequence.getKey(tableOut, i1, key);
 			if (strKey == null)
-				strKey = "9999999999999999";
+				strKey = "99999";
 			if (UtilAyv.isNumeric(strKey))
 				vetKey[i1] = Double.parseDouble(strKey);
 			else
@@ -178,6 +181,92 @@ public class TableSorter {
 			}
 		}
 
+		// a questo punto usando vetIndex, posso riordinare la tabella in un
+		// unica passata
+		for (int i1 = 0; i1 < tableOut[0].length; i1++) {
+			for (int i2 = 0; i2 < vetIndex.length; i2++) {
+				tableOut[i2][i1] = tableIn[vetIndex[i2]][i1];
+			}
+		}
+
+		return tableOut;
+	}
+
+	public static String[][] minsortInteger(String[][] tableIn, int key, String msg) {
+
+		// MyLog.waitHere("minsortInteger " + msg + " key= " + key);
+
+		String[][] tableOut = new TableUtils().duplicateTable(tableIn);
+		int[] vetKey = new int[tableIn.length];
+		int[] vetIndex = new int[tableIn.length];
+
+		for (int i1 = 0; i1 < tableOut.length; i1++) {
+			String strKey = TableSequence.getKey(tableOut, i1, key);
+			if (strKey == null)
+				strKey = "9999";
+			if (UtilAyv.isNumeric(strKey))
+				vetKey[i1] = Integer.parseInt(strKey);
+			else
+				vetKey[i1] = -9999;
+			vetIndex[i1] = i1;
+		}
+
+		// effettuo minsort su key, gli altri campi andranno in parallelo
+		int aux1 = 0;
+		int aux2 = 0;
+		for (int i1 = 0; i1 < vetKey.length; i1++) {
+			for (int i2 = i1 + 1; i2 < vetKey.length; i2++) {
+				if (vetKey[i2] < vetKey[i1]) {
+					aux1 = vetKey[i1];
+					vetKey[i1] = vetKey[i2];
+					vetKey[i2] = aux1;
+					aux2 = vetIndex[i1];
+					vetIndex[i1] = vetIndex[i2];
+					vetIndex[i2] = aux2;
+				}
+			}
+		}
+
+		// a questo punto usando vetIndex, posso riordinare la tabella in un
+		// unica passata
+		for (int i1 = 0; i1 < tableOut[0].length; i1++) {
+			for (int i2 = 0; i2 < vetIndex.length; i2++) {
+				tableOut[i2][i1] = tableIn[vetIndex[i2]][i1];
+			}
+		}
+
+		return tableOut;
+	}
+
+	public static String[][] minsortString(String[][] tableIn, int key, String msg) {
+
+		// MyLog.waitHere("minsortString " + msg + " key= " + key);
+
+		String[][] tableOut = new TableUtils().duplicateTable(tableIn);
+		String[] vetKey = new String[tableIn.length];
+		int[] vetIndex = new int[tableIn.length];
+
+		for (int i1 = 0; i1 < tableOut.length; i1++) {
+			String strKey = TableSequence.getKey(tableOut, i1, key);
+			vetKey[i1] = strKey;
+			vetIndex[i1] = i1;
+		}
+
+		// effettuo minsort su key, gli altri campi andranno in parallelo
+		String aux1 = "";
+		int aux2 = 0;
+		for (int i1 = 0; i1 < vetKey.length; i1++) {
+			for (int i2 = i1 + 1; i2 < vetKey.length; i2++) {
+				if (vetKey[i2].compareTo(vetKey[i1]) < 0) {
+					aux1 = vetKey[i1];
+					vetKey[i1] = vetKey[i2];
+					vetKey[i2] = aux1;
+					aux2 = vetIndex[i1];
+					vetIndex[i1] = vetIndex[i2];
+					vetIndex[i2] = aux2;
+				}
+			}
+		}
 
 		// a questo punto usando vetIndex, posso riordinare la tabella in un
 		// unica passata
@@ -191,15 +280,13 @@ public class TableSorter {
 	}
 
 	/***
-	 * Riceve in input la tabella gia' sortata, riordinata e verificata e pronta
-	 * per l'utilizzo. Raggruppa le acquisizioni effettuate con slices multiple
-	 * utilizzando la slicePos. Per renderlo VERAMENTE SMART (funzionante) ho
-	 * dovuto rinumerare con il progressivo
+	 * Riceve in input la tabella gia' sortata, riordinata e verificata e pronta per
+	 * l'utilizzo. Raggruppa le acquisizioni effettuate con slices multiple
+	 * utilizzando la slicePos. Per renderlo VERAMENTE SMART (funzionante) ho dovuto
+	 * rinumerare con il progressivo
 	 * 
-	 * @param tableIn
-	 *            tabella da riordinare
-	 * @param myCode
-	 *            codici su cui effettuare il riordino
+	 * @param tableIn tabella da riordinare
+	 * @param myCode  codici su cui effettuare il riordino
 	 * @return
 	 */
 	public static String[][] tableModifierSmart(String[][] tableIn, String[] myCode) {
@@ -264,7 +351,7 @@ public class TableSorter {
 			vetCode[i10] = TableSequence.getCode(tableOut, i10);
 			vetCoil[i10] = TableSequence.getCoil(tableOut, i10);
 			vetPosiz[i10] = TableSequence.getPosiz(tableOut, i10);
-			vetAcq[i10] = TableSequence.getNumAcq(tableOut, i10);
+			vetAcq[i10] = TableSequence.getAcq(tableOut, i10);
 		}
 		int order = 0;
 		int index2 = 0;
@@ -280,7 +367,7 @@ public class TableSorter {
 					code.add(TableSequence.getCode(tableOut, i10));
 					coil.add(TableSequence.getCoil(tableOut, i10));
 					posiz.add(TableSequence.getPosiz(tableOut, i10));
-					acq.add(TableSequence.getNumAcq(tableOut, i10));
+					acq.add(TableSequence.getAcq(tableOut, i10));
 				}
 			}
 		}
@@ -294,7 +381,7 @@ public class TableSorter {
 				vetCode[i10] = TableSequence.getCode(tableOut, i10);
 				vetCoil[i10] = TableSequence.getCoil(tableOut, i10);
 				vetPosiz[i10] = TableSequence.getPosiz(tableOut, i10);
-				vetAcq[i10] = TableSequence.getNumAcq(tableOut, i10);
+				vetAcq[i10] = TableSequence.getAcq(tableOut, i10);
 			}
 			for (int i4 = 0; i4 < vetCode.length - 2; i4++) {
 				if ((newCode[i1].equals(vetCode[i4])) && (newCoil[i1].equals(vetCoil[i4]))
@@ -349,5 +436,192 @@ public class TableSorter {
 		}
 		return;
 	}
+
+	/**
+	 * MergeSort copied from web
+	 * 
+	 * codegym.cc/groups/posts/merge-sort-in-java
+	 * 
+	 * by Vasyl Malik
+	 * 
+	 * @param array
+	 * @param new_array_1
+	 * @param new_array_2
+	 * @param left
+	 * @param right
+	 */
+
+	public static void mergeInteger(int[] array, int[] new_array_1, int[] new_array_2) {
+
+		int left = new_array_1.length;
+		int right = new_array_2.length;
+		int i1 = 0, j1 = 0, k1 = 0;
+		while (i1 < left && j1 < right) { // conditions for merging
+			if (new_array_1[i1] <= new_array_2[j1]) {
+				array[k1++] = new_array_1[i1++];
+			} else {
+				array[k1++] = new_array_2[j1++];
+			}
+		}
+		while (i1 < left) {
+			array[k1++] = new_array_1[i1++];
+		}
+		while (j1 < right) {
+			array[k1++] = new_array_2[j1++];
+		}
+	}
+
+	public static void mergeSortInteger(int[] array) {
+
+		int length = array.length;
+		if (length < 2) { // condition for the length of array
+			return;
+		}
+		int middle = length / 2; // defining new parameter middle
+		int[] new_array_1 = new int[middle]; /** defining the new first array after division */
+		int[] new_array_2 = new int[length - middle];
+		/** defining the new second array */
+		for (int i1 = 0; i1 < middle; i1++) { /** applying condition for sorting of new array 1 */
+			new_array_1[i1] = array[i1];
+		}
+		for (int i1 = middle; i1 < length; i1++) { /** applying condition for sorting of new array 2 */
+			new_array_2[i1 - middle] = array[i1];
+		}
+		mergeSortInteger(new_array_1); /** calling merge sort function for new array 1 */
+		mergeSortInteger(new_array_2); /** calling merge sort function for new array 2 */
+		mergeInteger(array, new_array_1,
+				new_array_2); /** calling function for merging of new array 1 and new array 2 */
+	}
+
+	public static void mergeDouble(double[] array, double[] new_array_1, double[] new_array_2) {
+
+		int left = new_array_1.length;
+		int right = new_array_2.length;
+		int i1 = 0, j1 = 0, k1 = 0;
+		while (i1 < left && j1 < right) { // conditions for merging
+			if (new_array_1[i1] <= new_array_2[j1]) {
+				array[k1++] = new_array_1[i1++];
+			} else {
+				array[k1++] = new_array_2[j1++];
+			}
+		}
+		while (i1 < left) {
+			array[k1++] = new_array_1[i1++];
+		}
+		while (j1 < right) {
+			array[k1++] = new_array_2[j1++];
+		}
+	}
+
+	public static void mergeSortDouble(double[] array) {
+
+		int length = array.length;
+		if (length < 2) { // condition for the length of array
+			return;
+		}
+		int middle = length / 2; // defining new parameter middle
+		double[] new_array_1 = new double[middle]; /** defining the new first array after division */
+		double[] new_array_2 = new double[length - middle];
+		/** defining the new second array */
+		for (int i1 = 0; i1 < middle; i1++) { /** applying condition for sorting of new array 1 */
+			new_array_1[i1] = array[i1];
+		}
+		for (int i1 = middle; i1 < length; i1++) { /** applying condition for sorting of new array 2 */
+			new_array_2[i1 - middle] = array[i1];
+		}
+		mergeSortDouble(new_array_1); /** calling merge sort function for new array 1 */
+		mergeSortDouble(new_array_2); /** calling merge sort function for new array 2 */
+		mergeDouble(array, new_array_1, new_array_2); /** calling function for merging of new array 1 and new array 2 */
+	}
+
+	public static void mergeString(String[] array, String[] new_array_1, String[] new_array_2) {
+
+		int left = new_array_1.length;
+		int right = new_array_2.length;
+		int i1 = 0, j1 = 0, k1 = 0;
+		while (i1 < left && j1 < right) { // conditions for merging
+			if ((new_array_1[i1]).compareTo(new_array_2[j1]) <= 0) {
+				array[k1++] = new_array_1[i1++];
+			} else {
+				array[k1++] = new_array_2[j1++];
+			}
+		}
+		while (i1 < left) {
+			array[k1++] = new_array_1[i1++];
+		}
+		while (j1 < right) {
+			array[k1++] = new_array_2[j1++];
+		}
+	}
+
+	public static void mergeSortString(String[] array) {
+
+		int length = array.length;
+		if (length < 2) { // condition for the length of array
+			return;
+		}
+		int middle = length / 2; // defining new parameter middle
+		String[] new_array_1 = new String[middle]; /** defining the new first array after division */
+		String[] new_array_2 = new String[length - middle];
+		/** defining the new second array */
+		for (int i1 = 0; i1 < middle; i1++) { /** applying condition for sorting of new array 1 */
+			new_array_1[i1] = array[i1];
+		}
+		for (int i1 = middle; i1 < length; i1++) { /** applying condition for sorting of new array 2 */
+			new_array_2[i1 - middle] = array[i1];
+		}
+		mergeSortString(new_array_1); /** calling merge sort function for new array 1 */
+		mergeSortString(new_array_2); /** calling merge sort function for new array 2 */
+		mergeString(array, new_array_1, new_array_2); /** calling function for merging of new array 1 and new array 2 */
+	}
+	
+	
+	
+	public static String[][] mergeSortInteger(String[][] tableIn, int key, String msg) {
+
+		// MyLog.waitHere("minsortInteger " + msg + " key= " + key);
+
+		String[][] tableOut = new TableUtils().duplicateTable(tableIn);
+		int[] vetKey = new int[tableIn.length];
+		int[] vetIndex = new int[tableIn.length];
+
+		for (int i1 = 0; i1 < tableOut.length; i1++) {
+			String strKey = TableSequence.getKey(tableOut, i1, key);
+			if (strKey == null)
+				strKey = "9999";
+			if (UtilAyv.isNumeric(strKey))
+				vetKey[i1] = Integer.parseInt(strKey);
+			else
+				vetKey[i1] = -9999;
+			vetIndex[i1] = i1;
+		}
+
+		// effettuo mergesort su key, gli altri campi andranno in parallelo
+		int aux1 = 0;
+		int aux2 = 0;
+		for (int i1 = 0; i1 < vetKey.length; i1++) {
+			for (int i2 = i1 + 1; i2 < vetKey.length; i2++) {
+				if (vetKey[i2] < vetKey[i1]) {
+					aux1 = vetKey[i1];
+					vetKey[i1] = vetKey[i2];
+					vetKey[i2] = aux1;
+					aux2 = vetIndex[i1];
+					vetIndex[i1] = vetIndex[i2];
+					vetIndex[i2] = aux2;
+				}
+			}
+		}
+
+		// a questo punto usando vetIndex, posso riordinare la tabella in un
+		// unica passata
+		for (int i1 = 0; i1 < tableOut[0].length; i1++) {
+			for (int i2 = 0; i2 < vetIndex.length; i2++) {
+				tableOut[i2][i1] = tableIn[vetIndex[i2]][i1];
+			}
+		}
+
+		return tableOut;
+	}
+
 
 }

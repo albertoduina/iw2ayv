@@ -487,7 +487,7 @@ public class MyLog {
 		int rows = 0;
 		int columns = 0;
 		if (mat == null) {
-			MyLog.waitThere("Warning matrix " + nome + " = null");
+			// MyLog.waitThere("Warning matrix " + nome + " = null");
 			return;
 		} else {
 			rows = mat.length;
@@ -503,7 +503,40 @@ public class MyLog {
 			for (int i1 = 0; i1 < rows; i1++) {
 				stri = "";
 				for (int i2 = 0; i2 < columns; i2++) {
-					stri += mat[i1][i2] + ",  ";
+					stri += mat[i1][i2] + ";  ";
+				}
+				IJ.log(stri);
+			}
+		}
+		IJ.log("---------------------------------------------");
+	}
+
+	public static void logMatrixTable(String mat[][], String nome) {
+		String stri = "";
+		int rows = 0;
+		int columns = 0;
+		if (mat == null) {
+			// MyLog.waitThere("Warning matrix " + nome + " = null");
+			return;
+		} else {
+			rows = mat.length;
+			if (rows == 0) {
+				MyLog.waitThere("Warning matrix " + nome + " length=0");
+				return;
+			}
+
+			columns = mat[0].length;
+			// IJ.log("rows=" + rows + " columns= " + columns);
+
+			IJ.log("---- " + nome + " [ " + rows + "x" + columns + " ] ----");
+
+			IJ.log("ROW; PATH; CODE; COIL; IMA_PASS; IMA_ORDER; IMA_INCREMENT; MULTIPLI; SPARE2; SPARE3; SERIE; ACQ; IMA; ACQ_TIME; ECHO_TIME; POSITION; DIREZ; PROF; DONE");
+
+
+			for (int i1 = 0; i1 < rows; i1++) {
+				stri = "";
+				for (int i2 = 0; i2 < columns; i2++) {
+					stri += mat[i1][i2] + ";  ";
 				}
 				IJ.log(stri);
 			}
@@ -519,7 +552,7 @@ public class MyLog {
 			IJ.log("----------- " + nome + "  [ " + vect.length + " ] -----------");
 
 			for (int i1 = 0; i1 < vect.length; i1++) {
-				stri = stri + vect[i1] + ",  ";
+				stri = stri + vect[i1] + ";  ";
 			}
 			IJ.log(stri);
 		}
@@ -1150,6 +1183,12 @@ public class MyLog {
 			f1.delete();
 		}
 		appendLog(path, "---- INIZIO ---------");
+	}
+
+	public static void saveLog(String path) {
+		IJ.selectWindow("Log");
+		IJ.saveAs("text", path);
+		return;
 	}
 
 }

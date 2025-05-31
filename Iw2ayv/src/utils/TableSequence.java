@@ -32,6 +32,11 @@ import java.util.ArrayList;
  * E'la tabella contenente i dati di iw2ayv.txt, che vengono utilizzati per
  * automatizzare l'analisi delle immagini
  * 
+ * 
+ * NOTA_BENE TableSequenze viene chiamato in tutti i plugins di ConMensili.
+ * Conviene lasciarla sotto forma si String[][] ed effettuare le opportune
+ * convesioni durante le comparazioni
+ * 
  * @author Alberto Duina - SPEDALI CIVILI DI BRESCIA - Servizio di Fisica
  *         Sanitaria
  * 
@@ -55,7 +60,7 @@ public class TableSequence {
 
 	public static int IMA_INCREMENT = 6;
 
-	public static int SPARE_1 = 7;
+	public static int MULTIPLI = 7;
 
 	public static int SPARE_2 = 8;
 
@@ -79,7 +84,7 @@ public class TableSequence {
 
 	public static int DONE = 18;
 
-	public static int COLUMNS = 19;
+	public static int columns0 = 19;
 
 	/***
 	 * Carica la tabella in memoria leggendo il file su disco
@@ -97,6 +102,9 @@ public class TableSequence {
 
 		String[][] sequenceTable = new InputOutput().fromArrayListToStringTable(tableArray);
 
+//		MyLog.logMatrixTable(sequenceTable, "SeqTableNeonata");
+//		MyLog.waitHere();
+
 		return sequenceTable;
 	}
 
@@ -104,10 +112,10 @@ public class TableSequence {
 		IJ.log("table.length= " + table.length);
 		IJ.log("table.length[1]= " + table[1].length);
 
-		if (table[0].length == COLUMNS) {
+		if (table[0].length == columns0) {
 			return true;
 		} else {
-			MyLog.waitHere("errore larghezza iw2ayvTable = " + table[0].length + " anziche' " + COLUMNS);
+			MyLog.waitHere("errore larghezza iw2ayvTable = " + table[0].length + " anziche' " + columns0);
 			return false;
 		}
 	}
@@ -184,37 +192,37 @@ public class TableSequence {
 		return strTabella[riga][IMA_INCREMENT];
 	}
 
-	public static String getSpare_1(String[][] strTabella, int riga) {
+	public static String getMultipli(String[][] strTabella, int riga) {
 		if (strTabella == null)
 			return null;
-		return strTabella[riga][SPARE_1];
+		return strTabella[riga][MULTIPLI];
 	}
 
-	public static String getSpare_2(String[][] strTabella, int riga) {
+	public static String getSpare2(String[][] strTabella, int riga) {
 		if (strTabella == null)
 			return null;
 		return strTabella[riga][SPARE_2];
 	}
 
-	public static String getSpare_3(String[][] strTabella, int riga) {
+	public static String getSpare3(String[][] strTabella, int riga) {
 		if (strTabella == null)
 			return null;
 		return strTabella[riga][SPARE_3];
 	}
 
-	public static String getNumSerie(String[][] strTabella, int riga) {
+	public static String getSerie(String[][] strTabella, int riga) {
 		if (strTabella == null)
 			return null;
 		return strTabella[riga][SERIE];
 	}
 
-	public static String getNumAcq(String[][] strTabella, int riga) {
+	public static String getAcq(String[][] strTabella, int riga) {
 		if (strTabella == null)
 			return null;
 		return strTabella[riga][ACQ];
 	}
 
-	public static String getNumIma(String[][] strTabella, int riga) {
+	public static String getIma(String[][] strTabella, int riga) {
 		if (strTabella == null)
 			return null;
 		return strTabella[riga][IMA];
@@ -321,9 +329,9 @@ public class TableSequence {
 			MyLog.waitHere("scriviTabella strTabella null");
 			return false;
 		}
-		if (strTabella[ROW].length != COLUMNS) {
+		if (strTabella[ROW].length != columns0) {
 			MyLog.waitHere(
-					"scriviTabella Error on strTabella length " + strTabella[ROW].length + " invece di " + COLUMNS);
+					"scriviTabella Error on strTabella length " + strTabella[ROW].length + " invece di " + columns0);
 			return false;
 		}
 		try {
@@ -333,7 +341,7 @@ public class TableSequence {
 					rigaCompleta = "R#" + strTabella[j1][ROW] + "#FILE#" + strTabella[j1][PATH] + "#COD#"
 							+ strTabella[j1][CODE] + "#COIL#" + strTabella[j1][COIL] + "#PASS#"
 							+ strTabella[j1][IMA_PASS] + "#ORD#" + strTabella[j1][IMA_ORDER] + "#INCR#"
-							+ strTabella[j1][IMA_INCREMENT] + "#SP1#" + strTabella[j1][SPARE_1] + "#SP2#"
+							+ strTabella[j1][IMA_INCREMENT] + "#SP1#" + strTabella[j1][MULTIPLI] + "#SP2#"
 							+ strTabella[j1][SPARE_2] + "#SP3#" + strTabella[j1][SPARE_3] + "#SER#"
 							+ strTabella[j1][SERIE] + "#ACQ#" + strTabella[j1][ACQ] + "#IMA#" + strTabella[j1][IMA]
 							+ "#TIME#" + strTabella[j1][TIME] + "#ECHO#" + strTabella[j1][ECHO] + "#POSIZ#"
