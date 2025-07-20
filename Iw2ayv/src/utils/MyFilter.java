@@ -7,6 +7,7 @@ import ij.ImagePlus;
 import ij.gui.ImageWindow;
 import ij.gui.OvalRoi;
 import ij.gui.Overlay;
+import ij.measure.Calibration;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ImageStatistics;
@@ -154,6 +155,23 @@ public class MyFilter {
 		return out;
 	}
 
+	public static short[] rawVector(short[] pixels1, Calibration cal1) {
+		short[] out2 = new short[pixels1.length];
+		for (int i1 = 0; i1 < pixels1.length; i1++) {
+			out2[i1] = (short) cal1.getRawValue(pixels1[i1]);
+		}
+		return out2;
+	}
+
+	public static short[] calVector(short[] pixels1, Calibration cal1) {
+		MyLog.waitHere();
+		short[] out2 = new short[pixels1.length];
+		for (int i1 = 0; i1 < pixels1.length; i1++) {
+			out2[i1] = (short) cal1.getCValue(pixels1[i1]);
+		}
+		return out2;
+	}
+
 	/**
 	 * Ricerca posizione del massimo con una roi 7x7
 	 * 
@@ -164,6 +182,7 @@ public class MyFilter {
 	public static double[] maxPosition7x7(ImagePlus imp1) {
 
 		// double startNanoTime = System.nanoTime();
+		imp1.show();
 		int width = imp1.getWidth();
 		int height = imp1.getHeight();
 		long sum49 = 0;
@@ -173,7 +192,9 @@ public class MyFilter {
 		int ymax49 = 0;
 		int offset = 0;
 		ImageProcessor ip1 = imp1.getProcessor();
-		short[] pixels1 = (short[]) ip1.getPixels();
+		Calibration cal1 = imp1.getCalibration();
+		short[] pixels1 = rawVector((short[]) ip1.getPixels(), cal1);
+
 		for (int i1 = 3; i1 < width - 3; i1++) {
 			for (int i2 = 3; i2 < height - 3; i2++) {
 				sum49 = 0;
@@ -214,10 +235,14 @@ public class MyFilter {
 				}
 			}
 		}
+
 		double[] out = new double[3];
 		out[0] = xmax49;
 		out[1] = ymax49;
 		out[2] = max49;
+
+		// MyLog.waitHere("maxPosition7x7= " + out[0] + " ; " + out[1] + " ; " + out[2]);
+
 		// IJ.log("maxPosition7x7 "
 		// + IJ.d2s(((System.nanoTime() - startNanoTime) / 1000000000.0),
 		// 6) + " seconds");
@@ -243,7 +268,10 @@ public class MyFilter {
 		int ymax81 = 0;
 		int offset = 0;
 		ImageProcessor ip1 = imp1.getProcessor();
-		short[] pixels1 = (short[]) ip1.getPixels();
+		Calibration cal1 = imp1.getCalibration();
+		short[] pixels1 = rawVector((short[]) ip1.getPixels(), cal1);
+
+//		short[] pixels1 = (short[]) ip1.getPixels();
 		for (int i1 = 4; i1 < width - 4; i1++) {
 			for (int i2 = 4; i2 < height - 4; i2++) {
 				sum81 = 0;
@@ -319,7 +347,9 @@ public class MyFilter {
 		int ymax121 = 0;
 		int offset = 0;
 		ImageProcessor ip1 = imp1.getProcessor();
-		short[] pixels1 = (short[]) ip1.getPixels();
+		Calibration cal1 = imp1.getCalibration();
+		short[] pixels1 = rawVector((short[]) ip1.getPixels(), cal1);
+
 		for (int i1 = 5; i1 < width - 5; i1++) {
 			for (int i2 = 5; i2 < height - 5; i2++) {
 				sum121 = 0;
@@ -407,8 +437,10 @@ public class MyFilter {
 		if (imp1.getBytesPerPixel() != 2)
 			return null;
 		ImageProcessor ip1 = imp1.getProcessor();
-		short[] pixels1 = (short[]) ip1.getPixels();
-		// scansione sulle coordinate del centro roi 11x11
+		Calibration cal1 = imp1.getCalibration();
+		short[] pixels1 = rawVector((short[]) ip1.getPixels(), cal1);
+
+			// scansione sulle coordinate del centro roi 11x11
 		for (int i1 = 5; i1 < height - 5; i1++) {
 			for (int i2 = 5; i2 < width - 5; i2++) {
 				sum121 = 0;
@@ -469,7 +501,8 @@ public class MyFilter {
 		if (imp1.getBytesPerPixel() != 2)
 			return null;
 		ImageProcessor ip1 = imp1.getProcessor();
-		short[] pixels1 = (short[]) ip1.getPixels();
+		Calibration cal1 = imp1.getCalibration();
+		short[] pixels1 = rawVector((short[]) ip1.getPixels(), cal1);
 		// short[] pippo1 = new short[lato * lato];
 
 		// scansione sulle coordinate del centro roi yxy
@@ -509,8 +542,6 @@ public class MyFilter {
 		out[2] = max1;
 		return out;
 	}
-
-
 
 	/***
 	 * Cerca l'hotspot all'interno di un cerchio posto sull'immagine reale
