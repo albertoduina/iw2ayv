@@ -21,13 +21,10 @@ public class ReportStandardInfo {
 	//
 	// private final static String DICOM_COIL = "0051,100F";
 	//
-	//-----------2024 - 04 - 17--------------
+	// -----------2024 - 04 - 17--------------
 	//
 	// private final static String DICOM_RECEIVING_COIL = "0018,1250";
 	//
-	
-	
-	
 
 	private static String[] simpleHeader = { "none", "none", "none", "none", "none", "none", "none", "<END>" };
 
@@ -130,20 +127,18 @@ public class ReportStandardInfo {
 		// Year="+strYear);
 
 		String elabDate = strDay + "-" + strMonth + "-" + strYear + "_" + version;
-		
-		
 
 		// String coil1 = ReadDicom.readDicomParameter(imp1, DICOM_COIL);
 		String coilElement = ReadDicom.getFirstCoil(imp1);
 		if (coilElement.equals("MISSING")) {
 			coilElement = new UtilAyv().kludge(path1);
 		}
-		//-------< 2024_04_17 >----------------------
+		// -------< 2024_04_17 >----------------------
 		String receivingCoil = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_RECEIVING_COIL);
-		// a questo punto riunisco il nome della bobina di ricezione e quello del cluster separandoli con un ";"
-		String coil= receivingCoil+ " - "+  coilElement;
-		//-------< 2024_04_17 >----------------------
-		
+		// a questo punto riunisco il nome della bobina di ricezione e quello del
+		// cluster separandoli con un ";"
+		String coil = receivingCoil + " - " + coilElement;
+		// -------< 2024_04_17 >----------------------
 
 		// ModelessMsg("codice="+codice, "continua");
 		out1[0][1] = codice;
@@ -187,6 +182,9 @@ public class ReportStandardInfo {
 			IJ.log("getSimpleStandardInfo.imp1 == null");
 			return null;
 		}
+
+		int manufacturer = ReadDicom.whatManufacturer(imp1);
+
 		String aux3 = imp1.getTitle();
 
 		// MyLog.waitHere("getSimpleStandardInfo.aux3=" + aux3);
@@ -205,6 +203,8 @@ public class ReportStandardInfo {
 				return null;
 
 			codice = UtilAyv.getFiveLetters(aux3).trim();
+			// if (manufacturer==5) codice=codice.toLowerCase();
+
 		}
 
 		String stationName = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_STATION_NAME);
@@ -242,8 +242,8 @@ public class ReportStandardInfo {
 		String coilElement = ReadDicom.getThisCoil(imp1, reqCoil);
 		String coilElement2 = ReadDicom.piedeDiPorco(path, "2100,4F10");
 		String coilElement3 = ReadDicom.piedeDiPorco(path, "2100,4F11");
-		
-		
+		String coilElement4 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL4);
+
 		// MyLog.logVector(reqCoil, "reqCoil");
 		// IJ.log("coilElement1= "+coilElement);
 		// IJ.log("coilElement2= "+coilElement2);
@@ -258,16 +258,19 @@ public class ReportStandardInfo {
 			// coilElement = new UtilAyv().kludge(path);
 			coilElement = ReadDicom.piedeDiPorco(path, "2100,4F10");
 		}
-		
-		//-------< 2024_04_17 >----------------------
-		String receivingCoil = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_RECEIVING_COIL);
-		// a questo punto riunisco il nome della bobina di ricezione e quello del cluster separandoli con un ";"
-		String coil= receivingCoil+ " - "+  coilElement;
-		//-------< 2024_04_17 >----------------------
+		String coil = "";
 
-		
-		
-		
+		if (manufacturer == 5) {
+			coil = coilElement4.replace(';','+');
+		} else {
+			// -------< 2024_04_17 >----------------------
+			String receivingCoil = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_RECEIVING_COIL);
+			// a questo punto riunisco il nome della bobina di ricezione e quello del
+			// cluster separandoli con un ";"
+			coil = receivingCoil + "_" + coilElement;  /// ATTENZIONE modifica problematica eseguita dopo 16ott25
+			
+			// -------< 2024_04_17 >----------------------
+		}
 
 		// ModelessMsg("codice="+codice, "continua");
 		simpleHeader[0] = codice;
@@ -277,7 +280,8 @@ public class ReportStandardInfo {
 		simpleHeader[4] = elabDate;
 		simpleHeader[5] = coil;
 		simpleHeader[6] = frequency;
-		// MyLog.logVector(simpleHeader, "simpleHeader");
+//		MyLog.logVector(simpleHeader, "simpleHeader");
+//		MyLog.waitHere();
 
 		return (simpleHeader);
 	}
@@ -366,12 +370,12 @@ public class ReportStandardInfo {
 			coilElement = new UtilAyv().kludge(path);
 		}
 
-		
-		//-------< 2024_04_17 >----------------------
+		// -------< 2024_04_17 >----------------------
 		String receivingCoil = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_RECEIVING_COIL);
-		// a questo punto riunisco il nome della bobina di ricezione e quello del cluster separandoli con un ";"
-		String coil= receivingCoil+ " - "+  coilElement;
-		//-------< 2024_04_17 >----------------------
+		// a questo punto riunisco il nome della bobina di ricezione e quello del
+		// cluster separandoli con un ";"
+		String coil = receivingCoil + " - " + coilElement;
+		// -------< 2024_04_17 >----------------------
 
 		// ModelessMsg("codice="+codice, "continua");
 		simpleHeader[0] = codice;
@@ -442,19 +446,18 @@ public class ReportStandardInfo {
 		String strMonth2 = mesi[cal.get(Calendar.MONTH)];
 		String strYear2 = "" + (cal.get(Calendar.YEAR));
 		String elabDate = strDay2 + "-" + strMonth2 + "-" + strYear2;
-		
-		
+
 		String coilElement = ReadDicom.getFirstCoil(imp1);
 		if (coilElement.equals("MISSING")) {
 			coilElement = new UtilAyv().kludge(path);
 		}
-		
-		//-------< 2024_04_17 >----------------------
-		String receivingCoil = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_RECEIVING_COIL);
-		// a questo punto riunisco il nome della bobina di ricezione e quello del cluster separandoli con un ";"
-		String coil= receivingCoil+ " - "+  coilElement;
-		//-------< 2024_04_17 >----------------------
 
+		// -------< 2024_04_17 >----------------------
+		String receivingCoil = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_RECEIVING_COIL);
+		// a questo punto riunisco il nome della bobina di ricezione e quello del
+		// cluster separandoli con un ";"
+		String coil = receivingCoil + " - " + coilElement;
+		// -------< 2024_04_17 >----------------------
 
 		// ModelessMsg("codice="+codice, "continua");
 		simpleHeader[0] = codice;
@@ -582,8 +585,8 @@ public class ReportStandardInfo {
 			rt11.addValue(s16, "xxxx");
 		}
 
-	//	rt11.show("AbortResultTable_P2");
-	//	MyLog.waitHere("AbortResultTable_P2");
+		// rt11.show("AbortResultTable_P2");
+		// MyLog.waitHere("AbortResultTable_P2");
 
 		return rt11;
 	}
@@ -732,7 +735,6 @@ public class ReportStandardInfo {
 		rt11.addValue(s14, "---");
 		rt11.addValue(s15, "---");
 		rt11.addValue(s16, "---");
-
 
 		for (int i2 = 0; i2 < 20; i2++) {
 			rt11.incrementCounter();

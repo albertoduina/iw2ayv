@@ -440,16 +440,24 @@ public class ReadDicom {
 	/***
 	 * Legge il codice dall'header Dicom
 	 * 
+	 * NOTARE :modifica 200725 metto il codice in minuscolo per la macchina United
+	 * Imaging Healthcare (chiamata "cinese")
+	 * 
 	 * @param imp1
 	 * @return
 	 */
 	public static String getCode(ImagePlus imp1) {
 
 		String seriesDescription = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
+		
+		int manu= ReadDicom.whatManufacturer(imp1);
 		String codice = "";
 		if (seriesDescription.length() >= 5) {
+			if (manu==5) // per le macchine UIH
+				seriesDescription.toLowerCase();
 			codice = seriesDescription.substring(0, 5).trim();
 		}
+		MyLog.waitHere("codice= " +codice);
 		return codice;
 	}
 
@@ -460,6 +468,8 @@ public class ReadDicom {
 		String total1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL1);
 		String total2 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL2);
 		String total3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL3);
+		String total4 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL4); // aggiunto 200725
+
 		String total = "MISSING";
 		if (total1.equals("MISSING") == false)
 			total = total1;
@@ -467,6 +477,10 @@ public class ReadDicom {
 			total = total2;
 		if (total3.equals("MISSING") == false) {
 			total = total3;
+		}
+		// aggiunto 200725
+		if (total4.equals("MISSING") == false) {
+			total = total4;
 		}
 		return total;
 	}
@@ -570,10 +584,12 @@ public class ReadDicom {
 		String manufacturer1 = ReadDicom.readDicomParameter(imp1, "0008,0070");
 		String manufacturer = "";
 
-		if (manufacturer1.length() > 3) {
-			manufacturer = manufacturer1.substring(0, 2);
-		}
-
+		//if (manufacturer1.length() > 3) {
+			manufacturer = manufacturer1.substring(0, 3);
+		//}
+			
+		// MyLog.waitHere("manufacturer= "+manufacturer);	
+			
 		int man = 0;
 		if (manufacturer.equalsIgnoreCase("SIE")) {
 			man = 1;
@@ -586,6 +602,9 @@ public class ReadDicom {
 			// MyLog.waitHere("GE DETECTED");
 		} else if (manufacturer.equalsIgnoreCase("Pic")) {
 			man = 4;
+		} else if (manufacturer.equalsIgnoreCase("UIH")) {
+			man = 5;
+			// MyLog.waitHere("UIH DETECTED");
 		}
 		return man;
 
@@ -605,8 +624,7 @@ public class ReadDicom {
 			imp3.setProperty("Info", info);
 		return imp3;
 	}
-	
-	
+
 	/***
 	 * Questo workaround deriva da ReadAscconv e va utilizzato per leggere parametri
 	 * dell'header ignorati da ImageJ, solitamente legati all'incauto passaggio
@@ -619,9 +637,7 @@ public class ReadDicom {
 
 	public static String piedeDiPorco(String fileName1, String tag) {
 		int len1;
-		
-		
-		
+
 		byte[] x1 = hexStringToByteArray(tag);
 		String out1 = "";
 
@@ -651,9 +667,9 @@ public class ReadDicom {
 				buffer2[i1] = buffer1[offset2 + i1];
 			}
 
-			// double val2=ByteBuffer.wrap(buffer2).order(ByteOrder.LITTLE_ENDIAN).getDouble());
-			
-			
+			// double
+			// val2=ByteBuffer.wrap(buffer2).order(ByteOrder.LITTLE_ENDIAN).getDouble());
+
 			out1 = new String(buffer2);
 
 			/// IJ.log("output >>> " + out1);
@@ -714,7 +730,7 @@ public class ReadDicom {
 	 * @return
 	 */
 	public static byte[] hexStringToByteArray(String s2) {
-		String s1= s2.replace(",","");
+		String s1 = s2.replace(",", "");
 		int len = s1.length();
 		byte[] data = new byte[len / 2];
 		for (int i1 = 0; i1 < len; i1 += 2) {
@@ -740,7 +756,5 @@ public class ReadDicom {
 
 		return new String(buf);
 	}
-
-
 
 }

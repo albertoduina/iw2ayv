@@ -2822,15 +2822,17 @@ public class UtilAyv {
 	 * @param path2  // seconda acquisizione primo eco (commento 2025)
 	 * @param path11 // prima acquisizione secondo eco (commento 2025)
 	 * @param path21 // seconda acquisizione secondo eco (commento 2025)
-	 * @param debug	 // abilita lo stop in caso di messaggio
+	 * @param debug  // abilita lo stop in caso di messaggio
 	 * @return
 	 */
 	public static boolean checkImages4(String path1, String path2, String path11, String path21, boolean debug) {
 
-		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, true);		// prima acquisizione primo eco (commento 2025)
-		ImagePlus imp2 = UtilAyv.openImageNoDisplay(path2, true);		// seconda acquisizione primo eco (commento 2025)
-		ImagePlus imp11 = UtilAyv.openImageNoDisplay(path11, true);		// prima acquisizione secondo eco (commento 2025)
-		ImagePlus imp21 = UtilAyv.openImageNoDisplay(path21, true);		// seconda acquisizione secondo eco (commento 2025)
+		ImagePlus imp1 = UtilAyv.openImageNoDisplay(path1, true); // prima acquisizione primo eco (commento 2025)
+		ImagePlus imp2 = UtilAyv.openImageNoDisplay(path2, true); // seconda acquisizione primo eco (commento 2025)
+		ImagePlus imp11 = UtilAyv.openImageNoDisplay(path11, true); // prima acquisizione secondo eco (commento 2025)
+		ImagePlus imp21 = UtilAyv.openImageNoDisplay(path21, true); // seconda acquisizione secondo eco (commento 2025)
+
+		int manufacturer = ReadDicom.whatManufacturer(imp1);
 
 		String[] vetString = { MyConst.DICOM_SERIES_DESCRIPTION, MyConst.DICOM_IMAGE_POSITION,
 				MyConst.DICOM_SLICE_LOCATION };
@@ -2843,6 +2845,18 @@ public class UtilAyv {
 			String item2 = ReadDicom.readDicomParameter(imp2, vetString[i1]);
 			String item11 = ReadDicom.readDicomParameter(imp11, vetString[i1]);
 			String item21 = ReadDicom.readDicomParameter(imp21, vetString[i1]);
+			if (manufacturer == 5) {
+				// 210725 arrampichiamoci sugli specchi cinesi!!
+				if (item1.contains("Echo"))
+					item1 = item1.substring(0, item1.indexOf("Echo"));
+				if (item2.contains("Echo"))
+					item2 = item2.substring(0, item2.indexOf("Echo"));
+				if (item11.contains("Echo"))
+					item11 = item11.substring(0, item11.indexOf("Echo"));
+				if (item21.contains("Echo"))
+					item21 = item21.substring(0, item21.indexOf("Echo"));
+			}
+
 			if (!(item1.equals(item2) && item1.equals(item11) && item1.equals(item21))) {
 				MyLog.waitThere("checkImages4 Problema sui dati ricevuti in AUTOMATICO: \n"
 						+ "la descrizione delle sequenze ricevute e'differente " + vetString[i1] + "  " + item1
@@ -2868,9 +2882,11 @@ public class UtilAyv {
 		// Effettuo il controllo sugli echi delle quattro immagini, essi devono essere
 		// eco1=eco2 e poi eco 11=eco21
 		// inoltre eco1<eco2 MA QUI E'SBAGLIATO, CHE XXXZZO HO SCRITTO ????????
-		//if (!(eco1.equals(eco2)) && (eco11.equals(eco21)) || (!(Double.parseDouble(eco1) < Double.parseDouble(eco2)))) {
+		// if (!(eco1.equals(eco2)) && (eco11.equals(eco21)) ||
+		// (!(Double.parseDouble(eco1) < Double.parseDouble(eco2)))) {
 		// corretto il 160525
-			if (!(eco1.equals(eco2)) && (eco11.equals(eco21)) || (!(Double.parseDouble(eco1) < Double.parseDouble(eco11)))) {
+		if (!(eco1.equals(eco2)) && (eco11.equals(eco21))
+				|| (!(Double.parseDouble(eco1) < Double.parseDouble(eco11)))) {
 
 			MyLog.waitThere("checkImages4 Problema sui dati ricevuti in AUTOMATICO: \n"
 					+ "i tempi di eco sono irregolari  " + eco1 + "  " + eco2 + "  " + eco11 + "  " + eco21 + " >>> "
@@ -2903,7 +2919,6 @@ public class UtilAyv {
 		return true;
 
 	}
-
 
 	/**
 	 * Ricerca posizione del fondo
