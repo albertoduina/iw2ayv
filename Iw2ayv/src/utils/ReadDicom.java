@@ -1,22 +1,15 @@
 package utils;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.StringTokenizer;
+
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
-import ij.gui.WaitForUserDialog;
 import ij.io.Opener;
 import ij.plugin.DICOM;
-
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.StringTokenizer;
 
 public class ReadDicom {
 
@@ -25,11 +18,13 @@ public class ReadDicom {
 	private static final int BINARY_DATA = 0x7FE11010;
 	public int location;
 
-	/**
+	/*-
 	 * La seguente routine, che si occupa di estrarre dati dall'header delle
-	 * immagini fu copiata dal QueryDicomHeader.java di Anthony Padua & Daniel
-	 * Barboriak - Duke University Medical Center. *** modified version *** Alberto
-	 * Duina - Spedali Civili di Brescia - Servizio di Fisica Sanitaria 2006
+	 * immagini fu copiata nel 2006 dal programma 
+	 * QueryDicomHeader.java di Anthony Padua & Daniel Barboriak - 
+	 * Duke University Medical Center. 
+	 * *** modified version *** 
+	 * Alberto Duina - Spedali Civili di Brescia - Servizio di Fisica Sanitaria 2006
 	 * 
 	 * @param imp       immagine di cui leggere l'header
 	 * @param userInput stringa di 9 caratteri contenente "group,element"
@@ -449,18 +444,29 @@ public class ReadDicom {
 	public static String getCode(ImagePlus imp1) {
 
 		String seriesDescription = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
-		
-		int manu= ReadDicom.whatManufacturer(imp1);
+
+		int manu = ReadDicom.whatManufacturer(imp1);
 		String codice = "";
 		if (seriesDescription.length() >= 5) {
-			if (manu==5) // per le macchine UIH
+			if (manu == 5) // per le macchine UIH
 				seriesDescription.toLowerCase();
 			codice = seriesDescription.substring(0, 5).trim();
 		}
-		MyLog.waitHere("codice= " +codice);
+		MyLog.waitHere("codice= " + codice);
 		return codice;
 	}
 
+	/*-
+	 * getAllCoils prende i codici della bobina, codici che sono nei dati privati e
+	 * che, quando passano attraverso il PACS possono anche veire alterati/nascosti
+	 * 
+	 * restituisce tutta la stringa di coil 
+	 * esempio:	"BAL;BAR;BCL;BCR"
+	 * oppure: 	"SP$,5;UFL"
+	 * 
+	 * @param imp1
+	 * @return
+	 */
 	/// prova del 20250223
 
 	public static String getAllCoils(ImagePlus imp1) {
@@ -468,7 +474,7 @@ public class ReadDicom {
 		String total1 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL1);
 		String total2 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL2);
 		String total3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL3);
-		String total4 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL4); // aggiunto 200725
+		String total4 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL4); // aggiunto 20lug2025
 
 		String total = "MISSING";
 		if (total1.equals("MISSING") == false)
@@ -484,8 +490,19 @@ public class ReadDicom {
 		}
 		return total;
 	}
+	
+	
+	/*-
+	 * getFirstCoil restituisce solo la prima coil.
+	 * notare che richiede separatore ;
+	 * 
+	 * viene tuttora usato in ReportStandardInfo
+	 * 
+	 * @param imp1
+	 * @return
+	 */
 
-	public static String getFirstCoil(ImagePlus imp1) {
+	public static String getFirstCoil_DELETABLE(ImagePlus imp1) {
 
 		String total = ReadDicom.getAllCoils(imp1);
 
@@ -496,14 +513,18 @@ public class ReadDicom {
 		} else {
 			coil = total.substring(0, i1);
 		}
+		// MyLog.waitHere("coil= " + coil);
+		
 		return coil;
 	}
 
-	/***
+	/*-
 	 * getThisCoil
 	 * 
+	 * preleva dalla tabella unicamente le coil previste per il codice e le restituisce
+	 * 
 	 * @param imp1
-	 * @param vetCoils vettore coi le coils di cui verificare la presenza
+	 * @param vetCoils vettore con le coils di cui verificare la presenza
 	 * @return
 	 */
 	public static String getThisCoil(ImagePlus imp1, String[] vetCoils) {
@@ -514,25 +535,40 @@ public class ReadDicom {
 		}
 
 		String total = ReadDicom.getAllCoils(imp1);
+		IJ.log("total= " + total);
+		IJ.log(MyLog.qui());
 
 		// #################################################################
 		// MODIFICA 190224
 		// ---------------------------------
-		// IJ.log("total1= " + total);
-		total = total.replace("BAL;BAR;BCL;BCR", "BAL+BAR+BCL+BCR");
-		total = total.replace("BL;BR", "BL+BR");
-		total = total.replace("PL1;PR1", "PL1+PR1");
-		total = total.replace("PL2;PR2", "PL2+PR2");
-		total = total.replace("PL3;PR3", "PL3+PR3");
-		total = total.replace("PL4;PR4", "PL4+PR4");
-		// IJ.log("total2= " + total);
+//		IJ.log("total= " + total);
+
+		// IJ.log("total1= " + total1);
+//		IJ.log("----");
+//		total = total.replace("BAL;BAR;BCL;BCR", "BAL+BAR+BCL+BCR");
+//		total = total.replace("BL;BR", "BL+BR");
+//		total = total.replace("PL1;PR1", "PL1+PR1");
+//		total = total.replace("PL2;PR2", "PL2+PR2");
+//		total = total.replace("PL3;PR3", "PL3+PR3");
+//		total = total.replace("PL4;PR4", "PL4+PR4");
+
+		// MODIFICA 31oct2025
+
 		// MyLog.waitHere();
 		// #################################################################
 
 		// String total = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL);
 		// MyLog.waitHere("total= " + total);
 
-		String[] listCoils = splitCoils(total);
+		String[] listCoils = splitCoils(total, "+;");
+		total = total.replace(";", "+"); //// la devo fare dopo, adesso voglio invece fare lo
+
+		IJ.log("total= " + total);
+		IJ.log(MyLog.qui());
+
+		MyLog.logVector(listCoils, "listCoils");
+		IJ.log(MyLog.qui());
+
 		// MyLog.waitHere("listCoils[0]= " + listCoils[0]);
 		for (int i1 = 0; i1 < listCoils.length; i1++) {
 			for (int i2 = 0; i2 < vetCoils.length; i2++) {
@@ -540,18 +576,34 @@ public class ReadDicom {
 				// "+vetCoils[i2]);
 				if (total.equals(vetCoils[i2])) {
 					// MyLog.waitHere("trovato?");
+
+					IJ.log("AAA total= " + total);
+					MyLog.waitHere();
 					return total;
 				}
 				if (vetCoils[0].equals("xxx")) {
+					IJ.log("BBB total= " + total);
+					MyLog.waitHere();
 					return total;
 				}
-				if (listCoils[i1].equals(vetCoils[i2]))
+				if (listCoils[i1].equals(vetCoils[i2])) {
+					MyLog.logVector(vetCoils, "vetCoils");
+					MyLog.waitHere();
 					return vetCoils[i2];
+				}
 			}
 		}
+
+		// ---------------------------------
+		// total=total.replace(";","+");
+		// ---------------------------------
+
+		// IJ.log("total_DOPO= " + total);
+
 		// MyLog.logVector(vetCoils, "vetCoils");
 		// MyLog.logVector(listCoils, "listCoils");
 		// MyLog.waitHere("null2");
+
 		return null;
 	}
 
@@ -561,10 +613,10 @@ public class ReadDicom {
 //		return total;
 //	}
 
-	public static String[] splitCoils(String multiCoil) {
+	public static String[] splitCoils(String multiCoil, String separator) {
 		String[] subCoils;
-		if (multiCoil.contains(";")) {
-			subCoils = multiCoil.split(";");
+		if (multiCoil.contains(separator)) {
+			subCoils = multiCoil.split(separator);
 		} else {
 			subCoils = new String[1];
 			subCoils[0] = multiCoil;
@@ -572,10 +624,14 @@ public class ReadDicom {
 		return subCoils;
 	}
 
-	/**
+	/*-
 	 * whatManufacturer ricava il nome del costruttore dall'header dell'immagine
 	 * 
-	 * man = 1 SIEMENS man = 2 PHILIPS man = 3 GE man = 4 PICKER
+	 *  man = 1 SIEMENS 
+	 *  man = 2 PHILIPS 
+	 *  man = 3 GE 
+	 *  man = 4 PICKER
+	 *  man = 5 UNION
 	 * 
 	 * @param imp1
 	 * @return man
@@ -584,12 +640,12 @@ public class ReadDicom {
 		String manufacturer1 = ReadDicom.readDicomParameter(imp1, "0008,0070");
 		String manufacturer = "";
 
-		//if (manufacturer1.length() > 3) {
-			manufacturer = manufacturer1.substring(0, 3);
-		//}
-			
-		// MyLog.waitHere("manufacturer= "+manufacturer);	
-			
+		// if (manufacturer1.length() > 3) {
+		manufacturer = manufacturer1.substring(0, 3);
+		// }
+
+		// MyLog.waitHere("manufacturer= "+manufacturer);
+
 		int man = 0;
 		if (manufacturer.equalsIgnoreCase("SIE")) {
 			man = 1;
@@ -628,7 +684,7 @@ public class ReadDicom {
 	/***
 	 * Questo workaround deriva da ReadAscconv e va utilizzato per leggere parametri
 	 * dell'header ignorati da ImageJ, solitamente legati all'incauto passaggio
-	 * delle immagini attraverso i PACS. (CAPRE, CAPRE, CAPRE ....)
+	 * delle immagini attraverso il PACS ( grazie BimbeDiSatana! )
 	 * 
 	 * @param path1
 	 * @param ricerca

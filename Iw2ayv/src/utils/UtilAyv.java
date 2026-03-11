@@ -2028,7 +2028,7 @@ public class UtilAyv {
 	 * @param path1
 	 * @return restituisce la sigla della bobina utilizzata
 	 */
-	public String kludge(String path1) {
+	public String kludge_DELETABLE(String path1) {
 		FileInputStream fis = null;
 		BufferedInputStream bis = null;
 		String blob = "";

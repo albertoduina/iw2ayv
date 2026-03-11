@@ -117,16 +117,33 @@ public class ReadDicomTest {
 			fail("Manca immagine");
 		}
 		String coil = ReadDicom.getAllCoils(imp1);
-		MyLog.waitHere("coil= " + coil);
+		MyLog.waitHere("AAAAA coil= " + coil);
 	}
 
 	@Test
 	public final void testSplitCoils() {
 		String multiCoil = "HE3,4;NE1,2;SP1,2";
-		String[] vetCoils = ReadDicom.splitCoils(multiCoil);
+		String[] vetCoils = ReadDicom.splitCoils(multiCoil, ";");
 		for (int i1 = 0; i1 < vetCoils.length; i1++) {
 			IJ.log("" + vetCoils[i1]);
 		}
 	}
+	
+	@Test
+	public final void testGetThisCoil() {
+		String path = ".\\Test4\\KUS1A.IMA";
+		ImagePlus imp1 = new Opener().openImage(path);
+		if (imp1 == null) {
+			fail("Manca immagine");
+		}
+		String coil = ReadDicom.getAllCoils(imp1);
+		MyLog.waitHere("coil= " + coil);
+		
+		String[] vetcoils= {"HC5,7"};
+		
+		String out1 = ReadDicom.getThisCoil(imp1, vetcoils);
+		MyLog.waitHere("out1= " + out1);
+	}
+
 
 }

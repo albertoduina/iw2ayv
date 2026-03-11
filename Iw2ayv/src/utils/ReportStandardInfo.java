@@ -38,8 +38,8 @@ public class ReportStandardInfo {
 	 * @param called      true se il plugin � stato chiamato da sequenze
 	 * @return gruppo informazioni per la ResultsTable
 	 */
-	public static String[][] getStandardInfo(String[][] tabImmagini, int riga, String[][] tabCodici, String version,
-			boolean called) {
+	public static String[][] getStandardInfo_DELETABLE(String[][] tabImmagini, int riga, String[][] tabCodici,
+			String version, boolean called) {
 		String[][] out1 = { { "Codice", "none" }, { "Station", "none" }, { "Patient", "none" }, { "AcqDate", "none" },
 				{ "ElabDate", "none" }, { "Coil", "none" }, { "Frequeny", "none" }, { "<END>", "<END>" } };
 
@@ -129,15 +129,15 @@ public class ReportStandardInfo {
 		String elabDate = strDay + "-" + strMonth + "-" + strYear + "_" + version;
 
 		// String coil1 = ReadDicom.readDicomParameter(imp1, DICOM_COIL);
-		String coilElement = ReadDicom.getFirstCoil(imp1);
-		if (coilElement.equals("MISSING")) {
-			coilElement = new UtilAyv().kludge(path1);
-		}
+		String coilElement = ReadDicom.getFirstCoil_DELETABLE(imp1);
+//		if (coilElement.equals("MISSING")) {
+//			coilElement = new UtilAyv().kludge(path1);
+//		}
 		// -------< 2024_04_17 >----------------------
 		String receivingCoil = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_RECEIVING_COIL);
 		// a questo punto riunisco il nome della bobina di ricezione e quello del
 		// cluster separandoli con un ";"
-		String coil = receivingCoil + " - " + coilElement;
+		String coil = receivingCoil + "=" + coilElement;
 		// -------< 2024_04_17 >----------------------
 
 		// ModelessMsg("codice="+codice, "continua");
@@ -183,7 +183,7 @@ public class ReportStandardInfo {
 			return null;
 		}
 
-		int manufacturer = ReadDicom.whatManufacturer(imp1);
+		// int manufacturer = ReadDicom.whatManufacturer(imp1);
 
 		String aux3 = imp1.getTitle();
 
@@ -212,10 +212,6 @@ public class ReportStandardInfo {
 		String frequency = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_IMAGING_FREQUENCY);
 
 		String[] mesi = { "gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic" };
-		// acquisitionDate
-		// String acqDate2 = ReadDicom.readDicomParameter(imp1,
-		// MyConst.DICOM_ACQUISITION_DATE);
-
 		String acqDate2 = readDate(imp1);
 
 		String strDay = acqDate2.substring(6).trim();
@@ -234,43 +230,46 @@ public class ReportStandardInfo {
 		String strMonth2 = mesi[cal.get(Calendar.MONTH)];
 		String strYear2 = "" + (cal.get(Calendar.YEAR));
 		String elabDate = strDay2 + "-" + strMonth2 + "-" + strYear2 + "_" + version;
-		// String coil = UtilAyv.getFirstCoil(ReadDicom.readDicomParameter(imp1,
-		// DICOM_COIL));
 
 		aux3 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_SERIES_DESCRIPTION);
-		String[] reqCoil = getRequestedCoil2(UtilAyv.getFiveLetters(aux3).trim(), tabCodici);
-		String coilElement = ReadDicom.getThisCoil(imp1, reqCoil);
-		String coilElement2 = ReadDicom.piedeDiPorco(path, "2100,4F10");
-		String coilElement3 = ReadDicom.piedeDiPorco(path, "2100,4F11");
-		String coilElement4 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL4);
+//		String[] reqCoil = getRequestedCoil2(UtilAyv.getFiveLetters(aux3).trim(), tabCodici);
 
-		// MyLog.logVector(reqCoil, "reqCoil");
-		// IJ.log("coilElement1= "+coilElement);
-		// IJ.log("coilElement2= "+coilElement2);
-		// IJ.log("coilElement3= "+coilElement3);
-		// MyLog.waitHere();
-		if (coilElement == null) {
-			coilElement = ReadDicom.piedeDiPorco(path, "2100,4F10");
-//			MyLog.waitHere("coil = null");
+		// String coilElement = ReadDicom.getThisCoil(imp1, reqCoil);
+		// esperimento 01 nov 2025
+		String coil = ReadDicom.getAllCoils(imp1);
+
+		// String coilElement2 = ReadDicom.piedeDiPorco(path, "2100,4F10");
+		// String coilElement3 = ReadDicom.piedeDiPorco(path, "2100,4F11");
+		// String coilElement4 = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_COIL4);
+
+		if (coil == null) {
+			coil = ReadDicom.piedeDiPorco(path, "2100,4F10");
 		}
 
-		if (coilElement.equals("MISSING")) {
+		if (coil.equals("MISSING")) {
 			// coilElement = new UtilAyv().kludge(path);
-			coilElement = ReadDicom.piedeDiPorco(path, "2100,4F10");
+			coil = ReadDicom.piedeDiPorco(path, "2100,4F10");
 		}
-		String coil = "";
 
-		if (manufacturer == 5) {
-			coil = coilElement4.replace(';','+');
-		} else {
-			// -------< 2024_04_17 >----------------------
-			String receivingCoil = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_RECEIVING_COIL);
-			// a questo punto riunisco il nome della bobina di ricezione e quello del
-			// cluster separandoli con un ";"
-			coil = receivingCoil + "_" + coilElement;  /// ATTENZIONE modifica problematica eseguita dopo 16ott25
-			
-			// -------< 2024_04_17 >----------------------
-		}
+		coil = coil.replace(';', '+');
+//
+//		if (manufacturer == 5) {
+//			coil = coilElement4.replace(';', '+');
+//		} else {
+		// -------< 2025_10_29 >----------------------
+		// -------< 2024_04_17 >----------------------
+		String receivingCoil = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_RECEIVING_COIL);
+		// a questo punto riunisco il nome della bobina di ricezione e quello del
+		// cluster separandoli con un ";"
+		// coil = receivingCoil + "_" + coilElement; /// ATTENZIONE modifica
+		// problematica eseguita dopo 16ott25
+		// 29ott25 anche la modifica precedente interferisce con i nomi di alcune
+		// bobine. a questo punto uso il
+		// carattere § e speriamo che me la cavo
+		String coilString =  receivingCoil + "=" + coil; /// ATTENZIONE modifica eseguita il 29ott25 in test
+		// -------< 2024_04_17 >----------------------
+		// -------< 2025_10_29 >----------------------
+//		}
 
 		// ModelessMsg("codice="+codice, "continua");
 		simpleHeader[0] = codice;
@@ -278,10 +277,8 @@ public class ReportStandardInfo {
 		simpleHeader[2] = patName;
 		simpleHeader[3] = acqDate;
 		simpleHeader[4] = elabDate;
-		simpleHeader[5] = coil;
+		simpleHeader[5] = coilString;
 		simpleHeader[6] = frequency;
-//		MyLog.logVector(simpleHeader, "simpleHeader");
-//		MyLog.waitHere();
 
 		return (simpleHeader);
 	}
@@ -293,10 +290,10 @@ public class ReportStandardInfo {
 	 * @param imp1      ImagePlus
 	 * @param tabCodici tabella coi valori di codici.txt
 	 * @param version   nome del plugin e sua versione
-	 * @param called    true se il plugin � stato chiamato da sequenze
+	 * @param called    true se il plugin e' stato chiamato da sequenze
 	 * @return gruppo informazioni per la ResultsTable
 	 */
-	public static String[] getSimpleStandardInfo(String path, ImagePlus imp1, String[][] tabCodici,
+	public static String[] getSimpleStandardInfo_DELETABLE(String path, ImagePlus imp1, String[][] tabCodici,
 			String[][] tableSequence, int riga, String version, boolean called) {
 
 		if (imp1 == null) {
@@ -306,7 +303,7 @@ public class ReportStandardInfo {
 		String aux3 = imp1.getTitle();
 
 		// String tableCode = TableSequence.getCode(tableSequence, riga);
-		String[] reqCoil = ReadDicom.splitCoils(TableSequence.getCoil(tableSequence, riga));
+		String[] reqCoil = ReadDicom.splitCoils(TableSequence.getCoil(tableSequence, riga), ";");
 
 		// IJ.log("getSimpleStandardInfo.aux3=" + aux3);
 		String codice;
@@ -366,9 +363,9 @@ public class ReportStandardInfo {
 		if (coilElement == null)
 			coilElement = "";
 
-		if (coilElement.equals("MISSING")) {
-			coilElement = new UtilAyv().kludge(path);
-		}
+//		if (coilElement.equals("MISSING")) {
+//			coilElement = new UtilAyv().kludge(path);
+//		}
 
 		// -------< 2024_04_17 >----------------------
 		String receivingCoil = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_RECEIVING_COIL);
@@ -414,6 +411,17 @@ public class ReportStandardInfo {
 		return vetOut1;
 	}
 
+	/*-
+	 * getMiniStandardInfo 
+	 * viene utilizzato in Spy, quindi va mantenuto
+	 * 
+	 * 
+	 * @param path
+	 * @param imp1
+	 * @param called
+	 * @return
+	 */
+
 	public static String[] getMiniStandardInfo(String path, ImagePlus imp1, boolean called) {
 
 		if (imp1 == null) {
@@ -447,16 +455,16 @@ public class ReportStandardInfo {
 		String strYear2 = "" + (cal.get(Calendar.YEAR));
 		String elabDate = strDay2 + "-" + strMonth2 + "-" + strYear2;
 
-		String coilElement = ReadDicom.getFirstCoil(imp1);
-		if (coilElement.equals("MISSING")) {
-			coilElement = new UtilAyv().kludge(path);
-		}
+		String coilElement = ReadDicom.getFirstCoil_DELETABLE(imp1);
+//		if (coilElement.equals("MISSING")) {
+//			coilElement = new UtilAyv().kludge(path);
+//		}
 
 		// -------< 2024_04_17 >----------------------
 		String receivingCoil = ReadDicom.readDicomParameter(imp1, MyConst.DICOM_RECEIVING_COIL);
 		// a questo punto riunisco il nome della bobina di ricezione e quello del
 		// cluster separandoli con un ";"
-		String coil = receivingCoil + " - " + coilElement;
+		String coil = receivingCoil + "=" + coilElement;
 		// -------< 2024_04_17 >----------------------
 
 		// ModelessMsg("codice="+codice, "continua");
@@ -478,7 +486,7 @@ public class ReportStandardInfo {
 	 * @return ResultsTable del report
 	 */
 	@SuppressWarnings("deprecation")
-	public static ResultsTable putStandardInfoRT(String[][] info1) {
+	public static ResultsTable putStandardInfoRT_DELETABLE(String[][] info1) {
 		// IJ.run("Measure");
 
 		ResultsTable rt = ResultsTable.getResultsTable();
