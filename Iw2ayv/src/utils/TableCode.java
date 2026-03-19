@@ -56,9 +56,10 @@ public class TableCode {
 		String myPart1 = myString.substring(start, end);
 		end = myPart1.lastIndexOf("/");
 		String myPart2 = myPart1.substring(0, end + 1);
-		//MyLog.waitHere("end2= " + end);
+		// MyLog.waitHere("end2= " + end);
 
-		//IJ.log("myString= " + myString + " myPart1= " + myPart1 + " myPart2=" + myPart2);
+		// IJ.log("myString= " + myString + " myPart1= " + myPart1 + " myPart2=" +
+		// myPart2);
 
 		File folderToScan = new File(myPart2);
 
@@ -67,7 +68,7 @@ public class TableCode {
 
 		for (int i1 = 0; i1 < listOfFiles.length; i1++) {
 			if (listOfFiles[i1].isFile()) {
-				target_file = listOfFiles[i1].getName();
+				target_file = listOfFiles[i1].getName().toLowerCase();
 //				IJ.log("" + target_file);
 				if (target_file.startsWith(part1) && target_file.endsWith(part2)) {
 					list1.add(target_file);
@@ -82,9 +83,13 @@ public class TableCode {
 		// MyLog.waitHere();
 		String[] list2 = ArrayUtils.arrayListToArrayString(list1);
 		if (list2.length == 1) {
-		} else {
+		} else if (list2.length < 1) {
 			MyLog.waitHere(
-					"ATTENZIONE: esiste piu' di un file col nome che inizia con 'CODICI' ed estensione '.CSV', cio' non deve succedere MAI, MAI, MAIIIII");
+					"ATTENZIONE: manca il file col nome che inizia con 'codici' ed estensione '.csv', cio' non deve succedere MAI, MAI, MAIIIII");
+		} else {
+			MyLog.logVector(list2, "lista codicixxx.csv");
+			MyLog.waitHere(
+					"ATTENZIONE: esiste piu' di un file col nome che inizia con 'codici' ed estensione '.csv', cio' non deve succedere MAI, MAI, MAIIIII");
 		}
 
 		// MyLog.logVector(list2, "list2");
