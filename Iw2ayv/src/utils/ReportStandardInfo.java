@@ -271,7 +271,7 @@ public class ReportStandardInfo {
 		// -------< 2025_10_29 >----------------------
 //		}
 
-		// ModelessMsg("codice="+codice, "continua");
+		// MyLog.waitHere("codice="+codice+ " coilString= "+coilString);
 		simpleHeader[0] = codice;
 		simpleHeader[1] = stationName;
 		simpleHeader[2] = patName;

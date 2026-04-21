@@ -212,7 +212,7 @@ public class ImageUtils {
 	 * @param test    autotest mode
 	 * @return pixel counts of classes of the simulated image
 	 */
-	public static int[][] generaSimulata5Classi(int xRoi, int yRoi, int diamRoi, ImagePlus imp, String filename,
+	public static int[][] generaSimulata5ClassiA(int xRoi, int yRoi, int diamRoi, ImagePlus imp, String filename, String aux1,
 			boolean step, boolean verbose, boolean test) {
 
 		int xRoiSimulata = xRoi + (diamRoi - MyConst.P3_DIAM_FOR_450_PIXELS) / 2;
@@ -230,11 +230,11 @@ public class ImageUtils {
 
 		String codice = UtilAyv.getFiveLetters(codice1);
 
-		String simName = filename + patName + codice + "sim.zip";
-
-		if (!test)
-
+		if (!test) {
+			impSimulata.setTitle(aux1 + "sim");
+			String simName = filename + patName + codice + "sim.zip";
 			new FileSaver(impSimulata).saveAsZip(simName);
+		}
 		return classiSimulata;
 	}
 
@@ -305,7 +305,7 @@ public class ImageUtils {
 	 * @param verbose
 	 * 
 	 * @param test       modo autotest
-	 * @return numeriosit� classi simulata
+	 * @return numeriosita' classi simulata
 	 */
 	public static int[][] generaSimulata12classi(int xCenterRoi, int yCenterRoi, int latoRoi, ImagePlus imp1,
 			String filePath, boolean step, boolean verbose, boolean test) {
@@ -346,7 +346,7 @@ public class ImageUtils {
 	 * @param test       modo autotest
 	 * @return numeriosita' classi simulata
 	 */
-	public static int[][] generaSimulata12classi(int xCenterRoi, int yCenterRoi, int latoRoi, ImagePlus imp1,
+	public static int[][] generaSimulata12classiA(int xCenterRoi, int yCenterRoi, int latoRoi, ImagePlus imp1,
 			String filePath, String aux1, int mode, int timeout) {
 
 		boolean debug = true;

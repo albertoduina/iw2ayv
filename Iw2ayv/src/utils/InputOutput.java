@@ -1131,7 +1131,7 @@ public class InputOutput {
 	}
 
 	/***
-	 * Verifica la disponibilit� di un file
+	 * Verifica la disponibilita' di un file
 	 * 
 	 * @param name
 	 * @return
