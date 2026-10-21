@@ -510,6 +510,37 @@ public class MyLog {
 		}
 		IJ.log("---------------------------------------------");
 	}
+	
+	public static void logMatrix(String path, String mat[][], String nome) {
+		String stri = "";
+		int rows = 0;
+		int columns = 0;
+		if (mat == null) {
+			// MyLog.waitThere("Warning matrix " + nome + " = null");
+			return;
+		} else {
+			rows = mat.length;
+			if (rows == 0) {
+				MyLog.waitThere("Warning matrix " + nome + " length=0");
+				return;
+			}
+
+			columns = mat[0].length;
+			// IJ.log("rows=" + rows + " columns= " + columns);
+
+			MyLog.appendLog(path,"---- " + nome + " [ " + rows + "x" + columns + " ] ----");
+			for (int i1 = 0; i1 < rows; i1++) {
+				stri = "";
+				for (int i2 = 0; i2 < columns; i2++) {
+					stri += mat[i1][i2] + ";  ";
+				}
+				// IJ.log(stri);
+				MyLog.appendLog(path,stri);
+			}
+		}
+		MyLog.appendLog(path,"---------------------------------------------");
+	}
+
 
 	public static void logMatrixTable(String mat[][], String nome) {
 		String stri = "";
@@ -543,6 +574,41 @@ public class MyLog {
 		}
 		IJ.log("---------------------------------------------");
 	}
+	
+	
+	public static void logMatrixTable(String path, String mat[][], String nome) {
+		String stri = "";
+		int rows = 0;
+		int columns = 0;
+		if (mat == null) {
+			// MyLog.waitThere("Warning matrix " + nome + " = null");
+			return;
+		} else {
+			rows = mat.length;
+			if (rows == 0) {
+				MyLog.waitThere("Warning matrix " + nome + " length=0");
+				return;
+			}
+
+			columns = mat[0].length;
+			// IJ.log("rows=" + rows + " columns= " + columns);
+
+			MyLog.appendLog(path, "---- " + nome + " [ " + rows + "x" + columns + " ] ----");
+
+			MyLog.appendLog(path,"ROW; PATH; CODE; COIL; IMA_PASS; IMA_ORDER; IMA_INCREMENT; MULTIPLI; SPARE2; SPARE3; SERIE; ACQ; IMA; ACQ_TIME; ECHO_TIME; POSITION; DIREZ; PROF; DONE");
+
+
+			for (int i1 = 0; i1 < rows; i1++) {
+				stri = "";
+				for (int i2 = 0; i2 < columns; i2++) {
+					stri += mat[i1][i2] + ";  ";
+				}
+				MyLog.appendLog(path,stri);
+			}
+		}
+		MyLog.appendLog(path,"---------------------------------------------");
+	}
+
 
 	public static void logVector(double vect[], String nome) {
 		String stri = "";

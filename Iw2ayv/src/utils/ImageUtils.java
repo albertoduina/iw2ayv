@@ -4,12 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Polygon;
 import java.awt.Rectangle;
-import java.awt.Window;
 import java.util.ArrayList;
 
 import ij.IJ;
 import ij.ImagePlus;
-import ij.ImageStack;
 import ij.WindowManager;
 import ij.gui.ImageWindow;
 import ij.gui.NewImage;
@@ -212,8 +210,8 @@ public class ImageUtils {
 	 * @param test    autotest mode
 	 * @return pixel counts of classes of the simulated image
 	 */
-	public static int[][] generaSimulata5ClassiA(int xRoi, int yRoi, int diamRoi, ImagePlus imp, String filename, String aux1,
-			boolean step, boolean verbose, boolean test) {
+	public static int[][] generaSimulata5ClassiA(int xRoi, int yRoi, int diamRoi, ImagePlus imp, String filename,
+			String aux1, boolean step, boolean verbose, boolean test) {
 
 		int xRoiSimulata = xRoi + (diamRoi - MyConst.P3_DIAM_FOR_450_PIXELS) / 2;
 		int yRoiSimulata = yRoi + (diamRoi - MyConst.P3_DIAM_FOR_450_PIXELS) / 2;
@@ -223,8 +221,12 @@ public class ImageUtils {
 			ImageUtils.backgroundEnhancement(0, 0, 10, impSimulata);
 		}
 		impSimulata.updateAndDraw();
-		int[][] classiSimulata = numeroPixelsClassi(impSimulata);
+		int[][] classiSimulata = numeroPixels5Classi(impSimulata);
 		String patName = ReadDicom.readDicomParameter(imp, MyConst.DICOM_PATIENT_NAME);
+		// eccolo qui, devo filtrare per i caratteri non permessi
+		patName = patName.replace(":", "g"); //121026 filtro sicurezza
+		patName = patName.replace(".", "g"); //121026 filtro sicurezza
+
 
 		String codice1 = ReadDicom.readDicomParameter(imp, MyConst.DICOM_SERIES_DESCRIPTION);
 
@@ -232,8 +234,11 @@ public class ImageUtils {
 
 		if (!test) {
 			impSimulata.setTitle(aux1 + "sim");
-			String simName = filename + patName + codice + "sim.zip";
-			new FileSaver(impSimulata).saveAsZip(simName);
+//			String simName = filename + patName + codice + "sim.zip";
+//			MyLog.waitHere("simName= ");
+			
+			/// new FileSaver(impSimulata).saveAsZip(simName); 
+			new FileSaver(impSimulata).saveAsZip(filename); // 121026
 		}
 		return classiSimulata;
 	}
@@ -326,7 +331,7 @@ public class ImageUtils {
 
 		if (step)
 			MyLog.waitHere("Immagine Simulata", debug);
-		int[][] classiSimulata = numeroPixelsClassi(impSimulata);
+		int[][] classiSimulata = numeroPixels12Classi(impSimulata);
 
 		if (!test)
 			new FileSaver(impSimulata).saveAsZip(filePath);
@@ -374,7 +379,7 @@ public class ImageUtils {
 		}
 		if (step)
 			MyLog.waitHere("Immagine Simulata", debug);
-		int[][] classiSimulata = numeroPixelsClassi(impSimulata);
+		int[][] classiSimulata = numeroPixels12Classi(impSimulata);
 
 		// MyLog.waitHere("simulata2= "+filePath);
 		if (!test)
@@ -732,14 +737,61 @@ public class ImageUtils {
 	 * Estrae la numerosita' delle classi dalla simulata
 	 * 
 	 * @param imp1 immagine simulata da analizzare
-	 * @return numerosit� delle classi in cui per ogni elemento abbiamo
-	 *         [valore][numerosit�]
+	 * @return numerosita' delle classi in cui per ogni elemento abbiamo
+	 *         [valore][numerosita']
 	 */
 
-	public static int[][] numeroPixelsClassi(ImagePlus imp1) {
+	public static int[][] numeroPixels5Classi(ImagePlus imp1) {
 
 		if (imp1 == null) {
-			IJ.error("numeroPixelClassi ricevuto null");
+			IJ.error("numeroPixel5Classi ricevuto null");
+			return (null);
+		}
+		int width = imp1.getWidth();
+		int height = imp1.getHeight();
+
+		ImageProcessor ip1 = imp1.getProcessor();
+		short[] pixels1 = (short[]) ip1.getPixels();
+		int offset = 0;
+		int pix1 = 0;
+
+		int[][] vetClassi = { { MyConst.LEVEL_5, 0 }, { MyConst.LEVEL_4, 0 }, { MyConst.LEVEL_3, 0 },
+				{ MyConst.LEVEL_2, 0 }, { MyConst.LEVEL_1, 0 } };
+		boolean manca = true;
+
+		for (int y1 = 0; y1 < height; y1++) {
+			for (int x1 = 0; x1 < (width); x1++) {
+				offset = y1 * width + x1;
+				pix1 = pixels1[offset];
+				manca = true;
+				for (int i1 = 0; i1 < vetClassi.length; i1++)
+					if (pix1 == vetClassi[i1][0]) {
+						vetClassi[i1][1] = vetClassi[i1][1] + 1;
+						manca = false;
+						break;
+					}
+				if (manca) {
+					ButtonMessages.ModelessMsg("SIMULATA 5 CLASSI CON VALORE ERRATO=" + pix1 + "   <38>", "CONTINUA");
+					return (null);
+				}
+			}
+		}
+		return (vetClassi);
+
+	} // classi
+
+	/**
+	 * Estrae la numerosita' delle classi dalla simulata
+	 * 
+	 * @param imp1 immagine simulata da analizzare
+	 * @return numerosita' delle classi in cui per ogni elemento abbiamo
+	 *         [valore][numerosita']
+	 */
+
+	public static int[][] numeroPixels12Classi(ImagePlus imp1) {
+
+		if (imp1 == null) {
+			IJ.error("numeroPixel12Classi ricevuto null");
 			return (null);
 		}
 		int width = imp1.getWidth();
@@ -768,7 +820,7 @@ public class ImageUtils {
 						break;
 					}
 				if (manca) {
-					ButtonMessages.ModelessMsg("SIMULATA CON VALORE ERRATO=" + pix1 + "   <38>", "CONTINUA");
+					ButtonMessages.ModelessMsg("SIMULATA 12 CLASSI CON VALORE ERRATO=" + pix1 + "   <38>", "CONTINUA");
 					return (null);
 				}
 			}
